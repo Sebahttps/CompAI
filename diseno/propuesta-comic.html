@@ -63,6 +63,10 @@
     --crema-suave: rgba(239,228,206,.72);
 
     --borde: 3px;
+    /* Sombreado de imprenta: el titular va desplazado en tinta sobre fondo
+       oscuro y en ocre sobre papel, como un cartel mal registrado. */
+    --sombra-titulo: 5px 5px 0 var(--tinta);
+    --sombra-titulo-papel: 4px 4px 0 var(--ocre);
     --sombra: 7px 7px 0 var(--tinta);
     --sombra-corta: 4px 4px 0 var(--tinta);
     --ancho: 1140px;
@@ -133,13 +137,24 @@
     position: sticky; top: 0; z-index: 40;
   }
   .barra-int { display: flex; align-items: center; gap: 26px; padding: 13px 0; }
-  .logo { display: flex; align-items: center; gap: 9px; flex: none; }
+  /* El logotipo esta dibujado para fondo oscuro: las dos brasas solo existen
+     contra tinta. Sobre papel se usa .logo.placa, que le pone su propio fondo
+     oscuro en vez de apagar el lockup. */
+  .logo { display: flex; align-items: center; gap: 11px; flex: none; }
   .logo b {
     font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 25px;
     letter-spacing: -.03em; color: var(--crema-alta); line-height: 1;
   }
-  .logo b i { font-style: normal; color: var(--ocre); }
-  .logo svg { color: var(--brasa); flex: none; }
+  .logo b i {
+    font-family: 'Alfa Slab One', Georgia, serif; font-style: normal;
+    color: var(--ocre); letter-spacing: .005em;
+    text-shadow: 0 0 22px rgba(217,122,43,.55), 0 0 7px rgba(217,122,43,.45);
+  }
+  .logo svg { color: var(--brasa); flex: none; filter: drop-shadow(0 0 9px rgba(70,210,140,.55)); }
+  .logo.placa {
+    background: var(--tinta); padding: 10px 16px;
+    border: var(--borde) solid var(--tinta); box-shadow: var(--sombra-corta);
+  }
   .menu { display: flex; gap: 22px; margin-left: auto; }
   .menu a {
     text-decoration: none; color: var(--crema-suave);
@@ -178,11 +193,12 @@
   }
   .portada-int { position: relative; z-index: 1; display: grid; gap: 40px; grid-template-columns: 1.15fr .85fr; align-items: center; }
 
-  .portada h1 { margin: 18px 0 0; font-size: clamp(34px, 4.6vw, 56px); color: var(--crema-alta); }
-  .portada h1 em {
-    font-style: normal; color: var(--ocre);
-    text-shadow: 3px 3px 0 var(--tinta);
+  .portada h1 {
+    margin: 18px 0 0; font-size: clamp(34px, 4.6vw, 56px);
+    color: var(--crema-alta); text-shadow: var(--sombra-titulo);
   }
+  /* Sin sombra propia: hereda la del titular, asi el desplazamiento es uno solo. */
+  .portada h1 em { font-style: normal; color: var(--ocre); }
   .bajada { margin: 20px 0 0; font-size: 18.5px; color: var(--crema-suave); max-width: 46ch; }
   .acciones { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 30px; }
 
@@ -206,16 +222,22 @@
   /* ── Secciones ───────────────────────────────────────────────────── */
   section { padding: 74px 0; }
   .seccion-crema { background: var(--crema); color: var(--tinta); }
-  .seccion-crema .cab h2 { color: var(--tinta); }
+  .seccion-crema .cab h2 { color: var(--tinta); text-shadow: var(--sombra-titulo-papel); }
   .cab { margin-bottom: 34px; }
-  .cab h2 { margin: 16px 0 0; font-size: clamp(28px, 3.6vw, 42px); color: var(--crema-alta); }
+  .cab h2 {
+    margin: 16px 0 0; font-size: clamp(28px, 3.6vw, 42px);
+    color: var(--crema-alta); text-shadow: var(--sombra-titulo);
+  }
   .cab p { margin: 14px 0 0; max-width: 60ch; color: var(--crema-suave); font-size: 17px; }
   .seccion-crema .cab p { color: var(--tinta-suave); }
 
   .rejilla-3 { display: grid; gap: var(--canaleta); grid-template-columns: repeat(3, 1fr); }
   .capacidad { padding: 22px 22px 26px; display: flex; flex-direction: column; gap: 14px; }
   .capacidad svg { width: 100%; height: auto; display: block; color: var(--tinta); }
-  .capacidad h3 { margin: 0; font-size: 21px; font-weight: 700; letter-spacing: -.01em; }
+  .capacidad h3 {
+    margin: 0; font-size: 21px; font-weight: 700; letter-spacing: -.01em;
+    text-shadow: 2px 2px 0 rgba(217,122,43,.26);
+  }
   .capacidad p { margin: 0; font-size: 15.5px; color: var(--tinta-suave); }
   .capacidad ul { margin: 0; padding-left: 18px; font-size: 15px; color: var(--tinta-suave); }
   .capacidad li + li { margin-top: 4px; }
@@ -238,7 +260,10 @@
     font-size: 27px; transform: rotate(-4deg);
   }
   .paso .rotulo { color: var(--tinta-suave); margin-top: 6px; }
-  .paso h3 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -.01em; line-height: 1.25; }
+  .paso h3 {
+    margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -.01em; line-height: 1.25;
+    text-shadow: 2px 2px 0 rgba(217,122,43,.26);
+  }
   .paso p { margin: 0; font-size: 15.5px; color: var(--tinta-suave); }
   /* Estallido: un solo golpe de cartel en toda la página, sobre el resultado. */
   .estrella {
@@ -253,6 +278,7 @@
   /* ── Ficha de la empresa ─────────────────────────────────────────── */
   .rejilla-ficha { display: grid; gap: var(--canaleta); grid-template-columns: 1.15fr .85fr; align-items: start; }
   .ficha { padding: 26px 26px 28px; }
+  .ficha .logo.placa { margin-bottom: 22px; }
   .ficha dl { margin: 0; }
   .ficha dl > div {
     display: grid; grid-template-columns: 200px 1fr; gap: 14px;
@@ -323,7 +349,11 @@
     .franja-int { grid-template-columns: 1fr; }
     .franja-int > div { border-left: 0; padding-left: 0; }
     .ficha dl > div { grid-template-columns: 1fr; gap: 4px; }
-    :root { --sombra: 5px 5px 0 var(--tinta); }
+    :root {
+      --sombra: 5px 5px 0 var(--tinta);
+      --sombra-titulo: 3px 3px 0 var(--tinta);
+      --sombra-titulo-papel: 3px 3px 0 var(--ocre);
+    }
   }
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; scroll-behavior: auto; }
@@ -524,6 +554,13 @@
 
     <div class="rejilla-ficha">
       <div class="vineta ficha">
+        <span class="logo placa">
+          <b>comp<i>AI</i></b>
+          <svg width="28" height="14" viewBox="0 0 64 32" fill="none" aria-hidden="true">
+            <path d="M2 18l7 7 13-15M22 18l7 7 13-15" stroke="currentColor" stroke-width="6"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
         <dl>
           <div><dt class="rotulo">Razón social</dt><dd>COMPAI GLOBAL SOLUTIONS SpA</dd></div>
           <div><dt class="rotulo">RUT</dt><dd class="dato">78.491.451-8</dd></div>
