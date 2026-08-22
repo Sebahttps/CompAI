@@ -11,7 +11,11 @@ editar acá a mano se pierde en la siguiente construcción.
 
 ## Diseño
 
-`diseno/wireframe.html` es el wireframe técnico de la plataforma (retícula,
-componentes, flujo y siete pantallas anotadas). Es un documento de trabajo, no
-parte del sitio publicado: se abre con doble clic, no se enlaza desde `index.html`
-y va con `noindex`.
+Dos documentos de trabajo. Ninguno es parte del sitio publicado: se abren con
+doble clic, no se enlazan desde `index.html` y van con `noindex`.
+
+- `diseno/wireframe.html` — wireframe técnico de la plataforma: retícula,
+  componentes, flujo y siete pantallas anotadas.
+- `diseno/propuesta-comic.html` — segunda opción visual: maqueta de alta
+  fidelidad en clave de cartel de cómic entintado. Tipografías auto-alojadas en
+  el propio archivo, sin solicitudes a terceros.
