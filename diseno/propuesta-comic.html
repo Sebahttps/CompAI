@@ -182,10 +182,18 @@
     -webkit-mask-image: radial-gradient(closest-side, #000 18%, rgba(0,0,0,0) 82%);
     mask-image: radial-gradient(closest-side, #000 18%, rgba(0,0,0,0) 82%);
   }
-  .portada-int { position: relative; z-index: 1; display: grid; gap: 40px; grid-template-columns: 1.15fr .85fr; align-items: center; }
+  /* Tres piezas en el mismo ancho que el resto de la pagina: el titular
+     arranca en la misma linea vertical que el logotipo de la barra. */
+  .portada-int {
+    position: relative; z-index: 1; display: grid; gap: 26px;
+    grid-template-columns: 1.02fr .56fr .8fr; align-items: center;
+  }
+  /* El retrato se apoya en el borde inferior de la portada, como en el cartel. */
+  .figura { align-self: end; justify-self: center; width: 100%; max-width: 270px; }
+  .figura svg { display: block; width: 100%; height: auto; }
 
   .portada h1 {
-    margin: 18px 0 0; font-size: clamp(34px, 4.6vw, 56px);
+    margin: 18px 0 0; font-size: clamp(33px, 3.9vw, 50px);
     color: var(--crema-alta); text-shadow: var(--sombra-titulo);
   }
   /* Sin sombra propia: hereda la del titular, asi el desplazamiento es uno solo. */
@@ -325,8 +333,18 @@
     .rejilla-3, .secuencia { grid-template-columns: repeat(auto-fit, minmax(268px, 1fr)); }
     .ficha dl > div { grid-template-columns: 168px 1fr; }
   }
+  @media (max-width: 1100px) {
+    /* Sin ancho para tres columnas: el retrato acompana al titular y la tira
+       pasa a ocupar el ancho completo debajo. */
+    .portada-int { grid-template-columns: 1fr .52fr; }
+    .tira { grid-column: 1 / -1; grid-template-columns: repeat(3, 1fr); }
+    .tira .vineta:first-child { grid-column: auto; }
+  }
   @media (max-width: 880px) {
     .portada-int, .contacto-int, .rejilla-ficha { grid-template-columns: 1fr; }
+    .figura { max-width: 280px; justify-self: start; }
+    .tira { grid-template-columns: 1fr 1fr; }
+    .tira .vineta:first-child { grid-column: 1 / -1; }
     .menu { display: none; }
     .barra .accion { margin-left: auto; }
     .franja-int { grid-template-columns: 1fr 1fr; }
@@ -391,8 +409,83 @@
       </p>
       <div class="acciones">
         <a class="accion" href="#contacto">Solicitar cotización</a>
-        <a class="accion hueca" href="#empresa">Ver ficha de la empresa</a>
+        <a class="accion hueca" href="#empresa">Ver la ficha</a>
       </div>
+    </div>
+
+    <!-- Figura de portada. Es un retrato entintado vectorial: sostiene la
+         composición y no depende de ningún archivo externo. Cuando exista la
+         ilustración definitiva del cartel, se reemplaza este bloque por una
+         <img> en AVIF/WebP con el mismo alto y el mismo anclaje al pie. -->
+    <div class="figura">
+      <svg viewBox="0 0 340 470" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="Retrato del protagonista: traje, lentes oscuros y una copa con una placa electrónica encendida">
+        <defs>
+          <clipPath id="fg-cabeza"><path d="M104,152 C102,94 126,60 168,60 C210,60 234,94 232,152 L232,186 C232,232 204,258 168,258 C132,258 104,232 104,186 Z"/></clipPath>
+          <radialGradient id="fg-brasa"><stop offset="0" stop-color="#46D28C" stop-opacity=".9"/><stop offset="1" stop-color="#46D28C" stop-opacity="0"/></radialGradient>
+          <pattern id="fg-trama" width="7" height="7" patternUnits="userSpaceOnUse">
+            <circle cx="1.6" cy="1.6" r="1.3" fill="#EFE4CE" opacity=".18"/>
+          </pattern>
+        </defs>
+
+        <circle cx="278" cy="286" r="118" fill="url(#fg-brasa)" opacity=".5"/>
+
+        <!-- torso y hombros -->
+        <path d="M26,470 L52,362 C74,330 116,308 146,300 L168,344 L190,300 C222,308 262,330 284,362 L310,470 Z" fill="#14110E"/>
+        <path d="M26,470 L52,362 C74,330 116,308 146,300 L168,344 L190,300 C222,308 262,330 284,362 L310,470 Z" fill="url(#fg-trama)"/>
+        <path d="M146,300 L168,344 L132,470 L90,470 Z" fill="#0B0908"/>
+        <path d="M190,300 L168,344 L204,470 L246,470 Z" fill="#0B0908"/>
+        <path d="M146,300 L168,344 L190,300 L180,296 L168,316 L156,296 Z" fill="#EFE4CE"/>
+        <path d="M160,340 L176,340 L184,428 L168,448 L152,428 Z" fill="#D97A2B"/>
+        <path d="M160,340 L176,340 L174,354 L162,354 Z" fill="#B04430"/>
+        <!-- luz de contorno en el hombro izquierdo -->
+        <path d="M52,362 C74,330 116,308 146,300" fill="none" stroke="#EFE4CE" stroke-width="3.4" stroke-linecap="round" opacity=".55"/>
+
+        <!-- cuello -->
+        <path d="M146,238 L190,238 L190,298 L168,316 L146,298 Z" fill="#14110E"/>
+        <path d="M146,238 L190,238 L190,258 C176,268 160,268 146,258 Z" fill="#06110D"/>
+
+        <!-- cabeza -->
+        <path d="M104,152 C102,94 126,60 168,60 C210,60 234,94 232,152 L232,186 C232,232 204,258 168,258 C132,258 104,232 104,186 Z" fill="#14110E"/>
+        <g clip-path="url(#fg-cabeza)">
+          <rect x="94" y="44" width="148" height="66" fill="#06110D"/>
+          <path d="M94,196 L242,196 L242,268 L94,268 Z" fill="#0B0908"/>
+          <path d="M150,196 L186,196 L182,214 L154,214 Z" fill="#14110E"/>
+        </g>
+        <ellipse cx="236" cy="172" rx="9" ry="17" fill="#0B0908"/>
+        <ellipse cx="100" cy="172" rx="9" ry="17" fill="#0B0908"/>
+        <path d="M104,150 C102,94 126,60 168,60" fill="none" stroke="#EFE4CE" stroke-width="4.2" stroke-linecap="round" opacity=".85"/>
+        <path d="M106,190 C110,226 134,252 164,256" fill="none" stroke="#D97A2B" stroke-width="3.6" stroke-linecap="round" opacity=".85"/>
+
+        <!-- lentes -->
+        <rect x="108" y="150" width="54" height="31" rx="7" fill="#06110D" stroke="#EFE4CE" stroke-width="3.2"/>
+        <rect x="174" y="150" width="54" height="31" rx="7" fill="#06110D" stroke="#EFE4CE" stroke-width="3.2"/>
+        <path d="M162,160 L174,160" stroke="#EFE4CE" stroke-width="3.2"/>
+        <path d="M114,175 L132,154" stroke="#EFE4CE" stroke-width="3" opacity=".5"/>
+        <path d="M180,175 L198,154" stroke="#EFE4CE" stroke-width="3" opacity=".5"/>
+
+        <!-- antebrazo que levanta la copa: sube desde el borde inferior, delante del torso -->
+        <path d="M242,470 L258,330 C262,310 292,306 302,326 L314,470 Z" fill="#1C1815"/>
+        <path d="M242,470 L258,330 C262,310 292,306 302,326 L314,470 Z" fill="url(#fg-trama)"/>
+        <path d="M258,330 C262,310 292,306 302,326" fill="none" stroke="#EFE4CE" stroke-width="3" opacity=".5"/>
+        <path d="M242,470 L258,330" fill="none" stroke="#EFE4CE" stroke-width="2.6" opacity=".28"/>
+        <path d="M256,344 C268,334 294,332 304,344" fill="none" stroke="#EFE4CE" stroke-width="3.6" opacity=".8"/>
+
+        <!-- copa: el centro luminoso del cartel -->
+        <path d="M232,168 L318,168 C318,220 302,248 279,254 C256,248 232,220 232,168 Z" fill="#06110D" opacity=".55"/>
+        <path d="M234,196 L316,196 C312,228 300,246 279,252 C258,246 240,228 234,196 Z" fill="#46D28C" opacity=".92"/>
+        <rect x="258" y="204" width="42" height="26" rx="3" fill="#14110E"/>
+        <path d="M264,204v-6M274,204v-6M284,204v-6M294,204v-6M264,230v6M274,230v6M284,230v6M294,230v6" stroke="#14110E" stroke-width="2.6"/>
+        <rect x="268" y="212" width="22" height="10" rx="1.5" fill="#46D28C"/>
+        <path d="M232,168 L318,168 C318,220 302,248 279,254 C256,248 232,220 232,168 Z" fill="none" stroke="#EFE4CE" stroke-width="3.4" stroke-linejoin="round"/>
+        <path d="M279,254 L279,300" stroke="#EFE4CE" stroke-width="3.4"/>
+
+        <!-- mano que sujeta el tallo -->
+        <path d="M252,286 C258,272 276,266 290,272 C302,277 304,292 296,302 C286,314 262,312 254,302 Z" fill="#14110E"/>
+        <path d="M256,282 C268,276 284,276 294,282" fill="none" stroke="#EFE4CE" stroke-width="2.4" opacity=".5"/>
+        <path d="M256,292 C268,286 286,286 296,292" fill="none" stroke="#EFE4CE" stroke-width="2.4" opacity=".4"/>
+        <path d="M258,302 C270,297 284,297 294,301" fill="none" stroke="#EFE4CE" stroke-width="2.4" opacity=".3"/>
+      </svg>
     </div>
 
     <div class="tira">
