@@ -18,437 +18,414 @@
 <meta name="color-scheme" content="dark">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23080A09'/><path d='M14 34l7 7 13-15M30 34l7 7 13-15' fill='none' stroke='%234CC48B' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 <style>
-  *, *::before, *::after { box-sizing: border-box; }
-
-  :root {
-    --fondo: #080A09;
-    --superficie: #0D100E;
-    --superficie-alta: #121714;
-    --crema: #F5F0E4;
-    --cobre: #C87941;
-    --verde: #4CC48B;
-    --texto2: #A6AFA8;
-    --tenue: #8A938D;
-    --borde: #1E2320;
-    --borde-vivo: #2A312C;
-    /* Retícula técnica: paso menor 34 px, paso mayor 170 px (5×). */
-    --paso: 34px;
-    --paso-mayor: 170px;
-    --canal: 52px;        /* aire entre columna de rótulos y cuerpo */
-    --col-rotulo: 200px;
-  }
-
-  html {
-    background: var(--fondo);
-    -webkit-text-size-adjust: 100%;
-    scrollbar-color: var(--borde-vivo) var(--fondo);
-    scrollbar-width: thin;
-  }
-
-  body {
-    margin: 0;
-    background: transparent;
-    color: var(--crema);
-    position: relative;
-    isolation: isolate;
-    overflow-x: hidden;
-    /* Pila del sistema: la página no descarga ni una fuente. Abre igual de
-       rápido en la red de un municipio que en fibra. */
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-                 Helvetica, Arial, sans-serif;
-    font-size: 17px;
-    line-height: 1.66;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-  }
-
-  /* ── Sustrato: retícula de plano + una sola fuente de luz ───────────────
-     La retícula da textura sin ruido y cuesta cero bytes de red. El halo es
-     la brasa del logotipo escalada a la página: la luz entra por arriba a la
-     izquierda, que es donde está el logotipo, y todos los reflejos internos
-     de las tarjetas apuntan en esa misma dirección. */
-  body::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -2;
-    pointer-events: none;
-    background-image:
-      repeating-linear-gradient(90deg, rgba(245,240,228,.085) 0 1px, transparent 1px var(--paso-mayor)),
-      repeating-linear-gradient(180deg, rgba(245,240,228,.085) 0 1px, transparent 1px var(--paso-mayor)),
-      repeating-linear-gradient(90deg, rgba(245,240,228,.042) 0 1px, transparent 1px var(--paso)),
-      repeating-linear-gradient(180deg, rgba(245,240,228,.042) 0 1px, transparent 1px var(--paso));
-    -webkit-mask-image: linear-gradient(180deg, #000 0, rgba(0,0,0,.55) 620px, rgba(0,0,0,.28) 1400px, rgba(0,0,0,.28) 100%);
-    mask-image: linear-gradient(180deg, #000 0, rgba(0,0,0,.55) 620px, rgba(0,0,0,.28) 1400px, rgba(0,0,0,.28) 100%);
-  }
-
-  body::after {
-    content: "";
-    position: absolute;
-    /* Ancho atado al del body: una capa decorativa nunca puede generar
-       barra horizontal en un teléfono. */
-    top: -300px; left: 0; right: 0;
-    height: 1200px;
-    z-index: -1;
-    pointer-events: none;
-    /* Solo luz ambiente, neutra y centrada: el único foco de color es la
-       brasa del logotipo, que sí queda en registro a cualquier ancho. Un
-       resplandor ámbar suelto se despega del lockup en pantallas anchas. */
-    background:
-      radial-gradient(64% 44% at 50% 30%, rgba(206,214,208,.05), rgba(206,214,208,0) 74%);
-  }
-
-  /* Cinta superior: el filo de color que separa "página publicada" de
-     "documento suelto". 2 px, se apaga hacia la derecha, no parpadea. */
-  .cinta {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    z-index: 10;
-    background: linear-gradient(90deg,
-      var(--cobre) 0%, var(--verde) 38%, rgba(76,196,139,.28) 68%, rgba(76,196,139,0) 96%);
-  }
-
-  .marco { width: min(100% - 44px, 1040px); margin-inline: auto; }
-
-  a { color: var(--verde); text-underline-offset: 3px; text-decoration-thickness: 1px; }
-  a:hover { color: var(--crema); }
-  :focus-visible { outline: 2px solid var(--cobre); outline-offset: 3px; border-radius: 2px; }
-  ::selection { background: var(--cobre); color: var(--fondo); }
-
-  .mono {
-    font-family: 'Courier New', Courier, monospace;
-    font-variant-numeric: tabular-nums;
-  }
-
-  /* ── Encabezado ─────────────────────────────────────────────────────────
-     No es el logotipo suelto: es una barra con el dato que este comprador
-     viene a buscar (habilidad en el Registro) resuelto en el primer segundo. */
-  .encabezado {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 24px; flex-wrap: wrap;
-    padding: 30px 0 24px;
-    border-bottom: 1px solid var(--borde);
-  }
-  /* El logotipo trae el filtro `brasa` en el SVG. Aquí se le extiende ese
-     mismo gesto a la página: una brasa mayor, en registro exacto detrás del
-     lockup, que es la única fuente de luz de todo el documento. */
-  .marca { position: relative; line-height: 0; }
-  .marca::before {
-    content: "";
-    position: absolute; z-index: -1; pointer-events: none;
-    left: 4%; top: 6%; width: 96%; height: 88%;
-    background:
-      radial-gradient(closest-side, rgba(224,149,79,.30), rgba(224,149,79,0) 100%),
-      radial-gradient(closest-side at 76% 50%, rgba(76,196,139,.20), rgba(76,196,139,0) 100%);
-    filter: blur(26px);
-    transform: scale(1.9);
-  }
-  .logo { width: 212px; height: auto; display: block; overflow: visible; }
-  .logo-dia { display: none; }
-
-  .sello {
-    display: flex; align-items: center; gap: 13px;
-    padding: 9px 15px 9px 13px;
-    border: 1px solid var(--borde-vivo);
-    border-radius: 999px;
-    background: rgba(76,196,139,.05);
-  }
-  .sello .ticks { color: var(--verde); height: auto; flex: none; display: block; }
-  .sello-txt {
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 11px; line-height: 1.45; letter-spacing: .1em;
-    text-transform: uppercase; color: var(--tenue); margin: 0;
-  }
-  .sello-txt b { display: block; color: var(--verde); font-weight: 700; letter-spacing: .06em; }
-
-  /* ── Portada: cabecera y hero comparten la primera pantalla ────────────
-     El hero se centra con margin-block, no con flex (ver docstring). */
-  .portada { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; }
-  .hero { margin-block: auto; padding: 56px 0; }
-  .kicker {
-    display: inline-flex; align-items: center; gap: 12px;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 12px; letter-spacing: .17em; text-transform: uppercase;
-    color: var(--verde); margin: 0 0 26px;
-  }
-  .kicker::before {
-    content: ""; width: 28px; height: 1px; background: var(--verde); opacity: .8;
-  }
-  h1 {
-    font-size: clamp(31px, 5.6vw, 54px);
-    line-height: 1.06; margin: 0; max-width: 21ch;
-    letter-spacing: -.026em; font-weight: 700;
-  }
-  .bajada {
-    margin: 26px 0 0; max-width: 60ch; color: var(--texto2);
-    font-size: clamp(17px, 2vw, 19.5px);
-  }
-  .bajada strong { color: var(--crema); font-weight: 600; }
-
-  .pildora {
-    display: inline-flex; align-items: center; gap: 11px;
-    margin-top: 38px; padding: 13px 22px;
-    border: 1px solid var(--borde-vivo); border-radius: 999px;
-    font-family: 'Courier New', Courier, monospace; font-size: 15.5px;
-    color: var(--verde); text-decoration: none;
-    background: var(--superficie);
-    transition: border-color .16s ease, background-color .16s ease, color .16s ease;
-  }
-  .pildora .ticks { height: auto; flex: none; display: block; }
-  .pildora:hover { border-color: var(--verde); background: var(--superficie-alta); color: var(--crema); }
-
-  /* No dice "sigue bajando": dice qué hay abajo y salta a la ficha. */
-  .baja {
-    display: block; width: fit-content; margin-top: 42px; color: var(--tenue);
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 11.5px; letter-spacing: .2em; text-transform: uppercase;
-    text-decoration: none;
-  }
-  .baja:hover { color: var(--crema); }
-
-  /* ── Secciones: rótulo a la izquierda, cuerpo a la derecha ──────────────
-     La regla vertical continua entre ambas columnas es lo que convierte una
-     lista de bloques en un documento con estructura. */
-  .seccion {
-    position: relative;
-    display: grid;
-    grid-template-columns: var(--col-rotulo) minmax(0, 1fr);
-    gap: 0 var(--canal);
-    padding: 86px 0;
-    scroll-margin-top: 20px;
-    border-top: 1px solid var(--borde);
-  }
-  .rotulo { padding-top: 2px; }
-  .indice {
-    margin: 0; font-family: 'Courier New', Courier, monospace;
-    font-size: 12px; font-weight: 700; letter-spacing: .16em; color: var(--cobre);
-  }
-  h2 {
-    margin: 8px 0 0; font-family: 'Courier New', Courier, monospace;
-    font-size: 13px; font-weight: 700; letter-spacing: .35em;
-    text-transform: uppercase; color: var(--crema);
-  }
-  /* La espina: en vez de un borde por bloque, una línea que no se interrumpe
-     entre secciones. Es lo que convierte cuatro bloques en un documento. */
-  .seccion::before {
-    content: "";
-    position: absolute; top: 0; bottom: 0;
-    left: calc(var(--col-rotulo) + var(--canal));
-    width: 1px; background: var(--borde);
-  }
-  /* Marca de cota: une el rótulo con la espina, como una acotación de plano. */
-  .rotulo::after {
-    content: "";
-    display: block; height: 1px; margin-top: 14px;
-    background: linear-gradient(90deg, var(--borde-vivo), var(--borde));
-    width: calc(100% + var(--canal));
-  }
-  .cuerpo { padding-left: var(--canal); }
-
-  /* ── Tarjetas: un solo instrumento de cuatro cuerpos, no cuatro fichas ──
-     El gap de 1 px sobre fondo de borde las une en una sola pieza; el
-     reflejo superior interno viene del mismo lado que el halo de la portada.
-     Con cuatro van en 2×2: una sola fila dejaría columnas de 190 px y títulos
-     partidos en tres líneas. La espina vertical no se entera — vive en
-     .seccion::before, absoluta de arriba abajo, y no cuenta tarjetas. */
-  .grilla {
-    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1px; background: var(--borde);
-    border: 1px solid var(--borde); border-radius: 14px; overflow: hidden;
-  }
-  .tarjeta {
-    background:
-      linear-gradient(180deg, rgba(245,240,228,.038), rgba(245,240,228,0) 110px),
-      var(--superficie);
-    padding: 30px 24px 30px;
-    transition: background-color .16s ease;
-  }
-  .tarjeta:hover { background-color: var(--superficie-alta); }
-  .tarjeta h3 { font-size: 18.5px; margin: 0 0 9px; letter-spacing: -.012em; font-weight: 600; }
-  .tarjeta p { margin: 0; color: var(--texto2); font-size: 15.5px; line-height: 1.6; }
-
-  /* ── Texto corrido ─────────────────────────────────────────────────────*/
-  .parrafos p { max-width: 62ch; margin: 0 0 18px; color: var(--texto2); font-size: 17.5px; }
-  /* El argumento de la factura chilena: no se puede subir de sitio (ver
-     docstring), así que pesa desde donde está. */
-  .parrafos p:last-child {
-    margin: 26px 0 0; padding: 14px 20px 14px 22px;
-    border-left: 2px solid var(--cobre);
-    background: rgba(200,121,65,.05);
-  }
-  .parrafos strong { color: var(--crema); font-weight: 600; }
-
-  /* ── Ficha de empresa: se lee como un extracto de registro ─────────────*/
-  .ficha {
-    margin: 0; border: 1px solid var(--borde); border-radius: 14px;
-    overflow: hidden; background: var(--superficie);
-  }
-  .fila {
-    display: grid; grid-template-columns: 232px minmax(0, 1fr);
-    gap: 6px 22px; align-items: baseline;
-    padding: 16px 22px; border-top: 1px solid var(--borde);
-  }
-  .fila:first-child { border-top: 0; }
-  dt {
-    font-family: 'Courier New', Courier, monospace; font-size: 11.5px;
-    letter-spacing: .11em; text-transform: uppercase; color: var(--tenue);
-  }
-  dd { margin: 0; font-size: 17px; color: var(--crema); }
-  .habil { display: inline-flex; align-items: center; gap: 10px; color: var(--verde); font-weight: 600; }
-  .habil .ticks { height: auto; flex: none; }
-
-  /* La única pieza con énfasis tipográfico real de la página: es la frase
-     que sostiene la credibilidad de una empresa sin historial. */
-  .declaracion {
-    margin: 26px 0 0; padding: 4px 0 4px 22px;
-    border-left: 2px solid var(--cobre);
-    max-width: 62ch; color: var(--texto2); font-size: 17.5px;
-  }
-  .declaracion strong { color: var(--crema); font-weight: 600; }
-
-  /* ── Contacto y pie ────────────────────────────────────────────────────*/
-  .correo-grande {
-    display: inline-block; margin: 0;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: clamp(19px, 3.2vw, 26px); letter-spacing: -.01em;
-    color: var(--verde); text-decoration: none;
-    border-bottom: 1px solid rgba(76,196,139,.4); padding-bottom: 3px;
-    transition: color .16s ease, border-color .16s ease;
-  }
-  .correo-grande:hover { color: var(--crema); border-color: var(--crema); }
-  .contacto-nota { margin: 16px 0 0; color: var(--tenue); font-size: 15px; max-width: 52ch; }
-
-  /* El único botón sólido de la página y lo último que se lee. Crema, no
-     #FFFFFF. La flecha va en ::after para no gastar un nodo. */
-  .boton {
-    display: flex; align-items: center; justify-content: space-between; gap: 20px;
-    width: 100%; max-width: 520px; margin: 24px 0 0; padding: 19px 24px;
-    background: var(--crema); color: var(--fondo); border-radius: 3px;
-    font-family: 'Courier New', Courier, monospace; font-weight: 700;
-    font-size: clamp(16px, 2.7vw, 20px); text-decoration: none;
-    transition: background-color .16s ease;
-  }
-  .boton::after { content: "92"; font-size: 1.25em; line-height: 1; }
-  .boton:hover { background: #fff; color: var(--fondo); }
-  .contacto-persona { margin: 0 0 14px; line-height: 1.45; }
-  .contacto-persona strong { display: block; color: var(--crema); font-size: 18.5px; font-weight: 600; }
-  .contacto-persona span {
-    display: block; margin-top: 2px; color: var(--texto2); font-size: 15px;
-  }
-
-  /* Giros: lista de datos duros dentro de la ficha, no prosa. */
-  .giros { margin: 0; padding: 0; list-style: none; }
-  .giros li {
-    display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 12px;
-    align-items: baseline; padding: 3px 0; font-size: 15.5px; color: var(--texto2);
-  }
-  .giros li + li { border-top: 1px solid var(--borde); margin-top: 3px; padding-top: 6px; }
-  .giros .mono { color: var(--crema); }
-  /* Tiene que leerse como algo que se aprieta, no como el pie de la fila. */
-  a.verificar {
-    display: block; width: fit-content; margin-top: 11px;
-    font-size: 15.5px; font-weight: 600;
-    text-decoration: underline; text-underline-offset: 4px;
-  }
-  a.verificar::after { content: " 97"; }
-  .verificado-el {
-    display: block; margin-top: 7px;
-    font-family: 'Courier New', Courier, monospace; font-size: 12px;
-    letter-spacing: .06em; color: var(--tenue);
-  }
-  @media print { .verificado-el { color: #46504A; } }
-
-  footer {
-    border-top: 1px solid var(--borde);
-    padding: 30px 0 70px;
-    display: flex; align-items: center; gap: 14px 20px; flex-wrap: wrap;
-    color: var(--tenue); font-size: 13px;
-  }
-  footer .ticks { color: var(--borde-vivo); height: auto; flex: none; }
-  footer p { margin: 0; }
-  .pie-contacto { margin-left: auto; }
-  footer .legal {
-    font-family: 'Courier New', Courier, monospace; font-size: 12.5px;
-    letter-spacing: .04em;
-  }
-
-  /* ── Móvil ─────────────────────────────────────────────────────────────*/
-  @media (max-width: 880px) {
-    body { font-size: 16.5px; }
-    .marco { width: min(100% - 32px, 1040px); }
-    .encabezado { padding: 22px 0 18px; gap: 16px; }
-    .logo { width: 156px; }
-    .sello { padding: 8px 13px 8px 11px; }
-    .hero { padding: 36px 0; }
-    h1 { max-width: none; }
-    .seccion { grid-template-columns: 1fr; padding: 44px 0; }
-    .rotulo {
-      display: flex; align-items: baseline; gap: 12px; margin-bottom: 22px;
-      padding-bottom: 12px; border-bottom: 1px solid var(--borde);
-    }
-    h2 { margin: 0; }
-    .seccion::before { display: none; }
-    .rotulo::after { display: none; }
-    .cuerpo { padding-left: 0; }
-    .tarjeta { padding: 22px 20px 24px; }
-    .fila { grid-template-columns: 1fr; padding: 14px 18px; }
-    .parrafos p, .declaracion { font-size: 16.5px; }
-    footer { padding: 24px 0 54px; }
-  }
-
-  @media (max-width: 620px) {
-    .grilla { grid-template-columns: 1fr; }
-    footer p:last-child { margin-left: 0; }
-  }
-
-  /* Nada se mueve solo en esta página; solo hay transiciones de estado.
-     Aun así, se respetan las preferencias del sistema. */
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      transition-duration: .01ms !important;
-      animation-duration: .01ms !important;
-      animation-iteration-count: 1 !important;
-      scroll-behavior: auto !important;
-    }
-  }
-
-  /* ── Impresión ─────────────────────────────────────────────────────────
-     El comprador público imprime, y a menudo en blanco y negro. La página se
-     da vuelta a la paleta diurna del manual de marca y cambia el logotipo
-     nocturno por el de tinta plana: sale una ficha, no una captura oscura. */
-  @media print {
-    html, body { background: #fff; color: #1A1D1B; font-size: 11.5pt; }
-    body::before, body::after, .cinta, .marca::before { display: none !important; }
-    .seccion::before { background: #CFCABC; }
-    .logo-noche { display: none; }
-    .logo-dia { display: block; width: 52mm; }
-    a { color: #1F7A52; }
-    .kicker, .habil, .sello-txt b, .correo-grande { color: #1F7A52 !important; }
-    .indice, .declaracion { color: #95521F; }
-    .portada { min-height: 0; }
-    .baja { display: none; }
-    .boton { background: #fff !important; color: #1F7A52 !important;
-              border: 1px solid #CFCABC; }
-    .declaracion, .parrafos p:last-child { border-left-color: #95521F; }
-    .parrafos p:last-child { background: none; }
-    h1, h2, h3, dd, strong { color: #1A1D1B !important; }
-    .bajada, .parrafos p, .tarjeta p, .declaracion, .contacto-nota,
-    dt, footer, .sello-txt { color: #46504A !important; }
-    .encabezado, .seccion, .ficha, .fila, .cuerpo, footer,
-    .grilla, .sello, .pildora { border-color: #CFCABC !important; }
-    .tarjeta, .ficha, .sello, .pildora { background: #fff !important; }
-    .seccion, .tarjeta, .ficha { break-inside: avoid; }
-    .correo-grande { border-bottom-color: #1F7A52; }
-    /* En papel la flecha no sirve: hay que poder teclear la URL. */
-    a[href^="http"]::after {
-      content: " (" attr(href) ")"; font-weight: 400; font-size: .84em;
-      font-family: 'Courier New', Courier, monospace; word-break: break-all;
-    }
-    footer .ticks { color: #CFCABC; }
-    .sello .ticks, .habil .ticks { color: #1F7A52; }
-    @page { margin: 14mm; }
-  }
+*, *::before, *::after { box-sizing: border-box; }
+:root {
+--fondo: #080A09;
+--superficie: #0D100E;
+--superficie-alta: #121714;
+--crema: #F5F0E4;
+--cobre: #C87941;
+--verde: #4CC48B;
+--texto2: #A6AFA8;
+--tenue: #8A938D;
+--borde: #1E2320;
+--borde-vivo: #2A312C;
+--paso: 34px;
+--paso-mayor: 170px;
+--canal: 52px;
+--col-rotulo: 200px;
+}
+html {
+background: var(--fondo);
+-webkit-text-size-adjust: 100%;
+scrollbar-color: var(--borde-vivo) var(--fondo);
+scrollbar-width: thin;
+}
+body {
+margin: 0;
+background: transparent;
+color: var(--crema);
+position: relative;
+isolation: isolate;
+overflow-x: hidden;
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+Helvetica, Arial, sans-serif;
+font-size: 17px;
+line-height: 1.66;
+-webkit-font-smoothing: antialiased;
+text-rendering: optimizeLegibility;
+}
+body::before {
+content: "";
+position: absolute;
+inset: 0;
+z-index: -2;
+pointer-events: none;
+background-image:
+repeating-linear-gradient(90deg, rgba(245,240,228,.085) 0 1px, transparent 1px var(--paso-mayor)),
+repeating-linear-gradient(180deg, rgba(245,240,228,.085) 0 1px, transparent 1px var(--paso-mayor)),
+repeating-linear-gradient(90deg, rgba(245,240,228,.042) 0 1px, transparent 1px var(--paso)),
+repeating-linear-gradient(180deg, rgba(245,240,228,.042) 0 1px, transparent 1px var(--paso));
+-webkit-mask-image: linear-gradient(180deg, #000 0, rgba(0,0,0,.55) 620px, rgba(0,0,0,.28) 1400px, rgba(0,0,0,.28) 100%);
+mask-image: linear-gradient(180deg, #000 0, rgba(0,0,0,.55) 620px, rgba(0,0,0,.28) 1400px, rgba(0,0,0,.28) 100%);
+}
+body::after {
+content: "";
+position: absolute;
+top: -300px; left: 0; right: 0;
+height: 1200px;
+z-index: -1;
+pointer-events: none;
+background:
+radial-gradient(64% 44% at 50% 30%, rgba(206,214,208,.05), rgba(206,214,208,0) 74%);
+}
+.cinta {
+position: fixed;
+top: 0; left: 0; right: 0;
+height: 2px;
+z-index: 10;
+background: linear-gradient(90deg,
+var(--cobre) 0%, var(--verde) 38%, rgba(76,196,139,.28) 68%, rgba(76,196,139,0) 96%);
+}
+.marco { width: min(100% - 44px, 1040px); margin-inline: auto; }
+a { color: var(--verde); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { color: var(--crema); }
+:focus-visible { outline: 2px solid var(--cobre); outline-offset: 3px; border-radius: 2px; }
+::selection { background: var(--cobre); color: var(--fondo); }
+.mono {
+font-family: 'Courier New', Courier, monospace;
+font-variant-numeric: tabular-nums;
+}
+.encabezado {
+display: flex; align-items: center; justify-content: space-between;
+gap: 24px; flex-wrap: wrap;
+padding: 30px 0 24px;
+border-bottom: 1px solid var(--borde);
+}
+.marca { position: relative; line-height: 0; }
+.marca::before {
+content: "";
+position: absolute; z-index: -1; pointer-events: none;
+left: 4%; top: 6%; width: 96%; height: 88%;
+background:
+radial-gradient(closest-side, rgba(224,149,79,.30), rgba(224,149,79,0) 100%),
+radial-gradient(closest-side at 76% 50%, rgba(76,196,139,.20), rgba(76,196,139,0) 100%);
+filter: blur(26px);
+transform: scale(1.9);
+}
+.logo { width: 212px; height: auto; display: block; overflow: visible; }
+.logo-dia { display: none; }
+.sello {
+display: flex; align-items: center; gap: 13px;
+padding: 9px 15px 9px 13px;
+border: 1px solid var(--borde-vivo);
+border-radius: 999px;
+background: rgba(76,196,139,.05);
+}
+.sello .ticks { color: var(--verde); height: auto; flex: none; display: block; }
+.sello-txt {
+font-family: 'Courier New', Courier, monospace;
+font-size: 11px; line-height: 1.45; letter-spacing: .1em;
+text-transform: uppercase; color: var(--tenue); margin: 0;
+}
+.sello-txt b { display: block; color: var(--verde); font-weight: 700; letter-spacing: .06em; }
+.portada { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; }
+.hero { margin-block: auto; padding: 56px 0; }
+.kicker {
+display: inline-flex; align-items: center; gap: 12px;
+font-family: 'Courier New', Courier, monospace;
+font-size: 12px; letter-spacing: .17em; text-transform: uppercase;
+color: var(--verde); margin: 0 0 26px;
+}
+.kicker::before {
+content: ""; width: 28px; height: 1px; background: var(--verde); opacity: .8;
+}
+h1 {
+font-size: clamp(31px, 5.6vw, 54px);
+line-height: 1.06; margin: 0; max-width: 21ch;
+letter-spacing: -.026em; font-weight: 700;
+}
+.bajada {
+margin: 26px 0 0; max-width: 60ch; color: var(--texto2);
+font-size: clamp(17px, 2vw, 19.5px);
+}
+.bajada strong { color: var(--crema); font-weight: 600; }
+.pildora {
+display: inline-flex; align-items: center; gap: 11px;
+margin-top: 38px; padding: 13px 22px;
+border: 1px solid var(--borde-vivo); border-radius: 999px;
+font-family: 'Courier New', Courier, monospace; font-size: 15.5px;
+color: var(--verde); text-decoration: none;
+background: var(--superficie);
+transition: border-color .16s ease, background-color .16s ease, color .16s ease;
+}
+.pildora .ticks { height: auto; flex: none; display: block; }
+.pildora:hover { border-color: var(--verde); background: var(--superficie-alta); color: var(--crema); }
+.baja {
+display: block; width: fit-content; margin-top: 42px; color: var(--tenue);
+font-family: 'Courier New', Courier, monospace;
+font-size: 11.5px; letter-spacing: .2em; text-transform: uppercase;
+text-decoration: none;
+}
+.baja:hover { color: var(--crema); }
+.credencial {
+margin-top: 38px; padding-left: 16px; max-width: 62ch;
+border-left: 2px solid var(--borde-vivo);
+}
+.credencial p { margin: 0; }
+.cred-id { font-size: 15px; color: var(--tenue); }
+.cred-id span { font-size: 11.5px; letter-spacing: .2em; text-transform: uppercase; }
+.cred-id b { color: var(--crema); font-size: 17px; letter-spacing: .04em; }
+.cred-ok { margin-top: 8px; color: var(--verde); font-weight: 600; font-size: 15.5px; }
+.cred-ok span {
+display: block; margin-top: 5px; color: var(--tenue); font-weight: 400;
+font-family: 'Courier New', Courier, monospace;
+font-size: 12.5px; letter-spacing: .04em; text-transform: none;
+}
+.credencial .baja { margin-top: 15px; }
+.fijo {
+position: fixed; right: 16px; bottom: 16px; z-index: 5;
+padding: 11px 17px; border-radius: 999px;
+border: 1px solid var(--borde-vivo); background: var(--superficie-alta);
+color: var(--crema); font-size: 14px; font-weight: 600;
+text-decoration: none; box-shadow: 0 8px 26px rgba(0,0,0,.55);
+}
+.fijo:hover { border-color: var(--verde); }
+.titular {
+margin: 0 0 16px; max-width: 24ch; font-size: 27px; line-height: 1.22;
+letter-spacing: -.02em; font-weight: 600; color: var(--crema);
+}
+.relato {
+margin: 0 0 24px; max-width: 62ch; color: var(--texto2);
+font-size: 17.5px; line-height: 1.62;
+}
+.oficio { margin: 0; padding: 0; list-style: none; max-width: 62ch; }
+.oficio li {
+position: relative; padding-left: 21px; margin-bottom: 13px;
+color: var(--texto2); font-size: 16px; line-height: 1.58;
+}
+.oficio li::before {
+content: ""; position: absolute; left: 0; top: .62em;
+width: 8px; height: 1px; background: var(--borde-vivo);
+}
+.oficio strong { color: var(--crema); font-weight: 600; }
+.tarjeta .junto {
+margin: 15px 0 0; padding-top: 13px; border-top: 1px solid var(--borde);
+font-size: 13.5px; line-height: 1.55; color: var(--tenue);
+}
+a.cotiza {
+display: block; width: fit-content; margin-top: 9px;
+font-size: 14px; font-weight: 600;
+text-decoration: underline; text-underline-offset: 4px;
+}
+.seccion {
+position: relative;
+display: grid;
+grid-template-columns: var(--col-rotulo) minmax(0, 1fr);
+gap: 0 var(--canal);
+padding: 86px 0;
+scroll-margin-top: 20px;
+border-top: 1px solid var(--borde);
+}
+.rotulo { padding-top: 2px; }
+.indice {
+margin: 0; font-family: 'Courier New', Courier, monospace;
+font-size: 12px; font-weight: 700; letter-spacing: .16em; color: var(--cobre);
+}
+h2 {
+margin: 8px 0 0; font-family: 'Courier New', Courier, monospace;
+font-size: 13px; font-weight: 700; letter-spacing: .35em;
+text-transform: uppercase; color: var(--crema);
+}
+.seccion::before {
+content: "";
+position: absolute; top: 0; bottom: 0;
+left: calc(var(--col-rotulo) + var(--canal));
+width: 1px; background: var(--borde);
+}
+.rotulo::after {
+content: "";
+display: block; height: 1px; margin-top: 14px;
+background: linear-gradient(90deg, var(--borde-vivo), var(--borde));
+width: calc(100% + var(--canal));
+}
+.cuerpo { padding-left: var(--canal); }
+.grilla {
+display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: 1px; background: var(--borde);
+border: 1px solid var(--borde); border-radius: 14px; overflow: hidden;
+}
+.tarjeta {
+background:
+linear-gradient(180deg, rgba(245,240,228,.038), rgba(245,240,228,0) 110px),
+var(--superficie);
+padding: 30px 24px 30px;
+transition: background-color .16s ease;
+}
+.tarjeta:hover { background-color: var(--superficie-alta); }
+.tarjeta h3 { font-size: 18.5px; margin: 0 0 9px; letter-spacing: -.012em; font-weight: 600; }
+.tarjeta p { margin: 0; color: var(--texto2); font-size: 15.5px; line-height: 1.6; }
+.parrafos p { max-width: 62ch; margin: 0 0 18px; color: var(--texto2); font-size: 17.5px; }
+.parrafos p:last-child {
+margin: 26px 0 0; padding: 14px 20px 14px 22px;
+border-left: 2px solid var(--cobre);
+background: rgba(200,121,65,.05);
+}
+.parrafos strong { color: var(--crema); font-weight: 600; }
+.ficha {
+margin: 0; border: 1px solid var(--borde); border-radius: 14px;
+overflow: hidden; background: var(--superficie);
+}
+.fila {
+display: grid; grid-template-columns: 232px minmax(0, 1fr);
+gap: 6px 22px; align-items: baseline;
+padding: 16px 22px; border-top: 1px solid var(--borde);
+}
+.fila:first-child { border-top: 0; }
+dt {
+font-family: 'Courier New', Courier, monospace; font-size: 11.5px;
+letter-spacing: .11em; text-transform: uppercase; color: var(--tenue);
+}
+dd { margin: 0; font-size: 17px; color: var(--crema); }
+.habil { display: inline-flex; align-items: center; gap: 10px; color: var(--verde); font-weight: 600; }
+.habil .ticks { height: auto; flex: none; }
+.declaracion {
+margin: 26px 0 0; padding: 4px 0 4px 22px;
+border-left: 2px solid var(--cobre);
+max-width: 62ch; color: var(--texto2); font-size: 17.5px;
+}
+.declaracion strong { color: var(--crema); font-weight: 600; }
+.correo-grande {
+display: inline-block; margin: 0;
+font-family: 'Courier New', Courier, monospace;
+font-size: clamp(19px, 3.2vw, 26px); letter-spacing: -.01em;
+color: var(--verde); text-decoration: none;
+border-bottom: 1px solid rgba(76,196,139,.4); padding-bottom: 3px;
+transition: color .16s ease, border-color .16s ease;
+}
+.correo-grande:hover { color: var(--crema); border-color: var(--crema); }
+.contacto-nota { margin: 16px 0 0; color: var(--tenue); font-size: 15px; max-width: 52ch; }
+.boton {
+display: flex; align-items: center; justify-content: space-between; gap: 20px;
+width: 100%; max-width: 520px; margin: 24px 0 0; padding: 19px 24px;
+background: var(--crema); color: var(--fondo); border-radius: 3px;
+font-family: 'Courier New', Courier, monospace; font-weight: 700;
+font-size: clamp(16px, 2.7vw, 20px); text-decoration: none;
+transition: background-color .16s ease;
+}
+.boton::after { content: "92"; font-size: 1.25em; line-height: 1; }
+.boton:hover { background: #fff; color: var(--fondo); }
+.contacto-persona { margin: 0 0 14px; line-height: 1.45; }
+.contacto-persona strong { display: block; color: var(--crema); font-size: 18.5px; font-weight: 600; }
+.contacto-persona span {
+display: block; margin-top: 2px; color: var(--texto2); font-size: 15px;
+}
+.giros { margin: 0; padding: 0; list-style: none; }
+.giros li {
+display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 12px;
+align-items: baseline; padding: 3px 0; font-size: 15.5px; color: var(--texto2);
+}
+.giros li + li { border-top: 1px solid var(--borde); margin-top: 3px; padding-top: 6px; }
+.giros .mono { color: var(--crema); }
+a.verificar {
+display: block; width: fit-content; margin-top: 11px;
+font-size: 15.5px; font-weight: 600;
+text-decoration: underline; text-underline-offset: 4px;
+}
+a.verificar::after { content: " 97"; }
+.verificado-el {
+display: block; margin-top: 7px;
+font-family: 'Courier New', Courier, monospace; font-size: 12px;
+letter-spacing: .06em; color: var(--tenue);
+}
+@media print { .verificado-el { color: #46504A; } }
+footer {
+border-top: 1px solid var(--borde);
+padding: 30px 0 70px;
+display: flex; align-items: center; gap: 14px 20px; flex-wrap: wrap;
+color: var(--tenue); font-size: 13px;
+}
+footer .ticks { color: var(--borde-vivo); height: auto; flex: none; }
+footer p { margin: 0; }
+.pie-contacto { margin-left: auto; }
+footer .legal {
+font-family: 'Courier New', Courier, monospace; font-size: 12.5px;
+letter-spacing: .04em;
+}
+@media (max-width: 880px) {
+body { font-size: 16.5px; }
+.marco { width: min(100% - 32px, 1040px); }
+.encabezado { padding: 22px 0 18px; gap: 16px; }
+.logo { width: 156px; }
+.sello { padding: 8px 13px 8px 11px; }
+.hero { padding: 36px 0; }
+h1 { max-width: none; }
+.seccion { grid-template-columns: 1fr; padding: 44px 0; }
+.rotulo {
+display: flex; align-items: baseline; gap: 12px; margin-bottom: 22px;
+padding-bottom: 12px; border-bottom: 1px solid var(--borde);
+}
+h2 { margin: 0; }
+.seccion::before { display: none; }
+.rotulo::after { display: none; }
+.cuerpo { padding-left: 0; }
+.tarjeta { padding: 22px 20px 24px; }
+.fila { grid-template-columns: 1fr; padding: 14px 18px; }
+.parrafos p, .declaracion { font-size: 16.5px; }
+.titular { font-size: 23px; }
+.relato { font-size: 16.5px; }
+.fijo { right: 12px; bottom: 12px; padding: 10px 15px; font-size: 13.5px; }
+footer { padding: 24px 0 54px; }
+}
+@media (max-width: 620px) {
+.grilla { grid-template-columns: 1fr; }
+footer p:last-child { margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+*, *::before, *::after {
+transition-duration: .01ms !important;
+animation-duration: .01ms !important;
+animation-iteration-count: 1 !important;
+scroll-behavior: auto !important;
+}
+}
+@media print {
+html, body { background: #fff; color: #1A1D1B; font-size: 11.5pt; }
+body::before, body::after, .cinta, .marca::before { display: none !important; }
+.seccion::before { background: #CFCABC; }
+.logo-noche { display: none; }
+.logo-dia { display: block; width: 52mm; }
+a { color: #1F7A52; }
+.kicker, .habil, .sello-txt b, .correo-grande { color: #1F7A52 !important; }
+.indice, .declaracion { color: #95521F; }
+.portada { min-height: 0; }
+.baja { display: none; }
+.boton { background: #fff !important; color: #1F7A52 !important;
+border: 1px solid #CFCABC; }
+.declaracion, .parrafos p:last-child { border-left-color: #95521F; }
+.parrafos p:last-child { background: none; }
+h1, h2, h3, dd, strong { color: #1A1D1B !important; }
+.bajada, .parrafos p, .tarjeta p, .declaracion, .contacto-nota,
+dt, footer, .sello-txt { color: #46504A !important; }
+.encabezado, .seccion, .ficha, .fila, .cuerpo, footer,
+.grilla, .sello, .pildora { border-color: #CFCABC !important; }
+.tarjeta, .ficha, .sello, .pildora { background: #fff !important; }
+.seccion, .tarjeta, .ficha { break-inside: avoid; }
+.correo-grande { border-bottom-color: #1F7A52; }
+a[href^="http"]::after {
+content: " (" attr(href) ")"; font-weight: 400; font-size: .84em;
+font-family: 'Courier New', Courier, monospace; word-break: break-all;
+}
+footer .ticks { color: #CFCABC; }
+.sello .ticks, .habil .ticks { color: #1F7A52; }
+.fijo { display: none !important; }
+.credencial { border-left-color: #CFCABC; }
+.cred-ok { color: #1F7A52 !important; }
+.titular { color: #1A1D1B !important; }
+.oficio li::before { background: #CFCABC; }
+.relato, .oficio li, .tarjeta .junto, .cred-id { color: #46504A !important; }
+@page { margin: 14mm; }
+}
 </style>
 </head>
 <body>
@@ -467,16 +444,16 @@
       <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="b2"/>
       <feMerge><feMergeNode in="b2"/><feMergeNode in="b1"/></feMerge>
     </filter>
-    <g id="brillo"><path fill="#C87941" d="M172.205 52.695L170.937 49.460L158.049 49.460L156.755 52.695L158.049 52.695Q159.964 52.695 160.779 53.432Q161.595 54.170 161.595 55.360Q161.595 56.525 160.779 57.262Q159.964 58 158.049 58L150.907 58Q148.992 58 148.176 57.262Q147.361 56.525 147.361 55.334Q147.361 54.144 148.215 53.394Q149.069 52.643 151.036 52.695L159.369 31.940L155.901 31.940Q153.986 31.940 153.171 31.202Q152.356 30.465 152.356 29.274Q152.356 28.084 153.171 27.346Q153.986 26.609 155.901 26.609L167.366 26.635L177.924 52.695Q179.787 52.695 180.383 53.109Q181.573 53.963 181.573 55.360Q181.573 56.525 180.771 57.262Q179.969 58 178.054 58L170.911 58Q168.996 58 168.181 57.262Q167.366 56.525 167.366 55.334Q167.366 54.170 168.181 53.432Q168.996 52.695 170.911 52.695L172.205 52.695M160.171 44.155L168.737 44.155L164.467 33.648 M205.869 31.940L200.512 31.940L200.512 52.695L205.869 52.695Q207.784 52.695 208.599 53.432Q209.414 54.170 209.414 55.360Q209.414 56.525 208.599 57.262Q207.784 58 205.869 58L189.850 58Q187.935 58 187.120 57.262Q186.304 56.525 186.304 55.334Q186.304 54.170 187.120 53.432Q187.935 52.695 189.850 52.695L195.207 52.695L195.207 31.940L189.850 31.940Q187.935 31.940 187.120 31.202Q186.304 30.465 186.304 29.274Q186.304 28.084 187.120 27.346Q187.935 26.609 189.850 26.609L205.869 26.635Q207.784 26.635 208.599 27.359Q209.414 28.084 209.414 29.274Q209.414 30.465 208.599 31.202Q207.784 31.940 205.869 31.940"/><g transform="translate(259 20) scale(1.5)" fill="none" stroke="#4CC48B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8.5 L5 12.5 L12 4"/><path d="M10 8.5 L14 12.5 L21 4"/></g></g>
-    <g id="marca"><path fill="#F5F0E4" d="M33.340 37.547L25.766 38.914Q25.383 36.645 24.029 35.496Q22.676 34.348 20.516 34.348Q17.645 34.348 15.936 36.330Q14.227 38.313 14.227 42.961Q14.227 48.129 15.963 50.262Q17.699 52.395 20.625 52.395Q22.813 52.395 24.207 51.150Q25.602 49.906 26.176 46.871L33.723 48.156Q32.547 53.352 29.211 56.004Q25.875 58.656 20.270 58.656Q13.898 58.656 10.111 54.637Q6.324 50.617 6.324 43.508Q6.324 36.316 10.125 32.311Q13.926 28.305 20.406 28.305Q25.711 28.305 28.842 30.588Q31.973 32.871 33.340 37.547 M36.187 43.070Q36.187 39.242 38.073 35.660Q39.960 32.078 43.419 30.191Q46.878 28.305 51.144 28.305Q57.734 28.305 61.945 32.584Q66.155 36.863 66.155 43.398Q66.155 49.988 61.904 54.322Q57.652 58.656 51.198 58.656Q47.206 58.656 43.583 56.852Q39.960 55.047 38.073 51.561Q36.187 48.074 36.187 43.070M44.062 43.480Q44.062 47.801 46.112 50.098Q48.163 52.395 51.171 52.395Q54.179 52.395 56.216 50.098Q58.253 47.801 58.253 43.426Q58.253 39.160 56.216 36.863Q54.179 34.566 51.171 34.566Q48.163 34.566 46.112 36.863Q44.062 39.160 44.062 43.480 M70.397 58L70.397 28.961L77.479 28.961L77.479 32.926Q81.280 28.305 86.530 28.305Q89.319 28.305 91.370 29.453Q93.420 30.602 94.733 32.926Q96.647 30.602 98.862 29.453Q101.077 28.305 103.592 28.305Q106.791 28.305 109.006 29.604Q111.221 30.902 112.315 33.418Q113.108 35.277 113.108 39.434L113.108 58L105.424 58L105.424 41.402Q105.424 37.082 104.631 35.824Q103.565 34.184 101.350 34.184Q99.737 34.184 98.315 35.168Q96.893 36.152 96.264 38.053Q95.635 39.953 95.635 44.055L95.635 58L87.952 58L87.952 42.086Q87.952 37.848 87.541 36.617Q87.131 35.387 86.270 34.785Q85.409 34.184 83.932 34.184Q82.155 34.184 80.733 35.141Q79.311 36.098 78.696 37.902Q78.080 39.707 78.080 43.891L78.080 58 M119.345 69.047L119.345 28.961L126.509 28.961L126.509 33.227Q127.904 31.039 130.283 29.672Q132.662 28.305 135.560 28.305Q140.619 28.305 144.146 32.270Q147.673 36.234 147.673 43.316Q147.673 50.590 144.119 54.623Q140.564 58.656 135.505 58.656Q133.099 58.656 131.144 57.699Q129.189 56.742 127.029 54.418L127.029 69.047L119.345 69.047M126.947 42.988Q126.947 47.883 128.888 50.221Q130.830 52.559 133.619 52.559Q136.298 52.559 138.076 50.412Q139.853 48.266 139.853 43.371Q139.853 38.805 138.021 36.590Q136.189 34.375 133.482 34.375Q130.666 34.375 128.806 36.549Q126.947 38.723 126.947 42.988"/><path fill="#C87941" d="M172.205 52.695L170.937 49.460L158.049 49.460L156.755 52.695L158.049 52.695Q159.964 52.695 160.779 53.432Q161.595 54.170 161.595 55.360Q161.595 56.525 160.779 57.262Q159.964 58 158.049 58L150.907 58Q148.992 58 148.176 57.262Q147.361 56.525 147.361 55.334Q147.361 54.144 148.215 53.394Q149.069 52.643 151.036 52.695L159.369 31.940L155.901 31.940Q153.986 31.940 153.171 31.202Q152.356 30.465 152.356 29.274Q152.356 28.084 153.171 27.346Q153.986 26.609 155.901 26.609L167.366 26.635L177.924 52.695Q179.787 52.695 180.383 53.109Q181.573 53.963 181.573 55.360Q181.573 56.525 180.771 57.262Q179.969 58 178.054 58L170.911 58Q168.996 58 168.181 57.262Q167.366 56.525 167.366 55.334Q167.366 54.170 168.181 53.432Q168.996 52.695 170.911 52.695L172.205 52.695M160.171 44.155L168.737 44.155L164.467 33.648 M205.869 31.940L200.512 31.940L200.512 52.695L205.869 52.695Q207.784 52.695 208.599 53.432Q209.414 54.170 209.414 55.360Q209.414 56.525 208.599 57.262Q207.784 58 205.869 58L189.850 58Q187.935 58 187.120 57.262Q186.304 56.525 186.304 55.334Q186.304 54.170 187.120 53.432Q187.935 52.695 189.850 52.695L195.207 52.695L195.207 31.940L189.850 31.940Q187.935 31.940 187.120 31.202Q186.304 30.465 186.304 29.274Q186.304 28.084 187.120 27.346Q187.935 26.609 189.850 26.609L205.869 26.635Q207.784 26.635 208.599 27.359Q209.414 28.084 209.414 29.274Q209.414 30.465 208.599 31.202Q207.784 31.940 205.869 31.940"/><g transform="translate(259 20) scale(1.5)" fill="none" stroke="#4CC48B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8.5 L5 12.5 L12 4"/><path d="M10 8.5 L14 12.5 L21 4"/></g></g>
+    <g id="brillo"><path fill="#C87941" d="M172.2 52.7L170.9 49.5L158 49.5L156.8 52.7L158 52.7Q160 52.7 160.8 53.4Q161.6 54.2 161.6 55.4Q161.6 56.5 160.8 57.3Q160 58 158 58L150.9 58Q149 58 148.2 57.3Q147.4 56.5 147.4 55.3Q147.4 54.1 148.2 53.4Q149.1 52.6 151 52.7L159.4 31.9L155.9 31.9Q154 31.9 153.2 31.2Q152.4 30.5 152.4 29.3Q152.4 28.1 153.2 27.3Q154 26.6 155.9 26.6L167.4 26.6L177.9 52.7Q179.8 52.7 180.4 53.1Q181.6 54 181.6 55.4Q181.6 56.5 180.8 57.3Q180 58 178.1 58L170.9 58Q169 58 168.2 57.3Q167.4 56.5 167.4 55.3Q167.4 54.2 168.2 53.4Q169 52.7 170.9 52.7L172.2 52.7M160.2 44.2L168.7 44.2L164.5 33.6 M205.9 31.9L200.5 31.9L200.5 52.7L205.9 52.7Q207.8 52.7 208.6 53.4Q209.4 54.2 209.4 55.4Q209.4 56.5 208.6 57.3Q207.8 58 205.9 58L189.8 58Q187.9 58 187.1 57.3Q186.3 56.5 186.3 55.3Q186.3 54.2 187.1 53.4Q187.9 52.7 189.8 52.7L195.2 52.7L195.2 31.9L189.8 31.9Q187.9 31.9 187.1 31.2Q186.3 30.5 186.3 29.3Q186.3 28.1 187.1 27.3Q187.9 26.6 189.8 26.6L205.9 26.6Q207.8 26.6 208.6 27.4Q209.4 28.1 209.4 29.3Q209.4 30.5 208.6 31.2Q207.8 31.9 205.9 31.9"/><g transform="translate(259 20) scale(1.5)" fill="none" stroke="#4CC48B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8.5 L5 12.5 L12 4"/><path d="M10 8.5 L14 12.5 L21 4"/></g></g>
+    <g id="marca"><path fill="#F5F0E4" d="M33.3 37.5L25.8 38.9Q25.4 36.6 24 35.5Q22.7 34.3 20.5 34.3Q17.6 34.3 15.9 36.3Q14.2 38.3 14.2 43Q14.2 48.1 16 50.3Q17.7 52.4 20.6 52.4Q22.8 52.4 24.2 51.1Q25.6 49.9 26.2 46.9L33.7 48.2Q32.5 53.4 29.2 56Q25.9 58.7 20.3 58.7Q13.9 58.7 10.1 54.6Q6.3 50.6 6.3 43.5Q6.3 36.3 10.1 32.3Q13.9 28.3 20.4 28.3Q25.7 28.3 28.8 30.6Q32 32.9 33.3 37.5 M36.2 43.1Q36.2 39.2 38.1 35.7Q40 32.1 43.4 30.2Q46.9 28.3 51.1 28.3Q57.7 28.3 61.9 32.6Q66.2 36.9 66.2 43.4Q66.2 50 61.9 54.3Q57.7 58.7 51.2 58.7Q47.2 58.7 43.6 56.9Q40 55 38.1 51.6Q36.2 48.1 36.2 43.1M44.1 43.5Q44.1 47.8 46.1 50.1Q48.2 52.4 51.2 52.4Q54.2 52.4 56.2 50.1Q58.3 47.8 58.3 43.4Q58.3 39.2 56.2 36.9Q54.2 34.6 51.2 34.6Q48.2 34.6 46.1 36.9Q44.1 39.2 44.1 43.5 M70.4 58L70.4 29L77.5 29L77.5 32.9Q81.3 28.3 86.5 28.3Q89.3 28.3 91.4 29.5Q93.4 30.6 94.7 32.9Q96.6 30.6 98.9 29.5Q101.1 28.3 103.6 28.3Q106.8 28.3 109 29.6Q111.2 30.9 112.3 33.4Q113.1 35.3 113.1 39.4L113.1 58L105.4 58L105.4 41.4Q105.4 37.1 104.6 35.8Q103.6 34.2 101.3 34.2Q99.7 34.2 98.3 35.2Q96.9 36.2 96.3 38.1Q95.6 40 95.6 44.1L95.6 58L88 58L88 42.1Q88 37.8 87.5 36.6Q87.1 35.4 86.3 34.8Q85.4 34.2 83.9 34.2Q82.2 34.2 80.7 35.1Q79.3 36.1 78.7 37.9Q78.1 39.7 78.1 43.9L78.1 58 M119.3 69L119.3 29L126.5 29L126.5 33.2Q127.9 31 130.3 29.7Q132.7 28.3 135.6 28.3Q140.6 28.3 144.1 32.3Q147.7 36.2 147.7 43.3Q147.7 50.6 144.1 54.6Q140.6 58.7 135.5 58.7Q133.1 58.7 131.1 57.7Q129.2 56.7 127 54.4L127 69L119.3 69M126.9 43Q126.9 47.9 128.9 50.2Q130.8 52.6 133.6 52.6Q136.3 52.6 138.1 50.4Q139.9 48.3 139.9 43.4Q139.9 38.8 138 36.6Q136.2 34.4 133.5 34.4Q130.7 34.4 128.8 36.5Q126.9 38.7 126.9 43"/><path fill="#C87941" d="M172.2 52.7L170.9 49.5L158 49.5L156.8 52.7L158 52.7Q160 52.7 160.8 53.4Q161.6 54.2 161.6 55.4Q161.6 56.5 160.8 57.3Q160 58 158 58L150.9 58Q149 58 148.2 57.3Q147.4 56.5 147.4 55.3Q147.4 54.1 148.2 53.4Q149.1 52.6 151 52.7L159.4 31.9L155.9 31.9Q154 31.9 153.2 31.2Q152.4 30.5 152.4 29.3Q152.4 28.1 153.2 27.3Q154 26.6 155.9 26.6L167.4 26.6L177.9 52.7Q179.8 52.7 180.4 53.1Q181.6 54 181.6 55.4Q181.6 56.5 180.8 57.3Q180 58 178.1 58L170.9 58Q169 58 168.2 57.3Q167.4 56.5 167.4 55.3Q167.4 54.2 168.2 53.4Q169 52.7 170.9 52.7L172.2 52.7M160.2 44.2L168.7 44.2L164.5 33.6 M205.9 31.9L200.5 31.9L200.5 52.7L205.9 52.7Q207.8 52.7 208.6 53.4Q209.4 54.2 209.4 55.4Q209.4 56.5 208.6 57.3Q207.8 58 205.9 58L189.8 58Q187.9 58 187.1 57.3Q186.3 56.5 186.3 55.3Q186.3 54.2 187.1 53.4Q187.9 52.7 189.8 52.7L195.2 52.7L195.2 31.9L189.8 31.9Q187.9 31.9 187.1 31.2Q186.3 30.5 186.3 29.3Q186.3 28.1 187.1 27.3Q187.9 26.6 189.8 26.6L205.9 26.6Q207.8 26.6 208.6 27.4Q209.4 28.1 209.4 29.3Q209.4 30.5 208.6 31.2Q207.8 31.9 205.9 31.9"/><g transform="translate(259 20) scale(1.5)" fill="none" stroke="#4CC48B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8.5 L5 12.5 L12 4"/><path d="M10 8.5 L14 12.5 L21 4"/></g></g>
   </defs>
   <use href="#brillo" filter="url(#brasa)" opacity="0.9"/>
   <use href="#marca"/>
 </svg>
     <svg class="logo logo-dia" xmlns="http://www.w3.org/2000/svg" viewBox="-38 -18 372 131" role="img" aria-label="CompAI">
   <title>CompAI &#8212; logotipo diurno, texto en curvas</title>
-  <path fill="#1A1D1B" d="M33.340 37.547L25.766 38.914Q25.383 36.645 24.029 35.496Q22.676 34.348 20.516 34.348Q17.645 34.348 15.936 36.330Q14.227 38.313 14.227 42.961Q14.227 48.129 15.963 50.262Q17.699 52.395 20.625 52.395Q22.813 52.395 24.207 51.150Q25.602 49.906 26.176 46.871L33.723 48.156Q32.547 53.352 29.211 56.004Q25.875 58.656 20.270 58.656Q13.898 58.656 10.111 54.637Q6.324 50.617 6.324 43.508Q6.324 36.316 10.125 32.311Q13.926 28.305 20.406 28.305Q25.711 28.305 28.842 30.588Q31.973 32.871 33.340 37.547 M36.187 43.070Q36.187 39.242 38.073 35.660Q39.960 32.078 43.419 30.191Q46.878 28.305 51.144 28.305Q57.734 28.305 61.945 32.584Q66.155 36.863 66.155 43.398Q66.155 49.988 61.904 54.322Q57.652 58.656 51.198 58.656Q47.206 58.656 43.583 56.852Q39.960 55.047 38.073 51.561Q36.187 48.074 36.187 43.070M44.062 43.480Q44.062 47.801 46.112 50.098Q48.163 52.395 51.171 52.395Q54.179 52.395 56.216 50.098Q58.253 47.801 58.253 43.426Q58.253 39.160 56.216 36.863Q54.179 34.566 51.171 34.566Q48.163 34.566 46.112 36.863Q44.062 39.160 44.062 43.480 M70.397 58L70.397 28.961L77.479 28.961L77.479 32.926Q81.280 28.305 86.530 28.305Q89.319 28.305 91.370 29.453Q93.420 30.602 94.733 32.926Q96.647 30.602 98.862 29.453Q101.077 28.305 103.592 28.305Q106.791 28.305 109.006 29.604Q111.221 30.902 112.315 33.418Q113.108 35.277 113.108 39.434L113.108 58L105.424 58L105.424 41.402Q105.424 37.082 104.631 35.824Q103.565 34.184 101.350 34.184Q99.737 34.184 98.315 35.168Q96.893 36.152 96.264 38.053Q95.635 39.953 95.635 44.055L95.635 58L87.952 58L87.952 42.086Q87.952 37.848 87.541 36.617Q87.131 35.387 86.270 34.785Q85.409 34.184 83.932 34.184Q82.155 34.184 80.733 35.141Q79.311 36.098 78.696 37.902Q78.080 39.707 78.080 43.891L78.080 58 M119.345 69.047L119.345 28.961L126.509 28.961L126.509 33.227Q127.904 31.039 130.283 29.672Q132.662 28.305 135.560 28.305Q140.619 28.305 144.146 32.270Q147.673 36.234 147.673 43.316Q147.673 50.590 144.119 54.623Q140.564 58.656 135.505 58.656Q133.099 58.656 131.144 57.699Q129.189 56.742 127.029 54.418L127.029 69.047L119.345 69.047M126.947 42.988Q126.947 47.883 128.888 50.221Q130.830 52.559 133.619 52.559Q136.298 52.559 138.076 50.412Q139.853 48.266 139.853 43.371Q139.853 38.805 138.021 36.590Q136.189 34.375 133.482 34.375Q130.666 34.375 128.806 36.549Q126.947 38.723 126.947 42.988"/>
-  <path fill="#95521F" d="M172.205 52.695L170.937 49.460L158.049 49.460L156.755 52.695L158.049 52.695Q159.964 52.695 160.779 53.432Q161.595 54.170 161.595 55.360Q161.595 56.525 160.779 57.262Q159.964 58 158.049 58L150.907 58Q148.992 58 148.176 57.262Q147.361 56.525 147.361 55.334Q147.361 54.144 148.215 53.394Q149.069 52.643 151.036 52.695L159.369 31.940L155.901 31.940Q153.986 31.940 153.171 31.202Q152.356 30.465 152.356 29.274Q152.356 28.084 153.171 27.346Q153.986 26.609 155.901 26.609L167.366 26.635L177.924 52.695Q179.787 52.695 180.383 53.109Q181.573 53.963 181.573 55.360Q181.573 56.525 180.771 57.262Q179.969 58 178.054 58L170.911 58Q168.996 58 168.181 57.262Q167.366 56.525 167.366 55.334Q167.366 54.170 168.181 53.432Q168.996 52.695 170.911 52.695L172.205 52.695M160.171 44.155L168.737 44.155L164.467 33.648 M205.869 31.940L200.512 31.940L200.512 52.695L205.869 52.695Q207.784 52.695 208.599 53.432Q209.414 54.170 209.414 55.360Q209.414 56.525 208.599 57.262Q207.784 58 205.869 58L189.850 58Q187.935 58 187.120 57.262Q186.304 56.525 186.304 55.334Q186.304 54.170 187.120 53.432Q187.935 52.695 189.850 52.695L195.207 52.695L195.207 31.940L189.850 31.940Q187.935 31.940 187.120 31.202Q186.304 30.465 186.304 29.274Q186.304 28.084 187.120 27.346Q187.935 26.609 189.850 26.609L205.869 26.635Q207.784 26.635 208.599 27.359Q209.414 28.084 209.414 29.274Q209.414 30.465 208.599 31.202Q207.784 31.940 205.869 31.940"/>
+  <path fill="#1A1D1B" d="M33.3 37.5L25.8 38.9Q25.4 36.6 24 35.5Q22.7 34.3 20.5 34.3Q17.6 34.3 15.9 36.3Q14.2 38.3 14.2 43Q14.2 48.1 16 50.3Q17.7 52.4 20.6 52.4Q22.8 52.4 24.2 51.1Q25.6 49.9 26.2 46.9L33.7 48.2Q32.5 53.4 29.2 56Q25.9 58.7 20.3 58.7Q13.9 58.7 10.1 54.6Q6.3 50.6 6.3 43.5Q6.3 36.3 10.1 32.3Q13.9 28.3 20.4 28.3Q25.7 28.3 28.8 30.6Q32 32.9 33.3 37.5 M36.2 43.1Q36.2 39.2 38.1 35.7Q40 32.1 43.4 30.2Q46.9 28.3 51.1 28.3Q57.7 28.3 61.9 32.6Q66.2 36.9 66.2 43.4Q66.2 50 61.9 54.3Q57.7 58.7 51.2 58.7Q47.2 58.7 43.6 56.9Q40 55 38.1 51.6Q36.2 48.1 36.2 43.1M44.1 43.5Q44.1 47.8 46.1 50.1Q48.2 52.4 51.2 52.4Q54.2 52.4 56.2 50.1Q58.3 47.8 58.3 43.4Q58.3 39.2 56.2 36.9Q54.2 34.6 51.2 34.6Q48.2 34.6 46.1 36.9Q44.1 39.2 44.1 43.5 M70.4 58L70.4 29L77.5 29L77.5 32.9Q81.3 28.3 86.5 28.3Q89.3 28.3 91.4 29.5Q93.4 30.6 94.7 32.9Q96.6 30.6 98.9 29.5Q101.1 28.3 103.6 28.3Q106.8 28.3 109 29.6Q111.2 30.9 112.3 33.4Q113.1 35.3 113.1 39.4L113.1 58L105.4 58L105.4 41.4Q105.4 37.1 104.6 35.8Q103.6 34.2 101.3 34.2Q99.7 34.2 98.3 35.2Q96.9 36.2 96.3 38.1Q95.6 40 95.6 44.1L95.6 58L88 58L88 42.1Q88 37.8 87.5 36.6Q87.1 35.4 86.3 34.8Q85.4 34.2 83.9 34.2Q82.2 34.2 80.7 35.1Q79.3 36.1 78.7 37.9Q78.1 39.7 78.1 43.9L78.1 58 M119.3 69L119.3 29L126.5 29L126.5 33.2Q127.9 31 130.3 29.7Q132.7 28.3 135.6 28.3Q140.6 28.3 144.1 32.3Q147.7 36.2 147.7 43.3Q147.7 50.6 144.1 54.6Q140.6 58.7 135.5 58.7Q133.1 58.7 131.1 57.7Q129.2 56.7 127 54.4L127 69L119.3 69M126.9 43Q126.9 47.9 128.9 50.2Q130.8 52.6 133.6 52.6Q136.3 52.6 138.1 50.4Q139.9 48.3 139.9 43.4Q139.9 38.8 138 36.6Q136.2 34.4 133.5 34.4Q130.7 34.4 128.8 36.5Q126.9 38.7 126.9 43"/>
+  <path fill="#95521F" d="M172.2 52.7L170.9 49.5L158 49.5L156.8 52.7L158 52.7Q160 52.7 160.8 53.4Q161.6 54.2 161.6 55.4Q161.6 56.5 160.8 57.3Q160 58 158 58L150.9 58Q149 58 148.2 57.3Q147.4 56.5 147.4 55.3Q147.4 54.1 148.2 53.4Q149.1 52.6 151 52.7L159.4 31.9L155.9 31.9Q154 31.9 153.2 31.2Q152.4 30.5 152.4 29.3Q152.4 28.1 153.2 27.3Q154 26.6 155.9 26.6L167.4 26.6L177.9 52.7Q179.8 52.7 180.4 53.1Q181.6 54 181.6 55.4Q181.6 56.5 180.8 57.3Q180 58 178.1 58L170.9 58Q169 58 168.2 57.3Q167.4 56.5 167.4 55.3Q167.4 54.2 168.2 53.4Q169 52.7 170.9 52.7L172.2 52.7M160.2 44.2L168.7 44.2L164.5 33.6 M205.9 31.9L200.5 31.9L200.5 52.7L205.9 52.7Q207.8 52.7 208.6 53.4Q209.4 54.2 209.4 55.4Q209.4 56.5 208.6 57.3Q207.8 58 205.9 58L189.8 58Q187.9 58 187.1 57.3Q186.3 56.5 186.3 55.3Q186.3 54.2 187.1 53.4Q187.9 52.7 189.8 52.7L195.2 52.7L195.2 31.9L189.8 31.9Q187.9 31.9 187.1 31.2Q186.3 30.5 186.3 29.3Q186.3 28.1 187.1 27.3Q187.9 26.6 189.8 26.6L205.9 26.6Q207.8 26.6 208.6 27.4Q209.4 28.1 209.4 29.3Q209.4 30.5 208.6 31.2Q207.8 31.9 205.9 31.9"/>
   <g transform="translate(259 20) scale(1.5)" fill="none" stroke="#1F7A52" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8.5 L5 12.5 L12 4"/><path d="M10 8.5 L14 12.5 L21 4"/></g>
 </svg>
   </div>
@@ -497,7 +474,12 @@
   <a class="pildora" href="mailto:stapiamena@compai.cl" aria-label="Escribir a stapiamena@compai.cl">
     <svg class="ticks" viewBox="258 24 35 17" width="26" aria-hidden="true" focusable="false"><g transform="translate(259 20) scale(1.5)" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8.5 L5 12.5 L12 4"/><path d="M10 8.5 L14 12.5 L21 4"/></g></svg><span>stapiamena@compai.cl</span>
   </a>
-  <a class="baja" href="#empresa">&darr; RUT, giros y acreditación</a>
+  <div class="credencial">
+    <p class="cred-id"><span>RUT</span> <b class="mono">78.491.451-8</b></p>
+    <p class="cred-ok">Inscrita y hábil en el Registro de Proveedores
+      <span>acreditada hasta el 19 de agosto de 2027 · comprobado el 22 de agosto de 2026</span></p>
+    <a class="baja" href="#empresa">Ver el expediente y la ficha pública &darr;</a>
+  </div>
 </div>
 
 </div>
@@ -505,25 +487,58 @@
 <section class="marco seccion">
   <div class="rotulo">
     <p class="indice">01</p>
+    <h2>Dónde se traba la compra</h2>
+  </div>
+  <div class="cuerpo">
+    <p class="titular">El problema no suele ser el precio.</p>
+    <p class="relato">Es la licencia que venció el martes, el proveedor que no
+      contesta la cotización y la recepción que quedó abierta con el pago
+      detenido detrás. Ninguna de las tres aparece en el precio, y las tres se
+      pagan con tiempo que nadie presupuestó.</p>
+    <ul class="oficio">
+      <li>La licencia venció a mitad de año y nadie lo vio venir. El fabricante
+        cobra con tarjeta y no emite factura chilena, así que no hay contra qué
+        pagarla. <strong>CompAI la factura en Chile y la licencia queda a nombre
+        del organismo.</strong></li>
+      <li>Hay que reunir tres cotizaciones y de los tres proveedores contesta
+        uno. <strong>Cotizamos aunque la compra no salga por nosotros</strong>:
+        una cotización que no gana igual sirve para cerrar el expediente.</li>
+      <li>El equipo llegó tarde, la recepción quedó abierta y el pago se quedó
+        detrás. <strong>Facturamos contra recepción conforme, con la orden de
+        compra referenciada</strong>, y la fecha que damos viene confirmada por
+        escrito con el distribuidor antes de ofertar.</li>
+      <li>Diciembre se acerca con ítems sin ejecutar y compras que no alcanzan a
+        llegar. <strong>Las licencias se entregan por correo el mismo día hábil
+        de la orden de compra</strong>, que muchas veces es lo único que alcanza.</li>
+      <li>El proveedor resultó no estar hábil y hay que rehacer la compra con el
+        plazo corriendo. <strong>Nuestra habilidad está arriba, con su fecha, y
+        se comprueba en la ficha pública.</strong></li>
+    </ul>
+  </div>
+</section>
+
+<section class="marco seccion">
+  <div class="rotulo">
+    <p class="indice">02</p>
     <h2>Qué hacemos</h2>
   </div>
   <div class="cuerpo">
     <div class="grilla">
       <article class="tarjeta">
         <h3>Licencias de software</h3>
-        <p>Suscripciones y licencias de software de productividad, diseño, ingeniería y colaboración (videoconferencia, suites creativas, CAD, gestión de proyectos), facturadas en Chile con orden de compra.</p>
+        <p>Suscripciones y licencias de software de productividad, diseño, ingeniería y colaboración (videoconferencia, suites creativas, CAD, gestión de proyectos), facturadas en Chile con orden de compra.</p><p class="junto">Se pide junto con las demás licencias del organismo que vencen en el mismo ejercicio, en una sola orden.<a class="cotiza" href="mailto:stapiamena@compai.cl?subject=Cotizaci%C3%B3n%20CompAI%20%C2%B7%20licencias">Cotizar licencias</a></p>
       </article>
       <article class="tarjeta">
         <h3>Equipamiento</h3>
-        <p>Computadores, servidores, periféricos, equipos de red y telecomunicaciones, e insumos tecnológicos.</p>
+        <p>Computadores, servidores, periféricos, equipos de red y telecomunicaciones, e insumos tecnológicos.</p><p class="junto">Se pide junto con la licencia OEM y el resto del parque que ya cumplió su vida útil, antes del cierre del ejercicio.<a class="cotiza" href="mailto:stapiamena@compai.cl?subject=Cotizaci%C3%B3n%20CompAI%20%C2%B7%20equipamiento">Cotizar equipamiento</a></p>
       </article>
       <article class="tarjeta">
         <h3>Servicios informáticos</h3>
-        <p>Consultoría en TI, integración de sistemas, procesamiento de datos y soporte técnico.</p>
+        <p>Consultoría en TI, integración de sistemas, procesamiento de datos y soporte técnico.</p><p class="junto">Se pide junto con el hospedaje y el respaldo del dato que ese servicio produce.<a class="cotiza" href="mailto:stapiamena@compai.cl?subject=Cotizaci%C3%B3n%20CompAI%20%C2%B7%20servicios%20inform%C3%A1ticos">Cotizar servicios informáticos</a></p>
       </article>
       <article class="tarjeta">
         <h3>Datos e inteligencia artificial</h3>
-        <p>Depuración de bases de datos, tableros de gestión y automatización de procesos administrativos.</p>
+        <p>Depuración de bases de datos, tableros de gestión y automatización de procesos administrativos.</p><p class="junto">Se pide junto con la depuración de la base antes de montar el tablero: un tablero sobre datos sucios miente rápido.<a class="cotiza" href="mailto:stapiamena@compai.cl?subject=Cotizaci%C3%B3n%20CompAI%20%C2%B7%20datos">Cotizar datos</a></p>
       </article>
     </div>
   </div>
@@ -531,7 +546,7 @@
 
 <section class="marco seccion">
   <div class="rotulo">
-    <p class="indice">02</p>
+    <p class="indice">03</p>
     <h2>Cómo trabajamos</h2>
   </div>
   <div class="cuerpo parrafos">
@@ -553,7 +568,7 @@
 
 <section class="marco seccion" id="empresa">
   <div class="rotulo">
-    <p class="indice">03</p>
+    <p class="indice">04</p>
     <h2>La empresa</h2>
   </div>
   <div class="cuerpo">
@@ -576,7 +591,7 @@
 
 <section class="marco seccion">
   <div class="rotulo">
-    <p class="indice">04</p>
+    <p class="indice">05</p>
     <h2>Contacto</h2>
   </div>
   <div class="cuerpo">
@@ -593,6 +608,8 @@
   <p class="legal">COMPAI GLOBAL SOLUTIONS SpA · RUT 78.491.451-8 · Santiago, Chile</p>
   <p class="pie-contacto"><a href="mailto:stapiamena@compai.cl">stapiamena@compai.cl</a> · <a href="tel:+56962469977">+56 9 6246 9977</a></p>
 </footer>
+
+<a class="fijo" href="mailto:stapiamena@compai.cl?subject=Cotizaci%C3%B3n%20CompAI%20%C2%B7%20consulta%20general">Pedir cotización</a>
 
 </body>
 </html>
