@@ -36,7 +36,7 @@
     --paso: 34px;
     --paso-mayor: 170px;
     --canal: 52px;        /* aire entre columna de rótulos y cuerpo */
-    --col-rotulo: 168px;
+    --col-rotulo: 200px;
   }
 
   html {
@@ -163,8 +163,10 @@
   }
   .sello-txt b { display: block; color: var(--verde); font-weight: 700; letter-spacing: .06em; }
 
-  /* ── Portada ────────────────────────────────────────────────────────────*/
-  .hero { padding: 76px 0 84px; }
+  /* ── Portada: cabecera y hero comparten la primera pantalla ────────────
+     El hero se centra con margin-block, no con flex (ver docstring). */
+  .portada { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; }
+  .hero { margin-block: auto; padding: 56px 0; }
   .kicker {
     display: inline-flex; align-items: center; gap: 12px;
     font-family: 'Courier New', Courier, monospace;
@@ -197,6 +199,15 @@
   .pildora .ticks { height: auto; flex: none; display: block; }
   .pildora:hover { border-color: var(--verde); background: var(--superficie-alta); color: var(--crema); }
 
+  /* No dice "sigue bajando": dice qué hay abajo y salta a la ficha. */
+  .baja {
+    display: block; width: fit-content; margin-top: 42px; color: var(--tenue);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 11.5px; letter-spacing: .2em; text-transform: uppercase;
+    text-decoration: none;
+  }
+  .baja:hover { color: var(--crema); }
+
   /* ── Secciones: rótulo a la izquierda, cuerpo a la derecha ──────────────
      La regla vertical continua entre ambas columnas es lo que convierte una
      lista de bloques en un documento con estructura. */
@@ -205,7 +216,8 @@
     display: grid;
     grid-template-columns: var(--col-rotulo) minmax(0, 1fr);
     gap: 0 var(--canal);
-    padding: 66px 0;
+    padding: 86px 0;
+    scroll-margin-top: 20px;
     border-top: 1px solid var(--borde);
   }
   .rotulo { padding-top: 2px; }
@@ -215,7 +227,7 @@
   }
   h2 {
     margin: 8px 0 0; font-family: 'Courier New', Courier, monospace;
-    font-size: 13px; font-weight: 700; letter-spacing: .14em;
+    font-size: 13px; font-weight: 700; letter-spacing: .35em;
     text-transform: uppercase; color: var(--crema);
   }
   /* La espina: en vez de un borde por bloque, una línea que no se interrumpe
@@ -250,20 +262,22 @@
     background:
       linear-gradient(180deg, rgba(245,240,228,.038), rgba(245,240,228,0) 110px),
       var(--superficie);
-    padding: 26px 24px 30px;
+    padding: 30px 24px 30px;
     transition: background-color .16s ease;
   }
   .tarjeta:hover { background-color: var(--superficie-alta); }
-  .tarjeta::before {
-    content: ""; display: block; width: 22px; height: 2px;
-    background: var(--cobre); border-radius: 2px; margin-bottom: 18px;
-  }
   .tarjeta h3 { font-size: 18.5px; margin: 0 0 9px; letter-spacing: -.012em; font-weight: 600; }
   .tarjeta p { margin: 0; color: var(--texto2); font-size: 15.5px; line-height: 1.6; }
 
   /* ── Texto corrido ─────────────────────────────────────────────────────*/
   .parrafos p { max-width: 62ch; margin: 0 0 18px; color: var(--texto2); font-size: 17.5px; }
-  .parrafos p:last-child { margin-bottom: 0; }
+  /* El argumento de la factura chilena: no se puede subir de sitio (ver
+     docstring), así que pesa desde donde está. */
+  .parrafos p:last-child {
+    margin: 26px 0 0; padding: 14px 20px 14px 22px;
+    border-left: 2px solid var(--cobre);
+    background: rgba(200,121,65,.05);
+  }
   .parrafos strong { color: var(--crema); font-weight: 600; }
 
   /* ── Ficha de empresa: se lee como un extracto de registro ─────────────*/
@@ -305,9 +319,19 @@
   }
   .correo-grande:hover { color: var(--crema); border-color: var(--crema); }
   .contacto-nota { margin: 16px 0 0; color: var(--tenue); font-size: 15px; max-width: 52ch; }
-  .vias { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 26px; }
-  .correo-grande.telefono { color: var(--crema); border-color: rgba(245,240,228,.35); }
-  .correo-grande.telefono:hover { color: var(--verde); border-color: var(--verde); }
+
+  /* El único botón sólido de la página y lo último que se lee. Crema, no
+     #FFFFFF. La flecha va en ::after para no gastar un nodo. */
+  .boton {
+    display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    width: 100%; max-width: 520px; margin: 24px 0 0; padding: 19px 24px;
+    background: var(--crema); color: var(--fondo); border-radius: 3px;
+    font-family: 'Courier New', Courier, monospace; font-weight: 700;
+    font-size: clamp(16px, 2.7vw, 20px); text-decoration: none;
+    transition: background-color .16s ease;
+  }
+  .boton::after { content: "92"; font-size: 1.25em; line-height: 1; }
+  .boton:hover { background: #fff; color: var(--fondo); }
   .contacto-persona { margin: 0 0 14px; line-height: 1.45; }
   .contacto-persona strong { display: block; color: var(--crema); font-size: 18.5px; font-weight: 600; }
   .contacto-persona span {
@@ -322,14 +346,19 @@
   }
   .giros li + li { border-top: 1px solid var(--borde); margin-top: 3px; padding-top: 6px; }
   .giros .mono { color: var(--crema); }
-  a.verificar { text-decoration: none; border-bottom: 1px solid rgba(76,196,139,.4); }
-  a.verificar:hover { color: var(--crema); border-color: var(--crema); }
-  .verificar-nota {
-    display: block; margin-top: 6px;
-    font-family: 'Courier New', Courier, monospace; font-size: 12px;
-    letter-spacing: .06em; text-transform: uppercase; color: var(--tenue);
+  /* Tiene que leerse como algo que se aprieta, no como el pie de la fila. */
+  a.verificar {
+    display: block; width: fit-content; margin-top: 11px;
+    font-size: 15.5px; font-weight: 600;
+    text-decoration: underline; text-underline-offset: 4px;
   }
-  @media print { .verificar-nota { color: #46504A; } }
+  a.verificar::after { content: " 97"; }
+  .verificado-el {
+    display: block; margin-top: 7px;
+    font-family: 'Courier New', Courier, monospace; font-size: 12px;
+    letter-spacing: .06em; color: var(--tenue);
+  }
+  @media print { .verificado-el { color: #46504A; } }
 
   footer {
     border-top: 1px solid var(--borde);
@@ -352,7 +381,7 @@
     .encabezado { padding: 22px 0 18px; gap: 16px; }
     .logo { width: 156px; }
     .sello { padding: 8px 13px 8px 11px; }
-    .hero { padding: 46px 0 52px; }
+    .hero { padding: 36px 0; }
     h1 { max-width: none; }
     .seccion { grid-template-columns: 1fr; padding: 44px 0; }
     .rotulo {
@@ -397,9 +426,13 @@
     .logo-dia { display: block; width: 52mm; }
     a { color: #1F7A52; }
     .kicker, .habil, .sello-txt b, .correo-grande { color: #1F7A52 !important; }
-    .indice, .tarjeta::before, .declaracion { color: #95521F; }
-    .tarjeta::before { background: #95521F; }
-    .declaracion { border-left-color: #95521F; }
+    .indice, .declaracion { color: #95521F; }
+    .portada { min-height: 0; }
+    .baja { display: none; }
+    .boton { background: #fff !important; color: #1F7A52 !important;
+              border: 1px solid #CFCABC; }
+    .declaracion, .parrafos p:last-child { border-left-color: #95521F; }
+    .parrafos p:last-child { background: none; }
     h1, h2, h3, dd, strong { color: #1A1D1B !important; }
     .bajada, .parrafos p, .tarjeta p, .declaracion, .contacto-nota,
     dt, footer, .sello-txt { color: #46504A !important; }
@@ -408,6 +441,11 @@
     .tarjeta, .ficha, .sello, .pildora { background: #fff !important; }
     .seccion, .tarjeta, .ficha { break-inside: avoid; }
     .correo-grande { border-bottom-color: #1F7A52; }
+    /* En papel la flecha no sirve: hay que poder teclear la URL. */
+    a[href^="http"]::after {
+      content: " (" attr(href) ")"; font-weight: 400; font-size: .84em;
+      font-family: 'Courier New', Courier, monospace; word-break: break-all;
+    }
     footer .ticks { color: #CFCABC; }
     .sello .ticks, .habil .ticks { color: #1F7A52; }
     @page { margin: 14mm; }
@@ -417,6 +455,8 @@
 <body>
 
 <div class="cinta" aria-hidden="true"></div>
+
+<div class="portada">
 
 <header class="marco encabezado">
   <div class="marca">
@@ -456,6 +496,8 @@
   <p style="margin:26px 0 0">
     <a class="correo-grande" href="/">compai.cl</a>
   </p>
+</div>
+
 </div>
 
 <footer class="marco">
