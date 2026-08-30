@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="CompAI">
+  <title>CompAI — favicon / avatar: doble tick sobre negro</title>
+  <!-- El lockup completo no se lee en cuadrado (Aplicaciones de marca, v1 ago 2026):
+       en avatar y pestaña va solo el doble tick sobre el fondo base #080A09.
+       El trazo sube de 2,2 a 2,6 y el tick ocupa casi todo el lienzo: a 16 px el
+       aire generoso y el trazo fino desaparecen. Se cambia elegancia por lectura. -->
+  <rect width="64" height="64" rx="14" fill="#080A09"/>
+  <g transform="translate(9.45 15.09) scale(2.05)"
+     fill="none" stroke="#4CC48B" stroke-width="2.6"
+     stroke-linecap="round" stroke-linejoin="round">
+    <path d="M1 8.5 L5 12.5 L12 4"/>
+    <path d="M10 8.5 L14 12.5 L21 4"/>
+  </g>
+</svg>
