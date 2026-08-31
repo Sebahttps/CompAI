@@ -1351,7 +1351,17 @@ var NPB = NP;
    tono uno a uno (contraste de densidad 15:1 sobre el mapa); y como la
    densidad YA lleva el tono, la opacidad se APLANA para no castigar dos veces
    —su único trabajo es que el borde se disuelva, doctrina §2.5—. */
-var GAMA = 1.00, OPEXP = 0.45, OPPISO = 0.22;
+var GAMA = 1.55, OPEXP = 0.45, OPPISO = 0.10;
+/* GAMA 1,00 -> 1,55 y OPPISO 0,22 -> 0,10 el 31-ago, MIRANDO el recorte de la
+   caja a 2x y no la pagina entera. Con GAMA 1 la densidad llevaba el tono uno
+   a uno y el enjambre repartia particulas por todo el rectangulo: 68 % de las
+   celdas del encuadre `cerrado` tienen tinta, asi que un reparto plano PINTA
+   EL RECTANGULO, no la persona. Con 1,55 el muestreo se concentra donde el
+   mapa es claro (pelo, hombros, manos) y el piso de opacidad mas bajo deja
+   que el canto se disuelva de verdad -doctrina 2.5-. Medido con `silueta.py`
+   dentro de la caja, a igual ALFA: cociente 11,81 -> 16,14 y correlacion con
+   el mapa 0,652 -> 0,722. Ni una particula mas: NP no se toca. ALFA se vuelve
+   a DESPEJAR con `afinar.py` para que la vara de VisuAI no se mueva.       */
 
 /* Un hueco alto y angosto pide el cuerpo entero; uno bajo y ancho pide el
    primer plano. Lo que NO se puede hacer y queda registrado: «de perfil» de
@@ -1882,7 +1892,18 @@ function nube(X, Y, W, H, alfa, dt, mudo){
    conserva tres. Degrada, no se rompe.
    ================================================================== */
 var CERG   = 1.55;   /* cuerpo, en múltiplos del plano de frente de la figura */
-var CERA   = 1.3;   /* alfa del estrato, sobre la opacidad viva de la figura */
+var CERA   = 0.0;   /* alfa del estrato, sobre la opacidad viva de la figura.
+                        APAGADO el 31-ago y NO por gusto: MIRADO el sitio
+                        publicado, el estrato borraba a la figura. Medido con
+                        `silueta.py` dentro de la caja -tinta del mapa contra
+                        no-tinta-, el cociente pasa de 4,55 a 11,93 y la
+                        correlacion con el mapa de 0,584 a 0,653 al apagarlo.
+                        `planos.py` no lo veia porque comparaba la figura con
+                        el campo de FUERA de su caja. Y contradecia mi propia
+                        medicion del 30-ago sobre la referencia: alli figura y
+                        campo llevan el MISMO grano (10x14 contra 11x16) y no
+                        hay separacion por escala; este estrato la separaba
+                        4,7:1. Volver a encenderlo es cambiar este 0.0.       */
 var CERV   = 26;     /* px/s de caída, antes del reparto por columna          */
 var CERPAR = 0.34;   /* paralaje EXTRA sobre el 1:1 del documento             */
 var CERB   = 0.075;  /* desenfoque MAXIMO, en cuerpos: solo la columna mas
@@ -1901,6 +1922,7 @@ var CERJ   = 26;     /* glifos por columna: cubre cualquier caja con margen   */
 
 var atlas = null, atlasC = 0, atlasNit = false, PERF = null;
 function hornearAtlas(){
+  if(CERA <= 0){ atlas = null; return; }
   var C = Math.ceil(CERS0*2.4);
   var cv = document.createElement('canvas');
   cv.width = C*CERGL.length; cv.height = C*CERNIV;
@@ -1967,7 +1989,9 @@ function tallarCerca(W){
 /* Dibuja el estrato cercano. X,Y,W,H = la caja de la figura EN PANTALLA.
    Devuelve el rectángulo ensuciado para que el borrado parcial lo cubra. */
 function cerca(X, Y, W, H, alfa, gb){
-  if(!atlas || alfa < 0.004) return null;
+  /* con CERA en 0 el bucle seguia haciendo un drawImage por glifo a
+     globalAlpha 0: invisible y pagado igual. La puerta va aqui. */
+  if(!atlas || alfa < 0.004 || CERA <= 0) return null;
   tallarCerca(W);
   var g0 = Math.max(gb*ZOOM, 7)*CERG;
   var span0 = H + g0*CERESP*2;
