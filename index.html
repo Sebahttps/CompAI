@@ -260,7 +260,7 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
 .via-correo p{margin:0; font-family:var(--font-data); font-size:12.5px; line-height:1.6;
   color:var(--crema-75); max-width:46ch}
 .hero-right{position:relative; display:flex; flex-direction:column; align-items:center; gap:var(--s4)}
-#humanField{width:100%; max-width:640px; height:min(62vh,520px); display:block}
+#humanField{width:100%; max-width:640px; height:min(67vh,600px); display:block}
 .agent-cameo{width:100%; max-width:230px; height:230px; margin:0 auto}
 .cameo-wrap{display:flex; flex-direction:column; align-items:center; gap:var(--s2)}
 .cameo-wrap p{font-family:var(--font-data); font-size:11px; letter-spacing:.14em;
@@ -419,7 +419,7 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
   .hero2{grid-template-columns:1fr; gap:var(--s6); padding-top:var(--s5)}
   .hero-right{order:-1}
   /* el titular manda: en el movil la figura cede el pliegue */
-  #humanField{height:min(26vh,220px)}
+  #humanField{height:min(72vh,600px)}
   .hero-right{order:1}
   .lanes{grid-template-columns:1fr !important; gap:var(--s3)}
   .lane{min-height:0}
@@ -643,7 +643,7 @@ html:not(.js) #nube, html:not(.js) #agente{display:none}
 
 <main class="wrap" id="inicio2">
 
-  <section class="hero2" data-sec data-enc="cerrado">
+  <section class="hero2" data-sec data-enc="entero">
     <div class="hero-left">
       <h1 class="claim-mono">Tecnología para el Estado chileno
         <span class="lo">Ejecutada por <b>IA</b></span></h1>
@@ -1229,6 +1229,24 @@ function colocar(bs, vh, cx, forzar){
     if(forzar !== null && forzar !== undefined && q !== forzar) continue;
     var E = ENC[q], b = bs[q];
     if(!b) continue;
+    /* EL TECHO SE QUEDA COMO ESTABA, Y ESTO ES UNA MARCHA ATRAS MIA QUE VALE
+       LA PENA ESCRIBIR. El 31-ago lo cambie por un techo de igual AREA
+       (`vh*0.68*sqrt(ar_cerrado/ar)`) razonando que lo que no puede pasarse
+       de la raya es cuanta pantalla ocupa la figura, no su alto. El
+       razonamiento es correcto y el efecto fue MALO por dos motivos medidos:
+       (1) con el techo dentro de la puntuacion, en cuanto el techo manda los
+       tres encuadres empatan en area y gana el primero del array POR ORDEN,
+       no por forma -en `cotizar` eso puso un cuerpo entero de 320x810 donde
+       la seccion pedia un plano medio, con la silueta hundida a 4,7 de
+       cociente contra los 20-37 del resto-; y (2) un cuerpo entero de 810 px
+       en una ventana de 900 NO SE PUEDE VER ENTERO, que es justo lo que el
+       encargo pide. Y sobre todo: NO HACIA FALTA. El techo solo muerde
+       cuando el hueco es enorme, y el hueco de la portada lo fija el slot de
+       600 px; con la ley de grano nueva el cuerpo entero ya pasa de 5 px en
+       los cinco anchos sin tocar el techo. Se revierte entero.
+       LA REGLA QUE QUEDA: una correccion que arregla la pieza que miro y
+       cambia el criterio de eleccion de las otras cuatro no es una
+       correccion, es un cambio de alcance. */
     var H = Math.min(b.cabe*0.88, vh*0.68, 640);
     var W = H*E.ar;
     if(W > b.w*0.92){ W = b.w*0.92; H = W/E.ar; }
@@ -1409,10 +1427,19 @@ var GAMA = 1.55, OPEXP = 0.45, OPPISO = 0.10;
    hombros. La escalera queda 0,395 / 0,557 / 0,729 de aspecto y 1,00 / 1,41 /
    1,97 de magnificación: tres opciones bien separadas para el hueco, que es
    para lo que existen. */
+/* GAMA ES POR ENCUADRE, y no por gusto (31-ago). GAMA existe para pelear el
+   RECTANGULO: si el recorte tiene tinta en casi todas sus celdas, un reparto
+   plano pinta la caja y no la persona, y hay que concentrar el muestreo donde
+   el mapa es claro. Pero «casi todas» depende del recorte, y esta medido:
+   tinta 68,4 % en el cerrado, 64,6 % en el medio, 55,9 % en el CUERPO ENTERO
+   -que ademas tiene una silueta que se reconoce sola-. El 1,55 se despejo
+   mirando el primer plano; heredado al cuerpo entero MATA LAS PIERNAS, que
+   son tono medio: con GAMA 1,55 el peso del pelo contra el de una pierna es
+   5,4:1 y con 1,00 es 3,0:1. Se barre por encuadre y se mira. */
 var ENC = [
-  {n:'entero',  u0:0.140, u1:0.840, v0:0.030, v1:0.975, min:210, cab:0.10, pie:0.94},
-  {n:'medio',   u0:0.140, u1:0.840, v0:0.030, v1:0.700, min:170, cab:0.10, pie:0.74},
-  {n:'cerrado', u0:0.170, u1:0.785, v0:0.030, v1:0.480, min:120, cab:0.10, pie:0.90}
+  {n:'entero',  u0:0.140, u1:0.840, v0:0.030, v1:0.975, min:210, cab:0.10, pie:0.94, gama:1.55},
+  {n:'medio',   u0:0.140, u1:0.840, v0:0.030, v1:0.700, min:170, cab:0.10, pie:0.74, gama:1.55},
+  {n:'cerrado', u0:0.170, u1:0.785, v0:0.030, v1:0.480, min:120, cab:0.10, pie:0.90, gama:1.55}
 ];
 for(var e_=0;e_<ENC.length;e_++)
   ENC[e_].ar = (ENC[e_].u1-ENC[e_].u0)*GW / ((ENC[e_].v1-ENC[e_].v0)*GH);
@@ -1484,7 +1511,7 @@ function env(v, E){
    regla de tres sale corta: el primer barrido apuntó a 2,5x y aterrizó en
    1,20/1,35/1,62x. Con el encuadre anterior esto valía 0,40 y daba 1,05x: la
    figura pesaba lo mismo que el botón y por eso no se leía. */
-var ALFA = 0.3103;
+var ALFA = 0.3961;
 
 var CUERPO = 1/139, FRENTE = 0.075, ZOOM = 3.0;
 
@@ -1511,6 +1538,46 @@ var CUERPO = 1/139, FRENTE = 0.075, ZOOM = 3.0;
    justificación: es la magnificación real de la cámara. */
 var MAGEXP = 1.0000;
 function mag(E){ return Math.pow((ENC[0].v1-ENC[0].v0)/(E.v1-E.v0), MAGEXP); }
+
+/* EL GRANO SIGUE AL ESPACIADO, NO A LA CAMARA. Correccion del 31-ago, y
+   corrige a MI mismo: `mag` es la magnificacion vertical del encuadre y
+   dice «en un primer plano el sujeto esta 2,10 veces mas cerca, luego su
+   grano tambien». Eso seria cierto si al acercar la camara llegaran 2,10
+   veces mas particulas, y NO llegan: NP es el mismo numero repartido dentro
+   del recorte. Lo que gobierna si el enjambre se ve TEJIDO o se ve POLVO no
+   es la camara, es la razon entre el cuerpo del glifo y la DISTANCIA MEDIA
+   entre particulas vecinas; con glifo mayor que la distancia hay masa
+   continua, con glifo menor hay huecos.
+
+   Medido en la pieza publicada, que es lo que delata el error: el primer
+   plano pinta 4.401 glifos de 7,55 px sobre 364x500 con tinta en el 68,4 %
+   del recorte -> distancia media 5,32 px, glifo/distancia 1,42, masa
+   continua. El cuerpo entero con el mismo `mag` pinta los mismos 4.401 de
+   5,01 px sobre 275x697 con tinta en el 55,9 % -> distancia 4,94 px,
+   glifo/distancia 1,01: la MITAD de cobertura por glifo, y por eso salia
+   difuso aunque los numeros de silueta subieran.
+
+   La distancia media entre particulas es sqrt(area_de_tinta / NP), asi que:
+
+       gb = KGRANO * sqrt(W * H * tinta(encuadre) / NP)
+
+   `tinta` NO se escribe a mano: la cuenta `cdfDe` sobre el propio mapa al
+   arrancar, de modo que si el mapa cambia el grano se recalibra solo. KGRANO
+   se despejo para que el PRIMER PLANO publicado no se mueva ni un decimal
+   (7,55 px con 364,3x499,8 y tinta 0,684), asi que esto no re-afina nada de
+   lo ya juzgado: solo arregla los otros dos encuadres. El equivalente en la
+   escala vieja pasa de 1,00/1,41/2,10 a 1,50/1,78/2,10. */
+var KGRANO = 1.4195;
+var TINTA = [1, 1, 1];   /* lo rellena campo(); 1 solo hasta que exista mapa */
+/* escalera geometrica del 5 % en el cuerpo del glifo: con el cuerpo cambiando
+   en cada cuadro la cache de glifos de Skia no acierta nunca. Es funcion y no
+   linea suelta para que la sonda de verificacion lea EL MISMO numero que se
+   pinta -un gb que se recalcula en dos sitios se separa sin avisar-. */
+function grano(H){
+  var g = KGRANO*H*Math.sqrt(ENC[encActual].ar*TINTA[encActual]/NP);
+  if(g<0.6) g=0.6;
+  return Math.exp(Math.round(Math.log(g)/0.04879)*0.04879);
+}
 /* LOS GLIFOS, ordenados por TINTA MEDIDA: 'L' el más ligero, 'Q' el más
    pesado, 2,08:1 de rango. Y el hallazgo que lo hace gratis: '0' pesa 277,6 y
    '1' pesa 180,9 — el propio par binario YA es un semitono de dos niveles. */
@@ -1584,18 +1651,20 @@ function campo(){
      del recorte el peso es cero. */
   function cdfDe(E){
     var c = new Float64Array(GW*GH), a = 0, cr = 0, q, gx_, gy_, uu, vv;
+    var cel = 0, tin = 0;      /* celdas del recorte y cuantas llevan tinta */
     for(var j=0;j<tono.length;j++){
       gx_ = j%GW; gy_ = (j/GW)|0;
       uu = gx_/(GW-1); vv = gy_/(GH-1);
-      q = Math.pow(tono[j]/15, GAMA); cr += q;
+      q = Math.pow(tono[j]/15, E.gama); cr += q;
       if(uu < E.u0 || uu > E.u1 || vv < E.v0 || vv > E.v1) q = 0;
-      else q *= env((vv - E.v0)/(E.v1 - E.v0), E);
+      else { cel++; if(tono[j] > 0) tin++;
+             q *= env((vv - E.v0)/(E.v1 - E.v0), E); }
       a += q; c[j] = a;
     }
-    return {c:c, acc:a, cru:cr};
+    return {c:c, acc:a, cru:cr, tinta: cel ? tin/cel : 1};
   }
   CDF = [];
-  for(i=0;i<ENC.length;i++) CDF.push(cdfDe(ENC[i]));
+  for(i=0;i<ENC.length;i++){ CDF.push(cdfDe(ENC[i])); TINTA[i] = CDF[i].tinta; }
   var cdf = CDF[0].c, acc = CDF[0].acc, cru = CDF[0].cru;
   /* la envolvente QUITA partículas en vez de reubicarlas: NP se reescala con
      su propia integral, así lo que se le quita al pelo y al charco se quita
@@ -1752,8 +1821,7 @@ function nube(X, Y, W, H, alfa, dt, mudo){
   if(alfa < 0.004) return;
   /* escalera geométrica del 5 % en el cuerpo del glifo: con el cuerpo
      cambiando en cada cuadro la caché de glifos de Skia no acierta nunca */
-  var gb = H*CUERPO*mag(ENC[encActual]); if(gb<0.6) gb=0.6;
-  gb = Math.exp(Math.round(Math.log(gb)/0.04879)*0.04879);
+  var gb = grano(H);
   for(t=0;t<tramos.length;t++){
     tr = tramos[t];
     g2.globalAlpha = tr.a*alfa;
@@ -2292,7 +2360,13 @@ function marco(ts){
 function reponer(){
   tallar(); medir();
   var s = elegir(), p = s?s.pos:null;
-  if(p){ reescalar(p.h); cx=tx=p.x; cy=ty=p.y; destino=p; seccion=s; k=1; }
+  /* FALTABA `reencuadrar`, y es un fallo real que se ve al cruzar los 980 px
+     redimensionando: la columna colapsa, el hueco cambia de forma y de
+     encuadre, pero como `reponer` fija `destino=p` a mano, `paso` nunca ve el
+     cambio y la figura sigue pintandose con el ar y la CDF del encuadre
+     anterior -o sea, estirada, y SIN UN SOLO ERROR-. `arrancar` si lo hacia;
+     el camino del resize no. */
+  if(p){ reencuadrar(p.enc||0); reescalar(p.h); cx=tx=p.x; cy=ty=p.y; destino=p; seccion=s; k=1; }
   if(luzEl) ponerLuz(luzEl);
 }
 
@@ -2342,7 +2416,9 @@ else addEventListener('load', arrancar);
 /* gancho de verificación: la auditoría no le cree a estos números, mide el
    DOM por su cuenta; esto sólo sirve para inspeccionar en vivo */
 window.__viva = {
-  enc:function(){return {i:encActual, n:ENC[encActual].n, ar:ARa};},
+  enc:function(){return {i:encActual, n:ENC[encActual].n, ar:ARa,
+     tinta:+TINTA[encActual].toFixed(4), gb:+grano(baseH*k).toFixed(2),
+     gama:ENC[encActual].gama};},
   modo:function(){return {modo:modo, reloj:Math.round(reloj), revT:Math.round(revT), alfa:+ca.toFixed(3)};},
   secciones:function(){return secciones.map(function(q){
      return {id:q.el.id||q.el.className, top:Math.round(q.top), bot:Math.round(q.bot),
