@@ -660,7 +660,8 @@ html:not(.js) #nube, html:not(.js) #agente{display:none}
       <div class="via-correo">
         <a class="correo" href="mailto:hola@compai.cl?subject=Cotizaci%C3%B3n%20compra%20p%C3%BAblica">hola@compai.cl</a>
         <p>Lunes a viernes, de 08:30 a 18:30.<span class="acuse"><br>
-           Todo correo recibe acuse de recibo con la hora en que respondemos.</span></p>
+           No mandamos acuses de recibo: mandamos la respuesta. Si no alcanza a salir
+          dentro de la hora, tu consulta queda registrada con su hora de entrada.</span></p>
       </div>
     </div>
     <div class="hero-right">
@@ -834,7 +835,7 @@ html:not(.js) #nube, html:not(.js) #agente{display:none}
         </div>
         <div class="frow">
           <button class="send" type="submit">Enviar por correo</button>
-          <span class="formnote">Recibes acuse de recibo con la hora en que respondemos.</span>
+          <span class="formnote">Recibes la respuesta, no un acuse de recibo.</span>
         </div>
       </form>
       <p class="direct">¿Prefieres el correo directo?
@@ -1047,7 +1048,7 @@ var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     done.classList.remove('err'); done.classList.add('on');
     doneTtl.textContent='Se abre tu correo.';
     doneTxt.textContent='Va dirigido a hola@compai.cl con tus datos escritos. Adjunta ahí las bases '+
-      'o la orden de compra y apriétalo: recibes acuse de recibo con la hora en que respondemos. '+
+      'o la orden de compra y apriétalo: te llega la respuesta, no un acuse de recibo. '+
       'Si no se abrió, escríbenos tú a hola@compai.cl.';
     window.location.href=url;
   });
