@@ -261,7 +261,6 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
   color:var(--crema-75); max-width:46ch}
 .hero-right{position:relative; display:flex; flex-direction:column; align-items:center; gap:var(--s4)}
 #humanField{width:100%; max-width:640px; height:min(67vh,600px); display:block}
-.agent-cameo{width:100%; max-width:230px; height:230px; margin:0 auto}
 .cameo-wrap{display:flex; flex-direction:column; align-items:center; gap:var(--s2)}
 .cameo-wrap p{font-family:var(--font-data); font-size:11px; letter-spacing:.14em;
   text-transform:uppercase; color:var(--crema-60); margin:0; text-align:center}
@@ -275,13 +274,16 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
   pointer-events:none}
 /* franja vertical: la agente caminando junto a una sección */
 .agent-walk{width:100%; max-width:152px; height:min(46vh,410px); margin:0 auto;}
-.agent-mini{width:100%; max-width:112px; height:250px; margin:0 auto;}
-.cine-head-grid{display:grid; grid-template-columns:1fr auto; gap:var(--s7); align-items:center}
+/* LA COLUMNA DE LA AGENTE SE DECLARA, NO SE DEDUCE. Con `auto` la pista se
+   ajustaba al ancho de su contenido y, quitado el rotulo, un slot vacio mide
+   cero: la pista colapsaba y con ella el alto de la seccion, que es lo unico
+   que esta columna existe para reservar. 300 px es alto reservado, no ancho
+   de dibujo -la figura la coloca el motor en el espacio libre, no aqui-. */
+.cine-head-grid{display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:var(--s7); align-items:center}
 .cotiza-grid{display:grid; grid-template-columns:minmax(0,760px) auto; gap:var(--s7); align-items:end}
-.datos-grid{display:grid; grid-template-columns:1fr auto; gap:var(--s7); align-items:center}
 @media (max-width:980px){
-  .cine-head-grid,.cotiza-grid,.datos-grid{grid-template-columns:1fr}
-  .cine-head-grid .cameo-wrap,.cotiza-grid .cameo-wrap,.datos-grid .cameo-wrap{display:none}
+  .cine-head-grid,.cotiza-grid{grid-template-columns:1fr}
+  .cine-head-grid .cameo-wrap,.cotiza-grid .cameo-wrap{display:none}
 }
 
 /* ---- SCROLL-CINE ---- */
@@ -303,7 +305,13 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
   letter-spacing:.01em;
   font-size:clamp(22px,3.2vw,36px); line-height:1.15; margin:0 0 var(--s4); text-wrap:balance}
 .cine-head h2 i{font-style:normal; color:var(--terracota)}
-.cine-head p{color:var(--crema-75); font-size:15.5px; margin:0}
+/* 62ch Y NO EL ANCHO DE LA COLUMNA. El parrafo corria los 953 px de la pista
+   -104 caracteres por linea, muy por encima de los 45-90 de una medida legible-
+   y ademas era EL limitador del hueco: al ocupar hasta x=1077 dejaba a la
+   agente una franja de 208 px de ancho, bajo el minimo del encuadre mas
+   cerrado. Los pixeles que le faltaban a la figura estaban en una linea
+   demasiado larga para leerse; se los devuelve la tipografia, no la maqueta. */
+.cine-head p{color:var(--crema-75); font-size:15.5px; margin:0; max-width:62ch}
 .cine-head p.aviso{color:var(--crema-60); font-size:13.5px; margin-top:var(--s3);
   font-family:var(--font-data); line-height:1.55; max-width:56ch}
 .cine-track{position:relative}
@@ -353,8 +361,7 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
 
 /* ---- MODALIDADES Y RUBROS ---- */
 .oferta{position:relative; padding:var(--s9) 0 0; border-top:1px solid var(--crema-12)}
-.oferta-head{display:grid; grid-template-columns:1.35fr .65fr; gap:var(--s7); align-items:center;
-  margin-bottom:var(--s7)}
+.oferta-head{max-width:800px; margin-bottom:var(--s7)}
 .oferta-head h2{font-family:var(--font-data); font-weight:600; text-transform:uppercase;
   letter-spacing:.01em; font-size:clamp(20px,2.7vw,32px); line-height:1.15; margin:0 0 var(--s4)}
 .oferta-head p{color:var(--crema-75); font-size:15.5px; margin:0; max-width:52ch}
@@ -376,7 +383,6 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
   border:1px solid var(--crema-12); background:rgba(11,13,18,.6); border-radius:var(--radio);
   padding:8px 16px; transition:border-color .2s ease, color .2s ease}
 .chips span:hover{border-color:rgba(76,196,139,.4); color:var(--crema)}
-@media (max-width:880px){ .oferta-head{grid-template-columns:1fr} }
 
 /* ---- DATOS DE LA EMPRESA ---- */
 /* ======== SUELO SIN CAJA PARA EL TEXTO DESNUDO ========
@@ -674,9 +680,15 @@ html:not(.js) #nube, html:not(.js) #agente{display:none}
           <p class="aviso">No son clientes nuestros: partimos ahora y la ficha pública lo muestra.
              Son los <b data-luz>cuatro cuellos de botella</b> que trabajamos.</p>
         </div>
+        <!-- SIN ROTULO, Y NO POR AHORRO. En la portada y en `cotiza` la linea de
+             la agente se registra con ella porque alli la figura cae DENTRO de su
+             columna. Aqui no: al devolverle al parrafo su medida legible el hueco
+             libre pasa a 631 px y `colocar()` la situa al 72 % de esa franja, o sea
+             314 px a la izquierda del centro del rotulo. Una etiqueta que senala a
+             30 cm de donde esta la figura es peor que ninguna. Queda el hueco solo:
+             habla al entrar y al recibir, y en medio trabaja callada. -->
         <div class="cameo-wrap">
           <div class="agent-slot agent-walk" aria-hidden="true"></div>
-          <p>Caso a caso</p>
         </div>
       </div>
     </div>
@@ -741,7 +753,7 @@ html:not(.js) #nube, html:not(.js) #agente{display:none}
     </div>
   </section>
 
-  <section class="oferta" id="oferta" data-sec>
+  <section class="oferta" id="oferta">
     <div class="oferta-head">
       <div>
         <p class="kicker">CompAI Global Solutions</p>
@@ -749,10 +761,6 @@ html:not(.js) #nube, html:not(.js) #agente{display:none}
         <p>El Estado compra de cuatro formas distintas y cada una pide su propio papeleo.
            compAI trabaja las cuatro con el mismo criterio: leer lo que piden, comparar lo que hay
            y dejar el respaldo listo para firmar.</p>
-      </div>
-      <div class="cameo-wrap">
-        <div class="agent-slot agent-cameo" aria-hidden="true"></div>
-        <p>Te acompaño en las cuatro</p>
       </div>
     </div>
 
@@ -843,9 +851,8 @@ html:not(.js) #nube, html:not(.js) #agente{display:none}
     </div>
   </section>
 
-  <section class="datos" id="datos" data-sec>
+  <section class="datos" id="datos">
     <h3 class="dt">Datos de la empresa</h3>
-    <div class="datos-grid">
     <div class="dgrid">
       <dl class="d"><dt>Razón social</dt><dd><b>COMPAI GLOBAL SOLUTIONS SPA</b></dd></dl>
       <dl class="d"><dt>Nombre de fantasía</dt><dd>CompAI SpA</dd></dl>
@@ -857,11 +864,6 @@ html:not(.js) #nube, html:not(.js) #agente{display:none}
       <dl class="d"><dt>Segmento</dt><dd>MICRO EMPRESA según el Servicio de Impuestos Internos.<br>Registra como Empresa de Menor Tamaño en Mercado Público</dd></dl>
       <dl class="d"><dt>Historial de ventas</dt><dd>Sin ventas en Mercado Público y sin Convenios Marco adjudicados. La ficha pública lo muestra: no declaramos experiencia que no tengamos</dd></dl>
       <dl class="d"><dt>Contacto</dt><dd><b>hola@compai.cl</b></dd></dl>
-    </div>
-      <div class="cameo-wrap">
-        <div class="agent-slot agent-mini" aria-hidden="true"></div>
-        <p>compAI</p>
-      </div>
     </div>
   </section>
 
