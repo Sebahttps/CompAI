@@ -1219,7 +1219,7 @@ function mayor(caja, lista, pad, ars){
    0,28 salió de mirar cuatro secciones con 0 / 0,28 / 0,5 / 1: acompaña al
    contenido sin tocarlo, que es lo único que funciona en los cuatro casos. */
 var BIAS = 0.28;
-function colocar(bs, vh, cx, forzar){
+function colocar(bs, vh, cx, forzar, yMin){
   if(!bs) return null;
   /* EL HUECO ELIGE EL ENCUADRE, y gana el que MÁS LLENA el hueco —no «el
      primero que quepa», probado así el cuerpo entero cabía siempre—. La
@@ -1229,35 +1229,87 @@ function colocar(bs, vh, cx, forzar){
     if(forzar !== null && forzar !== undefined && q !== forzar) continue;
     var E = ENC[q], b = bs[q];
     if(!b) continue;
-    /* EL TECHO SE QUEDA COMO ESTABA, Y ESTO ES UNA MARCHA ATRAS MIA QUE VALE
-       LA PENA ESCRIBIR. El 31-ago lo cambie por un techo de igual AREA
-       (`vh*0.68*sqrt(ar_cerrado/ar)`) razonando que lo que no puede pasarse
-       de la raya es cuanta pantalla ocupa la figura, no su alto. El
-       razonamiento es correcto y el efecto fue MALO por dos motivos medidos:
-       (1) con el techo dentro de la puntuacion, en cuanto el techo manda los
-       tres encuadres empatan en area y gana el primero del array POR ORDEN,
-       no por forma -en `cotizar` eso puso un cuerpo entero de 320x810 donde
-       la seccion pedia un plano medio, con la silueta hundida a 4,7 de
-       cociente contra los 20-37 del resto-; y (2) un cuerpo entero de 810 px
-       en una ventana de 900 NO SE PUEDE VER ENTERO, que es justo lo que el
-       encargo pide. Y sobre todo: NO HACIA FALTA. El techo solo muerde
-       cuando el hueco es enorme, y el hueco de la portada lo fija el slot de
-       600 px; con la ley de grano nueva el cuerpo entero ya pasa de 5 px en
-       los cinco anchos sin tocar el techo. Se revierte entero.
-       LA REGLA QUE QUEDA: una correccion que arregla la pieza que miro y
-       cambia el criterio de eleccion de las otras cuatro no es una
+    /* EL TECHO SE QUEDA COMO ESTABA: MARCHA ATRAS MIA DEL 31-ago. Lo cambie
+       por uno de igual AREA (`vh*0.68*sqrt(ar_cerrado/ar)`) razonando que el
+       limite es cuanta pantalla ocupa la figura, no su alto. Razonamiento
+       correcto, efecto malo y medido: (1) con el techo dentro de la
+       puntuacion los tres encuadres empatan en area y gana el primero del
+       array POR ORDEN, no por forma -en `cotizar` puso un cuerpo entero de
+       320x810 donde la seccion pide plano medio, silueta 4,7 contra 20-37-;
+       y (2) 810 px de figura en una ventana de 900 no se ven enteros, que es
+       lo que el encargo pide. Y no hacia falta: el hueco de la portada lo
+       fija el slot. LA REGLA QUE QUEDA: una correccion que arregla la pieza
+       que miro y cambia el criterio de eleccion de las otras cuatro no es una
        correccion, es un cambio de alcance. */
     var H = Math.min(b.cabe*0.88, vh*0.68, 640);
+    /* EL AIRE CEDE ANTES QUE LA FIGURA, medido a 805 px de alto -un
+       portatil-: alli el hueco de la portada da cabe 552 y el 0,88 de aire lo
+       deja en 486, seis px bajo la puerta, y la portada se quedaba SIN
+       FIGURA. El sitio estaba; se lo comia el margen. Se toma lo justo para
+       pasar y ni un pixel mas. Los topes duros -`vh*0.68` y 640- NO ceden:
+       existen para que el cuerpo entero quepa en pantalla. A 900 no se
+       dispara (H=542 ya pasa) y la portada publicada no se mueve. */
+    if(H < E.min && Math.min(b.cabe*0.98, vh*0.68, 640) >= E.min) H = E.min;
     var W = H*E.ar;
     if(W > b.w*0.92){ W = b.w*0.92; H = W/E.ar; }
-    if(H < E.min) continue;
+    var y = b.y + (b.h-H)/2;
+    /* EL TECHO SE APLICA AQUI Y NO EN EL RASTERIZADOR. Primero lo meti como
+       una banda ocupada mas y la PORTADA se movio: 214x542 -> 206x521, grano
+       5,52 -> 5,25. Marcar la banda cambia la enumeracion de rectangulos
+       maximales de TODA la seccion, tambien donde el techo no tapaba nada.
+       Aqui la condicion va al final y solo muerde si muerde: lo que no
+       quedaba bajo el header sale identico al ultimo decimal. */
+    if(yMin && y < yMin){
+      var disp = b.y + b.h - yMin;
+      if(H > disp){
+        H = disp; W = H*E.ar;
+        if(W > b.w*0.92){ W = b.w*0.92; H = W/E.ar; }
+      }
+      y = yMin;
+    }
+    /* LA PUERTA NO BORRA UNA DECISION EDITORIAL: donde hay `data-enc` -escrito
+       a mano por un encargo literal- hay figura, y la puerta solo puede
+       quedarse corta. Donde el motor elige solo, la puerta manda. Sin esto,
+       bajo ~740 px de alto de ventana la portada se quedaba EN BLANCO. Lo que
+       cuesta, dicho: bajo ese alto su glifo no llega a 5 px -tambien en lo
+       publicado, 4,54- y se pinta en puntos. */
+    if(H < E.min && (forzar === null || forzar === undefined)) continue;
     if(W*H > mejorA){
       var f = (cx !== null && cx < b.x + b.w/2) ? BIAS : 1-BIAS;
       mejorA = W*H;
-      mejorP = {h:H, w:W, enc:q, x:b.x + (b.w-W)*f, y:b.y + (b.h-H)/2};
+      mejorP = {h:H, w:W, enc:q, x:b.x + (b.w-W)*f, y:y};
     }
   }
   return mejorP;
+}
+
+/* EL TECHO PEGAJOSO, y por que faltaba: el buscador de huecos razona en
+   coordenadas de PAGINA y el <header> vive en coordenadas de VISOR, asi que
+   ningun rectangulo del rasterizador lo veia. En `cotizar` la caja arrancaba
+   29 px POR ENCIMA del borde del visor y el header se comia sus 95 px de
+   arriba —la cabeza, que es lo de mas contraste—: cociente 2,13 contra 18-27
+   del resto. Defecto de mi instrumento, no limitacion del diseno.
+   No se busca por clase -la maqueta es de VisuAI-: vale cualquier pegado o
+   fijo ANCLADO EN CERO que no contenga secciones, que es lo que separa al
+   header de `.cine-stage` (sticky con `top:var(--hdr)` y con `[data-sec]`). */
+function techo(){
+  var t = 0, todos = document.body.querySelectorAll('*'), i;
+  for(i=0;i<todos.length;i++){
+    var el = todos[i], cs = getComputedStyle(el);
+    if(cs.position !== 'fixed' && cs.position !== 'sticky') continue;
+    if(parseFloat(cs.top) !== 0) continue;
+    if(el.querySelector('[data-sec]') || el.hasAttribute('data-sec')) continue;
+    /* TIENE QUE TAPAR, no solo estar pegado arriba: sin esto el primer
+       candidato es MI PROPIO lienzo -`#nube` es fixed, top 0, pantalla
+       entera-, `techo()` daba 900 y se quedaban sin figura las CINCO
+       secciones. Se reusa `opaco()`, el mismo criterio de ocupacion. */
+    if(!opaco(cs)) continue;
+    var r = el.getBoundingClientRect();
+    if(r.width < innerWidth*0.5 || r.height <= 0) continue;   /* una barra, no un panel */
+    if(r.height > innerHeight*0.4) continue;                  /* una barra, no una portada */
+    if(r.height > t) t = r.height;
+  }
+  return t;
 }
 
 function medir(){
@@ -1265,6 +1317,9 @@ function medir(){
   var vw = innerWidth, vh = innerHeight;
   var mg  = Math.max(16, Math.min(44, vw*0.03));
   var pad = Math.max(14, Math.min(34, vw*0.02));
+  if(!ENC[0].min) calibrarMin();
+  var hdr = techo();
+  var docH = document.documentElement.scrollHeight;
   secciones = []; ocupados = [];
   var ars = ENC.map(function(E){return E.ar;});
   var secs = document.querySelectorAll('[data-sec]');
@@ -1274,8 +1329,16 @@ function medir(){
     for(var e=0;e<lista.length;e++) ocupados.push(lista[e]);
     var x0 = Math.max(sr.left+sx, mg), x1 = Math.min(sr.right+sx, vw-mg);
     var caja = {x:x0, y:sr.top+sy, w:x1-x0, h:sr.height};
+    /* HASTA DONDE LLEGA EL TECHO EN COORDENADAS DE PAGINA, en la PARADA de
+       esta seccion: el scroll donde `elegir()` la da por activa, o sea su
+       centro en el centro del visor, topado por el documento. */
+    var yMin = 0;
+    if(hdr > 0){
+      var sc = Math.max(0, Math.min(docH - vh, sr.top+sy + sr.height/2 - vh/2));
+      yMin = sc + hdr + pad;
+    }
     var mx = 0, ma = 0;
-    for(e=0;e<lista.length;e++){
+    for(e=0;e<lista.length;e++){          /* el centro de masa es del CONTENIDO */
       var q = lista[e], ar = q.w*q.h;
       mx += (q.x + q.w/2)*ar; ma += ar;
     }
@@ -1285,9 +1348,13 @@ function medir(){
     var fz = sec.getAttribute('data-enc');
     var idx = null;
     if(fz){ for(var z=0;z<ENC.length;z++) if(ENC[z].n===fz) idx=z; }
-    secciones.push({el:sec, top:sr.top+sy, bot:sr.bottom+sy,
+    /* los tres candidatos se GUARDAN. Cuando una seccion se queda sin figura
+       hay que poder decir con numero cuanto hueco le falta -es una peticion a
+       la maqueta, que es de VisuAI- y no «no cabe». */
+    var bs = mayor(caja,lista,pad,ars);
+    secciones.push({el:sec, top:sr.top+sy, bot:sr.bottom+sy, bs:bs, yMin:yMin,
                     luz:sec.querySelector('[data-luz]'),
-                    pos:colocar(mayor(caja,lista,pad,ars), vh, ma ? mx/ma : null, idx)});
+                    pos:colocar(bs, vh, ma ? mx/ma : null, idx, yMin)});
   }
 }
 
@@ -1436,10 +1503,13 @@ var GAMA = 1.55, OPEXP = 0.45, OPPISO = 0.10;
    mirando el primer plano; heredado al cuerpo entero MATA LAS PIERNAS, que
    son tono medio: con GAMA 1,55 el peso del pelo contra el de una pierna es
    5,4:1 y con 1,00 es 3,0:1. Se barre por encuadre y se mira. */
+/* `min` ya NO se escribe: lo despeja `calibrarMin()` de la ley del grano en
+   cuanto `campo()` conoce NP y la tinta de cada recorte. Arranca en 0 y
+   `medir()` no coloca nada hasta que este calibrado. */
 var ENC = [
-  {n:'entero',  u0:0.140, u1:0.840, v0:0.030, v1:0.975, min:210, cab:0.10, pie:0.94, gama:1.55},
-  {n:'medio',   u0:0.140, u1:0.840, v0:0.030, v1:0.700, min:170, cab:0.10, pie:0.74, gama:1.55},
-  {n:'cerrado', u0:0.170, u1:0.785, v0:0.030, v1:0.480, min:120, cab:0.10, pie:0.90, gama:1.55}
+  {n:'entero',  u0:0.140, u1:0.840, v0:0.030, v1:0.975, min:0, cab:0.10, pie:0.94, gama:1.55},
+  {n:'medio',   u0:0.140, u1:0.840, v0:0.030, v1:0.700, min:0, cab:0.10, pie:0.74, gama:1.55},
+  {n:'cerrado', u0:0.170, u1:0.785, v0:0.030, v1:0.480, min:0, cab:0.10, pie:0.90, gama:1.55}
 ];
 for(var e_=0;e_<ENC.length;e_++)
   ENC[e_].ar = (ENC[e_].u1-ENC[e_].u0)*GW / ((ENC[e_].v1-ENC[e_].v0)*GH);
@@ -1573,10 +1643,37 @@ var TINTA = [1, 1, 1];   /* lo rellena campo(); 1 solo hasta que exista mapa */
    en cada cuadro la cache de glifos de Skia no acierta nunca. Es funcion y no
    linea suelta para que la sonda de verificacion lea EL MISMO numero que se
    pinta -un gb que se recalcula en dos sitios se separa sin avisar-. */
-function grano(H){
-  var g = KGRANO*H*Math.sqrt(ENC[encActual].ar*TINTA[encActual]/NP);
+function granoDe(q, H){
+  var g = KGRANO*H*Math.sqrt(ENC[q].ar*TINTA[q]/NP);
   if(g<0.6) g=0.6;
   return Math.exp(Math.round(Math.log(g)/0.04879)*0.04879);
+}
+function grano(H){ return granoDe(encActual, H); }
+
+/* EL UMBRAL NO ES UNA OPINION: ES EL INTERRUPTOR DE ESTE RENDERIZADOR. Mas
+   abajo esta escrito `if(g >= 5)` -fillText, un digito- y su `else`
+   -fillRect, un punto-. Por debajo de 5 px el 92,5 % de la figura deja de
+   estar hecha de digitos; solo el plano de FRENTE (7,5 %) tiene suelo propio
+   de 7 px. Ampliado a 3x en vecino mas cercano: a 5,52 px se leen 1, 0, 4, 5;
+   a 2,53 px es una espuma de motas MAS FINA que la lluvia del campo (11-16
+   px), o sea el material invertido. El umbral se hereda del renderizador. */
+var GBMIN = 5;
+
+/* CUANTO ALTO PIDE CADA ENCUADRE PARA LLEGARLE. `min` estaba escrito a mano
+   -210/170/120- en la escala VIEJA del grano; al cambiar la ley del grano por
+   la portada no volvi a derivar la puerta, y seguia dejando pasar huecos que
+   la ley nueva condena: 4 de las 5 secciones publicadas pintaban por debajo
+   del interruptor. No eran dos secciones sueltas, era la REGLA. Ahora se
+   despeja de la ley y se sube por la escalera del 5 % hasta que el grano QUE
+   SE PINTA pasa: cambia el mapa o el NP y se recalibra sola. */
+function calibrarMin(){
+  if(!CDF) return;
+  for(var q=0;q<ENC.length;q++){
+    var H = GBMIN/(KGRANO*Math.sqrt(ENC[q].ar*TINTA[q]/NP));
+    var t = 0;
+    while(granoDe(q,H) < GBMIN && t++ < 200) H *= 1.005;
+    ENC[q].min = Math.ceil(H);
+  }
 }
 /* LOS GLIFOS, ordenados por TINTA MEDIDA: 'L' el más ligero, 'Q' el más
    pesado, 2,08:1 de rango. Y el hallazgo que lo hace gratis: '0' pesa 277,6 y
@@ -1726,6 +1823,7 @@ function campo(){
   for(i=0;i<tramos.length;i++) tramos[i].a = tramos[i].s/(tramos[i].i1-tramos[i].i0);
   elegirDelegacion();
   perfilar();
+  calibrarMin();
 }
 
 /* EL PERFIL VERTICAL DE CADA ENCUADRE, y NO se recorre el mapa otra vez: la
@@ -2424,8 +2522,17 @@ window.__viva = {
      return {id:q.el.id||q.el.className, top:Math.round(q.top), bot:Math.round(q.bot),
              pos:q.pos?{x:Math.round(q.pos.x),y:Math.round(q.pos.y),w:Math.round(q.pos.w),
                         h:Math.round(q.pos.h),enc:ENC[q.pos.enc].n}:null,
-             luz:q.luz?q.luz.textContent:null};});},
+             luz:q.luz?q.luz.textContent:null,
+             hueco:q.bs?q.bs.map(function(b,z){ return b ? {n:ENC[z].n,
+                w:Math.round(b.w), h:Math.round(b.h),
+                da:Math.round(Math.min(b.cabe*0.88, innerHeight*0.68, 640)),
+                pide:ENC[z].min} : null;}) : null};});},
   ocupados:function(){return ocupados;},
+  /* la puerta de dignidad, para que la verificacion lea LOS MISMOS numeros
+     que decide el motor y no una copia mia en Python */
+  puerta:function(){return {gbmin:GBMIN, hdr:techo(), NP:NP,
+     min:ENC.map(function(E,q){return {n:E.n, min:E.min, ar:+E.ar.toFixed(4),
+        tinta:+TINTA[q].toFixed(4)};})};},
   luz:function(){var n=0;for(var i=0;i<NP;i++) if(pmk[i])n++;
      return {el:luzEl?luzEl.textContent:null, delegadas:n, deNP:NP};},
   destellos:function(){
