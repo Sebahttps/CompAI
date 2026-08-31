@@ -39,7 +39,7 @@
   --font-body:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px;
   --s6:32px; --s7:48px; --s8:64px; --s9:96px;
-  --measure:66ch; --shell:1180px; --hdr:66px;
+  --measure:66ch; --shell:1240px; --hdr:66px;
   --mascara-opaca:#000; /* NO es color de marca: es el tope opaco de una mascara */
 
   /* LA FAMILIA DE CREMAS DE LA NUBE. Ni un tono nuevo: seis escalones
@@ -50,6 +50,14 @@
      Se derivan con `_v15-cinemai/rampa.py`. */
   --nube-1:#96948E; --nube-2:#ABA8A1; --nube-3:#BFBCB4;
   --nube-4:#D5D1C7; --nube-5:#EBE6DB; --nube-6:#FFFCEF;
+  /* ESQUINAS. Vienen de la referencia que entrego Sebastian el 30-08: en esa
+     pieza NO HAY UNA SOLA ESQUINA REDONDA — botones, tarjetas y campos son
+     rectangulos de canto casi vivo. Nuestra pildora de 999px leia a app de
+     consumo; el rectangulo lee a instrumento, que es lo que vendemos.
+     Estan centralizadas a proposito: revertir la decision es cambiar estos dos
+     valores, no trece declaraciones. */
+  --radio:3px;        /* ACCIONES: botones, chips, rotulos */
+  --radio-caja:4px;   /* SUPERFICIES: tarjetas, formulario, credencial */
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -74,13 +82,14 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
 .site-hdr .inner{max-width:var(--shell); margin:0 auto; padding:0 var(--s5); width:100%;
   display:flex; align-items:center; justify-content:space-between; gap:var(--s5)}
 .brand{display:flex; align-items:center; flex:0 0 auto}
-.brand .logo{height:26px; width:auto; display:block}
+.brand .logo{height:40px; width:auto; display:block; overflow:visible}
+@media (max-width:420px){.brand .logo{height:34px}}
 .site-nav{display:flex; align-items:center; gap:var(--s5); margin-left:auto}
 .site-nav a{font-family:var(--font-data); font-size:12.5px; color:var(--crema-75);
   text-decoration:none; letter-spacing:.01em; white-space:nowrap}
 .site-nav a:hover{color:var(--crema)}
 .site-nav a.cta{background:var(--terracota); color:var(--ink-900); font-weight:600;
-  padding:11px 20px; min-height:44px; display:inline-flex; align-items:center; border-radius:999px; transition:background .18s ease, box-shadow .18s ease}
+  padding:11px 20px; min-height:44px; display:inline-flex; align-items:center; border-radius:var(--radio); transition:background .18s ease, box-shadow .18s ease}
 .site-nav a.cta:hover{background:var(--terracota-400); box-shadow:var(--glow-terracota)}
 
 /* ======== BADGE PROVEEDOR DEL ESTADO ======== */
@@ -90,7 +99,7 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
    puede dejar pasar el plexus. Medido, al 58 % el video se colaba hasta
    L=0,42 y el enlace en menta caia a 1,33:1. */
 .prov{background:rgba(18,21,27,.88); border:1px solid rgba(150,148,142,.30);
-  border-radius:7px; padding:9px var(--s4); backdrop-filter:blur(10px); text-align:right;
+  border-radius:var(--radio-caja); padding:9px var(--s4); backdrop-filter:blur(10px); text-align:right;
   font-family:var(--font-data); color:var(--crema-60); font-size:10.5px; line-height:1.5}
 .prov .t1{font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--crema-60)}
 .prov .t2{font-size:11px; letter-spacing:.11em; text-transform:uppercase; color:var(--crema-75);
@@ -104,7 +113,7 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
 
 /* ======== INICIO 2 — HERO PARTICULAS ======== */
 .hero2{position:relative; overflow-x:clip; min-height:calc(100vh - var(--hdr) - 100px);
-  display:grid; grid-template-columns:1.02fr .98fr; gap:var(--s7); align-items:center;
+  display:grid; grid-template-columns:1.14fr .86fr; gap:var(--s7); align-items:center;
   padding:var(--s6) 0 var(--s8)}
 .hero-left{display:flex; flex-direction:column; align-items:flex-start; gap:var(--s6);
   position:relative; isolation:isolate;
@@ -130,7 +139,26 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
      columna pasan AA: crema 9,97:1, cobre-300 4,78:1, crema-75 5,78:1.
      Precio declarado: detras del texto el plexus practicamente se apaga, y
      sigue vivo alrededor gracias a la pluma de la mascara. */
-  background:rgba(8,9,12,.96);
+  /* .50, Y ANTES ERA .96. El .96 no salio de una medicion: salio de ACOTAR con
+     un fotograma blanco puro (255), que es un fondo que este video no puede
+     producir — el #bg va con opacity:.8 y brightness(.85) sobre #08090C, asi
+     que el pico real medido en toda la caja es 180/255, no 255.
+     Re-medido como corresponde (velo apagado, tinta en transparente para que la
+     sombra siga pintando, y el video BARRIDO en 24 currentTime declarados a lo
+     largo de los 10,04 s del clip; estadistico = maximo de un promedio 5x5, que
+     es el grosor de trazo de la mono, no un pixel suelto bajo el antialias):
+       peor fondo bajo tinta   390 -> 112,104,97   768 -> 139,129,120   1280 -> 97,96,94
+     Con eso el velo se compone por aritmetica, sin volver a capturar:
+       alfa .96  peor 8,83:1     alfa .50  peor 6,85:1     alfa .20  peor 4,85:1
+     El minimo que todavia pasa AA es ~.20; NO se toma. Se toma .50, que deja
+     6,85:1 = 1,52x el umbral, porque el fondo tambien lo pinta el motor de
+     CinemAI y su brillo ya cambio una vez (1,22 -> 0,85). Al borde del acantilado
+     no se publica.
+     Y el negro es #000 y no #08090C EN TODOS LOS ANCHOS: el hallazgo del 29-ago
+     a 390 px vale igual a 1440 —el suelo pintado con el color de fondo de la
+     pagina ACLARA en vez de oscurecer, porque el fondo real ya no es ese color—
+     y era justo el canto izquierdo que CinemAI dejo abierto en su nota. */
+  background:rgba(0,0,0,.50);
   /* Solo pluma VERTICAL por defecto. La lateral se agrega abajo, y solo en
      escritorio: a 390 px la columna ocupa todo el ancho, asi que una pluma que
      empieza al 62 % dejaba el tercio derecho del parrafo SIN suelo — y eso era
@@ -170,17 +198,51 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
    funde (delta 1,7 en vez de 8) y sobre un fotograma claro tapa igual o mejor.
    Solo abajo de 981 px: en escritorio la pluma lateral existe y el suelo esta
    medido aparte. */
-@media (max-width:980px){
-  .hero-left::before{background:rgba(0,0,0,.96)}
-}
 .claim-mono{font-family:var(--font-data); font-weight:600; text-transform:uppercase;
-  margin:0; line-height:1.06; letter-spacing:-.01em; color:var(--crema);
-  font-size:clamp(34px,5.2vw,70px); text-align:left; text-wrap:balance}
-.claim-mono .lo{display:block; font-family:var(--font-data); font-weight:500;
-  font-size:clamp(14px,1.5vw,20px); line-height:1.5; letter-spacing:.2em;
-  color:var(--crema-60); margin-top:var(--s5)}
-.claim-mono .lo b{display:block; font-weight:600; color:var(--terracota);
-  text-shadow:var(--glow-terracota); letter-spacing:.22em}
+  margin:0; color:var(--crema);
+  /* ===== EL DISPLAY, MEDIDO EN LA REFERENCIA (Wix wh-1119 / VISTA.IO) =====
+     No se dedujo: se midieron los fotogramas del video de referencia sobre el
+     titular «EL NUEVO / ESTANDAR / EN ANALISIS / DE DATOS».
+       altura de versal .... 36 px      paso de linea ... 50 px
+       avance de la mono ... 29,9 px    columna ......... ~327 px
+     De ahi salen las tres razones invariantes de escala:
+       paso / avance = 1,672  ->  INTERLINEADO ~= .92 em   (aqui era 1.06)
+       versal / avance = 1,204 ->  TRACKING ~= 0           (aqui era -.01em)
+       columna / avance = 10,9 ->  MEDIDA ~= 11 CARACTERES, y CUATRO lineas.
+     La referencia justifica: en su linea 1 el hueco entre «EL» y «NUEVO» mide
+     129 px sobre una caja de 325 (+40 % de estiramiento), y su linea 2 no se
+     estira porque es UNA sola palabra, y la 4 tampoco porque es la ultima.
+     Nuestra estructura da la misma cadencia sin trucos: el texto suelto y .lo
+     son dos bloques, asi que la ultima linea de cada uno queda en bandera. */
+  line-height:.92; letter-spacing:0;
+  /* EL CUERPO LO SIGUE DEFINIENDO EL RECUENTO DE CARACTERES, no el gusto: con
+     70px la mono avanza 38,5 px, y «EJECUTADA POR IA» son 16 caracteres = 616
+     px. Por eso la columna del heroe subio de 553 a 652 px: es lo que cuesta
+     que 70px quepa en CUATRO renglones y no en cinco. Bajo 981 px la columna
+     es el ancho de la pantalla y el cuerpo escala con ella — mismo cuerpo para
+     todas las lineas, que es la regla que no se mueve. */
+  font-size:clamp(30px,9.3vw,70px); text-align:justify;
+  /* LA SOMBRA NO ES RELIEVE: ES SUELO PEGADO A LA LETRA. Encargo de Sebastian
+     del 30-08. La primera capa es la sombra corta que se ve; la SEGUNDA es la
+     que trabaja — un halo negro de 26px que viaja con el texto y le pone piso
+     ahi donde hay letra, en vez de pedirselo a un rectangulo opaco detras.
+     Por eso esta sombra es lo que PAGA la transparencia del cuadro negro. */
+  text-shadow:0 2px 3px rgba(0,0,0,.62), 0 0 26px rgba(0,0,0,.78)}
+/* LAS DOS LINEAS, AL MISMO CUERPO. Hasta hoy la segunda iba a 20px, en gris,
+   con .2em de espaciado y partida en dos bloques: eso no era la segunda linea
+   de un titular, era otro objeto. Ahora hereda cuerpo, peso, interlineado,
+   espaciado, color y sombra, y lo unico que la distingue es el cobre de IA
+   —que sigue siendo la unica luz de la pagina—. Es tambien lo que hace la
+   referencia: todas las lineas del titular al mismo cuerpo. */
+.claim-mono .lo{display:block; font:inherit; letter-spacing:inherit;
+  color:inherit; margin-top:0}
+/* A partir de dos columnas el titular deja de crecer con la pantalla y crece
+   con SU columna: (ancho-96)*.57 es el ancho real de .hero-left, y 5.6vw es la
+   recta que va por debajo de (ancho-96)*.57/16 caracteres en todo el tramo
+   981..1240. Alcanza los 70 px en 1250 px de ventana y ahi se detiene. */
+@media (min-width:981px){ .claim-mono{font-size:clamp(46px,5.6vw,70px)} }
+.claim-mono .lo b{display:inline; font:inherit; letter-spacing:inherit;
+  color:var(--terracota); text-shadow:0 2px 3px rgba(0,0,0,.55), var(--glow-terracota)}
 .hero-cta{display:flex; gap:var(--s4); flex-wrap:wrap; margin-top:var(--s3)}
 /* Va DEBAJO del CTA a proposito: todo lo que se mete por encima del boton se
    paga en pliegue, y el boton ya costo bajarlo de y=1070 a y=402. */
@@ -205,7 +267,7 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
   text-transform:uppercase; color:var(--crema-60); margin:0; text-align:center}
 .hola{font-family:var(--font-data); font-size:14px; color:var(--crema-75); margin:0;
   letter-spacing:.04em; background:rgba(8,9,12,.7); backdrop-filter:blur(6px);
-  padding:6px 14px; border-radius:999px}
+  padding:6px 14px; border-radius:var(--radio)}
 .hola i{font-style:normal; color:var(--terracota-300)}
 
 .hero-right::before{content:""; position:absolute; inset:10% 6% 16%; z-index:-1;
@@ -225,11 +287,21 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
 /* ---- SCROLL-CINE ---- */
 .cine{position:relative; margin-top:var(--s8)}
 .cine-head{padding:var(--s8) 0 var(--s6); border-top:1px solid var(--crema-12)}
+/* EL ROTULO SUBE DE crema-60 A crema-75. Medido bajo el trazo real (no en la
+   caja de linea) sobre el peor fotograma del plexus: en crema-60 daba 3,83:1 y
+   era el UNICO elemento de la cabecera que seguia por debajo de AA con el halo
+   puesto. En crema-75 da 5,73:1 sobre el mismo fondo. No se pierde jerarquia:
+   la separan el cuerpo (11px contra 36) y el versalita espaciado, no el gris. */
 .cine-head .kick{font-family:var(--font-data); font-size:11px; letter-spacing:.2em;
-  text-transform:uppercase; color:var(--crema-60); display:flex; align-items:center; gap:var(--s3); margin:0 0 var(--s4)}
+  text-transform:uppercase; color:var(--crema-75); display:flex; align-items:center; gap:var(--s3); margin:0 0 var(--s4)}
 .cine-head .kick::before{content:""; width:24px; height:1px; background:var(--terracota)}
-.cine-head h2{font-family:var(--font-display); font-weight:700; letter-spacing:-.04em;
-  font-size:clamp(22px,3.2vw,36px); line-height:1.1; margin:0 0 var(--s4); text-wrap:balance}
+/* MISMO TRATAMIENTO QUE LOS OTROS DOS h2. Era el unico de los tres en caja baja
+   y con -.04em: con el rotulo nuevo, mas corto, se leia como parrafo agrandado
+   debajo de un antetitulo en versales. La referencia del 30-08 pone TODO el
+   display en versales de mono, y los otros dos h2 de esta pagina ya lo estaban. */
+.cine-head h2{font-family:var(--font-data); font-weight:600; text-transform:uppercase;
+  letter-spacing:.01em;
+  font-size:clamp(22px,3.2vw,36px); line-height:1.15; margin:0 0 var(--s4); text-wrap:balance}
 .cine-head h2 i{font-style:normal; color:var(--terracota)}
 .cine-head p{color:var(--crema-75); font-size:15.5px; margin:0}
 .cine-head p.aviso{color:var(--crema-60); font-size:13.5px; margin-top:var(--s3);
@@ -241,7 +313,7 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
   flex:0 0 auto; min-height:0;
   transition:grid-template-columns .55s cubic-bezier(.2,.7,.3,1)}
 .lane{position:relative; background:rgba(11,13,18,.74); border:1px solid var(--crema-12);
-  border-radius:10px; padding:var(--s4) var(--s5) var(--s5); cursor:pointer; overflow:hidden;
+  border-radius:var(--radio-caja); padding:var(--s4) var(--s5) var(--s5); cursor:pointer; overflow:hidden;
   display:flex; flex-direction:column; gap:var(--s4); backdrop-filter:blur(7px);
   transition:border-color .35s ease, background .35s ease, opacity .45s ease, transform .45s ease}
 .lane:hover{border-color:rgba(200,121,65,.4)}
@@ -287,7 +359,7 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
   letter-spacing:.01em; font-size:clamp(20px,2.7vw,32px); line-height:1.15; margin:0 0 var(--s4)}
 .oferta-head p{color:var(--crema-75); font-size:15.5px; margin:0; max-width:52ch}
 .mods{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:var(--s4)}
-.mod{background:rgba(11,13,18,.72); border:1px solid var(--crema-12); border-radius:10px;
+.mod{background:rgba(11,13,18,.72); border:1px solid var(--crema-12); border-radius:var(--radio-caja);
   padding:var(--s5); backdrop-filter:blur(6px); display:flex; flex-direction:column; gap:var(--s3);
   transition:border-color .25s ease, transform .25s ease}
 .mod:hover{border-color:rgba(200,121,65,.45); transform:translateY(-2px)}
@@ -301,12 +373,36 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
   color:var(--crema-60); margin:0 0 var(--s4)}
 .chips{display:flex; flex-wrap:wrap; gap:var(--s3)}
 .chips span{font-family:var(--font-data); font-size:12.5px; color:var(--crema-75);
-  border:1px solid var(--crema-12); background:rgba(11,13,18,.6); border-radius:999px;
+  border:1px solid var(--crema-12); background:rgba(11,13,18,.6); border-radius:var(--radio);
   padding:8px 16px; transition:border-color .2s ease, color .2s ease}
 .chips span:hover{border-color:rgba(76,196,139,.4); color:var(--crema)}
 @media (max-width:880px){ .oferta-head{grid-template-columns:1fr} }
 
 /* ---- DATOS DE LA EMPRESA ---- */
+/* ======== SUELO SIN CAJA PARA EL TEXTO DESNUDO ========
+   Al bajar el velo del heroe hubo que medir el resto, y el resto estaba peor:
+   TODO el texto que se apoya DIRECTO en el plexus —los rotulos de seccion y la
+   ficha de empresa— no tiene ninguna superficie debajo. Medido a 1280 px con el
+   video barrido en 12 fotogramas y estadistico MAX 5x5:
+       .cine-head p        1,87:1     .cine-head .kick    1,90:1
+       .cine-head p lead   2,01:1     .d dd (ficha)       3,85:1
+       .verif              2,10:1     .cine-head h2       4,41:1
+   Las tarjetas (.mod, .lane, .form-card, .chips) pasan porque tienen superficie
+   propia; estas no la tienen. La respuesta NO es otro rectangulo opaco: es
+   exactamente lo que se le acaba de quitar al heroe. Es el mismo halo del
+   titular — un suelo que viaja con la letra, da piso donde hay letra y no dibuja
+   ninguna caja. Coste: cero bytes de imagen, cero elementos nuevos. */
+.cine-head .kick, .cine-head h2, .cine-head p,
+.oferta-head .kicker, .oferta-head h2, .oferta-head p,
+.rubros h3, .datos h3.dt, .d dt, .d dd, .cameo-wrap p, .hola{
+  /* CUATRO CAPAS Y NO UNA. Con una sola capa larga el halo se diluye: el
+     parrafo de 11px solo subio de 1,87 a 2,40:1, porque una letra fina tiene
+     poca tinta con que proyectar. Apiladas de corto a largo y casi opacas, se
+     acumulan y construyen un piso real pegado al glifo. Los radios son 2/5/11/20
+     px: el corto tapa el contraglifo, el largo cierra el hueco entre renglones. */
+  text-shadow:0 0 2px rgba(0,0,0,1), 0 0 5px rgba(0,0,0,1),
+              0 0 11px rgba(0,0,0,.97), 0 0 20px rgba(0,0,0,.9)}
+
 .datos{padding:var(--s8) 0 0; border-top:1px solid var(--crema-12); margin-top:var(--s9)}
 .datos h3.dt{font-family:var(--font-data); font-size:11px; letter-spacing:.2em; text-transform:uppercase;
   color:var(--crema-60); margin:0 0 var(--s5)}
@@ -332,10 +428,10 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
 
 /* ======== COTIZACION ======== */
 .cotiza{position:relative; padding:var(--s9) 0; border-top:1px solid var(--crema-12)}
-.form-card{background:rgba(14,16,21,.72); border:1px solid var(--crema-12); border-radius:10px;
+.form-card{background:rgba(14,16,21,.72); border:1px solid var(--crema-12); border-radius:var(--radio-caja);
   padding:var(--s8) var(--s7); backdrop-filter:blur(8px); max-width:760px}
 .kicker{font-family:var(--font-data); font-size:11px; letter-spacing:.2em; text-transform:uppercase;
-  color:var(--crema-60); display:flex; align-items:center; gap:var(--s3); margin:0 0 var(--s4)}
+  color:var(--crema-75); display:flex; align-items:center; gap:var(--s3); margin:0 0 var(--s4)}
 .kicker::before{content:""; width:24px; height:1px; background:var(--terracota)}
 .form-card h2{font-family:var(--font-data); font-weight:600; text-transform:uppercase;
   letter-spacing:.01em; font-size:clamp(19px,2.5vw,29px); line-height:1.15; margin:0 0 var(--s6)}
@@ -354,20 +450,20 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
 .f input:focus:not(:focus-visible), .f textarea:focus:not(:focus-visible){outline:none}
 .f input[aria-invalid="true"], .f textarea[aria-invalid="true"]{border-bottom-color:var(--alerta)}
 .f textarea{min-height:104px; line-height:1.6}
-.drop{border:1px dashed var(--crema-28); border-radius:8px; padding:var(--s5);
+.drop{border:1px dashed var(--crema-28); border-radius:var(--radio-caja); padding:var(--s5);
   display:flex; align-items:center; gap:var(--s4)}
 .drop svg{width:20px; height:20px; flex:0 0 auto; color:var(--terracota-300)}
 .drop .txt{font-family:var(--font-data); font-size:12.5px; color:var(--crema-75)}
 .drop .hint{display:block; font-size:11px; color:var(--crema-60); margin-top:3px}
 .frow{display:flex; align-items:center; gap:var(--s5); flex-wrap:wrap; margin-top:var(--s2)}
 .send{font-family:var(--font-data); font-size:13px; font-weight:600; letter-spacing:.08em;
-  background:var(--terracota); color:var(--ink-900); border:0; border-radius:999px;
+  background:var(--terracota); color:var(--ink-900); border:0; border-radius:var(--radio);
   padding:13px 34px; cursor:pointer; transition:background .18s ease, box-shadow .18s ease, transform .18s ease}
 .send:hover{background:var(--terracota-400); box-shadow:var(--glow-terracota); transform:translateY(-1px)}
 .send:disabled{opacity:.45; cursor:not-allowed; transform:none; box-shadow:none}
 .formnote{font-family:var(--font-data); font-size:12px; color:var(--crema-60); max-width:34ch}
 .done{display:none; align-items:flex-start; gap:var(--s4); border-left:2px solid var(--menta);
-  background:rgba(76,196,139,.07); padding:var(--s5); border-radius:0 8px 8px 0; margin-top:var(--s6)}
+  background:rgba(76,196,139,.07); padding:var(--s5); border-radius:0 var(--radio-caja) var(--radio-caja) 0; margin-top:var(--s6)}
 .done.on{display:flex}
 .done svg{width:18px; height:18px; flex:0 0 auto; margin-top:2px}
 .direct{display:flex; align-items:center; gap:var(--s3); flex-wrap:wrap;
@@ -379,7 +475,7 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
 .site-foot{border-top:1px solid var(--crema-12); padding:var(--s7) 0 var(--s8);
   display:flex; align-items:center; justify-content:space-between; gap:var(--s5); flex-wrap:wrap}
 .site-foot .fbrand{display:flex; align-items:center; gap:var(--s4)}
-.site-foot .fbrand .logo{height:20px; width:auto; display:block; opacity:.9}
+.site-foot .fbrand .logo{height:30px; width:auto; display:block; opacity:.9; overflow:visible}
 .site-foot nav{display:flex; gap:var(--s5); flex-wrap:wrap; justify-content:flex-end;
   margin-left:auto; font-family:var(--font-data); font-size:12px}
 .site-foot nav a{color:var(--crema-60); text-decoration:none;
@@ -393,7 +489,7 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
 .done.err b{color:var(--alerta-300)}
 .done.err svg{display:none}
 .btn{font-family:var(--font-data); font-size:13px; font-weight:600; letter-spacing:.06em;
-  border-radius:999px; padding:12px 24px; min-height:44px; border:1px solid transparent;
+  border-radius:var(--radio); padding:12px 24px; min-height:44px; border:1px solid transparent;
   cursor:pointer; text-decoration:none; display:inline-flex; align-items:center;
   transition:transform .18s ease, box-shadow .18s ease, background .18s ease}
 .btn-primary{background:var(--terracota); color:var(--ink-900)}
@@ -514,7 +610,7 @@ html:not(.js) #nube, html:not(.js) #agente{display:none}
 
 <header class="site-hdr">
   <div class="inner">
-    <a class="brand" href="https://compai.cl" rel="noopener"><svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="-38 -18 372 131" role="img" aria-label="compAI">
+    <a class="brand" href="https://compai.cl" rel="noopener"><svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="-16 4 328 87" role="img" aria-label="compAI">
   
   <defs>
     <filter id="brasa" x="-150%" y="-150%" width="400%" height="400%">
@@ -571,8 +667,8 @@ html:not(.js) #nube, html:not(.js) #agente{display:none}
     <div class="cine-head" data-sec>
       <div class="cine-head-grid">
         <div>
-          <p class="kick">Un dolor · Un servicio</p>
-          <h2>Cuatro compras arrancan a la vez. <i>Elige la tuya.</i></h2>
+          <p class="kick">Acción CompAI</p>
+          <h2>Un dolor · <i>Un servicio</i></h2>
           <p>Cuatro situaciones que se repiten en cualquier unidad de compras. Haz clic en la que se
              parezca a tu semana y esa se queda con la pantalla.</p>
           <p class="aviso">No son clientes nuestros: partimos ahora y la ficha pública lo muestra.
@@ -638,7 +734,7 @@ html:not(.js) #nube, html:not(.js) #agente{display:none}
 
         </div>
         <div class="cine-foot">
-          <span class="conv" id="conv">Las cuatro terminan igual: compAI como proveedor del Estado, hábil y acreditado, con la solución conforme.</span>
+          <span class="conv" id="conv">Las cuatro terminan igual: el expediente listo para firmar, dentro del plazo.</span>
           <button type="button" id="cineReset">Reiniciar</button>
         </div>
       </div>
@@ -648,7 +744,7 @@ html:not(.js) #nube, html:not(.js) #agente{display:none}
   <section class="oferta" id="oferta" data-sec>
     <div class="oferta-head">
       <div>
-        <p class="kicker">Qué hacemos</p>
+        <p class="kicker">CompAI Global Solutions</p>
         <h2>Cuatro modalidades, <i data-luz>un mismo expediente</i></h2>
         <p>El Estado compra de cuatro formas distintas y cada una pide su propio papeleo.
            compAI trabaja las cuatro con el mismo criterio: leer lo que piden, comparar lo que hay
@@ -662,7 +758,7 @@ html:not(.js) #nube, html:not(.js) #agente{display:none}
 
     <div class="mods">
       <article class="mod">
-        <div class="tope">Hasta 30 UTM</div>
+        <div class="tope">Hasta 100 UTM</div>
         <h3>Compra Ágil</h3>
         <p>Especificación admisible, tres cotizaciones comparadas y la orden de compra emitida dentro del plazo.</p>
       </article>
@@ -770,7 +866,7 @@ html:not(.js) #nube, html:not(.js) #agente{display:none}
   </section>
 
   <footer class="site-foot">
-    <a class="fbrand" href="https://compai.cl" rel="noopener"><svg class="logo" viewBox="-38 -18 372 131" role="img" aria-label="compAI"><use href="#brillo" filter="url(#brasa)" opacity="0.9"/><use href="#marca"/></svg></a>
+    <a class="fbrand" href="https://compai.cl" rel="noopener"><svg class="logo" viewBox="-16 4 328 87" role="img" aria-label="compAI"><use href="#brillo" filter="url(#brasa)" opacity="0.9"/><use href="#marca"/></svg></a>
     <nav>
       <a href="https://proveedor.mercadopublico.cl/ficha/78.491.451-8" target="_blank" rel="noopener">Ficha de Proveedor</a>
       <a href="#cine">Cómo trabajamos</a>
@@ -1214,13 +1310,31 @@ function fundir(a, dur, curva){ fa = {de:ca, a:a, t0:reloj, d:dur, c:curva}; }
 /* ==================================================================
    C · LA NUBE
    ================================================================== */
-/* El mapa de tono, horneado: rejilla de 60x171 celdas de 5 px nativos sobre
-   la caja 300x855, tono cuantizado a 16 niveles. A..P = tono 1..15; el resto
-   = carrera de ceros. 5.579 B de texto en lugar de 92.802 de WebP, y sin una
-   sola petición ni un byte de base64. */
-var MASA='++++++++++REB+++++hB+++cD5GCIIHGKLBDBUBMwDSDCRDOLIIMMOLGPJJ2EUEKLPLOPPIEJPPMOKJBxCUCLHKHPHJOHHQIPPPMMLCSCCrDIVDLPENFGMKJGMLMPPNOHHRDBzJMPDBQKEFCFEIMOPNPPNCUCvLHJHETHERKKLLIPPPIDTCjHaNIGKQDQBQDBDQLMHOHPPPG0IPJBFCDTCHQHJGOJPPPODUFCsONMHODDYCNMOPPPFRCRBsENPPNKCDUGCJJQLMPPPJFRCvHJPNLHQBTGHBBCCMLOLPOIlCCaGNPMMMDCQBCTCRFKNKPPLQECvEPPJLGBEQBCQCFQFEQIIPPPPOmBCUDTCNNMOOGETDCQBCDLIPOOPOJVCbBRDaEPPPPMCGQDUEDBDFNMKOMGbBVDRHCDBSBCBCQGPPPPIQETDHQFDRHKLKNGBkCQBGCSCQBBCNPPOPMQDQBQBDEBSHHLLOOLZCCZBQCSIFFHJIDNPOLOFBCTBREEQFIMJPPNEDkDBDQDKDNEEBGPPPOPLHFDBHRETHGOHJPPKBBnFQEFCGEJOPPOPMDEDCRCRGEQEFLMNPJIQGQHfCQHRCTJHQFJOPPPKCBBCCRCDIFBGMPMPPPFFDSFBeCBRBQCQGRENOPPPOHGRFSBFGQLPPPOPOJUClDQCRJINOPPPLEQECQERIHDIPPPOKMEBnBVBNGNOPPPNDTCRGHDLPPPOOGFBXBCcCBQCEQCCLKGKPPPPPPEEQBDDQEEJPPPPOMDDZBgDQGQCFNKPPPPPPHDQCQFFIHPPNPMONHGCmEDRCSCCIILPPPPPKGDEEGIJIOPMPONNIQDREmBBREDBRHMPLPPFCCGQBFMKMPOPKLJMQCCQBnFRCRCQFKJHOPEBERGGJMNNLMCQKFqDYHLNHNHGCCSCFDLMGGFQFCLREBVBDWBSBRCBWBQLOPPKEQIQDRCBIOOLJHBLKECkCCCZIPPOKICBCRBSGJMPOMGEBQCTDTCXCTDRFRCDCCILOPOCCQCBRBRBJLHNJOPIHCVBDlGELBGEHKFBGQBFTCCCDFOEELILNHERBBQCaBBWBHLCGBCIFEDBSEVBKQCQBKFQGGKIfDESEDBQIPJGCCSEEDSFBQDCSJQFFQBDEGHOISDRFgCPMDDDCBCQCEEDRCWFQICQDREDEEEUBfEKLFESCCBRBEBYCQGBQGDQDBFCGDDhFRHECCRCDBCHDCERCWKQEEQEDDDDQBGKUDeBDEELRBQCDBBQEZGQDDQDCTBFJQCiDHJGBVECQGZMQGEQKISCDJMFFQGfILKDDCQEQCRCBQEZBQHEQFDSCKGICSEeEJKFJCTCCCRGUDQGGQJQECQCCQEEGIOEfBDTIGRFHDBDBEBCHUCQFEQFQHFQBRCCBJMFgBQCGQMDQCBGQCDTBUEQCREQECQEDSDHKOERCQBeJPIJLDCQDDESEUFQEECOQCCQHGQCQGGIMUCYCBTDPJKDCSCBSBUCQBRDQFEQCECEBQECGRDEBfDMCCCBHKGFFDRBUCQEDQKTEQFGRBQLEjIKFQBCMPFBCBRFWFEQJTBWECjJGRCCLPPJFDCQBaBSBCBTCGIhCQEGCQECKPONFDVBBRDDRFRBKHCTEDiBBJQCDKGPPONIBZBRFQBQCNIMESCQHISCcCFLCNCIGPPOLHCRBWDBQGQDCEJJPFSDFDDhFJIDECNMPPPKCREQDCQBRGGSOMMKKKDVDTCcIFGQCOOIOPPKFDQDQCUBTECFPOEECCQDRCCdBREEHIQGIJONPMHGSDBTGESJEQNOECIDTGJCCQCZDCFGDCDQJNIGJOLJESGETEESIFQEGDQMJBRCMFDCdEBFRCECBKPPHOJDDTCFUCKKGLKGQGNBBQERDdCBCFCRFCEOPOKKJBUEKTEEKMNMHFQDPIEBCRFXBVEDERICDDMNMNGECRBSBUCKHMPPJRJCCDSIFcBBERDFCEQHOLILIDFQEUCBBGCHDJOPMREDQDEDJCEaBRFDSBFCDNJKILFCEQCUHHQHBJMKOPOFWBQDcHCBQCCQIQJKKKIFBQDQEBQCEQDFQEQIKLPPOJSCGQGDCEXCRCCCCSHDBCNEDKCFGBIQDCRECGFQHQGFGJMGHREGCQFQFEEYCCQGCQDRCBBIEEEQEFQDQDQDEBQGDSIMECFGFRBCCGBRCZCRDQCREDQCLFEDQGREQIBQFBBDDBJCLMFKHQGGRBCRDEFbCDSBQGQMPKQNEEDQFQFRKEQGKCKDJJFFFQJGRELRDEZCRHHRFDSOIGFKDBBQBQIQBGDQGGQCQDCQDEUEKECREJCXBQMDDJQCRDDGEQHTHSCGEQFEQNBNMEGRFDSEFIQFCDBZFECDGBREDFCQDFDRETFCQJIQIQKJQHBQCGCSHEQHGBCTBQCSGCHDFFRIQKFQHEIECITGRGDQIBHDBMEQDFUFGNIICWBCQFLDQCDECMQIEQNDECFMBRBIREDQDQIGQKDQBBBTOLHDIBZMBQBGBQDHQEDQHQFCQDQFRCWIEQEBQDCHQCRDQGEFCCVCRFQDQLQJMEQJHSGDSEXJQJGQKHQFQIUHOIHFCUCEQBLDGCIQIPJQETBTCRDUBQDEQEDQCENFTGMFIFCXLODDGRLOHQLEQBQGESCRCUFQGEQLMQCHNKCSJNMJFDXGIGCLBQKMKQIBSFDUBFRBREQMJQKKRCHKBRCBOMJHEBUDDLJEEMCQGLMQHTDCVBUBQECQDEQGFHFSBEMFHHEBWJDIDERDEEQJBSECSGBWETDDCJJDGGRDIMGFGDBWNMNJKCBKPMQGQDRBRGQEBWFTDBQEFDFJSFHKFDCWCMJKINFFPPMQFCBRGBQMQDRGBTCTKLFEDDJNDSHMGFBTCREMOHJMFHNOIBKCSECSIQEIEQCRKESHDQECBFPGSJKGECWKNLPPPJIMKKBRCRGCQCQLDBGDQCRNFRCMJQEFBDJHRECIDFBWLLKOPPMIHGJDBQBGQIEQFQJGDJDSCIUDHLDJDKLTECCCWMMOPPPHIKKKQDRBQFDQCQIEBIDTMBSFEKNEEEKLCTDBCWFOPPPPKLIPOCSHQIFEJDPJDGBTCCSGFQDFGDEHBTEYFNPOPOGMNNNFECBEQLFCIGMDEHCTMDSDCQBEFQHKHSGCCXFMPPPOJNFNPHIBQDDJCCGDPHQFETKCSJGBCCEFOKFSGIDXCJPPPKIPIMNCMEQFEMEELQLGBGKCSGCBRFCCQEDQDGIDRDaDMPPLGHFJLQMHQIEEQFHTKHFSLHSIFECCDQHGFLeENNHNDFNMQBCBDEIEBHBSEKCQCDLCCRLFBGGKDCKHGBeBRFDGGGCKGCGGGFDGQDCQMHSDLDFQCIHHICKBHIDJHQCfFFDKJFHGCJFMLQHBLFQFJBCCCIDHRKKIIFPIHGDBISCdCIGOKGRDEDHKBISBMJCQDQKFBRKMHGCOHICFCJFgHIKKBQCEFOCEGQFQJEQGEFBRMHMRGHGFCMHNELHKMZCUBGEFJKFGEDSDCJCJDQGGTGCKHBLKIIEHFKIGHMNBeELGHECQCQHJFGECDQDEQKNEECQJIIRDFDDQHQHNMOILfDIQCJICLKGEHFDCMQGGQFJHFRGEOQBLKCEQHDHPPKKHKGFcGNGDHFQMCDHJFQEOQBEFMPLCRJDJGCIIIJDFEONNNNMMFDBbIIDBCCQMCJIKGQCDQHKIKJPJECIGICLFCRDLHOKLJONJDDBXFSKCFDFHQKCKNLCQDCQGECJIPOKHKGIEDIHQEFLIPKKKJDfCQHQKEIOKINKQCGGQJICKJPPKDNKOCQGHDEJENMJMJCkBQCGFCMMBDQCQCEMNJPOKJDDFFELJHLDCIHCCTCQBfCHTHIEGSBFOODGDEGESCQIJLPGMICSECFDCgBTENKFEKQCGJICDECCBRDCDGNMIFCBuGJHDFFQEEENCCOJERERKLOMEIwELICDSEHNECGCDKDFCCMLNJCHBTCEpDIHQDCFFGHNDCEEGHEJBBLIJHCCYBCfCETGMCCGEQBGIKCCLKGCIECEKHNHDDBSDmBSBIIDCCEEFJHFDDFJDGFBDGHJJIDGCuCIKCEBBFJIIIEFJKHICFGJJHKIDCBQBWCbDUBBBCEHDFBGEGIJFEGLLJFEIJJJKKICGBBkCSBBCCCCEHEECFFEEJFEHKKKJKJJIJJKFCDBBBBBQBRBfBBCDDCDHJFCCDEEGFEFIKKKJJKJIJJJFCCBBBBCBBSBYBBBBBBBCDEECDIIGHIFEGKGFFHKKJJIJIHHJIECCBBBBDBBBYCQBBBBBBBBBCCCCIJIGHIGDGHIFHGKJIJHHHIIIFDCCCBBBBDBBaBBBCBBBCCCCCDFJIGGEHFIJJGFFJIIJJIIIIHEFCCCBBBBBBbBBBDCCCCCDCCDEGGGFEHHIJKIFGIKKJHIIIIFDCCCCBBBBBBbBBBDDDCCCDDCDEHEEFGHHIHJHGIJKKJJJIIGEDCCCCBBBBBBaBBBBCCCCCCCCDDEIIHHFIJHHKKJLLLKKJJJIEEEDCCCCBBBBBcBBCCCCCCDDDDEFGHFFIHJILKLMMLLKIJJHEDDDCDCCBBBBeBCCBCCEEDDDEGGHHGHHMIKNNNNMJIHKJGEDDDDDCDBBBgBBBCCDDEEEFIKLIIMILMMNOOOMKJJKIFEDDCFCCCBBiBBCCDEEEFFHLJIJLJKMMMOPPNNLLMIGEEDDCCCCBBhBBCCCDEEFFIHLLJKLHMMNNNPPOMLNNJHFEEDEFDCBBhBBCCDDEFIGGHLLKLKJLMMLMMLMMLMNMHGFFEEEDCCBBfBBCCCDEEFGHIIJMKMMMLNLKKLNLMLLOMIHGGFEEDCCBBfBCCCDFEEFGHKJKKMLLKMNLKKMNMLNMONJHGFEEEDCCCBeBBCCDDDEEFGHIJJLLNLKKMNKKNNMLKKMMJHGGFEFFFCCBBdBBCCDDEEFFGHIJJMLMKLMNNLKOPNNKMONJIHGFFEEDCCBBdBBCCDDEFHGGHJJJMOLKNKLKKKMMKLKKJLKIHGGGFEDDCCBdBBCCDDEFFGGHKJJNMLMMLMMKKLKLJKLMLMJHGGFEEFDCCBdBBCCDDEFFGGHIJJLPMLLKLNKKLLKKKJKLMKHGFFEEEDCBBeBCCDDEEFGHHHIJKONKKLMLJJLMKJKKMLMJHGFFEDDCCBBeBCCDDEEFFHGHIIKLKJLMLMJJNLLJLLJLLIGFFEEDDCCBfBBCCDDEEFFGHHHIKJKKLLLJJKLKJJJKKJGFFEEDDCCBBfBBCCCDDEEFFHGHHIJKLJJJIIIJKIJIJJJFFEEDDCCCBiBCCCDDDEEFFGGGIHHJJJIHHIIIIIHIGEEDDDCCCBBjBBCCCDDDEEFFFGGGHHIGGGGGHHHFFEEDDCCCCBBlBBCCCCDDDEEEGFFGGGGFFFFFFEEEDDCCCCBBoBBBCCCCDDDEFFEEEFFEEEDDDDDDCCCCBBBrBBBCCCCCDEEEEDEDDDDDCCCCCCCBBBvBBBBCCDDCCDDDDCCCCCCCCBBBBzBBBCCCCCCCCCCCBBBBBBB5BBBBBBCCCBBB+UBBBBB++++++++++++U';
+/* EL MAPA DE TONO, HORNEADO DESDE LA FIGURA OFICIAL. Rejilla de 88x165
+   celdas de 3.74 px nativos sobre la caja 329x617 recortada de
+   `Hola, soy Compai.jfif`; tono cuantizado a 16 niveles. A..P = tono 1..15;
+   el resto = carrera de ceros. 6.178 B de texto, sin una sola petición ni un
+   byte de base64.
+
+   DE DÓNDE SALE Y POR QUÉ CAMBIÓ. El 30-ago Sebastián miró el sitio ya
+   publicado: «me gusta el movimiento, el agente NO es el de la imagen
+   original». El motor no tenía culpa —el mapa anterior venía de
+   `_agente-viva/_fig-mirada.png`, un derivado ESTIRADO (aspecto 0,351) de la
+   familia correcta, y esa deformación borraba las piernas y fundía el bajo
+   del vestido en un charco de luz—. La figura oficial tiene aspecto 0,533 y
+   piernas. El fallo de fondo era de TRAZABILIDAD: el mapa vivía como una
+   cadena dentro de un HTML de 79 KB sin un byte que dijera de qué imagen
+   salió. Ahora lo hornea `hornear.py` desde el archivo oficial y escribe su
+   fuente, su sha1 y sus hitos en `_mapa.json`.
+
+   GW y GH NO son magia: el ancho lo fija el barrido de `hornear.py` y el
+   alto sale del aspecto real de la caja, así que `GW/GH` ES el aspecto de la
+   figura y las coordenadas de rejilla se normalizan con ellos. Antes había
+   un 300 y un 855 escritos a mano en cuatro sitios: si el mapa cambiaba de
+   tamaño, la figura salía desplazada sin un solo error. */
+var MASA='++++++++++ZB+3C+3CCBBBBBBXBSB+YBWBBBCDCDDDCCCBTICSC+dBQBCFKHJLJOPGIHFCBBQBGDRC+ZFDSFBCGMOJMOKLLHPNKHDCCBQCBCB+WBWDEIKLLIPNJEHLOONINFCCBBDC+YGDUGHMJLJFLJIGIJNOPPNFDCCDFC+YECTBCINJHFFIIIEIHKKPNPOMFCDBBC+YCBBCCCILKJDDEFGEDEINJMIOPPFECQBDF+RBVCBBCGNGJEEDDCGFFEFKHNJOPPNECBBBCB+QDVBCBCKLGFEECCCCDFEHMGNHMPPKECBBRCB+WBCCFOMFGKCDCBBDEDDFEMMNOPPHCCCRED+WBCDJPMMKIEDBQBCDDDICILLPPOHCCECB+YBCDKNPPKEDCCBCDGGDIDIMPOPKLCCCCCB8DYBCDJNOJGGDDBBBDDCBBCFJLHMPLDECBBBC+WBCDKPOKLGEDCEBQCBCGCEJMNPPNFDDCBQBBB5BQCRBQBCQBCDHPILKGFEBCBDFDBGCIHMPOPPHCCBCCBDRBBUBtDRCDWBCCDKPMOPIFCDDQBRCDCHHNMJMPNCCBSCCRBCDyHQBHCBBSBCCDEKONOMEFDBBQCCCEFCCEIIILHDCCBUBQBBCCDFxBDEFDBBDDEDEFNPNONGFCCBBEFFCDCDJJLKMLECBBVCCRBCFsBQEBDDQDDBDDCGFIGHPPKPMEECCCBDCCCGCFHIHMPLECCBVCDTEuBRCCBBBIJJIKEFIPPLNKFHECFDBCDCECFHLJINOKECBWBBSBsCTBCDCBECIFEGHJOPOMLHGFDDCDDDDFCEHJMKOMMCGDE2CVBDBBEEBFDKFFHKPPNNGFDFECBCCFKDEGJJNONHFECDBCB1BRBCCFCBBCBCDFDDJMPNPPIFDCGCBBFGGDHOPPPPPKDDBRFC0BWBBBDCFCFCDIJNPPPNIEEFBDBCEFFGOPPMKLGDBB+SBBBBBBCCGKILPPPPGDCDCCCCFIEHOPPMMLFECBBBBBRBC5EBQFCBCELIKLPNPPNKEDCEGDDGFOPPPNMGEDCBBBBBRCE8BCCIEHIINPPPPPKFDEDDGGGMPOPMLLIHFBBBBBB8DCEQCEBCCDIHLNPNOPOIEDFGIGINPLNOMNKCEBBEDB+RBDBBCDGEDGJOONPJFFGEEIJJJOMOKLHKDDCCCCB+RBFDBCEDECGHKJJPKEFEDFFHLKOJNGEJICCCBBB7BTBBSBBCCCEJKJIKGFFDCDDGGIOGHGDGFJCBDDVCE0BTDEUBBDDFMNPKHDEGDCCDDHMOKIKDIJEEB3BSCCBRDDBBUBBCEKPNJMFDECBCBCCFIKPOLGFFCDTDTCzBCRBBDQBFRDDCEJMOOIFDDECQCCBCGJHKJMNKFCCBTBDRCwBRCDQBTBBBCFIGEGGGLEHDCFDRCBDFDGKHGJIKKHESCQCxBBEDBCDCBUBEJHHFCJEGFECCDDECBCBCCHFDEDIGDGHIHCWCCxBIFDDDEDCDLLHEEDCCDGECBBEFCDFCBBICDGCCEFGGMKCBQDRGyBQBTBCCCHPJEFCDECDFFCCQCDCCCBBBECGEBCDCEGGFGCBBRDyDTBRBBFLIDDBBCEDCCBEEBQCBBBSCBFCBEGCDEEEIDE1BEDUCFBEIFCCCCCEBEICECCBEVHCDFCDGEEECDFKCTERCuBWBCDFFGGBCCDCDDCDDBBBBQBQCQECDDCDDBBCCDGICCCBSCuCFRBBSBDHHGGCRBCCDDCEDDBBRBSHEDHQIIBRCEHLGFBGUC1EHNGDGCDDBDBBEQCCRCCCBQBQCBFGQEGCQBDIHHESFTC2HJGJFCBBBDCDCQEDSCDCEHQGCDDQCECDGGHMGDWCCyDCRBCIEBCHGBFCDFQFERCBCBDFQEBFGQBCBDDDILHDZBwBRGDEIEEDFDCFCCBRCSCDCQDQDCCDQDFBBBEGJOFRCQCSB2CMOGLHDDCGCDBBEDRBCDCQHQIECDQFHBDDFHINCTCSBxDTBHOGGFCDCDDBCQCSCCDRCQCBEFQBFDFCBEEGCBCECRC4BIKDEDGJHGEDDQCBQCQBCQCFQGEQBQDDFFBQCCIFWBCCQBzCMGFDEGNLEDCDQECSBRDFQFCBCBDDDBBCBBFE+BCLDCDFFPPKHDFBBRBQDCRCRDBBBDECBCBBDFIXCBBzDCGFCEFFOPKICDQBRBQCBRFRECCCJIFCBBQDCCCSBQBDB0BCHGCFFHLPPKJECQBRBQBBRCQEDDCCJIMGCCBDCGKSCxCWCIGHJFGINPKJEDCDCBCQCBQCEQECEFGHHPIDBQBEDETCQB2BJIFEEHKLPPNFEDECCEQCREGRBJKKIJIEDCQCQCDTE4DHEGDHKLIPNOFICDCBBQCSBRBEEFMPGFFDCDRDDBB4EQEFEIFDHKHNLPIHECBCFQBRDGQBCGGDIMGDHEBBQCHKDDQDQC0DCHDCDBDJMFIJKIHDCQCFTBEBCCFGDFGGCIJDCQCIEDTD1DFDEBCFDDENNKHMFFTDEDBCBDDHJIIHGDFOFEQDBQD0DUCCCGBCDIDJPLLGIECTDFEBBBEEIJKMIIDDMHECDRFUCEtCUCDEDBEHEDFKJIIGEDQCDBCCBBBBBDHFJMPLDCFDDDCBDIHvCYCFCBCDDGDFJJIGHEFCCBQCCBCECGEGHHKNOFCEECCDDHQG3CQBJBCBCCEDJIIIJICFQCCQDCQEJCEDGHHMPNICCCCCQEEDC0DRDCHCBBFEFEDLFGHGFBECCEQCDDCCCGDFGJLPKJCBBCGBDCCECxFQBRCQCBBCBEECIKDGFEFFEEBCQDCCDJBDDHGGFKEJCBEGDCFBGGEB0EQDEDDQBCECFEDFEDDSDDCDDCBFBDCFJHFGFDEBBDDFBQCEBuCDRCRCRDQCBQFDDJLEFGDGQEBCFBEFCEFDHGGIHGHDGHBBCGBCDFEBTBvCQBFDQDBDDCFLKEGLBDQDQCEQEEDFHDEEFFDDFCEEBBEKDBCDBFTDTBgBYCCBLCCEDDCCGHIEFFBEQCBBDQFFCCCBECFGEDDCDDBBBGGDCCEKFwBTCKEGGCCCCHDIDDHCDQEDSFFBFJQGFJJGFBBDECRCGICFFEDtBBQCESCDCCEIDBBFCECBFCEQBRBQDCQFJQECFGDFFBCFCSEEDIIGFBsCCBICERCHHGCDCCEGFHCEJDIQIFSFDQBFQFFHGDJHBCFBBQBCIIJHMGByDCCIEBDFEDGFCEBFFSGEQCQFCRCRBFICECBCDFBQBCJHHGHCEsFWCGBBCGCGIDCJBCCDFSCDWDBGHQFHBECICDBBDDIHLKIBXCnEFBDGCEEFCMJDDHBBBBDSBDQCBTEBFFQGICEDHDBBBDHNFIIFCFtBQEBBJIGEFDCNMFEFBCCBETBQCBVBCQDGCCELJBBBDGLMNMLDCtBRBCLHECIBCNKDDHBQCDFVFUEBGJQIHDDEHJDQBDFLPMNNFCBSDrDCLGEEJCDHMGDDRBQBVCSCQBQFHQDFCCEGIBBBCDNIKOOLFBSCoERFDLEKDECDFJFEFRBQFTEWCTDGCGGEEDBBEHJGHONODBaBXBRBUCQBBCJJGFGCDHJEEFSBDTGWETBCBFHEFICBCHIHHIIMGBsBBBCGKJJJHDGPPHCCBERDQHEQBQCBTCTGGEFDDGKCBCCFOIHHHICrBDDBCGJKFHLEIOMFFGCBQBFQCBCEBFDTEDSGGBDDCENGBBCIMIKHIMEBVDdEUDDFCDMIJNNLELILFECCBBCDSFHBGFREQHISGFCEFDEIHCBCFKGJHHMFDZCXCQDBTDBQBDNHKNMNGHFKFDBCDDEDQECCKBFEBSHESEFFFDEEHKBBDCGEHFFGCaCZBHBTCQBEMJJPPNGHGHEDDBDCCGCCBDICGFTFDSCEGKFFEFHCBBCDEFKGJDRECDDEbDBQCXBDIMNPPNGHIMHCBQCDBHCGFINCDCTEDSEFEEEEDHHDBBCCGDDGFUBQBDkDQBCJMOPOKFKLNIDCCDDFIEEEHLCGFTEESBCBCFFCDGEBBCDECCFBGsBQBCHNMOOMGJFLLFDBDCEECFEIIBFETIGBRFGCCCDDKIGCCCJJGDBQBSBhBVDQBCFKPPOGKLHNJEHDDEGHCFEIMCDGCBRCCCREECCDECFFGDCCFECBvFBBCDGOPOFHGEKFEIEEFEDCGDCCBGJFBRGHBRDDDCCDCFFDGCCBSBCmBQCWBCDIONHIDGLGDDDDDDHCEDCQBCEGBCBIGSGGBDDGEDGHFCCBXDgCbBBCFDCFHDHEEDEEEGFEECBBBFHFCCBHDDBQFFEHCGCFEDHHCDVCrEUBBBCEDDJFGHEEGFJDDDFJBEFEBDBIGECQGKEGDLHGGDDGCBQETBrEXBEGFMEECCGDDJEFDCBBFGFBDQEFCBQHLFGCKGGCDDGEBWDzBFGHFCCDCHGEEDDDEFBFDEDBQFJGCQDGEEBHGJEGGHLCBrBUBRBUCGEFJEDFCEDCBDFDGHBDECBREEGGDGHEGDHEIEEEILDBCByCUGFEFECCDCFFDDEEBBDBFIFCDBEHFCBDFEEBEDEJIMGJDCCCBBVEDCBjCXGDCEGDDIFFEFDDFDDHDDGHCCBDHIDBFKCDBEDENNHHGIGHCBDQCrCXHHCEHCDGCDFEECGFBCCHJLECBEEGGBGIFGCEDLKKJJJNHGDBRC0IFDCCBEGEIFFCCEDCHFIGLHECGGGCFEDCCDHFKIHGMMKEHFCQCSCtERCGBECIDDGDJHFCBDBEEDFFJKJFFGFDEFHBCEHGMIGHFEDCBBRC0BDBFCICHKFJJEBCHCEGCEHLNJDGKJDBDEDCGEHJHIIDCBRBDCD5DCEGDFJFCCBCBDFJGLNJFEFEDDGHFJDCFGCDBBBQDBEvBbFCRBCICECBBBDIMFDFDDDCQBCBDGHKFHGDBRDCFGFEUB1BTBGIECGDQEEIDCECCBCQBCBEIIGDCCBeC5BIDFBGQCDDFFCHHDBBCBQEHIKDFCB+bBGFDBCBQCEFGCDDCFECCCHJHICECUC+XDFDBCCDCEHFBCDDEEECBFFFFCBBXCE8DUHFBCEBQCEFDBFHFCEEBCGEKHCCBSCTB+TDIDBBBCDEEFCCCGCDECBDEGGHCDB+cDIEBCQBHHEFDDEJHGCDDFFEIHCBZD+SBEDDBQGCEGFCDHNIDCDHHHIKICDB+ZBBBBEFCCQDFCFECDJNKHKHJGHINFBCYBB9BDBBCIGDBBCCDDCCDJNLJHKIGJLLEBUBUC8DBFBBDHGDFEBDGFDCDJMIKGHHFFLIDBUB+WBEIKGEFECCEEEEDHHFHGEFGJMECWC+TBQBCGIFDCCGEJHGCCEHFKJGILLJDE+XBSBRBEDDDBCGDFGICCDJJJGGIHKDBB+VCQBSCSFDBDCEGDFDGCEEKJHJJGGECB+gCGEDBCEDDEIEJHKIIFIIICBCD+VCTCTBDDBQBDDDFGFKKHHGEFJGBBQBQC+TBTDTBDCFBBCDECJILLJEDCGHCBSBCBC+WCCBRBGFIBGECFCFHIKJDDEEFBTE+dBCDECBECCDDDEJJFGFEGFBUB+bBBBEECBCBCCFFCHIGDEGKEBTCFCB+YCFRCDDBECCDDCCCDCCCDGJBRBBQB+cDBBDDBECDGCCBBEDDDDHJCBQBC+YBTBDCBBCEDCBFBCBCFDCDDDFCBTBQB+dCCDCCDDFEBDHDEBCDEDUBDD+XCUBEDCECEDDBEIEFCCDFDUB+ZBRBCQCGECECCBBBCDDBBBQCEBSCBQB+bBQBGECEBDGCBCDBBBCDFGECUE+eFHDCBBDBBBDCBBQCDFGDSBQD+YBBTFFBBDFFBBCGCBCDCFIGB+bBRDTBDCBDCDEBQDFDDCDCFHD+hBCRBCBEDCDBBBDDCCBEFGC+iBQBBCDDCDDCBBBCCEDFHHC+gDRDBBDCBCDFCBBDDCGGEGFB+kBBCCDCDEEBBBBDFDCDBVB+dBQBGEEDEFGBBBBCCBBB+hBSDBCFHEFEEGCBB+nCQBBCCFFGEFEFGCCBB+oCDCDIHFFFFHHECBB+oCDCGIHGEGGGHDCBB+mDQCCCGHHHHHHHHEBB+nBCECEHHHHFGHHHEBB+oCBDEHGHFEGFEHFCB+oBBCDHGFDDEDFGGCB+qBCEEEFEDDEFDB+tBCCDDDDCCB++++++++++++++R';
 var CER='QRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-var GW=60, GH=171, GS=5;
+var GW=88, GH=165;
 
 /* CUÁNTAS. Elegido MIRANDO el barrido 2.600/3.400/4.200/5.000/6.200 a 612 px:
    por debajo de 4.000 la figura es un fantasma y a partir de ~5.600 el pelo se
@@ -1239,21 +1353,59 @@ var NPB = NP;
    —su único trabajo es que el borde se disuelva, doctrina §2.5—. */
 var GAMA = 1.00, OPEXP = 0.45, OPPISO = 0.22;
 
-/* LOS ENCUADRES. Salen de MEDIR el mapa de tono decodificado, no de recortar
-   a ojo: sumada la tinta por filas y columnas, la figura ocupa v 0,088..0,941
-   y el 98 % de la tinta de cada banda cae en estos tres recortes. Tres
-   relaciones bien separadas: un hueco alto y angosto pide el cuerpo entero,
-   uno bajo y ancho pide el primer plano.
-   Lo que NO se puede hacer y queda registrado: «de perfil» de verdad exige un
-   SEGUNDO mapa horneado —el material es un recorte frontal y no hay
+/* Un hueco alto y angosto pide el cuerpo entero; uno bajo y ancho pide el
+   primer plano. Lo que NO se puede hacer y queda registrado: «de perfil» de
+   verdad exige un SEGUNDO mapa horneado —el material es frontal y no hay
    información lateral que muestrear—. Aquí no se finge un perfil. */
+/* LOS TRES ENCUADRES, REMEDIDOS SOBRE EL MAPA CANÓNICO (30-ago). No se
+   heredan: los del mapa anterior recortaban por sitios que en esta figura no
+   son los mismos, porque la otra estaba estirada y no tenía piernas. Los
+   hitos salen del ANCHO DE TINTA POR FILA -que dibuja el perfil del cuerpo
+   mucho mejor que la suma de tinta, que sólo dice dónde hay brillo- y quedan
+   escritos en `_mapa.json`:
+
+     coronilla v 0,043 · línea de hombro v 0,128 · más ancho (dobladillo y
+     manos) v 0,555 · dobladillo v 0,677 · pie v 0,957.
+     Tinta: v 0,055..0,939 · u 0,161..0,816.  Cabeza y hombros: u 0,184..0,770.
+
+   Proporción, que es lo que delataba al mapa viejo: aquí la cabeza mide el
+   12 % del alto (0,043..0,128), o sea ~1/8 de cuerpo, que es una persona. En
+   el mapa estirado medía el 20 % y por eso el cuerpo entero salía sin piernas.
+
+   ENVOLVENTE DEL CUERPO ENTERO, y esto es una decisión que cambia: venía con
+   cab 0,44 / pie 0,66 porque VisuAI pidió disolver «el bulto de cabeza y
+   hombros arriba y el charco de luz del pie abajo». En la figura canónica no
+   hay charco -era un artefacto del mapa estirado- y ese pie 0,66 borra las
+   PIERNAS, que es justo lo que Sebastián echó en falta. Se retira a los
+   cantos de verdad: cab 0,10 / pie 0,94. Los dos v de este encuadre caen
+   FUERA de la tinta (0,030 < 0,055 y 0,975 > 0,939), así que el recorte no
+   corta nada y la envolvente sólo tiene que rematar el canto del cuadro.
+   Queda anotado para VisuAI: si prefiere volver a la disolución, son dos
+   números en esta línea.
+
+   EL PLANO CERRADO SE ABRE HASTA v1 0,480, Y NO POR GUSTO. Con v1 0,290
+   -cabeza y hombros literales- el recorte sale APAISADO (ar 1,26), porque en
+   esta figura los hombros son más anchos que alto tiene la banda cabeza-pecho;
+   el buscador de huecos le daba entonces una caja de 514x407 y ahí el glifo
+   -que escala con la magnificación- se come la estructura: rendido y mirado,
+   es una niebla rectangular de dígitos, no una persona. Barrido en la página
+   real a 1440 (`_barre_cerrado.py`), v1 -> aspecto -> caja que da el hueco:
+
+     0,290 -> 1,262 -> 514x407     0,420 -> 0,841 -> 420x500
+     0,360 -> 0,994 -> 497x500     0,480 -> 0,729 -> 364x500
+
+   A 0,480 el retrato vuelve a ser VERTICAL y es el único de los cuatro en el
+   que se leen la corona de pelo, el óvalo oscuro de la cara y la caída de los
+   hombros. La escalera queda 0,395 / 0,557 / 0,729 de aspecto y 1,00 / 1,41 /
+   1,97 de magnificación: tres opciones bien separadas para el hueco, que es
+   para lo que existen. */
 var ENC = [
-  {n:'entero',  u0:0.102, u1:0.932, v0:0.060, v1:1.000, min:210, cab:0.44, pie:0.66},
-  {n:'medio',   u0:0.102, u1:0.932, v0:0.060, v1:0.620, min:170, cab:0.10, pie:0.74},
-  {n:'cerrado', u0:0.100, u1:0.932, v0:0.052, v1:0.402, min:120, cab:0.10, pie:0.90}
+  {n:'entero',  u0:0.140, u1:0.840, v0:0.030, v1:0.975, min:210, cab:0.10, pie:0.94},
+  {n:'medio',   u0:0.140, u1:0.840, v0:0.030, v1:0.700, min:170, cab:0.10, pie:0.74},
+  {n:'cerrado', u0:0.170, u1:0.785, v0:0.030, v1:0.480, min:120, cab:0.10, pie:0.90}
 ];
 for(var e_=0;e_<ENC.length;e_++)
-  ENC[e_].ar = (ENC[e_].u1-ENC[e_].u0)*300 / ((ENC[e_].v1-ENC[e_].v0)*855);
+  ENC[e_].ar = (ENC[e_].u1-ENC[e_].u0)*GW / ((ENC[e_].v1-ENC[e_].v0)*GH);
 /* VA AQUÍ Y NO ARRIBA. Con `ARa = ENC[0].ar` colocado antes de la asignación
    de `var ENC`, el hoisting deja ENC en undefined y el script entero revienta
    —y la página se ve vacía SIN UN SOLO ERROR registrado, porque el manejador
@@ -1322,7 +1474,7 @@ function env(v, E){
    regla de tres sale corta: el primer barrido apuntó a 2,5x y aterrizó en
    1,20/1,35/1,62x. Con el encuadre anterior esto valía 0,40 y daba 1,05x: la
    figura pesaba lo mismo que el botón y por eso no se leía. */
-var ALFA = 0.2582;
+var ALFA = 0.3103;
 
 var CUERPO = 1/139, FRENTE = 0.075, ZOOM = 3.0;
 
@@ -1446,8 +1598,8 @@ function campo(){
     while(lo<hi){ mid=(lo+hi)>>1; if(cdf[mid]<r) lo=mid+1; else hi=mid; }
     var gx = lo%GW, gy = (lo/GW)|0;
     var E0 = ENC[0];
-    var u = (((gx+rnd())*GS/300) - E0.u0)/(E0.u1-E0.u0);
-    var v = (((gy+rnd())*GS/855) - E0.v0)/(E0.v1-E0.v0);
+    var u = (((gx+rnd())/GW) - E0.u0)/(E0.u1-E0.u0);
+    var v = (((gy+rnd())/GH) - E0.v0)/(E0.v1-E0.v0);
     var t = tono[lo]/15;
     var op = opacidad(t, v, E0);
     var z = rnd()<FRENTE ? 1 : 0;
@@ -1533,8 +1685,8 @@ function reencuadrar(idx){
     var r = rnd()*acc, lo=0, hi=c.length-1, mid;
     while(lo<hi){ mid=(lo+hi)>>1; if(c[mid]<r) lo=mid+1; else hi=mid; }
     var gx = lo%GW, gy = (lo/GW)|0;
-    pu[i] = (((gx+rnd())*GS/300) - E.u0)/(E.u1-E.u0);
-    pv[i] = (((gy+rnd())*GS/855) - E.v0)/(E.v1-E.v0);
+    pu[i] = (((gx+rnd())/GW) - E.u0)/(E.u1-E.u0);
+    pv[i] = (((gy+rnd())/GH) - E.v0)/(E.v1-E.v0);
     /* LA OPACIDAD TAMBIÉN SE REENCUADRA, y esto faltaba: cada encuadre
        disuelve por SUS cantos, así que dejarla como quedó en el cuerpo entero
        le pinta al primer plano un corte duro por el pecho y le apaga la
