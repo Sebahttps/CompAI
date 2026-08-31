@@ -322,6 +322,11 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
 .lanes{display:grid; grid-template-columns:repeat(4,1fr); gap:var(--s4); align-items:stretch;
   flex:0 0 auto; min-height:0;
   transition:grid-template-columns .55s cubic-bezier(.2,.7,.3,1)}
+/* ACENTO DE CAMARA, dura lo que un corte. Fue `scale(1.018)` sostenido y
+   MIRADO: corria la rejilla 11 px por lado y perdia el registro con
+   `.cine-head` y `.oferta`. */
+@keyframes lev{0%{transform:none}32%{transform:translateY(-7px)}100%{transform:none}}
+.lanes.acto{animation:lev .62s cubic-bezier(.16,1,.3,1)}
 .lane{position:relative; background:rgba(11,13,18,.74); border:1px solid var(--crema-12);
   border-radius:var(--radio-caja); padding:var(--s4) var(--s5) var(--s5); cursor:pointer; overflow:hidden;
   display:flex; flex-direction:column; gap:var(--s4); backdrop-filter:blur(7px);
@@ -330,8 +335,14 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
 .lane .lnum{font-family:var(--font-data); font-size:10.5px; letter-spacing:.16em; color:var(--crema-60)}
 .lane .ltitle{font-family:var(--font-data); font-size:12.5px; font-weight:600; letter-spacing:.02em;
   color:var(--crema); line-height:1.35; margin:0}
-.beat{opacity:0; transform:translateY(10px); transition:opacity .5s ease, transform .5s ease}
+/* EL CORTE: un presente por tarjeta. `pas` es crema-60, 6,37:1 medido:
+   retrocede, no se apaga. Sin `viva/pas` queda el estado de hoy. */
+.beat{opacity:0; transform:translateY(9px);
+  transition:opacity .5s cubic-bezier(.16,1,.3,1), transform .62s cubic-bezier(.16,1,.3,1)}
 .beat.on{opacity:1; transform:none}
+/* EL GIRO NO SE FUNDE: corta en .34 s y el paso se pasa de largo. */
+.beat.accion.on{transition:opacity .34s linear,
+  transform .5s cubic-bezier(.34,1.56,.64,1)}
 .beat .tag{font-family:var(--font-data); font-size:9.5px; letter-spacing:.18em;
   text-transform:uppercase; display:block; margin-bottom:6px}
 /* El cobre marca accion y las dos frases que sostienen la venta.
@@ -341,24 +352,46 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
 /* La menta significa estado verificado: habil, acreditado, conforme.
    Un desenlace narrado no es un estado verificado. */
 .beat.fin .tag{color:var(--crema-60)}
-.beat p{margin:0; font-size:13px; line-height:1.5; color:var(--crema-75); max-width:none}
-.lane .bar{position:absolute; left:0; bottom:0; height:2px; width:0; background:var(--terracota);
-  transition:width .25s linear}
+.beat p{margin:0; font-size:13px; line-height:1.5; color:var(--crema-75); max-width:none;
+  transition:color .45s cubic-bezier(.16,1,.3,1)}
+.beat.viva p{color:var(--crema)}
+.beat.pas p{color:var(--crema-60)}
+.lanes.acta .beat.pas p{color:var(--crema-75)}
+/* EL DESENLACE SE VE distinto: unica con filete y unica en tinta plena. */
+.beat.fin{border-top:1px solid var(--crema-12); padding-top:var(--s4)}
+.beat.fin p{color:var(--crema)}
+/* `width` por cuadro era maqueta x4; `scaleX` compone. A/B con A/A de
+   control: 37 -> 13,5 layouts y 11,3 -> 4,6 ms en el barrido. */
+.lane .bar{position:absolute; left:0; bottom:0; height:2px; width:100%; background:var(--terracota);
+  transform:scaleX(0); transform-origin:left center;
+  transition:transform .25s linear}
 .lane.sel{border-color:var(--terracota); background:rgba(20,15,12,.82)}
+/* EL MARCO CAMBIA EN EL CORTE. Valores de `.sel`: superficie ya aprobada. */
+.lane.acto{border-color:rgba(200,121,65,.42); background:rgba(20,15,12,.80)}
+/* ESCALONADO 70 ms: N columnas al unisono son UNA cosa (doctrina 3). El indice
+   lo pone el guion, asi que no depende de que sean cuatro. */
+.lane .beat,.lane .bar{transition-delay:calc(var(--i,0)*70ms)}
 .lane.sel .bar{background:var(--menta)}
 .lane.dim{opacity:.42}
 .lanes.picked .lane.dim .beat{display:none}
 .lanes.picked .lane.dim{justify-content:flex-start}
 .lane.full{border-color:rgba(76,196,139,.45)}
 .lanes.picked{grid-template-columns:var(--cols)}
-.cine-foot{display:flex; align-items:center; justify-content:space-between; gap:var(--s5);
+/* Sin la frase de cierre este pie quedo con un solo hijo y `space-between` lo
+   empujaba a la izquierda. Vuelve a la derecha, que es de donde salio. */
+.cine-foot{display:flex; align-items:center; justify-content:flex-end; gap:var(--s5);
   flex-wrap:wrap; font-family:var(--font-data); font-size:11.5px; color:var(--crema-60);
   letter-spacing:.06em; min-height:22px}
 .cine-foot .conv{color:var(--menta-300); opacity:0; transition:opacity .6s ease}
-.cine-foot .conv.on{opacity:1}
+.cine-foot .conv.on{opacity:1; margin-right:auto}
+/* REINICIAR SOLO CUANDO HAY ALGO QUE REINICIAR: sin la bajada que invitaba a
+   hacer clic, ofrecia deshacer una accion que nadie hizo. `visibility` y no
+   `opacity` sola, para que tampoco reciba el tabulador. */
 .cine-foot button{background:none; border:0; color:var(--crema-60); cursor:pointer;
   font-family:var(--font-data); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
-  border-bottom:1px solid var(--crema-28); padding:0 0 2px; min-height:44px}
+  border-bottom:1px solid var(--crema-28); padding:0 0 2px; min-height:44px;
+  opacity:0; visibility:hidden; transition:opacity .3s ease, color .18s ease}
+.lanes.picked + .cine-foot button{opacity:1; visibility:visible}
 .cine-foot button:hover{color:var(--crema)}
 
 /* ---- MODALIDADES Y RUBROS ---- */
@@ -748,9 +781,15 @@ html:not(.js) #nube, html:not(.js) #agente{display:none}
       <div>
         <p class="kicker">CompAI Global Solutions</p>
         <h2>Cuatro modalidades, <i data-luz>un mismo expediente</i></h2>
-        <p>El Estado compra de cuatro formas distintas y cada una pide su propio papeleo.
-           compAI trabaja las cuatro con el mismo criterio: leer lo que piden, comparar lo que hay
-           y dejar el respaldo listo para firmar.</p>
+        <!-- TEXTO DE SEBASTIAN (31-ago), literal. VisuAI escribio solo los dos
+             fundamentos, y son el par de las cuatro tarjetas de abajo: infinitivo 1 =
+             Compra Agil + Licitacion, infinitivo 2 = Convenio Marco + Trato Directo.
+             Por eso el parrafo ademas las presenta. Un caracter de desviacion:
+             «Estado» con mayuscula, para no contradecir el h1 de la portada. -->
+        <p>Hablamos humano en un mundo digital. Somos una empresa tecnológica, creativa y de
+           inteligencia artificial aplicada para el Estado chileno. Ayudamos a escribir
+           especificaciones que el mercado sí pueda ofertar, dejar cada compra con su expediente
+           listo para la revisión y crear experiencias digitales inolvidables.</p>
       </div>
     </div>
 
@@ -848,7 +887,7 @@ html:not(.js) #nube, html:not(.js) #agente{display:none}
       <dl class="d"><dt>Nombre de fantasía</dt><dd>CompAI SpA</dd></dl>
       <dl class="d"><dt>RUT</dt><dd>78.491.451-8</dd></dl>
       <dl class="d"><dt>Domicilio</dt><dd>Santiago, Región Metropolitana</dd></dl>
-      <dl class="d"><dt>Estado de habilidad</dt><dd><span class="mt" data-luz>HÁBIL</span> — Cumple los requisitos de inscripción en el Registro de Proveedores<br><span class="verif">Verificado el 22-08-2026 en la ficha pública</span></dd></dl>
+      <dl class="d"><dt>Estado de habilidad</dt><dd><span class="mt" data-luz>HÁBIL</span><br><span class="verif">Verificado el 22-08-2026 en la ficha pública</span></dd></dl>
       <dl class="d"><dt>Estado de acreditación</dt><dd><span class="mt">PROVEEDOR ACREDITADO</span><br>hasta el 19-08-2027<br><span class="verif">Verificado el 22-08-2026 en la ficha pública</span></dd></dl>
       <dl class="d"><dt>Inicio de actividades</dt><dd>16-08-2026 ante el Servicio de Impuestos Internos<br>Primera categoría, afecta a IVA</dd></dl>
       <dl class="d"><dt>Segmento</dt><dd>MICRO EMPRESA según el Servicio de Impuestos Internos.<br>Registra como Empresa de Menor Tamaño en Mercado Público</dd></dl>
@@ -912,42 +951,46 @@ var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var conv=document.getElementById('conv') || {classList:{add:function(){},toggle:function(){}}};
   var reset=document.getElementById('cineReset');
   var grid=document.getElementById('lanes');
-  var BEATS=3, sel=-1, DEFAULT=0;
+  var BEATS=3, sel=-1;
   var narrow=window.matchMedia('(max-width:980px)');
 
-  /* altura del recorrido: una pantalla por compás, más un remate */
+  /* EL TEMPO DEJA DE SER METRONOMO. Hoy la pista da 2.700 px a 1440x900 (22,5
+     muescas de 120 px), corta en tercios exactos y deja 330 px finales sin
+     nada. Reparto de escena sobre 360vh = 2.340 px / 19,5 muescas: planos de
+     772 / 796 / 422 px y remate de 280. Cuesta MENOS que la lista. */
+  var CORTE=[0.030,0.360,0.700], ACTA=0.880, ALTO=360;
+
   function setHeight(){
-    track.style.height = narrow.matches ? 'auto' : (BEATS+1)*100 + 'vh';
+    track.style.height = narrow.matches ? 'auto' : ALTO + 'vh';
   }
   setHeight();
 
   function paint(prog){
     /* prog 0..1 sobre el recorrido */
-    var reach = prog*(BEATS+0.35);
+    var vivo=-1, k;
+    for(k=0;k<BEATS;k++){ if(prog>=CORTE[k]) vivo=k; }
+    var acta = prog>=ACTA, giro = vivo>=1;
+    var pct=Math.max(0,Math.min(1,prog/ACTA));
+    grid.classList.toggle('acta', acta);
+    grid.classList.toggle('acto', giro && !acta);
     lanes.forEach(function(l,i){
       var beats=l.querySelectorAll('.beat');
       for(var b=0;b<beats.length;b++){
-        beats[b].classList.toggle('on', reach > b+0.15);
+        beats[b].classList.toggle('on', b<=vivo);
+        beats[b].classList.toggle('viva', b===vivo && !acta);
+        beats[b].classList.toggle('pas', b<vivo);
       }
-      var pct=Math.max(0,Math.min(1,reach/BEATS));
-      l.querySelector('.bar').style.width=(pct*100)+'%';
-      l.classList.toggle('full', pct>=0.98);
-      var active = (sel<0) ? DEFAULT : sel;
-      l.classList.toggle('sel', i===active);
+      l.querySelector('.bar').style.transform='scaleX('+pct.toFixed(3)+')';
+      l.classList.toggle('full', acta);
+      l.classList.toggle('acto', giro && !acta);
+      l.classList.toggle('sel', sel>=0 && i===sel);
       l.classList.toggle('dim', sel>=0 && i!==sel && prog>0.12);
     });
-    conv.classList.toggle('on', prog>0.86);
+    conv.classList.toggle('on', acta);
   }
 
   function onScroll(){
-    if(narrow.matches){ 
-      lanes.forEach(function(l){
-        Array.prototype.forEach.call(l.querySelectorAll('.beat'),function(b){b.classList.add('on');});
-        l.querySelector('.bar').style.width='100%';
-      });
-      conv.classList.add('on');
-      return;
-    }
+    if(narrow.matches){ estatico(); return; }
     var r=track.getBoundingClientRect();
     var total=track.offsetHeight-window.innerHeight;
     var p= total>0 ? Math.max(0,Math.min(1,(-r.top)/total)) : 0;
@@ -964,6 +1007,7 @@ var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     onScroll();
   }
   lanes.forEach(function(l,i){
+    l.style.setProperty('--i', i);
     l.addEventListener('click',function(){ pick(i); });
     l.addEventListener('keydown',function(e){
       if(e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(i); }
@@ -975,12 +1019,23 @@ var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     onScroll();
   });
 
-  if(RM){
+  /* MOVIL Y MOVIMIENTO REDUCIDO CAEN EN EL ESTADO FINAL, no en el inicial
+     (bug del 24-ago): `on`, barra llena y `full` a mano. `viva/pas/acto` no,
+     son el presente de una escena que ahi no ocurre. */
+  function estatico(){
     lanes.forEach(function(l){
-      Array.prototype.forEach.call(l.querySelectorAll('.beat'),function(b){b.classList.add('on');});
-      l.querySelector('.bar').style.width='100%';
+      Array.prototype.forEach.call(l.querySelectorAll('.beat'),function(b){
+        b.classList.add('on'); b.classList.remove('viva','pas');
+      });
+      l.querySelector('.bar').style.transform='scaleX(1)';
+      l.classList.add('full'); l.classList.remove('acto');
     });
+    grid.classList.add('acta'); grid.classList.remove('acto');
     conv.classList.add('on');
+  }
+
+  if(RM){
+    estatico();
     track.style.height='auto';
   } else {
     var tick=false;
