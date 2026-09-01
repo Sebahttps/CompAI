@@ -466,6 +466,12 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
   .lane{min-height:0}
   .cine-stage{position:static; min-height:0}
 }
+/* LA PUERTA DEL CINE ES QUE QUEPA, NO QUE SEA ANCHO. La de arriba decide por
+   ANCHO un fallo que es de ALTO: con el escenario pegado, lo que sobresale del
+   viewport no se alcanza mientras dura la escena. Medido en lo publicado a
+   990x560, el desenlace cortado a media frase. La enciende `setHeight()`
+   midiendo el contenido, no un numero escrito a mano. */
+.cine-track.plano .cine-stage{position:static; min-height:0}
 
 /* ======== COTIZACION ======== */
 .cotiza{position:relative; padding:var(--s9) 0; border-top:1px solid var(--crema-12)}
@@ -958,7 +964,13 @@ var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var reset=document.getElementById('cineReset');
   var grid=document.getElementById('lanes');
   var BEATS=3, sel=-1;
+  var stage=track.querySelector('.cine-stage');
   var narrow=window.matchMedia('(max-width:980px)');
+  /* `--hdr` y no `getComputedStyle(stage).top`: con `.plano` puesto la posicion
+     es `static` y `top` devuelve `auto`, o sea el medidor cambiaria de vara
+     segun su propio resultado y oscilaria. */
+  var HDR=parseFloat(getComputedStyle(document.documentElement)
+          .getPropertyValue('--hdr'))||0, PLANO=false;
 
   /* EL TEMPO DEJA DE SER METRONOMO. Hoy la pista da 2.700 px a 1440x900 (22,5
      muescas de 120 px), corta en tercios exactos y deja 330 px finales sin
@@ -966,8 +978,14 @@ var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
      772 / 796 / 422 px y remate de 280. Cuesta MENOS que la lista. */
   var CORTE=[0.030,0.360,0.700], ACTA=0.880, ALTO=360;
 
+  /* No oscila, y esa es la unica parte delicada: con el escenario pegado
+     `min-height` ya vale el hueco util, asi que `scrollHeight` solo lo supera
+     si el contenido de verdad no cabe; con `.plano` puesto `min-height` es 0 y
+     `scrollHeight` es el contenido. Las dos lecturas dan el mismo veredicto. */
   function setHeight(){
-    track.style.height = narrow.matches ? 'auto' : ALTO + 'vh';
+    PLANO = narrow.matches || stage.scrollHeight > innerHeight - HDR;
+    track.classList.toggle('plano', PLANO);
+    track.style.height = PLANO ? 'auto' : ALTO + 'vh';
   }
   setHeight();
 
@@ -996,7 +1014,7 @@ var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }
 
   function onScroll(){
-    if(narrow.matches){ estatico(); return; }
+    if(PLANO){ estatico(); return; }
     var r=track.getBoundingClientRect();
     var total=track.offsetHeight-window.innerHeight;
     var p= total>0 ? Math.max(0,Math.min(1,(-r.top)/total)) : 0;
@@ -1006,7 +1024,7 @@ var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function pick(i){
     sel=i;
     lanes.forEach(function(l,k){ l.setAttribute('aria-pressed', k===i?'true':'false'); });
-    if(narrow.matches) return;
+    if(PLANO) return;
     var cols=lanes.map(function(_,k){ return k===i ? '2.6fr' : '0.8fr'; }).join(' ');
     grid.style.setProperty('--cols', cols);
     grid.classList.add('picked');
@@ -1042,6 +1060,7 @@ var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if(RM){
     estatico();
+    track.classList.add('plano');
     track.style.height='auto';
   } else {
     var tick=false;
