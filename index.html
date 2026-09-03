@@ -887,7 +887,12 @@ html:not(.js) #nube, html:not(.js) #agente{display:none}
     </div>
       <div class="cameo-wrap">
         <div class="agent-slot agent-walk" aria-hidden="true"></div>
-        <p>Yo lo tomo desde aquí</p>
+        <!-- El pie decia "Yo lo tomo desde aqui", pero el hueco de la agente
+             esta vacio a proposito (ver .agent-slot: reserva el sitio y no
+             pinta nada). Quedaba una frase suelta sin figura que la
+             explicara. Se retira el pie, NO el hueco: sacar el hueco moveria
+             la composicion. Si algun dia entra la figura, el pie vuelve.
+             Retirado el 2-sep-2026, lo detecto Sebastian mirando el sitio. -->
       </div>
     </div>
   </section>
