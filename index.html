@@ -529,6 +529,22 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
   display:inline-flex; align-items:center; min-height:44px}
 .site-foot nav a:hover{color:var(--crema)}
 .site-foot nav a.mail{color:var(--terracota-300)}
+/* PUERTA DE SERVICIO. El enlace al registro interno NO entra en la fila de
+   arriba: esos seis enlaces le hablan a un comprador —como trabajamos,
+   servicios, empresa, cotizar— y un septimo con la misma forma convierte el
+   orden interno en una seccion mas de la oferta. Va en su propia linea, bajo
+   un pelo de separacion, mas chico y en el gris de metadato.
+   PERO SE VE COMO ENLACE: subrayado y 44 px de alto. La leccion de la ficha de
+   Mercado Publico —tipografiada como metadato en un <span>, nadie la apretaba—
+   es que discreto no puede significar invisible. Envuelto en un div y no
+   estirado al 100 %: un <a> de ancho completo hace clicable medio pie. */
+.site-foot .fserv{flex:0 0 100%; display:flex; justify-content:flex-end;
+  border-top:1px solid var(--crema-12); margin-top:var(--s2); padding-top:var(--s2)}
+.site-foot .fserv a{font-family:var(--font-data); font-size:11px; letter-spacing:.06em;
+  color:var(--crema-60); text-decoration:none; border-bottom:1px solid var(--crema-28);
+  padding-bottom:1px; display:inline-flex; align-items:center; min-height:44px;
+  transition:color .18s ease, border-bottom-color .18s ease}
+.site-foot .fserv a:hover{color:var(--crema); border-bottom-color:var(--crema-60)}
 .done p{margin:0; font-size:14px; color:var(--crema-75)}
 .done b{color:var(--menta-300)}
 /* Un aviso de error con visto verde dice lo contrario de lo que paso. */
@@ -923,6 +939,7 @@ html:not(.js) #nube, html:not(.js) #agente{display:none}
       <a href="#cotiza">Cotizar</a>
       <a class="mail" href="mailto:hola@compai.cl">Contacto</a>
     </nav>
+    <div class="fserv"><a href="/estado/">Registro interno · en qué va cada cosa →</a></div>
   </footer>
 
 </main>

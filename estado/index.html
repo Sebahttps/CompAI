@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,follow">
+<meta name="theme-color" content="#08090C">
+<title>En qué va cada cosa · COMPAI GLOBAL SOLUTIONS SPA</title>
+<meta name="description" content="Registro público de estado: qué está en curso, qué espera una decisión y qué quedó cerrado.">
+<!-- Página generada desde el registro de trabajo del estudio. No se edita a
+     mano: se vuelve a generar. -->
+<style>
+:root{
+  --ink-900:#08090C; --ink-850:#0B0D12; --ink-800:#0E1015;
+  --ink-700:#161A21; --ink-600:#1F242D; --ink-500:#2C333F;
+  --crema:#F5F0E4; --crema-75:#BAB6AE; --crema-60:#96948E;
+  --crema-28:#4A4A48; 
+  --crema-12:#242526; --crema-06:#161719;
+  --terracota:#C87941; --terracota-700:#8A4F27; --terracota-600:#A66234;
+  --terracota-400:#D88A52; --terracota-300:#E09A63; --terracota-200:#EFB98C;
+  --menta:#4CC48B; --menta-600:#2FA871; --menta-300:#6FD9A6;
+  --alerta:#D65454; --alerta-300:#F0A0A0; 
+  --glow-terracota:0 0 34px rgba(200,121,65,.38);
+  --glow-menta:0 0 30px rgba(76,196,139,.34);
+  --font-data:ui-monospace,"SF Mono","Cascadia Mono","Segoe UI Mono",Menlo,Consolas,"Courier New",monospace;
+  --font-display:var(--font-data);
+  --font-body:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px;
+  --s6:32px; --s7:48px; --s8:64px; --s9:96px;
+  --measure:66ch; --shell:1240px; --hdr:66px;
+  --mascara-opaca:#000; 
+  --nube-1:#96948E; --nube-2:#ABA8A1; --nube-3:#BFBCB4;
+  --nube-4:#D5D1C7; --nube-5:#EBE6DB; --nube-6:#FFFCEF;
+  --radio:3px;        
+  --radio-caja:4px;   
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0; background:var(--ink-900); color:var(--crema);
+  font-family:var(--font-body); font-size:17px; line-height:1.65;
+  -webkit-font-smoothing:antialiased; min-height:100svh;
+  display:flex; flex-direction:column}
+
+/* FONDO. El mismo mundo del index con las luces mucho más bajas, y por una
+   razón medible: aquí no hay un titular apoyado en un suelo local, hay una
+   lista LARGA que se lee entera. El velo es PLANO y no radial — un radial se
+   calibra para una posición del pliegue y esta página se recorre completa:
+   arriba y abajo del viewport quedarían con lavados distintos.
+   Medido aplicando la cadena de filtros del index al póster y componiendo
+   opacidad + velo: con .28 / .58 el punto MÁS CLARO del lienzo deja
+   --crema-60 en 5,20:1 y --crema en 13,86:1 pixel a pixel, sin promediar.
+   El póster ya está publicado (49 KB) y es el primer fotograma del video del
+   index: misma superficie, cero decodificación, cero peticiones nuevas. */
+#bg{position:fixed; inset:0; z-index:0; pointer-events:none;
+  /* RUTA ABSOLUTA. Esta página se sirve en /estado/, así que un `media/...`
+     relativo resolvería /estado/media/... y el fondo no cargaría. Es el mismo
+     fallo que ya costó una corrección en el 404. */
+  background:var(--ink-900) url(/media/plexus-poster.jpg) center/cover no-repeat;
+  opacity:.28; filter:brightness(.85) sepia(.24) saturate(1.5) hue-rotate(-12deg)}
+#velo{position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:rgba(8,9,12,.58)}
+#page{position:relative; z-index:1; display:flex; flex-direction:column; flex:1}
+
+/* ENCABEZADO. El del 404: la barra del v15 con UNA sola salida. El menú de
+   anclas del index apunta a secciones que aquí no existen. */
+.site-hdr{position:sticky; top:0; z-index:40; min-height:var(--hdr);
+  display:flex; align-items:center; backdrop-filter:blur(16px);
+  background:rgba(8,9,12,.72); border-bottom:1px solid var(--crema-12)}
+.site-hdr .inner{max-width:var(--shell); margin:0 auto; padding:0 var(--s5);
+  width:100%; display:flex; align-items:center; justify-content:space-between; gap:var(--s5)}
+.brand{display:flex; align-items:center; flex:0 0 auto}
+.brand .logo{height:40px; width:auto; display:block; overflow:visible}
+@media (max-width:420px){.brand .logo{height:34px}}
+.site-hdr .ficha{font-family:var(--font-data); font-size:10.5px; font-weight:600;
+  letter-spacing:.09em; color:var(--menta-300); text-decoration:none;
+  border-bottom:1px solid rgba(76,196,139,.42); padding-bottom:1px;
+  display:inline-flex; align-items:center; min-height:44px;
+  transition:color .18s ease, border-bottom-color .18s ease}
+.site-hdr .ficha:hover{color:var(--menta); border-bottom-color:var(--menta)}
+
+main{flex:1; max-width:var(--shell); width:100%; margin:0 auto;
+  padding:var(--s8) var(--s5) var(--s9)}
+.cab{max-width:min(700px,100%)}
+.kicker{font-family:var(--font-data); font-size:12px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--crema-75); margin:0 0 var(--s4)}
+h1{font-family:var(--font-display); font-weight:600; line-height:1.12;
+  font-size:clamp(30px,5.2vw,46px); letter-spacing:-.01em; color:var(--crema);
+  margin:0 0 var(--s5)}
+.bajada{color:var(--crema-75); margin:0 0 var(--s4); max-width:56ch}
+.bajada b{color:var(--crema); font-weight:600}
+.sello{font-family:var(--font-data); font-size:11.5px; letter-spacing:.06em;
+  color:var(--crema-60); margin:0 0 var(--s6)}
+
+/* LEYENDA. Cuatro estados y su marca, antes de la primera lista: quien llega
+   entiende el código en un vistazo. Va aquí y no como recuento de filas a
+   propósito — un contador de «cuántas cosas hay» invita a comparar totales
+   que esta página no publica. */
+.leyenda{display:flex; flex-wrap:wrap; gap:var(--s2) var(--s5);
+  border-top:1px solid var(--crema-12); border-bottom:1px solid var(--crema-12);
+  padding:var(--s3) 0; margin:0 0 var(--s8)}
+.leyenda span{font-family:var(--font-data); font-size:9.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--crema-60);
+  display:inline-flex; align-items:center; gap:var(--s2)}
+.leyenda i{width:14px; height:2px; display:inline-block; flex:0 0 auto}
+
+section{margin:0 0 var(--s8)}
+h2{font-family:var(--font-data); font-size:12px; letter-spacing:.16em;
+  text-transform:uppercase; font-weight:600; color:var(--crema); margin:0 0 var(--s2)}
+.sub{color:var(--crema-60); font-size:14px; margin:0 0 var(--s4); max-width:58ch}
+
+/* EL REGISTRO. Es la misma construcción que la barra de direcciones del 404:
+   una caja con filas separadas por un pelo y un riel de color a la izquierda.
+   Se reutiliza a propósito — es el elemento firma del sistema oscuro para
+   «estado de una cosa», y repetirlo hace sistema en vez de página nueva.
+   EL ESTADO NUNCA DEPENDE SOLO DEL COLOR: cada fila lleva su palabra. */
+.reg{list-style:none; margin:0; padding:0;
+  background:rgba(18,21,27,.88); border:1px solid rgba(150,148,142,.30);
+  border-radius:var(--radio-caja); backdrop-filter:blur(10px); overflow:hidden}
+.reg li{display:grid; grid-template-columns:150px 1fr; gap:var(--s2) var(--s5);
+  align-items:baseline; padding:var(--s4); border-left:2px solid transparent}
+.reg li + li{border-top:1px solid var(--crema-12)}
+.rot{font-family:var(--font-data); font-size:9.5px; letter-spacing:.14em;
+  text-transform:uppercase; white-space:nowrap}
+.rot .fch{display:block; color:var(--crema-60); letter-spacing:.1em; margin-top:3px}
+.asunto{font-family:var(--font-data); font-size:14.5px; line-height:1.45;
+  font-weight:600; color:var(--crema); margin:0}
+.ctx{font-size:14.5px; line-height:1.6; color:var(--crema-75);
+  margin:var(--s1) 0 0; max-width:62ch}
+
+/* EL RIEL DE «ESPERA DECISIÓN» VA EN COBRE PLENO, Y NO CONTRADICE LA REGLA
+   DE QUE EL COBRE ES LA ÚNICA LUZ. Esa regla cuenta el cobre COMO TEXTO —en
+   esta página sigue en dos apariciones, el enlace del correo y el botón—; el
+   riel es superficie, igual que la menta y la alerta lo son en la barra de
+   direcciones del 404. Se probó primero con --terracota-700, que es el tono
+   de superficie: medido, 3,06:1 contra el fondo y en una línea de 2 px
+   sencillamente no se ve. Un elemento firma invisible no es sobrio, es un
+   elemento que no está. Y el estado no depende de él: cada fila lleva su
+   palabra escrita. */
+.e-decision{border-left-color:var(--terracota)}
+.e-decision .rot{color:var(--crema)}
+.e-curso{border-left-color:var(--crema-60)}
+.e-curso .rot{color:var(--crema-75)}
+.e-congelado{border-left-color:var(--crema-28)}
+.e-congelado .rot{color:var(--crema-60)}
+.e-congelado .asunto{color:var(--crema-75)}
+.e-cerrado{border-left-color:var(--menta)}
+.e-cerrado .rot{color:var(--menta-300)}
+
+/* LA REGLA DE QUÉ NO SE PUBLICA, DICHA EN LA PÁGINA. Callarla dejaría la
+   lista abierta a la lectura de que esto es todo lo que hay. */
+.nota{border-left:2px solid var(--crema-28); padding:var(--s2) 0 var(--s2) var(--s4);
+  color:var(--crema-60); font-size:14.5px; max-width:62ch; margin:var(--s8) 0 0}
+
+.cierre{margin:var(--s8) 0 0}
+.btn{font-family:var(--font-data); font-size:13px; font-weight:600;
+  letter-spacing:.06em; border-radius:var(--radio); padding:12px 24px;
+  min-height:44px; border:1px solid transparent; text-decoration:none;
+  display:inline-flex; align-items:center;
+  background:var(--terracota); color:var(--ink-900);
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease}
+.btn:hover{background:var(--terracota-400); box-shadow:var(--glow-terracota);
+  transform:translateY(-1px)}
+.correo{font-size:14px; color:var(--crema-75); margin:var(--s5) 0 0}
+.correo a{color:var(--terracota-300); text-decoration:none;
+  border-bottom:1px solid rgba(224,154,99,.4)}
+.correo a:hover{color:var(--terracota-200); border-bottom-color:var(--terracota-200)}
+
+.site-foot{border-top:1px solid var(--crema-12); padding:var(--s5) 0;
+  font-family:var(--font-data); font-size:11px; color:var(--crema-60)}
+.site-foot .inner{max-width:var(--shell); margin:0 auto; padding:0 var(--s5);
+  display:flex; flex-wrap:wrap; gap:var(--s2) var(--s5); justify-content:space-between}
+
+:focus-visible{outline:2px solid var(--menta); outline-offset:3px}
+
+/* 390 px PRIMERO. La columna de rótulo de 150 px no cabe al lado del asunto en
+   un teléfono: el rótulo pasa ARRIBA, que además es el orden en que se lee una
+   ficha —primero en qué está, después qué es—. */
+@media (max-width:640px){
+  main{padding:var(--s7) var(--s5) var(--s8)}
+  .reg li{grid-template-columns:1fr; gap:var(--s1); padding:var(--s4) var(--s4)}
+  .rot .fch{display:inline; margin:0 0 0 var(--s2)}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .btn{transition:none} .btn:hover{transform:none}
+}
+</style>
+</head>
+<body>
+
+<div id="bg" aria-hidden="true"></div>
+<div id="velo" aria-hidden="true"></div>
+
+<div id="page">
+
+<header class="site-hdr">
+  <div class="inner">
+    <a class="brand" href="/" rel="noopener"><svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="-16 4 328 87" role="img" aria-label="compAI">
+<defs>
+    <filter id="brasa" x="-150%" y="-150%" width="400%" height="400%">
+      <feGaussianBlur stdDeviation="5" result="b1"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="b2"/>
+      <feMerge><feMergeNode in="b2"/><feMergeNode in="b1"/></feMerge>
+    </filter>
+    <g id="brillo"><path fill="#C87941" d="M172.205 52.695L170.937 49.460L158.049 49.460L156.755 52.695L158.049 52.695Q159.964 52.695 160.779 53.432Q161.595 54.170 161.595 55.360Q161.595 56.525 160.779 57.262Q159.964 58 158.049 58L150.907 58Q148.992 58 148.176 57.262Q147.361 56.525 147.361 55.334Q147.361 54.144 148.215 53.394Q149.069 52.643 151.036 52.695L159.369 31.940L155.901 31.940Q153.986 31.940 153.171 31.202Q152.356 30.465 152.356 29.274Q152.356 28.084 153.171 27.346Q153.986 26.609 155.901 26.609L167.366 26.635L177.924 52.695Q179.787 52.695 180.383 53.109Q181.573 53.963 181.573 55.360Q181.573 56.525 180.771 57.262Q179.969 58 178.054 58L170.911 58Q168.996 58 168.181 57.262Q167.366 56.525 167.366 55.334Q167.366 54.170 168.181 53.432Q168.996 52.695 170.911 52.695L172.205 52.695M160.171 44.155L168.737 44.155L164.467 33.648 M205.869 31.940L200.512 31.940L200.512 52.695L205.869 52.695Q207.784 52.695 208.599 53.432Q209.414 54.170 209.414 55.360Q209.414 56.525 208.599 57.262Q207.784 58 205.869 58L189.850 58Q187.935 58 187.120 57.262Q186.304 56.525 186.304 55.334Q186.304 54.170 187.120 53.432Q187.935 52.695 189.850 52.695L195.207 52.695L195.207 31.940L189.850 31.940Q187.935 31.940 187.120 31.202Q186.304 30.465 186.304 29.274Q186.304 28.084 187.120 27.346Q187.935 26.609 189.850 26.609L205.869 26.635Q207.784 26.635 208.599 27.359Q209.414 28.084 209.414 29.274Q209.414 30.465 208.599 31.202Q207.784 31.940 205.869 31.940"/><g transform="translate(259 20) scale(1.5)" fill="none" stroke="#4CC48B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8.5 L5 12.5 L12 4"/><path d="M10 8.5 L14 12.5 L21 4"/></g></g>
+    <g id="marca"><path fill="#F5F0E4" d="M33.340 37.547L25.766 38.914Q25.383 36.645 24.029 35.496Q22.676 34.348 20.516 34.348Q17.645 34.348 15.936 36.330Q14.227 38.313 14.227 42.961Q14.227 48.129 15.963 50.262Q17.699 52.395 20.625 52.395Q22.813 52.395 24.207 51.150Q25.602 49.906 26.176 46.871L33.723 48.156Q32.547 53.352 29.211 56.004Q25.875 58.656 20.270 58.656Q13.898 58.656 10.111 54.637Q6.324 50.617 6.324 43.508Q6.324 36.316 10.125 32.311Q13.926 28.305 20.406 28.305Q25.711 28.305 28.842 30.588Q31.973 32.871 33.340 37.547 M36.187 43.070Q36.187 39.242 38.073 35.660Q39.960 32.078 43.419 30.191Q46.878 28.305 51.144 28.305Q57.734 28.305 61.945 32.584Q66.155 36.863 66.155 43.398Q66.155 49.988 61.904 54.322Q57.652 58.656 51.198 58.656Q47.206 58.656 43.583 56.852Q39.960 55.047 38.073 51.561Q36.187 48.074 36.187 43.070M44.062 43.480Q44.062 47.801 46.112 50.098Q48.163 52.395 51.171 52.395Q54.179 52.395 56.216 50.098Q58.253 47.801 58.253 43.426Q58.253 39.160 56.216 36.863Q54.179 34.566 51.171 34.566Q48.163 34.566 46.112 36.863Q44.062 39.160 44.062 43.480 M70.397 58L70.397 28.961L77.479 28.961L77.479 32.926Q81.280 28.305 86.530 28.305Q89.319 28.305 91.370 29.453Q93.420 30.602 94.733 32.926Q96.647 30.602 98.862 29.453Q101.077 28.305 103.592 28.305Q106.791 28.305 109.006 29.604Q111.221 30.902 112.315 33.418Q113.108 35.277 113.108 39.434L113.108 58L105.424 58L105.424 41.402Q105.424 37.082 104.631 35.824Q103.565 34.184 101.350 34.184Q99.737 34.184 98.315 35.168Q96.893 36.152 96.264 38.053Q95.635 39.953 95.635 44.055L95.635 58L87.952 58L87.952 42.086Q87.952 37.848 87.541 36.617Q87.131 35.387 86.270 34.785Q85.409 34.184 83.932 34.184Q82.155 34.184 80.733 35.141Q79.311 36.098 78.696 37.902Q78.080 39.707 78.080 43.891L78.080 58 M119.345 69.047L119.345 28.961L126.509 28.961L126.509 33.227Q127.904 31.039 130.283 29.672Q132.662 28.305 135.560 28.305Q140.619 28.305 144.146 32.270Q147.673 36.234 147.673 43.316Q147.673 50.590 144.119 54.623Q140.564 58.656 135.505 58.656Q133.099 58.656 131.144 57.699Q129.189 56.742 127.029 54.418L127.029 69.047L119.345 69.047M126.947 42.988Q126.947 47.883 128.888 50.221Q130.830 52.559 133.619 52.559Q136.298 52.559 138.076 50.412Q139.853 48.266 139.853 43.371Q139.853 38.805 138.021 36.590Q136.189 34.375 133.482 34.375Q130.666 34.375 128.806 36.549Q126.947 38.723 126.947 42.988"/><path fill="#C87941" d="M172.205 52.695L170.937 49.460L158.049 49.460L156.755 52.695L158.049 52.695Q159.964 52.695 160.779 53.432Q161.595 54.170 161.595 55.360Q161.595 56.525 160.779 57.262Q159.964 58 158.049 58L150.907 58Q148.992 58 148.176 57.262Q147.361 56.525 147.361 55.334Q147.361 54.144 148.215 53.394Q149.069 52.643 151.036 52.695L159.369 31.940L155.901 31.940Q153.986 31.940 153.171 31.202Q152.356 30.465 152.356 29.274Q152.356 28.084 153.171 27.346Q153.986 26.609 155.901 26.609L167.366 26.635L177.924 52.695Q179.787 52.695 180.383 53.109Q181.573 53.963 181.573 55.360Q181.573 56.525 180.771 57.262Q179.969 58 178.054 58L170.911 58Q168.996 58 168.181 57.262Q167.366 56.525 167.366 55.334Q167.366 54.170 168.181 53.432Q168.996 52.695 170.911 52.695L172.205 52.695M160.171 44.155L168.737 44.155L164.467 33.648 M205.869 31.940L200.512 31.940L200.512 52.695L205.869 52.695Q207.784 52.695 208.599 53.432Q209.414 54.170 209.414 55.360Q209.414 56.525 208.599 57.262Q207.784 58 205.869 58L189.850 58Q187.935 58 187.120 57.262Q186.304 56.525 186.304 55.334Q186.304 54.170 187.120 53.432Q187.935 52.695 189.850 52.695L195.207 52.695L195.207 31.940L189.850 31.940Q187.935 31.940 187.120 31.202Q186.304 30.465 186.304 29.274Q186.304 28.084 187.120 27.346Q187.935 26.609 189.850 26.609L205.869 26.635Q207.784 26.635 208.599 27.359Q209.414 28.084 209.414 29.274Q209.414 30.465 208.599 31.202Q207.784 31.940 205.869 31.940"/><g transform="translate(259 20) scale(1.5)" fill="none" stroke="#4CC48B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8.5 L5 12.5 L12 4"/><path d="M10 8.5 L14 12.5 L21 4"/></g></g>
+  </defs>
+  <use href="#brillo" filter="url(#brasa)" opacity="0.9"/>
+  <use href="#marca"/>
+</svg></a>
+    <a class="ficha" href="https://proveedor.mercadopublico.cl/ficha/certificado/78.491.451-8" target="_blank" rel="noopener">Ver ficha proveedor →</a>
+  </div>
+</header>
+
+<main>
+  <div class="cab">
+    <p class="kicker">Registro interno</p>
+    <h1>En qué va cada cosa</h1>
+    <p class="bajada">Esta página se escribe sola desde la lista con la que
+      trabajamos todos los días. <b>No es un resumen hecho para la vitrina:</b>
+      es la misma lista, con el estado que tiene hoy.</p>
+    <p class="sello">Última revisión: 3 sep 2026, 17:45</p>
+  </div>
+
+  <div class="leyenda"><span><i style="background:var(--terracota)"></i>Espera decisión</span><span><i style="background:var(--crema-60)"></i>En curso</span><span><i style="background:var(--crema-28)"></i>Congelado</span><span><i style="background:var(--menta)"></i>Cerrado</span></div>
+
+  <section>
+    <h2>Esperan una decisión</h2>
+    <p class="sub">Están detenidos hasta que alguien decida. No es que falte trabajo: falta el sí o el no.</p>
+    <ul class="reg">
+    <li class="e-decision">
+      <span class="rot">Espera decisión</span>
+      <div><p class="asunto">Un solo registro de decisiones</p><p class="ctx">Hoy el estado de un asunto se lleva en dos lugares distintos. Falta elegir cuál manda.</p></div>
+    </li>
+    <li class="e-decision">
+      <span class="rot">Espera decisión</span>
+      <div><p class="asunto">Lectura asistida de oportunidades en Compra Ágil</p><p class="ctx">La herramienta de escritorio ya lee el portal, pero todavía necesita que alguien le indique a mano la ventana correcta.</p></div>
+    </li>
+    <li class="e-decision">
+      <span class="rot">Espera decisión</span>
+      <div><p class="asunto">Ruta a la primera venta</p><p class="ctx">Dos caminos abiertos: prestar el servicio propio o revender licencias de terceros. La decisión define qué entra en la primera cotización.</p></div>
+    </li>
+    <li class="e-decision">
+      <span class="rot">Espera decisión</span>
+      <div><p class="asunto">Acreditación como socio de distribuidores mayoristas</p><p class="ctx">En trámite. Los términos los acepta el representante legal, no el equipo.</p></div>
+    </li>
+    <li class="e-decision">
+      <span class="rot">Espera decisión</span>
+      <div><p class="asunto">Seguimiento continuo de las licitaciones de interés</p><p class="ctx">Cada llamado que interesa queda bajo observación hasta su cierre, con el manual de uso del portal escrito en paralelo.</p></div>
+    </li>
+    </ul>
+  </section>
+  <section>
+    <h2>En curso</h2>
+    <p class="sub">Se mueven sin que nadie tenga que intervenir.</p>
+    <ul class="reg">
+    <li class="e-curso">
+      <span class="rot">En curso</span>
+      <div><p class="asunto">Panel interno de aprobaciones</p><p class="ctx">Desplegado y en uso. Se entra solo desde dentro del estudio.</p></div>
+    </li>
+    <li class="e-curso">
+      <span class="rot">En curso</span>
+      <div><p class="asunto">Un solo origen para el sitio publicado</p><p class="ctx">Quedó fijado qué archivo manda y cómo llega a estar en línea.</p></div>
+    </li>
+    <li class="e-curso">
+      <span class="rot">En curso</span>
+      <div><p class="asunto">Una sola casilla de contacto en todos los registros</p><p class="ctx">El registro de proveedor y el sitio muestran casillas distintas. Se unifica desde el escritorio del portal.</p></div>
+    </li>
+    <li class="e-curso">
+      <span class="rot">En curso</span>
+      <div><p class="asunto">Criterios propios para compras públicas</p><p class="ctx">Documento interno que fija qué oportunidades se persiguen, cuáles se descartan y con qué fundamento.</p></div>
+    </li>
+    </ul>
+  </section>
+  <section>
+    <h2>Congelados a propósito</h2>
+    <p class="sub">Detenidos por elección, con la condición de reanudarlos escrita.</p>
+    <ul class="reg">
+    <li class="e-congelado">
+      <span class="rot">Congelado</span>
+      <div><p class="asunto">Asesoría contable externa</p><p class="ctx">Congelada a propósito: se contrata cuando haya primer ingreso, no antes.</p></div>
+    </li>
+    </ul>
+  </section>
+  <section>
+    <h2>Cerrados</h2>
+    <p class="sub">Terminados y verificados.</p>
+    <ul class="reg">
+    <li class="e-cerrado">
+      <span class="rot">Cerrado<span class="fch">1-sep</span></span>
+      <div><p class="asunto">Corte de una sección en pantallas de 1024×768</p><p class="ctx">Se estaba midiendo el ancho y el fallo era de alto. Corregido.</p></div>
+    </li>
+    <li class="e-cerrado">
+      <span class="rot">Cerrado<span class="fch">1-sep</span></span>
+      <div><p class="asunto">Pantalla de error alineada con el sitio</p><p class="ctx">Mostraba un diseño anterior al rediseño; hoy hereda la misma superficie.</p></div>
+    </li>
+    <li class="e-cerrado">
+      <span class="rot">Cerrado<span class="fch">31-ago</span></span>
+      <div><p class="asunto">Cuenta de proveedor en Mercado Público</p><p class="ctx">Abierta y operativa.</p></div>
+    </li>
+    <li class="e-cerrado">
+      <span class="rot">Cerrado<span class="fch">31-ago</span></span>
+      <div><p class="asunto">Sitio compai.cl publicado</p><p class="ctx">En línea, con el cuerpo completo en portada.</p></div>
+    </li>
+    <li class="e-cerrado">
+      <span class="rot">Cerrado<span class="fch">31-ago</span></span>
+      <div><p class="asunto">Qué promete el sitio al que escribe</p><p class="ctx">Promete respuesta, no un acuse automático: se prometió solo lo que se puede sostener.</p></div>
+    </li>
+    </ul>
+  </section>
+
+  <p class="nota">No todo aparece acá. Lo que involucra a un tercero, a una
+    cuenta o a un trámite en curso ante un organismo se lleva igual, con el
+    mismo detalle, pero no se publica.</p>
+
+  <div class="cierre">
+    <a class="btn" href="/">Ir a compai.cl</a>
+    <p class="correo">¿Te falta algo de esta lista? Escribe a
+      <a href="mailto:hola@compai.cl?subject=Sobre%20el%20registro%20de%20estado">hola@compai.cl</a></p>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="inner">
+    <span>COMPAI GLOBAL SOLUTIONS SPA · RUT 78.491.451-8</span>
+    <span>Proveedor inscrito en el Registro de Proveedores del Estado</span>
+  </div>
+</footer>
+
+</div>
+
+</body>
+</html>
