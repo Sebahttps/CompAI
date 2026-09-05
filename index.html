@@ -427,6 +427,48 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
    fuerza en 390 deja lineas huerfanas, que es lo contrario del enfasis. Los
    titulos si mantienen su corte en todo ancho, porque sus lineas son cortas. */
 @media (max-width:700px){ .l3 .lead .li{display:inline} }
+/* ================== LA LISTA DE LICITACIONES ==================
+   Cuatro a la vista y desplazador dentro de la seccion, como se pidio. La
+   altura NO se fija en pixeles: se calcula con la altura real de una fila
+   (--fila) por cuatro, para que al cambiar el cuerpo de texto sigan siendo
+   cuatro y no tres y media. El borde inferior de la cuarta queda a la vista a
+   proposito: es lo que dice «hay mas abajo» sin escribirlo.
+   `tabindex=0` porque una caja que se desplaza tiene que poder desplazarse
+   tambien con el teclado; sin eso, quien no usa raton no llega a la quinta. */
+.lics{--fila:76px; margin-top:var(--s7); max-height:calc(var(--fila) * 4);
+  overflow-y:auto; overscroll-behavior:contain;
+  border-top:1px solid var(--crema-12);
+  scrollbar-width:thin; scrollbar-color:var(--crema-28) transparent}
+.lics:focus-visible{outline:2px solid var(--menta-300); outline-offset:3px}
+.lics::-webkit-scrollbar{width:6px}
+.lics::-webkit-scrollbar-thumb{background:var(--crema-28); border-radius:3px}
+.lics-lista{list-style:none; margin:0; padding:0}
+.lic-fila{display:grid; grid-template-columns:112px 1fr auto; align-items:center;
+  gap:var(--s4); min-height:var(--fila); padding:var(--s4) 0;
+  border-bottom:1px solid var(--crema-12); font-family:var(--font-data)}
+.lic-est{font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+  border-radius:var(--radio); padding:5px 8px; text-align:center; white-space:nowrap}
+/* El orden de prioridad se lee tambien en el color: lo ganado brilla, lo
+   descartado se apaga. Ninguno usa --crema-28 como texto (2,24:1). */
+.lic-est.e-ganada{color:var(--ink-900); background:var(--menta); font-weight:700}
+.lic-est.e-ofertada{color:var(--menta-300); border:1px solid rgba(76,196,139,.5); background:rgba(76,196,139,.12)}
+.lic-est.e-consulta{color:var(--terracota-300); border:1px solid rgba(200,121,65,.45); background:rgba(200,121,65,.10)}
+.lic-est.e-pertinente{color:var(--menta-300); border:1px solid rgba(76,196,139,.36); background:none}
+.lic-est.e-descartada{color:var(--crema-60); border:1px solid var(--crema-28); background:none}
+.lic-nom{font-size:14px; color:var(--crema); letter-spacing:.01em; line-height:1.45}
+.lic-cod{display:block; font-size:11px; color:var(--crema-60); letter-spacing:.04em}
+.lic-plazo{font-size:11.5px; color:var(--crema-60); text-align:right; white-space:nowrap}
+.lic-plazo b{color:var(--crema); font-weight:600}
+.lics-pie{margin:var(--s4) 0 0; font-family:var(--font-data); font-size:11px;
+  color:var(--crema-60); letter-spacing:.03em}
+@media (max-width:700px){
+  .lics{--fila:104px}
+  .lic-fila{grid-template-columns:1fr auto; gap:var(--s2) var(--s3)}
+  .lic-est{grid-column:1; justify-self:start}
+  .lic-plazo{grid-column:2; text-align:right}
+  .lic-nom{grid-column:1 / -1}
+}
+
 .tabla{margin-top:var(--s7); border-top:1px solid var(--crema-12)}
 .fila{display:grid; grid-template-columns:1fr auto; align-items:center; gap:var(--s4);
   padding:var(--s5) 0; border-bottom:1px solid var(--crema-12); font-family:var(--font-data)}
@@ -507,6 +549,28 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
 .done.on{display:flex}
 .done svg{width:22px; height:22px; flex:0 0 auto}
 .done p{margin:0; font-size:15px; color:var(--crema-75)}
+
+/* --- LAMINA 6 --- contacto ---
+   Centrada y con aire: es una lamina de una sola cosa, y la direccion de
+   correo es la pieza. El dominio debajo va en el crema apagado, como firma,
+   para que no compita con el correo, que es lo unico que hay que apretar. */
+.l7{min-height:72vh; min-height:72svh; display:grid; place-items:center;
+  text-align:center; padding:var(--s9) var(--s5)}
+.contacto .kicker{margin:0 0 var(--s5)}
+.ct-frase{margin:0; font-size:19px; color:var(--crema-75); line-height:1.5;
+  text-shadow:var(--sombra-texto)}
+.ct-correo{display:inline-block; margin:var(--s5) 0 0; font-family:var(--font-data);
+  font-weight:600; font-size:clamp(22px,3.2vw,34px); color:var(--terracota);
+  text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:7px;
+  text-decoration-color:rgba(200,121,65,.45);
+  text-shadow:0 2px 3px rgba(8,9,12,.55), var(--glow-terracota);
+  transition:color .18s ease, text-decoration-color .18s ease}
+.ct-correo:hover, .ct-correo:focus-visible{color:var(--terracota-200);
+  text-decoration-color:var(--terracota-200)}
+.ct-bot{margin:var(--s4) 0 0; font-size:15px; color:var(--crema-75)}
+.ct-dominio{margin:var(--s6) 0 0; font-family:var(--font-data); font-size:12px;
+  letter-spacing:.18em; text-transform:lowercase; color:var(--crema-60)}
+@media (max-width:700px){ .contacto .ct-frase .li{display:inline} }
 
 /* --- LAMINA 6 --- pie alargado --- */
 .pie{position:relative; z-index:2; margin-top:var(--s9);
@@ -620,6 +684,7 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
         <a href="portafolio.html">Portafolio</a>
         <a href="#agente-ia">Grace Agente IA</a>
         <a href="#empresa">Empresa</a>
+        <a href="#cotiza">Cotiza &Aacute;gil</a>
         <a href="#contacto">Contacto</a>
       </nav>
     </div>
@@ -671,20 +736,131 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
     <p class="lead"><span class="li">Grace monitorea las publicaciones, filtra por rubro y presupuesto,</span>
       <span class="li">y prepara la propuesta antes del cierre.</span></p>
 
-    <div class="tabla">
-      <div class="fila">
-        <span class="lic"><span class="cod">ID 0001-LE26</span><span class="pto">&middot;</span>Aplicaci&oacute;n m&oacute;vil</span>
-        <span class="ver si">Pertinente</span>
-      </div>
-      <div class="fila">
-        <span class="lic"><span class="cod">ID 0002-LP26</span><span class="pto">&middot;</span>Software de gesti&oacute;n</span>
-        <span class="ver si">Pertinente</span>
-      </div>
-      <div class="fila">
-        <span class="lic"><span class="cod">ID 0003-CM26</span><span class="pto">&middot;</span>Obras civiles</span>
-        <span class="ver no">Descartada</span>
-      </div>
+    <!-- ================== LICITACIONES DE NUESTROS RUBROS ==================
+         Encargo de Sebastian, 5-sep: «las licitaciones de nuestros rubros, en
+         orden de prioridad: adjudicadas, postulando, en consulta, pertinente,
+         descartadas, junto con los plazos que correspondan al estado. Pueden
+         quedar a la vista 4 licitaciones y llevar un desplazador dentro de la
+         seccion».
+
+         LO DE ADENTRO NO SE ESCRIBE A MANO. Sale de `licitaciones.py`, que lee
+         el cache real del barrido de RAIdar y reemplaza lo que hay entre las
+         dos marcas. Una lista de licitaciones copiada a mano nace vencida: los
+         plazos corren solos y una fecha caducada en la portada dice de la
+         empresa exactamente lo contrario de lo que esta seccion promete.
+         ==================================================================== -->
+    <div class="lics" role="region" aria-label="Licitaciones de nuestros rubros" tabindex="0">
+      <ol class="lics-lista">
+<!--LICITACIONES:INICIO-->
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1198-31-LE26</span>Adquisición de Activos Fijos No Financieros SNCD</span>
+          <span class="lic-plazo">cierra en <b>5</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1469-196-L126</span>20-43498 Adquisición de Equipos Computacionales, Universidad de Talca</span>
+          <span class="lic-plazo">cierra en <b>5</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">5155-33-LE26</span>510 - Adquisición de pendrives para Servel</span>
+          <span class="lic-plazo">cierra en <b>6</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1274285-46-LE26</span>Adquisición de Equipos computacionales</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1305541-3-LE26</span>Arriendo de Software de Inventario</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1494906-6-LE26</span>Adquisición de Equipos Especializados</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">3797-48-LE26</span>Adquisicion Servidor Institucional</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">4192-52-LE26</span>Compra Equipamiento Municipal 2026</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">612-38-LE26</span>Adquisición Switch 24 bocas PoE+ de comunicaciones</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">885-82-LE26</span>Renovación y adquisición de licencias de software TOAD para la Contraloría General de la República</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2741-58-LE26</span>Mejoramiento Y Actualizacion de Sistema Central de</span>
+          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">434-104-LE26</span>Servidor de Datos Segun Formulario N°14 Informatica</span>
+          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">813-87-LE26</span>Arriendo dispositivo almacenamiento E1O2RT9</span>
+          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">598-20-LE26</span>Adquisición Licencias de Software para DIPRECA</span>
+          <span class="lic-plazo">cierra en <b>17</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">721703-42-LE26</span>Adquisición de equipo computacional MacBook Pro o equivalente</span>
+          <span class="lic-plazo">cierra en <b>17</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">85-41-LE26</span>Plataforma Integral Soporte Ti con Control Remoto</span>
+          <span class="lic-plazo">cierra en <b>17</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">5413-71-LE26</span>Servicio de Plataforma de Libros Contables Y Auxiliares Electrónicos Y Documentos Tributarios Electrónicos Dte para la Universidad de los Lagos</span>
+          <span class="lic-plazo">cierra en <b>18</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">3015-47-B226</span>Servicio Transacciones Vía Tarjeta Débito Crédito</span>
+          <span class="lic-plazo">cierra en <b>19</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">5240-100-LP26</span>Adquisición de Workstation Forense</span>
+          <span class="lic-plazo">cierra en <b>19</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">732434-20-LP26</span>Servicio Informático para el Centro de Sangre Conc</span>
+          <span class="lic-plazo">cierra en <b>20</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2048-57-LP26</span>Convenio de Software de Gestión de Mantenimiento</span>
+          <span class="lic-plazo">cierra en <b>21</b> d&iacute;as</span>
+        </li>
+<!--LICITACIONES:FIN-->
+      </ol>
     </div>
+    <p class="lics-pie" id="lics-pie">Barrido del 4 de septiembre de 2026 &middot; 517 licitaciones revisadas. 21 de nuestros rubros</p>
 
     <div class="kpis">
       <div class="kpi"><b>24/7</b><span>Operaci&oacute;n continua</span></div>
@@ -728,10 +904,10 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
      Formulario. SIN el correo de compAI a la vista: el brief lo pone en el
      pie (lamina 6) y ahi vive. El campo de correo que queda es EL DEL
      VISITANTE, sin el cual no hay a quien responderle. -->
-<section class="lam l5" id="contacto">
+<section class="lam l5" id="cotiza">
   <div class="wrap">
     <div class="form-card">
-      <p class="kicker">Solicitud de cotizaci&oacute;n</p>
+      <p class="kicker">Cotiza &Aacute;gil</p>
       <h2>Gestiona una <i>compra &aacute;gil</i></h2>
       <form class="fgrid" id="qform" novalidate>
         <div class="f">
@@ -770,9 +946,38 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
   </div>
 </section>
 
+<!-- ====================== LAMINA 6 - CONTACTO ======================
+     Lamina nueva, 5-sep-2026. Sebastian: «incluiria una nueva lamina, para
+     diferenciar la seccion Cotiza Agil de Contacto, y aqui ponemos Contacto».
+     Son dos cosas distintas y hasta hoy compartian pantalla: una es el
+     tramite —cotizar una compra agil, con formulario y campos— y la otra es
+     escribirle a alguien. Mezclarlas obliga a llenar un formulario a quien
+     solo queria mandar un correo.
+
+     El correo SI va a la vista aca, y no contradice al brief: lo que este
+     prohibia era ponerlo en la lamina del formulario, para que el visitante
+     no se saltara el tramite. En una lamina que se llama Contacto, esconder
+     la direccion seria el chiste.
+
+     El bot de Grace queda FUERA hasta que exista. Textual de Sebastian: «SI
+     TUVIERAMOS un bot de Grace, lo incluiria tambien como -o habla
+     directamente con nuestra agente Grace-». Es condicional, y publicar un
+     canal que no contesta es peor que no ofrecerlo. La linea esta escrita y
+     lista abajo, comentada, para el dia que el bot conteste. -->
+<section class="lam l7" id="contacto">
+  <div class="wrap contacto">
+    <p class="kicker">Contacto</p>
+    <p class="ct-frase"><span class="li">&iquest;Necesitas ayuda con un proyecto?</span>
+      <span class="li">Env&iacute;anos un correo a</span></p>
+    <a class="ct-correo" href="mailto:hola@compai.cl">hola@compai.cl</a>
+    <!-- <p class="ct-bot">o habla directamente con nuestra agente Grace</p> -->
+    <p class="ct-dominio">compai.cl</p>
+  </div>
+</section>
+
 </main>
 
-<!-- ====================== LAMINA 6 ====================== -->
+<!-- ====================== LAMINA 7 - PIE ====================== -->
 <footer class="pie">
   <div class="centro">
     <p class="rmcl">-RMCL.-</p>
@@ -789,7 +994,7 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
          tenerlo. El rotulo se queda porque el brief lo pide en el pie
          («Seguimiento de licitaciones ofertadas - Intranet — nada mas») y
          vuelve a ser enlace cuando el destino este detras de clave. -->
-    <span class="intranet">Seguimiento de licitaciones ofertadas - Intranet</span>
+    <span class="intranet">- Intranet -</span>
   </div>
 </footer>
 
