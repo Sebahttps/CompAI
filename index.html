@@ -1,23 +1,33 @@
+<!-- =========================================================================
+     GENERADO POR `integrar.py`. NO SE EDITA A MANO.
+     La estructura, la tipografia, el copy y la composicion vienen de
+     `../_v16-visuai/index.html` (VisuAI) y se copian sin retipear.
+     El encabezado viene de `_cabecera.html` (CinemAI, fuente unica).
+     Para cambiar algo: se cambia el origen y se vuelve a correr el script.
+     ========================================================================= -->
 <!doctype html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<!-- El colector de errores va en su PROPIO script y ANTES que todo lo demas.
-     Regla general salida de un fallo real: si el manejador vive dentro del
-     script que muere, la pagina se ve vacia SIN UN SOLO ERROR registrado. -->
+<!-- Colector de errores en su PROPIO script y ANTES que todo: si el manejador
+     vive dentro del script que muere, la pagina se ve vacia SIN UN SOLO error
+     registrado. Heredado del v15. -->
 <script>window.__err=[];addEventListener('error',function(e){window.__err.push((e.filename||'')+':'+(e.lineno||0)+' '+(e.message||e.error))});addEventListener('unhandledrejection',function(e){window.__err.push('rej:'+e.reason)});</script>
 <meta name="theme-color" content="#08090C">
-<title>compAI · Gestión de compras públicas | Proveedor del Estado</title>
-<meta name="description" content="compAI redacta especificaciones admisibles, compara ofertas y deja el expediente listo para firmar. Compra Ágil, Licitación Pública, Convenio Marco y Trato Directo. Proveedor inscrito y hábil en el Registro de Proveedores del Estado.">
-<link rel="canonical" href="https://compai.cl/">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://compai.cl/">
-<meta property="og:title" content="compAI · Gestión de compras públicas">
-<meta property="og:description" content="Cuatro modalidades de compra pública, un mismo expediente. Proveedor inscrito y hábil en el Registro de Proveedores del Estado.">
-<meta property="og:locale" content="es_CL">
+<title>compAI &middot; Tecnologia para el Estado chileno</title>
+<meta name="description" content="compAI Global Solutions: soluciones tecnologicas con alma creativa e inteligencia artificial aplicada. Proveedor inscrito y habil en el Registro de Proveedores del Estado.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 
 <style>
+/* ============================================================================
+   MAQUETA DEL LANDING SEGUN EL BRIEF DEL 4-SEP-2026 (sitio/BRIEF-LANDING-4SEP.md)
+   Seis laminas, en el orden del brief. Los tokens son los MISMOS del v15
+   publicado: esto es una remaquetacion de la misma marca, no una direccion de
+   arte nueva. Cero hexadecimales fuera de este bloque (R3), salvo el <defs>
+   del logotipo, cuyos colores son el dibujo de la marca y no decisiones de
+   pagina.
+   ========================================================================= */
 :root{
   --ink-900:#08090C; --ink-850:#0B0D12; --ink-800:#0E1015;
   --ink-700:#161A21; --ink-600:#1F242D; --ink-500:#2C333F;
@@ -27,635 +37,518 @@
   --terracota:#C87941; --terracota-700:#8A4F27; --terracota-600:#A66234;
   --terracota-400:#D88A52; --terracota-300:#E09A63; --terracota-200:#EFB98C;
   --menta:#4CC48B; --menta-600:#2FA871; --menta-300:#6FD9A6;
-  --alerta:#D65454; --alerta-300:#F0A0A0; /* 9,71:1 sobre --ink-900 */
+  --alerta:#D65454; --alerta-300:#F0A0A0;
   --glow-terracota:0 0 34px rgba(200,121,65,.38);
   --glow-menta:0 0 30px rgba(76,196,139,.34);
-  /* Dos voces y cero descargas. La mono es la voz de la maquina y tambien la
-     de los titulares; la sans es la voz de una persona. Ninguna se le pide a un
-     tercero: este sitio esta ofrecido al SII como antecedente verificable en
-     linea y no puede depender de que responda un servidor ajeno. */
+  --sombra-texto:0 2px 10px rgba(8,9,12,.85);
   --font-data:ui-monospace,"SF Mono","Cascadia Mono","Segoe UI Mono",Menlo,Consolas,"Courier New",monospace;
   --font-display:var(--font-data);
   --font-body:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px;
   --s6:32px; --s7:48px; --s8:64px; --s9:96px;
-  --measure:66ch; --shell:1240px; --hdr:66px;
+  --measure:66ch; --shell:1240px; --hdr:78px;
   --mascara-opaca:#000; /* NO es color de marca: es el tope opaco de una mascara */
-
-  /* LA FAMILIA DE CREMAS DE LA NUBE. Ni un tono nuevo: seis escalones
-     interpolados en Lab entre los dos neutros que la pagina YA tiene
-     (--crema-60 y --crema), con el ultimo un 12 % mas alla para el reflejo.
-     Medido: C* de 3,45 a 6,68 contra los C*=50,2 del cobre, o sea el CTA
-     sigue siendo la unica nota de color por un factor de 7,5 como minimo.
-     Se derivan con `_v15-cinemai/rampa.py`. */
-  --nube-1:#96948E; --nube-2:#ABA8A1; --nube-3:#BFBCB4;
-  --nube-4:#D5D1C7; --nube-5:#EBE6DB; --nube-6:#FFFCEF;
-  /* ESQUINAS. Vienen de la referencia que entrego Sebastian el 30-08: en esa
-     pieza NO HAY UNA SOLA ESQUINA REDONDA — botones, tarjetas y campos son
-     rectangulos de canto casi vivo. Nuestra pildora de 999px leia a app de
-     consumo; el rectangulo lee a instrumento, que es lo que vendemos.
-     Estan centralizadas a proposito: revertir la decision es cambiar estos dos
-     valores, no trece declaraciones. */
   --radio:3px;        /* ACCIONES: botones, chips, rotulos */
-  --radio-caja:4px;   /* SUPERFICIES: tarjetas, formulario, credencial */
+  --radio-caja:4px;   /* SUPERFICIES: tarjetas, formulario */
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
-  font-family:var(--font-body); font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased;}
+  font-family:var(--font-body); font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased;
+  /* clip, NUNCA hidden: `overflow-x:hidden` en el body lo convierte en
+     contenedor de scroll y deja inertes los view-timeline (doctrina §4) */
+  overflow-x:clip}
 .wrap{max-width:var(--shell); margin:0 auto; padding:0 var(--s5)}
+:focus-visible{outline:2px solid var(--menta); outline-offset:3px}
 
-/* ======== FONDO PLEXUS GLOBAL ======== */
+/* ======== FONDO PLEXUS GLOBAL (identico al v15) ======== */
 #bg{position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; background:var(--ink-900)}
 #bg video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.8;
   filter:brightness(.85) sepia(.24) saturate(1.5) hue-rotate(-12deg)}
 #bg .veil{position:absolute; inset:0;
-  background:radial-gradient(140% 100% at 50% 6%, rgba(8,9,12,0) 0%, rgba(8,9,12,.16) 60%, rgba(8,9,12,.5) 100%);}
+  background:radial-gradient(140% 100% at 50% 6%, rgba(8,9,12,0) 0%, rgba(8,9,12,.16) 60%, rgba(8,9,12,.5) 100%)}
 #page{position:relative; z-index:1}
 
+/* Puntos de montaje del motor de particulas, VERBATIM del v15 para que
+   motor.js de CinemAI enchufe sin tocar una linea de este archivo. */
+.capa{position:absolute; top:0; left:0; right:0; height:0; overflow:visible; z-index:1; pointer-events:none}
+#agente{position:absolute; top:0; left:0; width:300px; height:855px; transform-origin:0 0; opacity:0}
+#nube{position:fixed; left:0; top:0; width:100%; height:100%; z-index:1; pointer-events:none}
+html:not(.js) #agente, html:not(.js) #nube{display:none}
 
-/* ======== ENCABEZADO ======== */
-.site-hdr{position:sticky; top:0; z-index:40; min-height:var(--hdr);
-  display:flex; align-items:center; gap:var(--s5);
-  backdrop-filter:blur(16px); background:rgba(8,9,12,.62);
-  border-bottom:1px solid var(--crema-12)}
-.site-hdr .inner{max-width:var(--shell); margin:0 auto; padding:0 var(--s5); width:100%;
-  display:flex; align-items:center; justify-content:space-between; gap:var(--s5)}
-.brand{display:flex; align-items:center; flex:0 0 auto}
-.brand .logo{height:40px; width:auto; display:block; overflow:visible}
-@media (max-width:420px){.brand .logo{height:34px}}
-.site-nav{display:flex; align-items:center; gap:var(--s5); margin-left:auto}
-.site-nav a{font-family:var(--font-data); font-size:12.5px; color:var(--crema-75);
-  text-decoration:none; letter-spacing:.01em; white-space:nowrap}
-.site-nav a:hover{color:var(--crema)}
-.site-nav a.cta{background:var(--terracota); color:var(--ink-900); font-weight:600;
-  padding:11px 20px; min-height:44px; display:inline-flex; align-items:center; border-radius:var(--radio); transition:background .18s ease, box-shadow .18s ease}
-.site-nav a.cta:hover{background:var(--terracota-400); box-shadow:var(--glow-terracota)}
+:root{
+  /* LAS CUATRO CURVAS DE LA DOCTRINA §3, mas la quinta de esta pieza.
+     Viven aqui una sola vez y no son color: son tiempo. */
+  --entra:cubic-bezier(.16,1,.3,1);      /* algo aparece: desacelera fuerte */
+  --sale:cubic-bezier(.7,0,.84,0);       /* algo se va: acelera            */
+  --micro:cubic-bezier(.34,1.56,.64,1);  /* micro-gesto, con sobrepaso     */
+  --anticipa:cubic-bezier(.36,-.55,.24,1);/* y1<0: el primer tramo va EN CONTRA */
+  /* LA CURVA DEL ENCOGIMIENTO, y no es ninguna de las cuatro.
+     No es --sale: --sale termina a toda velocidad y esto TIENE que detenerse
+     en un sitio nuevo. No es --entra: --entra gasta el 42 % de su duracion en
+     el ultimo 5 % del recorrido, y aqui ese 5 % son 0,55 px — tiempo muerto.
+     Medida: arranca al 2,4 % de la duracion, hace medio viaje en el 23 % y
+     llega al 95 % en el 65 %. Sobre 360 ms: responde a los 9 ms y esta puesta
+     a los 234.
 
-/* ======== BADGE PROVEEDOR DEL ESTADO ======== */
-.prov-rail{position:relative; z-index:30; max-width:var(--shell); margin:0 auto;
-  padding:var(--s4) var(--s5) 0; display:flex; justify-content:flex-end}
-/* La credencial es lo unico que R1 exige ver sin scroll: su superficie no
-   puede dejar pasar el plexus. Medido, al 58 % el video se colaba hasta
-   L=0,42 y el enlace en menta caia a 1,33:1. */
-.prov{background:rgba(18,21,27,.88); border:1px solid rgba(150,148,142,.30);
-  border-radius:var(--radio-caja); padding:9px var(--s4); backdrop-filter:blur(10px); text-align:right;
-  font-family:var(--font-data); color:var(--crema-60); font-size:10.5px; line-height:1.5}
-.prov .t1{font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--crema-60)}
-.prov .t2{font-size:11px; letter-spacing:.11em; text-transform:uppercase; color:var(--crema-75);
-  font-weight:600}
-.prov .ficha{display:inline-flex; align-items:center; min-height:44px; margin-top:2px; color:var(--menta-300); text-decoration:none;
-  font-size:10px; font-weight:600; letter-spacing:.09em;
-  border-bottom:1px solid rgba(76,196,139,.42); padding-bottom:1px;
-  transition:color .18s ease, border-bottom-color .18s ease}
-.prov .ficha:hover{color:var(--menta); border-bottom-color:var(--menta)}
-
-
-/* ======== INICIO 2 — HERO PARTICULAS ======== */
-.hero2{position:relative; overflow-x:clip; min-height:calc(100vh - var(--hdr) - 100px);
-  display:grid; grid-template-columns:1.14fr .86fr; gap:var(--s7); align-items:center;
-  padding:var(--s6) 0 var(--s8)}
-.hero-left{display:flex; flex-direction:column; align-items:flex-start; gap:var(--s6);
-  position:relative; isolation:isolate;
-  /* el aire de abajo NO es estetico: mete la pluma de la mascara por debajo del
-     ultimo renglon, en vez de encima. Sin el, el 1 % de los pixeles detras del
-     horario quedaba en 2,80:1 a 390 px. */
-  padding-bottom:var(--s6)}
-/* SUELO DEL TITULAR. El velo global se abre justo arriba al centro, que es
-   donde vive el titular, y ahi la crema se apoyaba en el video crudo: 1,86:1
-   en el 10 % de los pixeles bajo los botones. Este lavado es local y con pluma
-   larga, para que el plexus siga corriendo alrededor y no aparezca una caja. */
-.hero-left::before{content:""; position:absolute; z-index:-1;
-  /* Suelo por MASCARA y no por degradado radial. El radial se re-centraba
-     cuando la columna crecia, y al sumar el bloque de correo dejo la linea del
-     horario en 2,19:1 sobre el plexus. Con mascara la cobertura es proporcional
-     a la caja: crezca lo que crezca, el centro sigue tapado y solo se despluma
-     el canto. Es la misma tecnica que ya usan los lienzos .agent. */
-  inset:-24% -6% -28% -6%;
-  /* .96 NO es un numero de gusto: es el que ACOTA. El plexus es video, asi que
-     medir un fotograma no prueba nada — el mismo punto dio 2,80:1 y 1,70:1 en
-     dos capturas. Con 4 % de trasluz, aunque el fotograma sea blanco puro el
-     fondo compuesto queda en L=0,043, y contra el las tres tintas de esta
-     columna pasan AA: crema 9,97:1, cobre-300 4,78:1, crema-75 5,78:1.
-     Precio declarado: detras del texto el plexus practicamente se apaga, y
-     sigue vivo alrededor gracias a la pluma de la mascara. */
-  /* .50, Y ANTES ERA .96. El .96 no salio de una medicion: salio de ACOTAR con
-     un fotograma blanco puro (255), que es un fondo que este video no puede
-     producir — el #bg va con opacity:.8 y brightness(.85) sobre #08090C, asi
-     que el pico real medido en toda la caja es 180/255, no 255.
-     Re-medido como corresponde (velo apagado, tinta en transparente para que la
-     sombra siga pintando, y el video BARRIDO en 24 currentTime declarados a lo
-     largo de los 10,04 s del clip; estadistico = maximo de un promedio 5x5, que
-     es el grosor de trazo de la mono, no un pixel suelto bajo el antialias):
-       peor fondo bajo tinta   390 -> 112,104,97   768 -> 139,129,120   1280 -> 97,96,94
-     Con eso el velo se compone por aritmetica, sin volver a capturar:
-       alfa .96  peor 8,83:1     alfa .50  peor 6,85:1     alfa .20  peor 4,85:1
-     El minimo que todavia pasa AA es ~.20; NO se toma. Se toma .50, que deja
-     6,85:1 = 1,52x el umbral, porque el fondo tambien lo pinta el motor de
-     CinemAI y su brillo ya cambio una vez (1,22 -> 0,85). Al borde del acantilado
-     no se publica.
-     Y el negro es #000 y no #08090C EN TODOS LOS ANCHOS: el hallazgo del 29-ago
-     a 390 px vale igual a 1440 —el suelo pintado con el color de fondo de la
-     pagina ACLARA en vez de oscurecer, porque el fondo real ya no es ese color—
-     y era justo el canto izquierdo que CinemAI dejo abierto en su nota. */
-  background:rgba(0,0,0,.50);
-  /* Solo pluma VERTICAL por defecto. La lateral se agrega abajo, y solo en
-     escritorio: a 390 px la columna ocupa todo el ancho, asi que una pluma que
-     empieza al 62 % dejaba el tercio derecho del parrafo SIN suelo — y eso era
-     lo que medi como 1,70:1 creyendo que era el video. */
-  -webkit-mask-image:
-    linear-gradient(to bottom, transparent 0%, var(--mascara-opaca) 10%, var(--mascara-opaca) 95%, transparent 100%);
-  mask-image:
-    linear-gradient(to bottom, transparent 0%, var(--mascara-opaca) 10%, var(--mascara-opaca) 95%, transparent 100%);
-  pointer-events:none}
-/* En escritorio el agente vive a la derecha, y ahi si conviene que el suelo se
-   disuelva hacia el: la pluma lateral empieza despues del texto. */
-@media (min-width:981px){
-  .hero-left::before{
-    -webkit-mask-image:
-      linear-gradient(to bottom, transparent 0%, var(--mascara-opaca) 10%, var(--mascara-opaca) 95%, transparent 100%),
-      linear-gradient(to right, var(--mascara-opaca) 0%, var(--mascara-opaca) 78%, transparent 100%);
-    -webkit-mask-composite:source-in;
-    mask-image:
-      linear-gradient(to bottom, transparent 0%, var(--mascara-opaca) 10%, var(--mascara-opaca) 95%, transparent 100%),
-      linear-gradient(to right, var(--mascara-opaca) 0%, var(--mascara-opaca) 78%, transparent 100%);
-    mask-composite:intersect}
+     Y AQUI VA UNA MARCHA ATRAS MIA, que es lo que se anota. La primera
+     version llevaba anticipacion metida en la curva (y1 = -0,18), como el
+     gesto de las cuatro lineas. Medida en la tira de fotogramas: el logotipo
+     BAJABA 0,05 px —invisible— y a cambio la curva se quedaba 63 ms sin
+     empezar. Mi doctrina §3 pide 2-3 px de anticipacion, que sobre un viaje
+     de 11 px serian el 20 % del recorrido en contra. Las dos salidas son
+     malas, y el motivo es el mismo: LA ANTICIPACION ES PARA UN GESTO QUE
+     ARRANCA EN REPOSO. Este arranca porque el visitante YA esta moviendo la
+     pagina; un retroceso ahi no se lee como que el encabezado respira, se lee
+     como que llego tarde. Fuera. */
+  --asienta:cubic-bezier(.33,.72,.4,1);
+  --t-encoge:360ms;   /* al salir de la lamina 1: es una retirada, va corta */
+  --t-crece:440ms;    /* al volver arriba: es una llegada, se permite mas   */
 }
-/* EFECTO SECUNDARIO DE HABER VACIADO EL PLIEGUE, y hay que pagarlo. Al bajar
-   la altura de la columna, el motor de CinemAI encontro un hueco mayor y subio
-   la figura: el suelo del titular quedo a la vista como un RECTANGULO MAS CLARO
-   que el plexus, cortando la nube.
-   Medido a 390 px, fila por fila: fuera de la caja el video compuesto cae a
-   1,7/255 —el plexus es MAS OSCURO que la tinta de marca— y dentro el suelo lo
-   sube a 9,7, que es exactamente #08090C. O sea el escalon no lo hacia el video:
-   lo hacia el suelo, por estar pintado con el color de fondo de la pagina en un
-   sitio donde el fondo real ya no es ese color.
-   Primero probe emplumar el canto lateral y NO SIRVE: .hero2 lleva overflow-x:
-   clip a la caja de .wrap, asi que el degradado se recorta y el escalon queda
-   igual. Era CSS muerto y se fue.
-   Lo que si sirve es igualar el negro: mismo .96 —que no es un numero de gusto y
-   no se toca— sobre #000 en vez de #08090C. Sobre el plexus oscuro el suelo se
-   funde (delta 1,7 en vez de 8) y sobre un fotograma claro tapa igual o mejor.
-   Solo abajo de 981 px: en escritorio la pluma lateral existe y el suelo esta
-   medido aparte. */
-.claim-mono{font-family:var(--font-data); font-weight:600; text-transform:uppercase;
-  margin:0; color:var(--crema);
-  /* ===== EL DISPLAY, MEDIDO EN LA REFERENCIA (Wix wh-1119 / VISTA.IO) =====
-     No se dedujo: se midieron los fotogramas del video de referencia sobre el
-     titular «EL NUEVO / ESTANDAR / EN ANALISIS / DE DATOS».
-       altura de versal .... 36 px      paso de linea ... 50 px
-       avance de la mono ... 29,9 px    columna ......... ~327 px
-     De ahi salen las tres razones invariantes de escala:
-       paso / avance = 1,672  ->  INTERLINEADO ~= .92 em   (aqui era 1.06)
-       versal / avance = 1,204 ->  TRACKING ~= 0           (aqui era -.01em)
-       columna / avance = 10,9 ->  MEDIDA ~= 11 CARACTERES, y CUATRO lineas.
-     La referencia justifica: en su linea 1 el hueco entre «EL» y «NUEVO» mide
-     129 px sobre una caja de 325 (+40 % de estiramiento), y su linea 2 no se
-     estira porque es UNA sola palabra, y la 4 tampoco porque es la ultima.
-     Nuestra estructura da la misma cadencia sin trucos: el texto suelto y .lo
-     son dos bloques, asi que la ultima linea de cada uno queda en bandera. */
-  line-height:.92; letter-spacing:0;
-  /* EL CUERPO LO SIGUE DEFINIENDO EL RECUENTO DE CARACTERES, no el gusto: con
-     70px la mono avanza 38,5 px, y «EJECUTADA POR IA» son 16 caracteres = 616
-     px. Por eso la columna del heroe subio de 553 a 652 px: es lo que cuesta
-     que 70px quepa en CUATRO renglones y no en cinco. Bajo 981 px la columna
-     es el ancho de la pantalla y el cuerpo escala con ella — mismo cuerpo para
-     todas las lineas, que es la regla que no se mueve. */
-  font-size:clamp(30px,9.3vw,70px); text-align:justify;
-  /* LA SOMBRA NO ES RELIEVE: ES SUELO PEGADO A LA LETRA. Encargo de Sebastian
-     del 30-08. La primera capa es la sombra corta que se ve; la SEGUNDA es la
-     que trabaja — un halo negro de 26px que viaja con el texto y le pone piso
-     ahi donde hay letra, en vez de pedirselo a un rectangulo opaco detras.
-     Por eso esta sombra es lo que PAGA la transparencia del cuadro negro. */
-  text-shadow:0 2px 3px rgba(0,0,0,.62), 0 0 26px rgba(0,0,0,.78)}
-/* LAS DOS LINEAS, AL MISMO CUERPO. Hasta hoy la segunda iba a 20px, en gris,
-   con .2em de espaciado y partida en dos bloques: eso no era la segunda linea
-   de un titular, era otro objeto. Ahora hereda cuerpo, peso, interlineado,
-   espaciado, color y sombra, y lo unico que la distingue es el cobre de IA
-   —que sigue siendo la unica luz de la pagina—. Es tambien lo que hace la
-   referencia: todas las lineas del titular al mismo cuerpo. */
-.claim-mono .lo{display:block; font:inherit; letter-spacing:inherit;
-  color:inherit; margin-top:0}
-/* A partir de dos columnas el titular deja de crecer con la pantalla y crece
-   con SU columna: (ancho-96)*.57 es el ancho real de .hero-left, y 5.6vw es la
-   recta que va por debajo de (ancho-96)*.57/16 caracteres en todo el tramo
-   981..1240. Alcanza los 70 px en 1250 px de ventana y ahi se detiene. */
-@media (min-width:981px){ .claim-mono{font-size:clamp(46px,5.6vw,70px)} }
-.claim-mono .lo b{display:inline; font:inherit; letter-spacing:inherit;
-  color:var(--terracota); text-shadow:0 2px 3px rgba(0,0,0,.55), var(--glow-terracota)}
-.hero-cta{display:flex; gap:var(--s4); flex-wrap:wrap; margin-top:var(--s3)}
-/* EXPLORAR. Reemplaza al bloque de correo y horario que vivia aqui (31-ago,
-   decision de Sebastian): el contacto sigue completo en la seccion de datos y
-   en el formulario, y la portada se queda con una sola cosa que hacer. Va
-   DEBAJO del CTA a proposito, porque todo lo que se mete por encima del boton
-   se paga en pliegue. No es un boton: es la invitacion a seguir bajando, y por
-   eso pesa menos que los dos CTA que tiene arriba. */
-.explorar{display:inline-flex; flex-direction:column; align-items:center; gap:6px;
-  margin-top:var(--s3); padding:8px 4px; min-height:44px;
-  font-family:var(--font-data); font-size:12px; font-weight:600;
-  letter-spacing:.22em; text-transform:uppercase;
-  color:var(--crema-60); text-decoration:none;
-  transition:color .18s ease}
+
+/* =========================================================================
+   1 · LA CAJA DEL ENCABEZADO — SIN FONDO, NUNCA. Zanjado por Sebastian el
+   4-sep: «que el encabezado se encoja al salir de la lamina 1». Lo que
+   cambia es el TAMANO; fondo no lleva y no llevara.
+
+   COMO SE ENCOGE, Y POR QUE ASI:
+
+   a) NO SE TOCA `--hdr`. El canal de la lamina 1 es
+      `padding-top:calc(var(--hdr) + var(--s5))`, asi que animar la variable
+      moveria el aviso de proveedor y la figura: el contenido saltaria bajo el
+      encabezado, que es exactamente lo que el encargo prohibe. La caja fija
+      se queda en 78 px —es invisible y no captura el cursor— y lo que viaja
+      es su CONTENIDO.
+
+   b) SOLO `transform`. La banda pasa de 78 a 56 px moviendo `.inner` 11 px
+      hacia arriba (el centro de 78 esta en 39; el de 56, en 28) y escalando
+      el logotipo a 0,737 (38 px -> 28 px, y 28x2 = 56). Cero `height`, cero
+      `top`, cero `margin`: ni un recalculo de maqueta por cuadro (doctrina §6).
+
+   c) EL PIVOTE DEL LOGO VA A LA IZQUIERDA (`transform-origin:0 50%`), que es
+      el canto del canal. Con el pivote al centro el logotipo se despega del
+      margen izquierdo al encoger y se lee como que la pagina se movio.
+   ========================================================================= */
+.hdr{position:fixed; top:0; left:0; right:0; z-index:60; min-height:var(--hdr);
+  display:flex; align-items:center; background:none; border:0;
+  /* la barra no captura el cursor: sin esto los 78 px de ancho completo se
+     comen los clics de todo lo que pase por debajo */
+  pointer-events:none}
+.hdr .inner{max-width:var(--shell); margin:0 auto; padding:0 var(--s5); width:100%;
+  display:flex; align-items:center; justify-content:space-between; gap:var(--s5);
+  transition:transform var(--t-crece) var(--asienta)}
+.hdr .inner > *{pointer-events:auto}
+.brand{display:flex; align-items:center; flex:0 0 auto}
+.brand .logo{height:38px; width:auto; display:block; overflow:visible;
+  transform-origin:0 50%;
+  /* la sombra va SOBRE LA PIEZA, no es una caja: es lo unico que el encargo
+     permite para despegar el logotipo de los fotogramas claros del plexus */
+  filter:drop-shadow(0 2px 9px rgba(8,9,12,.9));
+  transition:transform var(--t-crece) var(--asienta),
+             filter var(--t-crece) var(--entra)}
+@media (max-width:420px){.brand .logo{height:30px}}
+
+html.hdr-chico .hdr .inner{transform:translateY(-11px);
+  transition-duration:var(--t-encoge)}
+html.hdr-chico .brand .logo{transform:scale(.737);
+  transition-duration:var(--t-encoge)}
+
+/* EN TELEFONO EL LOGOTIPO NO SE ESCALA, Y ES UNA MEDIDA, no una preferencia.
+   Bajo 420 px el logotipo ya mide 30, y 0,737 lo dejaria en 22: los vistos de
+   menta son 2,2 unidades de trazo a 1,5x sobre una viewBox de 87, o sea menos
+   de un pixel entero. Medido con `contraste.py --w=390`: en el estado
+   encogido los vistos NO TIENEN NI UN PIXEL COMPLETAMENTE OPACO —el
+   instrumento devuelve «sin tinta aislable»—, mientras que a 30 px tiene 8.
+   Un elemento de marca que se disuelve en antialias no es un encabezado
+   encogido, es un encabezado roto.
+   La banda igual baja de 78 a 56 px: los 30 px del logotipo caben de sobra en
+   56 (ocupan de 13 a 43), asi que en telefono el encogimiento es la subida de
+   11 px sola, y eso es todo lo que hace falta. */
+@media (max-width:420px){
+  html.hdr-chico .brand .logo{transform:none}
+}
+
+/* =========================================================================
+   2 · EL GESTO DE LAS CUATRO LINEAS
+   «solo 4 lineas horizontales de este largo, una sobre otra ( ____ ) y que al
+   posar el cursor se unen, quedando solo una a la vista, iluminada, del mismo
+   estilo que los vistos color verde del logo compai. Conjunto a eso, se
+   despliega el menu con los titulos.»
+
+   TRES COMPASES ENCADENADOS, no tres cosas a la vez (doctrina §3):
+     1 · SE UNEN      0-320 ms · las cuatro viajan a la MISMA ordenada
+     2 · SE EXTIENDE  160-540 ms · la que queda crece hacia la izquierda
+     3 · SE DESPLIEGA 380-800 ms · el menu cuelga de ella, titulos a 55 ms
+
+   a) LAS TRES DE ARRIBA NO SE APAGAN. Las cuatro se superponen exactamente y
+      la que queda esta ILUMINADA porque la tinta se ACUMULA: cuatro trazos al
+      55 % en el mismo sitio dan 1-(0,45)^4 = 95,9 %. Apagar tres seria un
+      fundido —se leeria como que tres desaparecieron, no como que cuatro se
+      juntaron—. Medido el 4-sep: dispersion final 0,0 px entre las cuatro.
+
+   b) NO HAY UNA SEGUNDA LINEA VERDE. La MISMA linea unida se alarga y ES el
+      canto superior del menu. Por eso esto no es una hamburguesa: el trazo no
+      abre el menu, se CONVIERTE en el.
+
+   c) SE ALARGA CON `stroke-dashoffset`, no con `scaleX`. Escalar en X deforma
+      los remates redondos —justo lo que copia el estilo de los vistos— y
+      obliga a re-rasterizar.
+
+   EL LARGO EN REPOSO SON 42 px de los 252 del lienzo, que es la unica cifra
+   que el brief fija de oido («de ese largo ( ____ )»). VisuAI habia dibujado
+   34: la diferencia con la composicion suya es de 8 px.
+
+   EL LARGO DE LA LINEA UNIDA ES UNA CORRECCION MIA, HECHA MIRANDO, y conviene
+   que quede escrita porque es un choque real entre las dos maquetas. Mi
+   prototipo la alargaba a 247 px porque MI panel media 252 —seis titulos, con
+   numeracion y rotulos largos como «Tecnologia para el Estado»—. El panel de
+   VisuAI son CUATRO palabras en versales: mide 89 px. Con 247 la regla verde
+   no se lee como el canto del menu, se lee como un filete suelto que sobresale
+   158 px por la izquierda de la lista; comparadas las cuatro longitudes al
+   mismo fotograma (`_capturas/_largo-linea.png`: 247, 180, 130 y 95), 130 es
+   la que cierra la columna sin flotar. Sigue siendo un crecimiento de 3,1x
+   —42 -> 130—, o sea el momento «iluminada» del encargo sigue siendo un
+   acontecimiento y no un tic.
+
+   `--menu-largo` es UN solo numero y lo usan las dos piezas: el destino del
+   guion y el ancho minimo del panel. Si algun dia un titulo pasa de 130 px, el
+   panel crece y la linea no: se mueve este numero, no se parchea uno de los
+   dos lados.
+   ========================================================================= */
+:root{ --menu-largo:130px; }
+.mnu-zona{position:relative; display:flex; align-items:center; justify-content:flex-end}
+.mnu{position:relative; width:52px; height:52px; margin-right:-9px; padding:0; border:0;
+  background:none; cursor:pointer; display:grid; place-items:center; line-height:0;
+  -webkit-tap-highlight-color:transparent}
+.mnu:focus-visible{outline:2px solid var(--menta); outline-offset:4px; border-radius:var(--radio)}
+.mnu .vu{position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap}
+/* el lienzo mide lo que mide el MENU y sobresale del boton hacia la izquierda;
+   en reposo solo se ve su extremo derecho. `right:9px` cancela el
+   `margin-right:-9px` del boton: asi el trazo termina EXACTAMENTE en el canto
+   del canal (1316 px a 1440), que es donde VisuAI alineo sus cuatro lineas y
+   donde tiene que terminar el menu para que el trazo sea su canto. */
+.tr{position:absolute; right:9px; top:50%; margin-top:-13px;
+  width:252px; height:26px; overflow:visible; pointer-events:none;
+  filter:drop-shadow(0 2px 7px rgba(8,9,12,.9))}
+.tr g{fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round}
+.tr .t{stroke:var(--crema-75); opacity:.55;
+  stroke-dasharray:247; stroke-dashoffset:205;   /* se ven 42 de 247 */
+  transition:transform .32s var(--anticipa),
+             stroke-dashoffset .38s var(--entra) .16s,
+             stroke .22s var(--entra) .14s}
+/* las cuatro ordenadas y el destino comun: (3 + 24)/2 = 13.5 */
+.tr .t1{--dy:10.5px} .tr .t2{--dy:3.5px} .tr .t3{--dy:-3.5px} .tr .t4{--dy:-10.5px}
+/* EL HALO en un trazo APARTE, mas grueso y casi transparente, que en reposo
+   mide cero: asi la iluminacion no depende de `filter:drop-shadow` en bucle. */
+.tr .halo{stroke:var(--menta); stroke-width:7; opacity:0;
+  stroke-dasharray:247; stroke-dashoffset:205;
+  transition:opacity .26s var(--entra) .16s, transform .32s var(--anticipa),
+             stroke-dashoffset .38s var(--entra) .16s}
+
+.mnu-zona:hover .tr .t, .mnu-zona:focus-within .tr .t, .mnu-zona.abre .tr .t{
+  transform:translateY(var(--dy)); stroke:var(--menta);
+  stroke-dashoffset:calc(247px - var(--menu-largo))}
+.mnu-zona:hover .tr .halo, .mnu-zona:focus-within .tr .halo, .mnu-zona.abre .tr .halo{
+  opacity:.20; transform:translateY(var(--dy));
+  stroke-dashoffset:calc(247px - var(--menu-largo))}
+
+/* ---- COMPAS 3 · EL MENU QUE CUELGA DE LA LINEA -------------------------
+   Dos movimientos, no uno: el panel se DESCUELGA (clip-path de arriba abajo)
+   y dentro los titulos SUBEN escalonados. Uno solo se lee como que aparecio
+   un rectangulo; dos, como que se abrio algo.
+
+   `top:calc(50% + 10px)` y no `top:100%`: la linea unida vive en el centro
+   vertical de la zona, no debajo del boton. Con `top:100%` el panel arrancaba
+   34 px mas abajo y la linea dejaba de leerse como su canto.
+
+   LA TIPOGRAFIA ES DE VisuAI, literal de su archivo (12,5 px, 600, .16em,
+   versales, --crema-75, sombra propia y el filete de menta al posarse). Mi
+   version numeraba los titulos 01..06; la numeracion es tipografia y la
+   tipografia es suya, asi que se va.
+   ---------------------------------------------------------------------- */
+.mnu-panel{position:absolute; top:calc(50% + 10px); right:0; margin:0;
+  display:flex; flex-direction:column; align-items:flex-end; gap:0;
+  /* el MISMO numero que el destino del guion: asi la linea es el canto del
+     panel por construccion y no por coincidencia */
+  min-width:var(--menu-largo);
+  /* SIN FONDO, igual que el encabezado. La legibilidad la da la sombra, que
+     no es un recuadro, mas el paso atras del aviso de proveedor. */
+  filter:drop-shadow(0 10px 26px rgba(8,9,12,.94)) drop-shadow(0 2px 9px rgba(8,9,12,.92));
+  clip-path:inset(0 0 100% 0); pointer-events:none;
+  transition:clip-path .34s var(--sale)}
+.mnu-panel a{opacity:0; transform:translateY(9px);
+  font-family:var(--font-data); font-size:12.5px; font-weight:600;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--crema-75);
+  text-decoration:none; text-shadow:var(--sombra-texto);
+  min-height:44px; display:inline-flex; align-items:center; white-space:nowrap;
+  transition:opacity .24s var(--sale), transform .24s var(--sale), color .18s var(--micro)}
+.mnu-panel a::before{content:""; width:0; height:2px; border-radius:1px; margin-right:0;
+  background:var(--menta); box-shadow:var(--glow-menta);
+  transition:width .22s var(--micro), margin-right .22s var(--micro)}
+.mnu-panel a:hover, .mnu-panel a:focus-visible{color:var(--crema)}
+.mnu-panel a:hover::before, .mnu-panel a:focus-visible::before{width:16px; margin-right:var(--s2)}
+.mnu-panel a[aria-current="page"]{color:var(--crema)}
+
+.mnu-zona:hover .mnu-panel, .mnu-zona:focus-within .mnu-panel, .mnu-zona.abre .mnu-panel{
+  clip-path:inset(0 0 0 0); pointer-events:auto;
+  transition:clip-path .42s var(--entra) .38s}
+.mnu-zona:hover .mnu-panel a, .mnu-zona:focus-within .mnu-panel a, .mnu-zona.abre .mnu-panel a{
+  opacity:1; transform:none;
+  transition:opacity .42s var(--entra), transform .42s var(--entra), color .18s var(--micro)}
+/* EL ESCALONADO. 55 ms, dentro de los 40-80 de la doctrina §3, y va aqui
+   porque esto SI es una serie que APARECE (correccion del 3-sep: el
+   escalonado es para lo que aparece, no para un bloque rigido que se
+   desplaza). Arranca a los 420 ms, cuando la linea ya termino de alargarse:
+   primero se abre la puerta, despues entra la gente. */
+.mnu-zona:hover .mnu-panel a:nth-child(1), .mnu-zona:focus-within .mnu-panel a:nth-child(1), .mnu-zona.abre .mnu-panel a:nth-child(1){transition-delay:.42s}
+.mnu-zona:hover .mnu-panel a:nth-child(2), .mnu-zona:focus-within .mnu-panel a:nth-child(2), .mnu-zona.abre .mnu-panel a:nth-child(2){transition-delay:.475s}
+.mnu-zona:hover .mnu-panel a:nth-child(3), .mnu-zona:focus-within .mnu-panel a:nth-child(3), .mnu-zona.abre .mnu-panel a:nth-child(3){transition-delay:.53s}
+.mnu-zona:hover .mnu-panel a:nth-child(4), .mnu-zona:focus-within .mnu-panel a:nth-child(4), .mnu-zona.abre .mnu-panel a:nth-child(4){transition-delay:.585s}
+.mnu-zona:hover .mnu-panel a:nth-child(5), .mnu-zona:focus-within .mnu-panel a:nth-child(5), .mnu-zona.abre .mnu-panel a:nth-child(5){transition-delay:.64s}
+.mnu-zona:hover .mnu-panel a:nth-child(6), .mnu-zona:focus-within .mnu-panel a:nth-child(6), .mnu-zona.abre .mnu-panel a:nth-child(6){transition-delay:.695s}
+
+/* =========================================================================
+   3 · MOVIMIENTO REDUCIDO — TODO QUIETO Y EN SU ESTADO FINAL.
+   `animation:none` congela el estado INICIAL, no el final (doctrina §4, bug
+   real del 24-ago). Aqui las tres cosas del encabezado son `transition`, asi
+   que con la duracion a cero el navegador salta al estado COMPUTADO, que ya
+   es el final: el encabezado encogido sigue encogiendose al salir de la
+   lamina 1, el gesto sigue uniendo las cuatro lineas y el menu sigue
+   abriendose. Lo que desaparece es el trayecto, no el destino.
+   Se escribe explicito de todos modos, porque una restitucion que se da por
+   supuesta es la que falla.
+   ========================================================================= */
+@media (prefers-reduced-motion:reduce){
+  .hdr .inner, .brand .logo, .tr .t, .tr .halo, .mnu-panel, .mnu-panel a,
+  .mnu-panel a::before{transition-duration:.001ms !important; transition-delay:0s !important}
+  html.hdr-chico .hdr .inner{transform:translateY(-11px)}
+  html.hdr-chico .brand .logo{transform:scale(.737)}
+}
+/* Y LA EXCEPCION DE TELEFONO TAMBIEN, que si no se pierde. Defecto real cazado
+   midiendo a 390 px: la restitucion de arriba tiene la misma especificidad que
+   la regla de `max-width:420` y va DESPUES, asi que con movimiento reducido el
+   logotipo volvia a escalar a 22 px —el caso en que los vistos de menta se
+   quedan sin un solo pixel opaco— justo para quien pidio menos movimiento.
+   Restituir el estado final no sirve de nada si se restituye el equivocado. */
+@media (prefers-reduced-motion:reduce) and (max-width:420px){
+  html.hdr-chico .brand .logo{transform:none}
+}
+
+/* ======== LAMINAS ======== */
+.lam{position:relative; z-index:2}
+
+/* --- LAMINA 1 --- sin texto: figura, aviso de proveedor y EXPLORAR --- */
+/* El canal es el MISMO del encabezado: max-width shell + 24 de padding.
+   Sin esto el aviso de proveedor sobresalia 100 px a la derecha del boton
+   de menu y la desalineacion se veia a simple vista a 1440. */
+.l1{min-height:100vh; min-height:100svh;
+  max-width:var(--shell); margin:0 auto;
+  display:grid; grid-template-rows:auto 1fr auto;
+  padding:calc(var(--hdr) + var(--s5)) var(--s5) var(--s6)}
+.prov{justify-self:end; text-align:right; font-family:var(--font-data);
+  color:var(--crema-60); font-size:10.5px; line-height:1.55;
+  text-shadow:var(--sombra-texto);
+  transition:opacity .24s ease, transform .28s cubic-bezier(.22,.75,.2,1)}
+/* Se pisaban letra sobre letra en la misma esquina. El aviso cede el sitio
+   mientras el menu esta abierto y vuelve al cerrarlo: nadie verifica la ficha
+   en el segundo en que esta eligiendo una seccion. */
+html.menu-abierto .prov{opacity:0; transform:translateY(8px); pointer-events:none}
+.prov .t1{font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--crema-60)}
+.prov .t2{font-size:11px; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--crema-75); font-weight:600}
+.prov .ficha{display:inline-flex; align-items:center; min-height:44px; margin-top:2px;
+  color:var(--menta-300); text-decoration:none; font-size:10.5px; font-weight:600;
+  letter-spacing:.09em; text-decoration:underline; text-decoration-thickness:1px;
+  text-underline-offset:5px; text-decoration-color:rgba(76,196,139,.45);
+  transition:color .18s ease, text-decoration-color .18s ease}
+.prov .ficha:hover, .prov .ficha:focus-visible{color:var(--menta); text-decoration-color:var(--menta)}
+
+/* Hueco de la figura. NO se pinta nada aqui: las particulas son de CinemAI.
+   El hueco reserva el sitio para que la composicion no salte cuando entren.
+   Con ?slot=1 en la URL se dibuja la guia, solo para revisar encuadre. */
+.fig{position:relative; display:grid; place-items:center; min-height:280px}
+/* MANDA LA ALTURA, no la anchura: la figura esta de pie (el montaje del
+   v15 es 300x855). Con la anchura al mando el hueco salia cuadrado. */
+.fig-slot{height:min(62svh,640px); aspect-ratio:5/7; width:auto}
+html.guia .fig-slot{outline:1px dashed var(--crema-28)}
+
+.explorar{justify-self:center; display:inline-flex; flex-direction:column; align-items:center; gap:6px;
+  padding:8px 4px; min-height:44px; font-family:var(--font-data); font-size:12px; font-weight:600;
+  letter-spacing:.22em; text-transform:uppercase; color:var(--crema-60); text-decoration:none;
+  text-shadow:var(--sombra-texto); transition:color .18s ease}
 .explorar:hover, .explorar:focus-visible{color:var(--crema)}
 .explorar svg{width:22px; height:13px; fill:none; stroke:currentColor;
   stroke-width:2; stroke-linecap:round; stroke-linejoin:round;
   animation:explorar-baja 2.4s ease-in-out infinite}
-@keyframes explorar-baja{
-  0%,100%{transform:translateY(0); opacity:.55}
-  50%{transform:translateY(5px); opacity:1}}
-@media (prefers-reduced-motion:reduce){
-  .explorar svg{animation:none; opacity:.8}}
-.hero-right{position:relative; display:flex; flex-direction:column; align-items:center; gap:var(--s4)}
-#humanField{width:100%; max-width:640px; height:min(67vh,600px); display:block}
-.cameo-wrap{display:flex; flex-direction:column; align-items:center; gap:var(--s2)}
-.cameo-wrap p{font-family:var(--font-data); font-size:11px; letter-spacing:.14em;
-  text-transform:uppercase; color:var(--crema-60); margin:0; text-align:center}
+@keyframes explorar-baja{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
 
-.hero-right::before{content:""; position:absolute; inset:10% 6% 16%; z-index:-1;
-  background:radial-gradient(52% 46% at 50% 46%, rgba(200,121,65,.13) 0%, rgba(200,121,65,0) 72%);
-  pointer-events:none}
-/* franja vertical: la agente caminando junto a una sección */
-.agent-walk{width:100%; max-width:152px; height:min(46vh,410px); margin:0 auto;}
-/* LA COLUMNA DE LA AGENTE SE DECLARA, NO SE DEDUCE. Con `auto` la pista se
-   ajustaba al ancho de su contenido y, quitado el rotulo, un slot vacio mide
-   cero: la pista colapsaba y con ella el alto de la seccion, que es lo unico
-   que esta columna existe para reservar. 300 px es alto reservado, no ancho
-   de dibujo -la figura la coloca el motor en el espacio libre, no aqui-. */
-.cine-head-grid{display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:var(--s7); align-items:center}
-.cotiza-grid{display:grid; grid-template-columns:minmax(0,760px) auto; gap:var(--s7); align-items:end}
-@media (max-width:980px){
-  .cine-head-grid,.cotiza-grid{grid-template-columns:1fr}
-  .cine-head-grid .cameo-wrap,.cotiza-grid .cameo-wrap{display:none}
-}
+/* --- LAMINA 2 --- solo la frase --- */
+.l2{min-height:82vh; min-height:82svh; max-width:var(--shell); margin:0 auto;
+  display:grid; place-items:center;
+  text-align:center; padding:var(--s9) var(--s5)}
+.frase{margin:0; font-family:var(--font-data); font-weight:600; text-transform:uppercase;
+  font-size:clamp(28px,5.6vw,66px); line-height:1.14; letter-spacing:-.005em;
+  color:var(--crema); text-shadow:0 2px 14px rgba(8,9,12,.75); max-width:19ch}
+.frase .lo{display:block}
+.frase b{font:inherit; color:var(--terracota);
+  text-shadow:0 2px 3px rgba(8,9,12,.55), var(--glow-terracota)}
 
-/* ---- SCROLL-CINE ---- */
-.cine{position:relative; margin-top:var(--s8)}
-.cine-head{padding:var(--s8) 0 var(--s6); border-top:1px solid var(--crema-12)}
-/* EL ROTULO SUBE DE crema-60 A crema-75. Medido bajo el trazo real (no en la
-   caja de linea) sobre el peor fotograma del plexus: en crema-60 daba 3,83:1 y
-   era el UNICO elemento de la cabecera que seguia por debajo de AA con el halo
-   puesto. En crema-75 da 5,73:1 sobre el mismo fondo. No se pierde jerarquia:
-   la separan el cuerpo (11px contra 36) y el versalita espaciado, no el gris. */
-.cine-head .kick{font-family:var(--font-data); font-size:11px; letter-spacing:.2em;
-  text-transform:uppercase; color:var(--crema-75); display:flex; align-items:center; gap:var(--s3); margin:0 0 var(--s4)}
-.cine-head .kick::before{content:""; width:24px; height:1px; background:var(--terracota)}
-/* MISMO TRATAMIENTO QUE LOS OTROS DOS h2. Era el unico de los tres en caja baja
-   y con -.04em: con el rotulo nuevo, mas corto, se leia como parrafo agrandado
-   debajo de un antetitulo en versales. La referencia del 30-08 pone TODO el
-   display en versales de mono, y los otros dos h2 de esta pagina ya lo estaban. */
-.cine-head h2{font-family:var(--font-data); font-weight:600; text-transform:uppercase;
-  letter-spacing:.01em;
-  font-size:clamp(22px,3.2vw,36px); line-height:1.15; margin:0 0 var(--s4); text-wrap:balance}
-.cine-head h2 i{font-style:normal; color:var(--terracota)}
-/* 62ch Y NO EL ANCHO DE LA COLUMNA. El parrafo corria los 953 px de la pista
-   -104 caracteres por linea, muy por encima de los 45-90 de una medida legible-
-   y ademas era EL limitador del hueco: al ocupar hasta x=1077 dejaba a la
-   agente una franja de 208 px de ancho, bajo el minimo del encuadre mas
-   cerrado. Los pixeles que le faltaban a la figura estaban en una linea
-   demasiado larga para leerse; se los devuelve la tipografia, no la maqueta. */
-.cine-head p{color:var(--crema-75); font-size:15.5px; margin:0; max-width:62ch}
-.cine-head p.aviso{color:var(--crema-60); font-size:13.5px; margin-top:var(--s3);
-  font-family:var(--font-data); line-height:1.55; max-width:56ch}
-.cine-track{position:relative}
-.cine-stage{position:sticky; top:var(--hdr); min-height:calc(100vh - var(--hdr));
-  display:flex; flex-direction:column; justify-content:center; gap:var(--s4); padding:var(--s5) 0}
-.lanes{display:grid; grid-template-columns:repeat(4,1fr); gap:var(--s4); align-items:stretch;
-  flex:0 0 auto; min-height:0;
-  transition:grid-template-columns .55s cubic-bezier(.2,.7,.3,1)}
-/* ACENTO DE CAMARA, dura lo que un corte. Fue `scale(1.018)` sostenido y
-   MIRADO: corria la rejilla 11 px por lado y perdia el registro con
-   `.cine-head` y `.oferta`. */
-@keyframes lev{0%{transform:none}32%{transform:translateY(-7px)}100%{transform:none}}
-.lanes.acto{animation:lev .62s cubic-bezier(.16,1,.3,1)}
-.lane{position:relative; background:rgba(11,13,18,.74); border:1px solid var(--crema-12);
-  border-radius:var(--radio-caja); padding:var(--s4) var(--s5) var(--s5); cursor:pointer; overflow:hidden;
-  display:flex; flex-direction:column; gap:var(--s4); backdrop-filter:blur(7px);
-  transition:border-color .35s ease, background .35s ease, opacity .45s ease, transform .45s ease}
-.lane:hover{border-color:rgba(200,121,65,.4)}
-.lane .lnum{font-family:var(--font-data); font-size:10.5px; letter-spacing:.16em; color:var(--crema-60)}
-.lane .ltitle{font-family:var(--font-data); font-size:12.5px; font-weight:600; letter-spacing:.02em;
-  color:var(--crema); line-height:1.35; margin:0}
-/* EL CORTE: un presente por tarjeta. `pas` es crema-60, 6,37:1 medido:
-   retrocede, no se apaga. Sin `viva/pas` queda el estado de hoy. */
-.beat{opacity:0; transform:translateY(9px);
-  transition:opacity .5s cubic-bezier(.16,1,.3,1), transform .62s cubic-bezier(.16,1,.3,1)}
-.beat.on{opacity:1; transform:none}
-/* EL GIRO NO SE FUNDE: corta en .34 s y el paso se pasa de largo. */
-.beat.accion.on{transition:opacity .34s linear,
-  transform .5s cubic-bezier(.34,1.56,.64,1)}
-.beat .tag{font-family:var(--font-data); font-size:9.5px; letter-spacing:.18em;
-  text-transform:uppercase; display:block; margin-bottom:6px}
-/* El cobre marca accion y las dos frases que sostienen la venta.
-   Un rotulo de compas no es una accion: va en gris. */
-.beat.dolor .tag{color:var(--crema-60)}
-.beat.accion .tag{color:var(--crema-60)}
-/* La menta significa estado verificado: habil, acreditado, conforme.
-   Un desenlace narrado no es un estado verificado. */
-.beat.fin .tag{color:var(--crema-60)}
-.beat p{margin:0; font-size:13px; line-height:1.5; color:var(--crema-75); max-width:none;
-  transition:color .45s cubic-bezier(.16,1,.3,1)}
-.beat.viva p{color:var(--crema)}
-.beat.pas p{color:var(--crema-60)}
-.lanes.acta .beat.pas p{color:var(--crema-75)}
-/* EL DESENLACE SE VE distinto: unica con filete y unica en tinta plena. */
-.beat.fin{border-top:1px solid var(--crema-12); padding-top:var(--s4)}
-.beat.fin p{color:var(--crema)}
-/* `width` por cuadro era maqueta x4; `scaleX` compone. A/B con A/A de
-   control: 37 -> 13,5 layouts y 11,3 -> 4,6 ms en el barrido. */
-.lane .bar{position:absolute; left:0; bottom:0; height:2px; width:100%; background:var(--terracota);
-  transform:scaleX(0); transform-origin:left center;
-  transition:transform .25s linear}
-.lane.sel{border-color:var(--terracota); background:rgba(20,15,12,.82)}
-/* EL MARCO CAMBIA EN EL CORTE. Valores de `.sel`: superficie ya aprobada. */
-.lane.acto{border-color:rgba(200,121,65,.42); background:rgba(20,15,12,.80)}
-/* ESCALONADO 70 ms: N columnas al unisono son UNA cosa (doctrina 3). El indice
-   lo pone el guion, asi que no depende de que sean cuatro. */
-.lane .beat,.lane .bar{transition-delay:calc(var(--i,0)*70ms)}
-.lane.sel .bar{background:var(--menta)}
-.lane.dim{opacity:.42}
-.lanes.picked .lane.dim .beat{display:none}
-.lanes.picked .lane.dim{justify-content:flex-start}
-.lane.full{border-color:rgba(76,196,139,.45)}
-.lanes.picked{grid-template-columns:var(--cols)}
-/* Sin la frase de cierre este pie quedo con un solo hijo y `space-between` lo
-   empujaba a la izquierda. Vuelve a la derecha, que es de donde salio. */
-.cine-foot{display:flex; align-items:center; justify-content:flex-end; gap:var(--s5);
-  flex-wrap:wrap; font-family:var(--font-data); font-size:11.5px; color:var(--crema-60);
-  letter-spacing:.06em; min-height:22px}
-.cine-foot .conv{color:var(--menta-300); opacity:0; transition:opacity .6s ease}
-.cine-foot .conv.on{opacity:1; margin-right:auto}
-/* REINICIAR SOLO CUANDO HAY ALGO QUE REINICIAR: sin la bajada que invitaba a
-   hacer clic, ofrecia deshacer una accion que nadie hizo. `visibility` y no
-   `opacity` sola, para que tampoco reciba el tabulador. */
-.cine-foot button{background:none; border:0; color:var(--crema-60); cursor:pointer;
-  font-family:var(--font-data); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
-  border-bottom:1px solid var(--crema-28); padding:0 0 2px; min-height:44px;
-  opacity:0; visibility:hidden; transition:opacity .3s ease, color .18s ease}
-.lanes.picked + .cine-foot button{opacity:1; visibility:visible}
-.cine-foot button:hover{color:var(--crema)}
+/* --- LAMINA 3 --- Agente IA --- */
+.l3{padding:var(--s9) 0}
+.chip{display:inline-flex; align-items:center; gap:var(--s2);
+  font-family:var(--font-data); font-size:10.5px; font-weight:700; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--menta-300);
+  border:1px solid rgba(76,196,139,.36); border-radius:var(--radio);
+  padding:5px 10px; background:rgba(8,9,12,.5)}
+.l3 h2{margin:var(--s4) 0 0; font-family:var(--font-data); font-weight:600;
+  text-transform:uppercase; letter-spacing:-.005em; line-height:1.14;
+  font-size:clamp(26px,3.4vw,42px); color:var(--crema); max-width:22ch}
+.l3 .lead{margin:var(--s4) 0 0; max-width:var(--measure); color:var(--crema-75); font-size:17px;
+  text-shadow:var(--sombra-texto)}
+.tabla{margin-top:var(--s7); border-top:1px solid var(--crema-12)}
+.fila{display:grid; grid-template-columns:1fr auto; align-items:center; gap:var(--s4);
+  padding:var(--s5) 0; border-bottom:1px solid var(--crema-12); font-family:var(--font-data)}
+.fila .lic{font-size:14px; color:var(--crema); letter-spacing:.01em}
+.fila .lic .cod{color:var(--crema-60)}
+/* --crema-28 es reticula y borde, NUNCA texto (2,24:1). Un middot es texto. */
+.fila .lic .pto{color:var(--crema-60); padding:0 6px}
+.ver{font-size:10.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+  border-radius:var(--radio); padding:5px 10px; white-space:nowrap}
+.ver.si{color:var(--menta-300); border:1px solid rgba(76,196,139,.36); background:rgba(76,196,139,.07)}
+.ver.no{color:var(--crema-60); border:1px solid var(--crema-28); background:none}
+.kpis{margin-top:var(--s8); display:grid; grid-template-columns:repeat(3,1fr); gap:var(--s5);
+  border-top:1px solid var(--crema-12); padding-top:var(--s6)}
+.kpi b{display:block; font-family:var(--font-data); font-weight:600; line-height:1;
+  font-size:clamp(26px,3.6vw,44px); color:var(--crema); letter-spacing:-.01em}
+.kpi span{display:block; margin-top:var(--s3); font-family:var(--font-data);
+  font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--crema-60)}
 
-/* ---- MODALIDADES Y RUBROS ---- */
-.oferta{position:relative; padding:var(--s9) 0 0; border-top:1px solid var(--crema-12)}
-.oferta-head{max-width:800px; margin-bottom:var(--s7)}
-.oferta-head h2{font-family:var(--font-data); font-weight:600; text-transform:uppercase;
-  letter-spacing:.01em; font-size:clamp(20px,2.7vw,32px); line-height:1.15; margin:0 0 var(--s4)}
-.oferta-head p{color:var(--crema-75); font-size:15.5px; margin:0; max-width:52ch}
-.mods{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:var(--s4)}
-.mod{background:rgba(11,13,18,.72); border:1px solid var(--crema-12); border-radius:var(--radio-caja);
-  padding:var(--s5); backdrop-filter:blur(6px); display:flex; flex-direction:column; gap:var(--s3);
-  transition:border-color .25s ease, transform .25s ease}
-.mod:hover{border-color:rgba(200,121,65,.45); transform:translateY(-2px)}
-.mod .tope{font-family:var(--font-data); font-size:9.5px; letter-spacing:.18em;
+/* --- LAMINA 4 --- la empresa + datos VERBATIM del sitio vigente --- */
+.l4{padding:var(--s9) 0}
+/* SIN text-transform, a proposito: en versales la marca sale COMPAI y se
+   escribe compAI. La razon social si va en versales, pero eso viene copiado
+   del sitio vigente, no de una regla de esta hoja. */
+.l4 h2{margin:0; font-family:var(--font-data); font-weight:600;
+  font-size:clamp(24px,3.2vw,38px); line-height:1.18; letter-spacing:-.005em; color:var(--crema)}
+.l4 .bajada{margin:var(--s4) 0 0; max-width:var(--measure); font-size:19px; color:var(--crema);
+  text-shadow:var(--sombra-texto)}
+.l4 .cuerpo{margin:var(--s5) 0 0; max-width:var(--measure); color:var(--crema-75);
+  text-shadow:var(--sombra-texto)}
+.datos{margin-top:var(--s8); border-top:1px solid var(--crema-12); padding-top:var(--s6)}
+.datos .dt{margin:0 0 var(--s5); font-family:var(--font-data); font-size:11px;
+  font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--crema-60)}
+.dgrid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s5) var(--s7)}
+.d{margin:0; padding:var(--s4) 0; border-top:1px solid var(--crema-12)}
+.d dt{font-family:var(--font-data); font-size:10.5px; letter-spacing:.13em;
   text-transform:uppercase; color:var(--crema-60)}
-.mod h3{font-family:var(--font-data); font-size:14px; font-weight:600; letter-spacing:.01em;
-  color:var(--crema); margin:0; line-height:1.35; text-transform:none}
-.mod p{margin:0; font-size:13.5px; line-height:1.55; color:var(--crema-75)}
-.rubros{margin-top:var(--s7)}
-.rubros h3{font-family:var(--font-data); font-size:11px; letter-spacing:.2em; text-transform:uppercase;
-  color:var(--crema-60); margin:0 0 var(--s4)}
-.chips{display:flex; flex-wrap:wrap; gap:var(--s3)}
-.chips span{font-family:var(--font-data); font-size:12.5px; color:var(--crema-75);
-  border:1px solid var(--crema-12); background:rgba(11,13,18,.6); border-radius:var(--radio);
-  padding:8px 16px; transition:border-color .2s ease, color .2s ease}
-.chips span:hover{border-color:rgba(76,196,139,.4); color:var(--crema)}
+.d dd{margin:var(--s2) 0 0; font-size:15px; color:var(--crema-75); line-height:1.55}
+.d dd b{color:var(--crema)}
+.d .mt{font-family:var(--font-data); font-size:11.5px; font-weight:700; letter-spacing:.1em;
+  color:var(--crema)}
+.d .mt[data-luz]{color:var(--menta)}
+.d .verif{font-family:var(--font-data); font-size:10.5px; color:var(--crema-60)}
 
-/* ---- DATOS DE LA EMPRESA ---- */
-/* ======== SUELO SIN CAJA PARA EL TEXTO DESNUDO ========
-   Al bajar el velo del heroe hubo que medir el resto, y el resto estaba peor:
-   TODO el texto que se apoya DIRECTO en el plexus —los rotulos de seccion y la
-   ficha de empresa— no tiene ninguna superficie debajo. Medido a 1280 px con el
-   video barrido en 12 fotogramas y estadistico MAX 5x5:
-       .cine-head p        1,87:1     .cine-head .kick    1,90:1
-       .cine-head p lead   2,01:1     .d dd (ficha)       3,85:1
-       .verif              2,10:1     .cine-head h2       4,41:1
-   Las tarjetas (.mod, .lane, .form-card, .chips) pasan porque tienen superficie
-   propia; estas no la tienen. La respuesta NO es otro rectangulo opaco: es
-   exactamente lo que se le acaba de quitar al heroe. Es el mismo halo del
-   titular — un suelo que viaja con la letra, da piso donde hay letra y no dibuja
-   ninguna caja. Coste: cero bytes de imagen, cero elementos nuevos. */
-.cine-head .kick, .cine-head h2, .cine-head p,
-.oferta-head .kicker, .oferta-head h2, .oferta-head p,
-.rubros h3, .datos h3.dt, .d dt, .d dd, .cameo-wrap p{
-  /* CUATRO CAPAS Y NO UNA. Con una sola capa larga el halo se diluye: el
-     parrafo de 11px solo subio de 1,87 a 2,40:1, porque una letra fina tiene
-     poca tinta con que proyectar. Apiladas de corto a largo y casi opacas, se
-     acumulan y construyen un piso real pegado al glifo. Los radios son 2/5/11/20
-     px: el corto tapa el contraglifo, el largo cierra el hueco entre renglones. */
-  text-shadow:0 0 2px rgba(0,0,0,1), 0 0 5px rgba(0,0,0,1),
-              0 0 11px rgba(0,0,0,.97), 0 0 20px rgba(0,0,0,.9)}
-
-.datos{padding:var(--s8) 0 0; border-top:1px solid var(--crema-12); margin-top:var(--s9)}
-.datos h3.dt{font-family:var(--font-data); font-size:11px; letter-spacing:.2em; text-transform:uppercase;
-  color:var(--crema-60); margin:0 0 var(--s5)}
-.dgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:var(--s5) var(--s7)}
-.d{display:grid; gap:3px}
-.d dt{font-family:var(--font-data); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase;
-  color:var(--crema-60)}
-.d dd{margin:0; font-family:var(--font-data); font-size:13px; color:var(--crema-75); line-height:1.5}
-.d dd b{color:var(--crema); font-weight:600}
-.d dd .mt{color:var(--menta-300)}
-.d dd .verif{color:var(--crema-60); font-size:11.5px; letter-spacing:.02em}
-
-@media (max-width:980px){
-  .hero2{grid-template-columns:1fr; gap:var(--s6); padding-top:var(--s5)}
-  .hero-right{order:-1}
-  /* el titular manda: en el movil la figura cede el pliegue */
-  #humanField{height:min(72vh,600px)}
-  .hero-right{order:1}
-  .lanes{grid-template-columns:1fr !important; gap:var(--s3)}
-  .lane{min-height:0}
-  .cine-stage{position:static; min-height:0}
-}
-/* LA PUERTA DEL CINE ES QUE QUEPA, NO QUE SEA ANCHO. La de arriba decide por
-   ANCHO un fallo que es de ALTO: con el escenario pegado, lo que sobresale del
-   viewport no se alcanza mientras dura la escena. Medido en lo publicado a
-   990x560, el desenlace cortado a media frase. La enciende `setHeight()`
-   midiendo el contenido, no un numero escrito a mano. */
-.cine-track.plano .cine-stage{position:static; min-height:0}
-
-/* ======== COTIZACION ======== */
-.cotiza{position:relative; padding:var(--s9) 0; border-top:1px solid var(--crema-12)}
-.form-card{background:rgba(14,16,21,.72); border:1px solid var(--crema-12); border-radius:var(--radio-caja);
-  padding:var(--s8) var(--s7); backdrop-filter:blur(8px); max-width:760px}
-.kicker{font-family:var(--font-data); font-size:11px; letter-spacing:.2em; text-transform:uppercase;
-  color:var(--crema-75); display:flex; align-items:center; gap:var(--s3); margin:0 0 var(--s4)}
-.kicker::before{content:""; width:24px; height:1px; background:var(--terracota)}
-.form-card h2{font-family:var(--font-data); font-weight:600; text-transform:uppercase;
-  letter-spacing:.01em; font-size:clamp(19px,2.5vw,29px); line-height:1.15; margin:0 0 var(--s6)}
-.fgrid{display:grid; gap:var(--s6)}
-.f{display:grid; gap:var(--s2); position:relative}
-.f label{font-family:var(--font-data); font-size:10.5px; letter-spacing:.14em;
-  text-transform:uppercase; color:var(--crema-60)}
-.fpair{display:grid; grid-template-columns:1fr 1fr; gap:var(--s6)}
-@media (max-width:620px){ .fpair{grid-template-columns:1fr} }
-.f input, .f textarea{background:transparent; border:0; border-bottom:1px solid var(--crema-28);
-  padding:11px 2px; color:var(--crema); font-family:var(--font-data); font-size:14px; width:100%;
-  resize:vertical; transition:border-color .2s ease}
+/* --- LAMINA 5 --- formulario. SIN el correo de compAI. --- */
+.l5{padding:var(--s9) 0}
+.form-card{max-width:760px; margin:0 auto; background:rgba(11,13,18,.72);
+  border:1px solid var(--crema-12); border-radius:var(--radio-caja);
+  padding:var(--s7); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px)}
+.kicker{margin:0; font-family:var(--font-data); font-size:10.5px; font-weight:700;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--crema-60)}
+.form-card h2{margin:var(--s3) 0 var(--s6); font-family:var(--font-data); font-weight:600;
+  text-transform:uppercase; font-size:clamp(24px,3vw,34px); line-height:1.16; color:var(--crema)}
+.form-card h2 i{font-style:normal; color:var(--terracota)}
+.fgrid{display:grid; gap:var(--s5)}
+.fpair{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s5)}
+.f label{display:block; font-family:var(--font-data); font-size:10.5px; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--crema-60); margin-bottom:var(--s2)}
+.f input, .f textarea{width:100%; font-family:var(--font-body); font-size:16px; color:var(--crema);
+  background:rgba(8,9,12,.6); border:1px solid var(--crema-28); border-radius:var(--radio);
+  padding:13px var(--s4); min-height:48px; transition:border-color .18s ease, box-shadow .18s ease}
+.f textarea{min-height:132px; resize:vertical; line-height:1.6}
 .f input::placeholder, .f textarea::placeholder{color:var(--crema-60)}
-/* el anillo de foco NO se apaga: solo se oculta cuando el foco vino del raton */
-.f input:focus, .f textarea:focus{border-bottom-color:var(--terracota)}
-.f input:focus:not(:focus-visible), .f textarea:focus:not(:focus-visible){outline:none}
-.f input[aria-invalid="true"], .f textarea[aria-invalid="true"]{border-bottom-color:var(--alerta)}
-.f textarea{min-height:104px; line-height:1.6}
-.drop{border:1px dashed var(--crema-28); border-radius:var(--radio-caja); padding:var(--s5);
-  display:flex; align-items:center; gap:var(--s4)}
-.drop svg{width:20px; height:20px; flex:0 0 auto; color:var(--terracota-300)}
-.drop .txt{font-family:var(--font-data); font-size:12.5px; color:var(--crema-75)}
-.drop .hint{display:block; font-size:11px; color:var(--crema-60); margin-top:3px}
-.frow{display:flex; align-items:center; gap:var(--s5); flex-wrap:wrap; margin-top:var(--s2)}
-.send{font-family:var(--font-data); font-size:13px; font-weight:600; letter-spacing:.08em;
-  background:var(--terracota); color:var(--ink-900); border:0; border-radius:var(--radio);
-  padding:13px 34px; cursor:pointer; transition:background .18s ease, box-shadow .18s ease, transform .18s ease}
-.send:hover{background:var(--terracota-400); box-shadow:var(--glow-terracota); transform:translateY(-1px)}
-.send:disabled{opacity:.45; cursor:not-allowed; transform:none; box-shadow:none}
-.formnote{font-family:var(--font-data); font-size:12px; color:var(--crema-60); max-width:34ch}
-.done{display:none; align-items:flex-start; gap:var(--s4); border-left:2px solid var(--menta);
-  background:rgba(76,196,139,.07); padding:var(--s5); border-radius:0 var(--radio-caja) var(--radio-caja) 0; margin-top:var(--s6)}
+.f input:focus, .f textarea:focus{outline:0; border-color:var(--terracota); box-shadow:var(--glow-terracota)}
+.adj{display:flex; align-items:flex-start; gap:var(--s3); border:1px dashed var(--crema-28);
+  border-radius:var(--radio); padding:var(--s4); color:var(--crema-75); font-size:14px}
+.adj svg{width:20px; height:20px; flex:0 0 auto; margin-top:2px; fill:none; stroke:var(--crema-60);
+  stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
+.adj .hint{display:block; font-family:var(--font-data); font-size:11px; color:var(--crema-60); margin-top:3px}
+.frow{display:flex; align-items:center; gap:var(--s5); flex-wrap:wrap}
+.send{font-family:var(--font-data); font-size:13px; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--ink-900); background:var(--terracota); border:0;
+  border-radius:var(--radio); padding:0 var(--s6); min-height:48px; cursor:pointer;
+  transition:background .18s ease, box-shadow .18s ease}
+.send:hover{background:var(--terracota-400); box-shadow:var(--glow-terracota)}
+.formnote{font-family:var(--font-data); font-size:11.5px; color:var(--crema-60)}
+.done{display:none; align-items:center; gap:var(--s3); margin-top:var(--s5);
+  border-top:1px solid var(--crema-12); padding-top:var(--s5)}
 .done.on{display:flex}
-.done svg{width:18px; height:18px; flex:0 0 auto; margin-top:2px}
-.direct{display:flex; align-items:center; gap:var(--s3); flex-wrap:wrap;
-  margin-top:var(--s6); padding-top:var(--s5); border-top:1px solid var(--crema-12);
-  font-family:var(--font-data); font-size:12.5px; color:var(--crema-60)}
-.direct a{color:var(--terracota-300); text-decoration:none; border-bottom:1px solid rgba(200,121,65,.4);
-  padding-bottom:1px; letter-spacing:.02em; display:inline-flex; align-items:center; min-height:44px}
-.direct a:hover{color:var(--terracota-200); border-bottom-color:var(--terracota-200)}
-.site-foot{border-top:1px solid var(--crema-12); padding:var(--s7) 0 var(--s8);
+.done svg{width:22px; height:22px; flex:0 0 auto}
+.done p{margin:0; font-size:15px; color:var(--crema-75)}
+
+/* --- LAMINA 6 --- pie alargado --- */
+.pie{position:relative; z-index:2; margin-top:var(--s9);
+  border-top:1px solid var(--crema-12); padding:var(--s9) 0 var(--s7)}
+.pie .centro{max-width:var(--shell); margin:0 auto; padding:0 var(--s5); text-align:center}
+.rmcl{margin:0; font-family:var(--font-data); font-weight:700; letter-spacing:.05em;
+  font-size:clamp(54px,12.4vw,150px); line-height:1; color:var(--crema)}
+.pie .loc{margin:var(--s5) 0 0; font-family:var(--font-data); font-size:12.5px;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--crema-60); line-height:1.9}
+.pie .correo{display:inline-flex; align-items:center; min-height:44px; margin-top:var(--s5);
+  font-family:var(--font-data); font-size:14px; letter-spacing:.06em; color:var(--terracota-300);
+  text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:6px;
+  text-decoration-color:var(--terracota-700);
+  transition:color .18s ease, text-decoration-color .18s ease}
+.pie .correo:hover, .pie .correo:focus-visible{color:var(--terracota-200); text-decoration-color:var(--terracota)}
+.pie .fila-baja{max-width:var(--shell); margin:var(--s9) auto 0; padding:var(--s5) var(--s5) 0;
+  border-top:1px solid var(--crema-12);
   display:flex; align-items:center; justify-content:space-between; gap:var(--s5); flex-wrap:wrap}
-.site-foot .fbrand{display:flex; align-items:center; gap:var(--s4)}
-.site-foot .fbrand .logo{height:30px; width:auto; display:block; opacity:.9; overflow:visible}
-.site-foot nav{display:flex; gap:var(--s5); flex-wrap:wrap; justify-content:flex-end;
-  margin-left:auto; font-family:var(--font-data); font-size:12px}
-.site-foot nav a{color:var(--crema-60); text-decoration:none;
-  display:inline-flex; align-items:center; min-height:44px}
-.site-foot nav a:hover{color:var(--crema)}
-.site-foot nav a.mail{color:var(--terracota-300)}
-/* PUERTA DE SERVICIO. El enlace al registro interno NO entra en la fila de
-   arriba: esos seis enlaces le hablan a un comprador —como trabajamos,
-   servicios, empresa, cotizar— y un septimo con la misma forma convierte el
-   orden interno en una seccion mas de la oferta. Va en su propia linea, bajo
-   un pelo de separacion, mas chico y en el gris de metadato.
-   PERO SE VE COMO ENLACE: subrayado y 44 px de alto. La leccion de la ficha de
-   Mercado Publico —tipografiada como metadato en un <span>, nadie la apretaba—
-   es que discreto no puede significar invisible. Envuelto en un div y no
-   estirado al 100 %: un <a> de ancho completo hace clicable medio pie. */
-.site-foot .fserv{flex:0 0 100%; display:flex; justify-content:flex-end;
-  border-top:1px solid var(--crema-12); margin-top:var(--s2); padding-top:var(--s2)}
-.site-foot .fserv a{font-family:var(--font-data); font-size:11px; letter-spacing:.06em;
-  color:var(--crema-60); text-decoration:none; border-bottom:1px solid var(--crema-28);
-  padding-bottom:1px; display:inline-flex; align-items:center; min-height:44px;
-  transition:color .18s ease, border-bottom-color .18s ease}
-.site-foot .fserv a:hover{color:var(--crema); border-bottom-color:var(--crema-60)}
-.done p{margin:0; font-size:14px; color:var(--crema-75)}
-.done b{color:var(--menta-300)}
-/* Un aviso de error con visto verde dice lo contrario de lo que paso. */
-.done.err{border-left-color:var(--alerta); background:rgba(214,84,84,.07)}
-.done.err b{color:var(--alerta-300)}
-.done.err svg{display:none}
-.btn{font-family:var(--font-data); font-size:13px; font-weight:600; letter-spacing:.06em;
-  border-radius:var(--radio); padding:12px 24px; min-height:44px; border:1px solid transparent;
-  cursor:pointer; text-decoration:none; display:inline-flex; align-items:center;
-  transition:transform .18s ease, box-shadow .18s ease, background .18s ease}
-.btn-primary{background:var(--terracota); color:var(--ink-900)}
-.btn-primary:hover{background:var(--terracota-400); box-shadow:var(--glow-terracota); transform:translateY(-1px)}
-/* sin superficie propia, este boton flotaba sobre el video */
-.btn-ghost{background:rgba(8,9,12,.62); backdrop-filter:blur(6px);
-  color:var(--crema); border-color:rgba(245,240,228,.28)}
-.btn-ghost:hover{border-color:var(--crema); background:rgba(245,240,228,.06)}
-:focus-visible{outline:2px solid var(--menta); outline-offset:3px}
+.pie .fbrand{display:flex; align-items:center}
+.pie .fbrand .logo{height:28px; width:auto; display:block; opacity:.9; overflow:visible}
+/* El enlace es discreto, pero SE VE COMO ENLACE: la leccion de la ficha
+   tipografiada como metadato en un span que nadie apretaba. */
+.pie .intranet{font-family:var(--font-data); font-size:11.5px; letter-spacing:.06em;
+  color:var(--crema-60); text-decoration:underline; text-decoration-thickness:1px;
+  text-underline-offset:5px; text-decoration-color:var(--crema-28);
+  display:inline-flex; align-items:center; min-height:44px;
+  transition:color .18s ease, text-decoration-color .18s ease}
+.pie .intranet:hover, .pie .intranet:focus-visible{color:var(--crema); text-decoration-color:var(--crema-60)}
 
-@media (max-width:880px){
-  .site-nav a:not(.cta){display:none}
-  .form-card{padding:var(--s6) var(--s5)}
-
-  /* ======== EL PLIEGUE DE 390 px: SE QUITA, NO SE AGREGA ========
-     Reporte de Sebastian sobre su telefono: «hay tanta info en pantalla que
-     perdi de vista los enlaces». Medido a 390x844 antes de tocar nada: 14
-     elementos compitiendo y SEIS enlaces, dos de ellos el mismo «Cotizar» con
-     el mismo destino. La doctrina del estudio ya lo dice — dos acciones son
-     cero, y aqui habia seis. La respuesta NO es una hamburguesa: eso suma un
-     elemento al problema que el nombro. */
-
-  /* 1 · UN SOLO «COTIZAR» EN PANTALLA. El del encabezado no coexiste con el
-     del heroe: se enciende cuando el otro sale. .relevo la pone el script,
-     asi que sin JavaScript el encabezado se comporta como hasta hoy. */
-  .relevo .site-nav a.cta{opacity:0; visibility:hidden; transform:translateY(-8px);
-    transition:opacity .2s ease, transform .2s ease, visibility 0s linear .2s}
-  .relevo.cta-on .site-nav a.cta{opacity:1; visibility:visible; transform:none;
-    transition:opacity .2s ease, transform .2s ease, visibility 0s}
-
-  /* 2 · LA CREDENCIAL DEJA DE SER TARJETA Y PASA A SER RENGLON. Era el unico
-     objeto del pliegue con borde, fondo y blur —o sea el de MAS peso visual—
-     y encabezaba la pantalla con un tramite. R1 exige el ENLACE a la ficha
-     sin scroll, no una tarjeta: el enlace se queda y la tarjeta se va.
-     El rotulo largo tambien: «Registro de Proveedores del Estado» ya esta
-     completo en la seccion Empresa, aqui solo repetia. */
-  .prov-rail{padding:var(--s5) var(--s5) 0; justify-content:flex-start}
-  /* AL QUITARLE LA TARJETA HAY QUE DEVOLVERLE EL SUELO. La superficie de la
-     credencial no era decoracion: con el plexus crudo detras, el enlace en
-     menta llego a medirse en 1,33:1. Se sustituye la caja por el mismo suelo
-     por mascara del titular — tapa igual y no dibuja ningun borde. */
-  .prov-rail::before{content:""; position:absolute; z-index:-1;
-    inset:2px -8px -10px -8px; background:rgba(8,9,12,.96);
-    -webkit-mask-image:linear-gradient(to bottom, transparent 0%, var(--mascara-opaca) 26%, var(--mascara-opaca) 74%, transparent 100%);
-    mask-image:linear-gradient(to bottom, transparent 0%, var(--mascara-opaca) 26%, var(--mascara-opaca) 74%, transparent 100%);
-    pointer-events:none}
-  .prov{width:100%; background:none; border:0; border-radius:0; padding:0;
-    -webkit-backdrop-filter:none; backdrop-filter:none; text-align:left;
-    display:flex; align-items:center; flex-wrap:wrap; gap:0 var(--s4)}
-  .prov .t1{display:none}
-  .prov .t2{font-size:11px; letter-spacing:.09em}
-  .prov .ficha{min-height:30px; margin-top:0; font-size:11px; letter-spacing:.04em}
-
-  /* 3 · EL PARRAFO DEL HEROE BAJA DE TRES RENGLONES A UNO. El horario es el
-     HECHO que el visitante necesita ahi; el mecanismo del acuse es argumento,
-     y el argumento va donde se actua: la misma frase esta literal en el
-     formulario (.formnote) y en el aviso de envio. Se quita una repeticion
-     del pliegue, no se quita informacion del sitio. */
-
-  /* 4 · UN COLOR, UN SIGNIFICADO. En el pliegue habia CINCO tratamientos de
-     enlace en cuatro colores: cobre relleno (encabezado), verde subrayado
-     (ficha), cobre relleno (heroe), crema con borde (fantasma) y cobre
-     subrayado (correo). Cuando todo se ve especial, nada se lee como enlace —
-     y eso es literalmente «perdi de vista los enlaces». En movil el cobre
-     queda RESERVADO a la unica accion; el correo sigue siendo enlace evidente
-     por el subrayado, sin disputarle la luz al boton. */
-
-  /* 5 · EL SALUDO DE LA FIGURA NO VA EN EL PLIEGUE DE 390 px. Es un tercer
-     objeto con caja y blur y no dice nada que el logotipo no diga ya. En
-     escritorio se queda: alli el pliegue no esta apretado. */
+/* ======== MOVIL ======== */
+@media (max-width:820px){
+  .fpair{grid-template-columns:1fr}
+  .dgrid{grid-template-columns:1fr}
+  .form-card{padding:var(--s5)}
 }
-/* ======== LA AGENTE compAI: NUBE DE PARTICULAS (CinemAI) ========
-   La figura ya no es un video: es un enjambre de ~4.600 glifos —3 de cada 4
-   son '0' o '1'— que persigue un mapa de tono horneado con una inercia propia
-   por particula. Sustituye a agente-cuerpo.mp4, agente-rostro.mp4,
-   agente-perfil.mp4 y a sus tres fotogramas de respaldo: 1.326 KB menos y
-   cero peticiones. El lienzo va FIJO al visor —si se moviera con el scroll,
-   particula y destino viajarian juntos y no pasaria nada— y va DEBAJO de
-   #page: la agente nunca puede taparle una letra a nadie. */
-#nube{position:fixed; left:0; top:0; width:100%; height:100%; z-index:1; pointer-events:none}
-/* capa de alto cero: su hijo se posiciona en coordenadas de DOCUMENTO */
-.capa{position:absolute; top:0; left:0; right:0; height:0; overflow:visible; z-index:1; pointer-events:none}
-/* EL FANTASMA DE GEOMETRIA. No se pinta nunca —ni fondo, ni borde, ni
-   contenido— y lleva exactamente la caja a la que la nube apunta: es sobre el
-   que se firma que la agente no se solapa con el texto. */
-#agente{position:absolute; top:0; left:0; width:300px; height:855px; transform-origin:0 0; opacity:0}
-/* El hueco que VisuAI reservo para el agente. Reserva el sitio y no pinta
-   nada: vacio y sin borde ni fondo, el buscador de huecos NO lo cuenta
-   ocupado, asi que el sitio reservado es exactamente el hueco donde ella se
-   coloca. La composicion de la pagina no se mueve un pixel. */
-.agent-slot{display:block; width:100%}
-/* sin JavaScript la agente no existe: es decoracion de movimiento y la pagina
-   tiene que quedar completa sin ella */
-html:not(.js) #nube, html:not(.js) #agente{display:none}
+@media (max-width:560px){
+  body{font-size:16px}
+  .l1{padding:calc(var(--hdr) + var(--s3)) var(--s4) var(--s5)}
+  .l2{padding-left:var(--s4); padding-right:var(--s4)}
+  /* el canal del pie lo llevan sus bloques, no el .pie: sumados daban 40 */
+  .pie .centro, .pie .fila-baja{padding-left:var(--s4); padding-right:var(--s4)}
+  .wrap{padding:0 var(--s4)}
+  .l3, .l4, .l5{padding:var(--s8) 0}
+  .fila{grid-template-columns:1fr; gap:var(--s2); align-items:start}
+  .fila .ver{justify-self:start}
+  .kpis{grid-template-columns:1fr; gap:var(--s5); text-align:left}
+  .kpi{border-left:2px solid var(--crema-12); padding-left:var(--s4)}
+  .prov .t1{font-size:10px; letter-spacing:.09em}
+  .fig-slot{height:min(52svh,440px)}
+  .pie .fila-baja{margin-top:var(--s8)}
+}
 
-/* scroll-behavior NO lo apagan animation ni transition: hay que nombrarlo.
-   Sin esto, quien pide menos movimiento igual recibe 7.000 px de scroll animado
-   cada vez que aprieta Cotizar. */
+/* ======== MOVIMIENTO REDUCIDO ======== */
 @media (prefers-reduced-motion:reduce){
-  *{animation:none !important; transition:none !important}
   html{scroll-behavior:auto}
+  *{animation-duration:.001ms !important; animation-iteration-count:1 !important;
+    transition-duration:.001ms !important}
+  .explorar svg{animation:none; opacity:.8}
+  #bg video{display:none}
 }
 </style>
+</head>
+
+<body>
 
 <div id="bg" aria-hidden="true">
   <video autoplay muted loop playsinline preload="metadata" poster="media/plexus-poster.jpg"><source src="media/plexus.mp4" type="video/mp4"></video>
@@ -667,9 +560,10 @@ html:not(.js) #nube, html:not(.js) #agente{display:none}
 
 <div id="page">
 
-<header class="site-hdr">
+<!-- ====================== ENCABEZADO ====================== -->
+<header class="hdr">
   <div class="inner">
-    <a class="brand" href="https://compai.cl" rel="noopener"><svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="-16 4 328 87" role="img" aria-label="compAI">
+    <a class="brand" href="#inicio" aria-label="compAI, ir al inicio"><svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="-16 4 328 87" role="img" aria-label="compAI">
   
   <defs>
     <filter id="brasa" x="-150%" y="-150%" width="400%" height="400%">
@@ -683,238 +577,111 @@ html:not(.js) #nube, html:not(.js) #agente{display:none}
   <use href="#brillo" filter="url(#brasa)" opacity="0.9"/>
   <use href="#marca"/>
 </svg></a>
-    <nav class="site-nav">
-      <a href="#cine">Cómo trabajamos</a>
-      <a href="#oferta">Servicios</a>
-      <a href="#datos">Empresa</a>
-      <a class="cta" href="#cotiza">Cotizar</a>
-    </nav>
+
+    <div class="mnu-zona" id="mnuZona">
+      <button class="mnu" id="mnuBtn" type="button" aria-expanded="false" aria-controls="mnuPanel">
+        <span class="vu">Men&uacute;</span>
+        <svg class="tr" viewBox="0 0 252 26" aria-hidden="true"><g>
+          <!-- el halo: mismo trazado, mas grueso, invisible en reposo -->
+          <path class="halo t1" d="M249.5 3 H2.5"/><path class="halo t2" d="M249.5 10 H2.5"/>
+          <path class="halo t3" d="M249.5 17 H2.5"/><path class="halo t4" d="M249.5 24 H2.5"/>
+          <!-- las cuatro lineas. Trazadas de DERECHA a IZQUIERDA: asi el guion
+               descubre su extremo derecho y crecer es llevar el desfase a 0. -->
+          <path class="t t1" d="M249.5 3 H2.5"/><path class="t t2" d="M249.5 10 H2.5"/>
+          <path class="t t3" d="M249.5 17 H2.5"/><path class="t t4" d="M249.5 24 H2.5"/>
+        </g></svg>
+      </button>
+      <nav class="mnu-panel" id="mnuPanel" aria-label="Secciones">
+        <!-- EL PORTAFOLIO VA PRIMERO, en el sitio exacto que dejo marcado
+             VisuAI: «su enlace se inserta AQUI, antes de Agente IA». Los
+             titulos siguen EN EL ORDEN DEL SCROLL; el portafolio es la unica
+             pagina que no corre dentro de el, y encabeza por eso. -->
+        <a href="portafolio.html">Portafolio</a>
+        <a href="#agente-ia">Agente IA</a>
+        <a href="#empresa">Empresa</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+    </div>
   </div>
 </header>
 
-<div class="prov-rail">
+<main>
+
+<!-- ====================== LAMINA 1 ======================
+     Sin texto. La figura de particulas es de CinemAI: aqui solo se reserva
+     el hueco. El aviso de proveedor va arriba a la derecha SIN RECUADRO. -->
+<section class="lam l1" id="inicio" data-sec data-enc="entero">
+
   <aside class="prov">
     <div class="t1">Registro de Proveedores del Estado</div>
-    <div class="t2">Mercado Público</div>
-    <a class="ficha" href="https://proveedor.mercadopublico.cl/ficha/certificado/78.491.451-8" target="_blank" rel="noopener">Ver ficha proveedor →</a>
+    <div class="t2">Mercado P&uacute;blico</div>
+    <a class="ficha" href="https://proveedor.mercadopublico.cl/ficha/certificado/78.491.451-8" target="_blank" rel="noopener">Ver ficha proveedor &rarr;</a>
   </aside>
-</div>
 
-<main class="wrap" id="inicio2">
+  <div class="fig">
+    <!-- `data-caja`: el hueco que VisuAI reservo ES la caja mandada. Sin
+         el atributo, el buscador de huecos empata todos los rectangulos
+         suficientemente anchos y gana el primero del barrido. -->
+    <div class="fig-slot" data-caja aria-hidden="true"></div>
+  </div>
 
-  <section class="hero2" data-sec data-enc="entero">
-    <div class="hero-left">
-      <h1 class="claim-mono">Tecnología para el Estado chileno
-        <span class="lo">Ejecutada por <b>IA</b></span></h1>
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="#cotiza">Cotizar</a>
-        <a class="btn btn-ghost" href="#cine">Ver cómo funciona</a>
+  <a class="explorar" href="#frase">&mdash; Explorar &mdash;
+    <svg viewBox="0 0 24 14" aria-hidden="true" focusable="false"><path d="M2 2 L12 11 L22 2"/></svg>
+  </a>
+
+</section>
+
+<!-- ====================== LAMINA 2 ====================== -->
+<section class="lam l2" id="frase">
+  <h1 class="frase">Tecnolog&iacute;a para el Estado chileno
+    <span class="lo">Ejecutada por <b>IA</b></span></h1>
+</section>
+
+<!-- ====================== LAMINA 3 ====================== -->
+<section class="lam l3" id="agente-ia">
+  <div class="wrap">
+    <p class="chip">Agente IA &middot; pronto Agente Grace</p>
+    <h2>Clasifica cada licitaci&oacute;n de Mercado P&uacute;blico</h2>
+    <p class="lead">Grace monitorea las publicaciones, filtra por rubro y presupuesto,
+      y prepara la propuesta antes del cierre.</p>
+
+    <div class="tabla">
+      <div class="fila">
+        <span class="lic"><span class="cod">ID 0001-LE26</span><span class="pto">&middot;</span>Aplicaci&oacute;n m&oacute;vil</span>
+        <span class="ver si">Pertinente</span>
       </div>
-      <a class="explorar" href="#cine">Explorar
-        <svg viewBox="0 0 24 14" aria-hidden="true" focusable="false"><path d="M2 2 L12 11 L22 2"/></svg>
-      </a>
-    </div>
-    <div class="hero-right">
-      <div id="humanField" class="agent-slot" aria-hidden="true"></div>
-    </div>
-  </section>
-
-  <section class="cine" id="cine">
-    <div class="cine-head" data-sec>
-      <div class="cine-head-grid">
-        <div>
-          <p class="kick">Portafolio</p>
-          <h2>Un dolor · <i>Un servicio</i></h2>
-        </div>
-        <!-- SIN ROTULO, Y NO POR AHORRO. En la portada y en `cotiza` la linea de
-             la agente se registra con ella porque alli la figura cae DENTRO de su
-             columna. Aqui no: al devolverle al parrafo su medida legible el hueco
-             libre pasa a 631 px y `colocar()` la situa al 72 % de esa franja, o sea
-             314 px a la izquierda del centro del rotulo. Una etiqueta que senala a
-             30 cm de donde esta la figura es peor que ninguna. Queda el hueco solo:
-             habla al entrar y al recibir, y en medio trabaja callada. -->
-        <div class="cameo-wrap">
-          <div class="agent-slot agent-walk" aria-hidden="true"></div>
-        </div>
+      <div class="fila">
+        <span class="lic"><span class="cod">ID 0002-LP26</span><span class="pto">&middot;</span>Software de gesti&oacute;n</span>
+        <span class="ver si">Pertinente</span>
       </div>
-    </div>
-    <div class="cine-track" id="cineTrack">
-      <div class="cine-stage">
-        <div class="lanes" id="lanes">
-
-          <article class="lane" data-i="0" tabindex="0" role="button" aria-pressed="false">
-            <div class="lnum">Situación 01</div>
-            <p class="ltitle">La compra ágil que se cae dos veces</p>
-            <div class="beat dolor" data-b="0"><span class="tag">Dolor</span>
-              <p>Necesitas 200 notebooks para el lunes. La compra ágil se cayó por una especificación mal redactada, y el proveedor que sí servía quedó fuera por un anexo faltante.</p></div>
-            <div class="beat accion" data-b="1"><span class="tag">compAI entra</span>
-              <p>Reescribe la especificación con lenguaje admisible, arma el cuadro comparativo de las tres ofertas y deja los anexos firmados en un solo paquete.</p></div>
-            <div class="beat fin" data-b="2"><span class="tag">Desenlace</span>
-              <p>Orden de compra emitida dentro del plazo, con respaldo trazable de cada decisión.</p></div>
-            <div class="bar"></div>
-          </article>
-
-          <article class="lane" data-i="1" tabindex="0" role="button" aria-pressed="false">
-            <div class="lnum">Situación 02</div>
-            <p class="ltitle">La licitación que quedó desierta</p>
-            <div class="beat dolor" data-b="0"><span class="tag">Dolor</span>
-              <p>Publicaste las bases y no llegó ninguna oferta admisible. Hay que republicar, y el plazo del programa no se mueve.</p></div>
-            <div class="beat accion" data-b="1"><span class="tag">compAI entra</span>
-              <p>Detecta qué requisito espantó al mercado, propone criterios de evaluación proporcionales y prepara la consulta al registro de proveedores del rubro.</p></div>
-            <div class="beat fin" data-b="2"><span class="tag">Desenlace</span>
-              <p>Segunda publicación con ofertas admisibles y una adjudicación que resiste la revisión.</p></div>
-            <div class="bar"></div>
-          </article>
-
-          <article class="lane" data-i="2" tabindex="0" role="button" aria-pressed="false">
-            <div class="lnum">Situación 03</div>
-            <p class="ltitle">El catálogo que cuesta de más</p>
-            <div class="beat dolor" data-b="0"><span class="tag">Dolor</span>
-              <p>Lo del convenio marco sale bastante más caro que el mercado, pero salirse del catálogo hay que justificarlo por escrito y nadie quiere firmar eso.</p></div>
-            <div class="beat accion" data-b="1"><span class="tag">compAI entra</span>
-              <p>Documenta el diferencial con precios verificables, arma el fundamento de conveniencia y deja el expediente listo para la firma responsable.</p></div>
-            <div class="beat fin" data-b="2"><span class="tag">Desenlace</span>
-              <p>Ahorro justificado, con el fundamento adjunto desde el día uno.</p></div>
-            <div class="bar"></div>
-          </article>
-
-          <article class="lane" data-i="3" tabindex="0" role="button" aria-pressed="false">
-            <div class="lnum">Situación 04</div>
-            <p class="ltitle">El respaldo que nadie encuentra</p>
-            <div class="beat dolor" data-b="0"><span class="tag">Dolor</span>
-              <p>Piden el respaldo de una compra de hace ocho meses. Los correos están repartidos en tres bandejas y la persona que la tramitó ya no está.</p></div>
-            <div class="beat accion" data-b="1"><span class="tag">compAI entra</span>
-              <p>Reconstruye la línea de tiempo de la compra, ordena documentos y correos por hito y entrega el expediente con el índice que piden.</p></div>
-            <div class="beat fin" data-b="2"><span class="tag">Desenlace</span>
-              <p>Respuesta enviada en horas, no en semanas, con cada documento en su lugar.</p></div>
-            <div class="bar"></div>
-          </article>
-
-        </div>
-        <div class="cine-foot">
-          <button type="button" id="cineReset">Reiniciar</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="oferta" id="oferta">
-    <div class="oferta-head">
-      <div>
-        <p class="kicker">CompAI Global Solutions</p>
-        <h2>Cuatro modalidades, <i data-luz>un mismo expediente</i></h2>
-        <!-- TEXTO DE SEBASTIAN (31-ago), literal. VisuAI escribio solo los dos
-             fundamentos, y son el par de las cuatro tarjetas de abajo: infinitivo 1 =
-             Compra Agil + Licitacion, infinitivo 2 = Convenio Marco + Trato Directo.
-
-             TEXTO FINAL DE SEBASTIAN, 31-ago-2026. Reemplaza los dos infinitivos
-             derivados por los suyos: «gestionar requerimientos de manera agil» y
-             «combatir la burocracia paralizante». Y el remate deja de ser
-             «experiencias digitales inolvidables» -objetado porque para un
-             comprador publico una compra que sale bien es la que NO hay que
-             recordar- y pasa a «como deben ser», que es una vara, no un adjetivo.
-             «Estado» con mayuscula: zanjado por el, «correcto es con MAYUSC». -->
-        <p>Hablamos humano en un mundo digital. Somos una empresa tecnológica, creativa y de
-           inteligencia artificial aplicada para el Estado chileno. Ayudamos a gestionar
-           requerimientos de manera ágil, combatir la burocracia paralizante y crear
-           experiencias digitales como deben ser.</p>
+      <div class="fila">
+        <span class="lic"><span class="cod">ID 0003-CM26</span><span class="pto">&middot;</span>Obras civiles</span>
+        <span class="ver no">Descartada</span>
       </div>
     </div>
 
-    <div class="mods">
-      <article class="mod">
-        <div class="tope">Hasta 100 UTM</div>
-        <h3>Compra Ágil</h3>
-        <p>Especificación admisible, tres cotizaciones comparadas y la orden de compra emitida dentro del plazo.</p>
-      </article>
-      <article class="mod">
-        <div class="tope">Bases y evaluación</div>
-        <h3>Licitación Pública</h3>
-        <p>Requisitos proporcionales, criterios que no espanten al mercado y una adjudicación que resiste la revisión.</p>
-      </article>
-      <article class="mod">
-        <div class="tope">Catálogo</div>
-        <h3>Convenio Marco</h3>
-        <p>Comparación con precios verificables y el fundamento por escrito cuando salirse del catálogo conviene.</p>
-      </article>
-      <article class="mod">
-        <div class="tope">Excepción fundada</div>
-        <h3>Trato Directo</h3>
-        <p>La causal correcta, la resolución redactada y el expediente completo desde el primer día.</p>
-      </article>
+    <div class="kpis">
+      <div class="kpi"><b>24/7</b><span>Operaci&oacute;n continua</span></div>
+      <div class="kpi"><b>&lt;60m</b><span>Respuesta cotizaci&oacute;n</span></div>
+      <div class="kpi"><b>100%</b><span>Trazabilidad</span></div>
     </div>
+  </div>
+</section>
 
-    <div class="rubros">
-      <h3>Familias de compra que trabajamos</h3>
-      <div class="chips">
-        <span>Tecnología y equipamiento</span>
-        <span>Software y licencias</span>
-        <span>Servicios profesionales</span>
-        <span>Datos y analítica</span>
-        <span>Insumos y consumibles</span>
-        <span>Mantención y soporte</span>
-        <span>Capacitación</span>
-      </div>
-    </div>
-  </section>
+<!-- ====================== LAMINA 4 ======================
+     El bloque de datos va COPIADO TAL CUAL del sitio vigente
+     (_v15-cinemai/index.html, seccion .datos): mismo texto, mismo orden. -->
+<section class="lam l4" id="empresa">
+  <div class="wrap">
+    <h2>CompAI Global Solutions</h2>
+    <p class="bajada">Soluciones Tecnol&oacute;gicas con alma Creativa &amp; Inteligencia Artificial aplicada.</p>
+    <p class="cuerpo">Hablamos humano en un mundo digital. Somos una empresa tecnol&oacute;gica
+      con alma creativa &amp; inteligencia artificial aplicada. Ayudamos al Estado a gestionar
+      requerimientos de manera &aacute;gil, combatir la burocracia paralizante y crear
+      experiencias digitales que simplifiquen la vida.</p>
 
-  <section class="cotiza" id="cotiza" data-sec>
-    <div class="cotiza-grid">
-    <div class="form-card">
-      <p class="kicker">Solicitud de cotización</p>
-      <h2>Gestiona una <i data-luz>compra ágil</i></h2>
-      <form class="fgrid" id="qform" novalidate>
-        <div class="f">
-          <label for="nom">Nombre y apellido</label>
-          <input id="nom" name="nom" type="text" placeholder="Cómo te llamas" autocomplete="name">
-        </div>
-        <div class="fpair">
-          <div class="f">
-            <label for="mail">Ingresa Correo Electrónico</label>
-            <input id="mail" name="mail" type="email" placeholder="nombre@institucion.cl" autocomplete="email">
-          </div>
-          <div class="f">
-            <label for="tel">Teléfono de contacto</label>
-            <input id="tel" name="tel" type="tel" placeholder="+56 9 1234 5678" autocomplete="tel">
-          </div>
-        </div>
-        <div class="f">
-          <label for="req">Detalla tus requerimientos</label>
-          <textarea id="req" name="req" placeholder="Qué necesitas comprar, cantidades, plazo y presupuesto estimado"></textarea>
-        </div>
-        <div class="f">
-          <div class="drop">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.4 11.05 12.25 20.2a5.5 5.5 0 0 1-7.78-7.78l9.19-9.19a3.67 3.67 0 0 1 5.18 5.18l-9.2 9.2a1.83 1.83 0 0 1-2.59-2.6l8.5-8.49"/></svg>
-            <span class="txt">Bases, anexo u orden de compra
-              <span class="hint">Se adjuntan en el correo que se abre al enviar</span></span>
-          </div>
-        </div>
-        <div class="frow">
-          <button class="send" type="submit">Enviar por correo</button>
-          <span class="formnote">Recibes la respuesta, no un acuse de recibo.</span>
-        </div>
-      </form>
-      <p class="direct">¿Prefieres el correo directo?
-        <a href="mailto:hola@compai.cl?subject=Cotizaci%C3%B3n%20compra%20%C3%A1gil">hola@compai.cl</a></p>
-      <div class="done" id="done" role="status" aria-live="polite">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#4CC48B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6"/></svg>
-        <p><b id="doneTtl">Listo.</b> <span id="doneTxt"></span></p>
-      </div>
-    </div>
-      <div class="cameo-wrap">
-        <div class="agent-slot agent-walk" aria-hidden="true"></div>
-        <!-- El pie decia "Yo lo tomo desde aqui", pero el hueco de la agente
-             esta vacio a proposito (ver .agent-slot: reserva el sitio y no
-             pinta nada). Quedaba una frase suelta sin figura que la
-             explicara. Se retira el pie, NO el hueco: sacar el hueco moveria
-             la composicion. Si algun dia entra la figura, el pie vuelve.
-             Retirado el 2-sep-2026, lo detecto Sebastian mirando el sitio. -->
-      </div>
-    </div>
-  </section>
-
-  <section class="datos" id="datos">
-    <h3 class="dt">Datos de la empresa</h3>
+    <div class="datos">
+      <h3 class="dt">Datos de la empresa</h3>
     <div class="dgrid">
       <dl class="d"><dt>Razón social</dt><dd><b>COMPAI GLOBAL SOLUTIONS SPA</b></dd></dl>
       <dl class="d"><dt>Nombre de fantasía</dt><dd>CompAI SpA</dd></dl>
@@ -927,1736 +694,163 @@ html:not(.js) #nube, html:not(.js) #agente{display:none}
       <dl class="d"><dt>Historial de ventas</dt><dd>Sin ventas en Mercado Público y sin Convenios Marco adjudicados. La ficha pública lo muestra: no declaramos experiencia que no tengamos</dd></dl>
       <dl class="d"><dt>Contacto</dt><dd><b>hola@compai.cl</b></dd></dl>
     </div>
-  </section>
+    </div>
+  </div>
+</section>
 
-  <footer class="site-foot">
-    <a class="fbrand" href="https://compai.cl" rel="noopener"><svg class="logo" viewBox="-16 4 328 87" role="img" aria-label="compAI"><use href="#brillo" filter="url(#brasa)" opacity="0.9"/><use href="#marca"/></svg></a>
-    <nav>
-      <a href="https://proveedor.mercadopublico.cl/ficha/78.491.451-8" target="_blank" rel="noopener">Ficha de Proveedor</a>
-      <a href="#cine">Cómo trabajamos</a>
-      <a href="#oferta">Servicios</a>
-      <a href="#datos">Empresa</a>
-      <a href="#cotiza">Cotizar</a>
-      <a class="mail" href="mailto:hola@compai.cl">Contacto</a>
-    </nav>
-    <div class="fserv"><a href="/estado/">Registro interno · en qué va cada cosa →</a></div>
-  </footer>
+<!-- ====================== LAMINA 5 ======================
+     Formulario. SIN el correo de compAI a la vista: el brief lo pone en el
+     pie (lamina 6) y ahi vive. El campo de correo que queda es EL DEL
+     VISITANTE, sin el cual no hay a quien responderle. -->
+<section class="lam l5" id="contacto">
+  <div class="wrap">
+    <div class="form-card">
+      <p class="kicker">Solicitud de cotizaci&oacute;n</p>
+      <h2>Gestiona una <i>compra &aacute;gil</i></h2>
+      <form class="fgrid" id="qform" novalidate>
+        <div class="f">
+          <label for="nom">Nombre y apellido</label>
+          <input id="nom" name="nom" type="text" placeholder="C&oacute;mo te llamas" autocomplete="name">
+        </div>
+        <div class="fpair">
+          <div class="f">
+            <label for="mail">Correo electr&oacute;nico</label>
+            <input id="mail" name="mail" type="email" placeholder="nombre@institucion.cl" autocomplete="email">
+          </div>
+          <div class="f">
+            <label for="tel">Tel&eacute;fono de contacto</label>
+            <input id="tel" name="tel" type="tel" placeholder="+56 9 1234 5678" autocomplete="tel">
+          </div>
+        </div>
+        <div class="f">
+          <label for="req">Detalla tus requerimientos</label>
+          <textarea id="req" name="req" placeholder="Qu&eacute; necesitas comprar, cantidades, plazo y presupuesto estimado"></textarea>
+        </div>
+        <div class="adj">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.4 11.05 12.25 20.2a5.5 5.5 0 0 1-7.78-7.78l9.19-9.19a3.67 3.67 0 0 1 5.18 5.18l-9.2 9.2a1.83 1.83 0 0 1-2.59-2.6l8.5-8.49"/></svg>
+          <span>Bases, anexo u orden de compra
+            <span class="hint">Se adjuntan en el correo que se abre al enviar</span></span>
+        </div>
+        <div class="frow">
+          <button class="send" type="submit">Enviar</button>
+          <span class="formnote">Recibes la respuesta, no un acuse de recibo.</span>
+        </div>
+      </form>
+      <div class="done" id="done" role="status" aria-live="polite">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--menta)"><path d="M4 12.5 9.5 18 20 6"/></svg>
+        <p><b id="doneTtl">Listo.</b> <span id="doneTxt"></span></p>
+      </div>
+    </div>
+  </div>
+</section>
 
 </main>
 
-<script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@type":"Organization",
-  "name":"COMPAI GLOBAL SOLUTIONS SpA",
-  "alternateName":"compAI",
-  "url":"https://compai.cl/",
-  "email":"hola@compai.cl",
-  "taxID":"78.491.451-8",
-  "foundingDate":"2026-08-15",
-  "address":{
-    "@type":"PostalAddress",
-    "addressLocality":"Santiago",
-    "addressRegion":"Regi\u00f3n Metropolitana",
-    "addressCountry":"CL"
-  },
-  "identifier":{
-    "@type":"PropertyValue",
-    "name":"Registro de Proveedores del Estado",
-    "value":"78.491.451-8"
-  },
-  "sameAs":["https://proveedor.mercadopublico.cl/ficha/78.491.451-8"]
-}
-</script>
-</div>
+<!-- ====================== LAMINA 6 ====================== -->
+<footer class="pie">
+  <div class="centro">
+    <p class="rmcl">-RMCL.-</p>
+    <p class="loc">Santiago<br>Regi&oacute;n Metropolitana, Chile</p>
+    <a class="correo" href="mailto:hola@compai.cl">hola@compai.cl</a>
+  </div>
+  <div class="fila-baja">
+    <a class="fbrand" href="#inicio" aria-label="compAI, ir al inicio"><svg class="logo" viewBox="-16 4 328 87" role="img" aria-label="compAI"><use href="#brillo" filter="url(#brasa)" opacity="0.9"/><use href="#marca"/></svg></a>
+    <a class="intranet" href="/estado/">Seguimiento de licitaciones ofertadas - Intranet</a>
+  </div>
+</footer>
+
+</div><!-- /#page -->
 
 <script>
 (function(){
 "use strict";
-var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+document.documentElement.className += " js";
+if(location.search.indexOf("slot=1") > -1){document.documentElement.className += " guia";}
 
-/* ---------- SCROLL-CINE: UN DOLOR / UN SERVICIO ---------- */
+/* --- MENU: el hover lo resuelve el CSS; esto es SOLO para tactil, donde el
+       hover no existe y ademas se queda pegado despues de tocar. Sin este
+       bloque el gesto sigue entero con cursor y con foco de teclado. */
 (function(){
-  var track=document.getElementById('cineTrack'); if(!track) return;
-  var lanes=Array.prototype.slice.call(document.querySelectorAll('.lane'));
-  /* `conv` se quito el 31-ago por decision de Sebastian. Las tres llamadas de
-     abajo se blindan en vez de borrarse: la frase de cierre puede volver con
-     otro texto, y un `null` silencioso es preferible a reescribir el pintor. */
-  var conv=document.getElementById('conv') || {classList:{add:function(){},toggle:function(){}}};
-  var reset=document.getElementById('cineReset');
-  var grid=document.getElementById('lanes');
-  var BEATS=3, sel=-1;
-  var stage=track.querySelector('.cine-stage');
-  var narrow=window.matchMedia('(max-width:980px)');
-  /* `--hdr` y no `getComputedStyle(stage).top`: con `.plano` puesto la posicion
-     es `static` y `top` devuelve `auto`, o sea el medidor cambiaria de vara
-     segun su propio resultado y oscilaria. */
-  var HDR=parseFloat(getComputedStyle(document.documentElement)
-          .getPropertyValue('--hdr'))||0, PLANO=false;
-
-  /* EL TEMPO DEJA DE SER METRONOMO. Hoy la pista da 2.700 px a 1440x900 (22,5
-     muescas de 120 px), corta en tercios exactos y deja 330 px finales sin
-     nada. Reparto de escena sobre 360vh = 2.340 px / 19,5 muescas: planos de
-     772 / 796 / 422 px y remate de 280. Cuesta MENOS que la lista. */
-  var CORTE=[0.030,0.360,0.700], ACTA=0.880, ALTO=360;
-
-  /* No oscila, y esa es la unica parte delicada: con el escenario pegado
-     `min-height` ya vale el hueco util, asi que `scrollHeight` solo lo supera
-     si el contenido de verdad no cabe; con `.plano` puesto `min-height` es 0 y
-     `scrollHeight` es el contenido. Las dos lecturas dan el mismo veredicto. */
-  function setHeight(){
-    PLANO = narrow.matches || stage.scrollHeight > innerHeight - HDR;
-    track.classList.toggle('plano', PLANO);
-    track.style.height = PLANO ? 'auto' : ALTO + 'vh';
-  }
-  setHeight();
-
-  function paint(prog){
-    /* prog 0..1 sobre el recorrido */
-    var vivo=-1, k;
-    for(k=0;k<BEATS;k++){ if(prog>=CORTE[k]) vivo=k; }
-    var acta = prog>=ACTA, giro = vivo>=1;
-    var pct=Math.max(0,Math.min(1,prog/ACTA));
-    grid.classList.toggle('acta', acta);
-    grid.classList.toggle('acto', giro && !acta);
-    lanes.forEach(function(l,i){
-      var beats=l.querySelectorAll('.beat');
-      for(var b=0;b<beats.length;b++){
-        beats[b].classList.toggle('on', b<=vivo);
-        beats[b].classList.toggle('viva', b===vivo && !acta);
-        beats[b].classList.toggle('pas', b<vivo);
-      }
-      l.querySelector('.bar').style.transform='scaleX('+pct.toFixed(3)+')';
-      l.classList.toggle('full', acta);
-      l.classList.toggle('acto', giro && !acta);
-      l.classList.toggle('sel', sel>=0 && i===sel);
-      l.classList.toggle('dim', sel>=0 && i!==sel && prog>0.12);
-    });
-    conv.classList.toggle('on', acta);
-  }
-
-  function onScroll(){
-    if(PLANO){ estatico(); return; }
-    var r=track.getBoundingClientRect();
-    var total=track.offsetHeight-window.innerHeight;
-    var p= total>0 ? Math.max(0,Math.min(1,(-r.top)/total)) : 0;
-    paint(p);
-  }
-
-  function pick(i){
-    sel=i;
-    lanes.forEach(function(l,k){ l.setAttribute('aria-pressed', k===i?'true':'false'); });
-    if(PLANO) return;
-    var cols=lanes.map(function(_,k){ return k===i ? '2.6fr' : '0.8fr'; }).join(' ');
-    grid.style.setProperty('--cols', cols);
-    grid.classList.add('picked');
-    onScroll();
-  }
-  lanes.forEach(function(l,i){
-    l.style.setProperty('--i', i);
-    l.addEventListener('click',function(){ pick(i); });
-    l.addEventListener('keydown',function(e){
-      if(e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(i); }
-    });
+  var zona = document.getElementById("mnuZona"), btn = document.getElementById("mnuBtn");
+  if(!zona || !btn) return;
+  function marca(on){ document.documentElement.classList.toggle("menu-abierto", on); }
+  function cerrar(){ zona.classList.remove("abre"); btn.setAttribute("aria-expanded","false"); marca(false); }
+  zona.addEventListener("mouseenter", function(){ marca(true); });
+  zona.addEventListener("mouseleave", function(){ if(!zona.classList.contains("abre")) marca(false); });
+  zona.addEventListener("focusin",  function(){ marca(true); });
+  zona.addEventListener("focusout", function(){ if(!zona.classList.contains("abre")) marca(false); });
+  btn.addEventListener("click", function(e){
+    e.stopPropagation();
+    var abierto = zona.classList.toggle("abre");
+    btn.setAttribute("aria-expanded", abierto ? "true" : "false");
+    marca(abierto);
   });
-  reset.addEventListener('click',function(){
-    sel=-1; grid.classList.remove('picked'); grid.style.removeProperty('--cols');
-    lanes.forEach(function(l){ l.setAttribute('aria-pressed','false'); });
-    onScroll();
-  });
-
-  /* MOVIL Y MOVIMIENTO REDUCIDO CAEN EN EL ESTADO FINAL, no en el inicial
-     (bug del 24-ago): `on`, barra llena y `full` a mano. `viva/pas/acto` no,
-     son el presente de una escena que ahi no ocurre. */
-  function estatico(){
-    lanes.forEach(function(l){
-      Array.prototype.forEach.call(l.querySelectorAll('.beat'),function(b){
-        b.classList.add('on'); b.classList.remove('viva','pas');
-      });
-      l.querySelector('.bar').style.transform='scaleX(1)';
-      l.classList.add('full'); l.classList.remove('acto');
-    });
-    grid.classList.add('acta'); grid.classList.remove('acto');
-    conv.classList.add('on');
-  }
-
-  if(RM){
-    estatico();
-    track.classList.add('plano');
-    track.style.height='auto';
-  } else {
-    var tick=false;
-    window.addEventListener('scroll',function(){
-      if(tick) return; tick=true;
-      requestAnimationFrame(function(){ onScroll(); tick=false; });
-    },{passive:true});
-    window.addEventListener('resize',function(){ setHeight(); onScroll(); });
-    onScroll();
-  }
-})();
-
-/* ---------- FORMULARIO DE COTIZACIÓN ---------- */
-(function(){
-  var form=document.getElementById('qform'); if(!form) return;
-  var done=document.getElementById('done'), doneTxt=document.getElementById('doneTxt'),
-      doneTtl=document.getElementById('doneTtl');
-
-  function falla(campo, titulo, texto){
-    campo.setAttribute('aria-invalid','true'); campo.focus();
-    done.classList.add('on','err'); doneTtl.textContent=titulo; doneTxt.textContent=texto;
-  }
-  function limpia(campo){ campo.removeAttribute('aria-invalid'); }
-  form.addEventListener('submit',function(e){
-    e.preventDefault();
-    var nom=document.getElementById('nom'), mail=document.getElementById('mail'),
-        tel=document.getElementById('tel'), req=document.getElementById('req');
-    if(nom.value.trim().length<3){
-      return falla(nom,'Falta un dato.','Escribe tu nombre y apellido, para saber con quién hablamos.');
-    }
-    limpia(nom);
-    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail.value.trim())){
-      return falla(mail,'Falta un dato.','Revisa el correo: hace falta un formato válido, como nombre@institucion.cl.');
-    }
-    limpia(mail);
-    if(tel.value.trim() && tel.value.replace(/\D/g,'').length<8){
-      return falla(tel,'Falta un dato.','El teléfono queda corto: escríbelo completo o déjalo en blanco.');
-    }
-    limpia(tel);
-    if(req.value.trim().length<10){
-      return falla(req,'Falta un dato.','Cuéntanos qué necesitas comprar: sin eso no se puede cotizar.');
-    }
-    limpia(req);
-
-    /* No hay servidor detrás: el sitio es estático. En vez de fingir un envío,
-       se abre el correo con todo escrito y el visitante aprieta enviar — y ahí
-       mismo adjunta las bases. La dirección queda visible abajo para quien
-       prefiera copiarla. */
-    var cuerpo =
-      'Nombre: '+nom.value.trim()+'\n'+
-      'Correo: '+mail.value.trim()+'\n'+
-      'Teléfono: '+(tel.value.trim()||'—')+'\n\n'+
-      'Requerimiento:\n'+req.value.trim()+'\n\n'+
-      '— Enviado desde compai.cl\n';
-    var url='mailto:hola@compai.cl'+
-      '?subject='+encodeURIComponent('Cotización · '+nom.value.trim())+
-      '&body='+encodeURIComponent(cuerpo);
-    done.classList.remove('err'); done.classList.add('on');
-    doneTtl.textContent='Se abre tu correo.';
-    doneTxt.textContent='Va dirigido a hola@compai.cl con tus datos escritos. Adjunta ahí las bases '+
-      'o la orden de compra y apriétalo: te llega la respuesta, no un acuse de recibo. '+
-      'Si no se abrió, escríbenos tú a hola@compai.cl.';
-    window.location.href=url;
+  document.addEventListener("click", function(e){ if(!zona.contains(e.target)) cerrar(); });
+  document.addEventListener("keydown", function(e){ if(e.key === "Escape") cerrar(); });
+  Array.prototype.forEach.call(document.querySelectorAll(".mnu-panel a"), function(a){
+    a.addEventListener("click", cerrar);
   });
 })();
 
-/* ---------- RELEVO DEL CTA: NUNCA DOS «COTIZAR» A LA VEZ ----------
-   Medido a 390x844: habia dos botones «Cotizar» con el mismo destino dentro
-   del primer pliegue (y=11 y y=385). Dos acciones identicas no leen como LA
-   accion, leen como adorno — que es exactamente lo que Sebastian reporto en
-   su telefono. No se agrega menu: se apaga el duplicado y se releva.
-   La clase .relevo se pone AQUI y no en el CSS para que sin JavaScript el
-   encabezado quede como estaba: el sitio tiene que estar completo sin motor. */
+/* --- EL ENCOGIMIENTO. Zanjado por Sebastian: «que el encabezado se encoja al
+       salir de la lamina 1».
+
+       SE OBSERVA LA LAMINA 1, NO EL SCROLL. Un manejador de `scroll` compara
+       contra un numero que hay que mantener a mano y corre en cada cuadro;
+       `IntersectionObserver` no hace trabajo por cuadro y define el disparo
+       por lo que el encargo dice de verdad: la lamina 1 dejo de verse. Con
+       `threshold:0` la seccion deja de intersecar EXACTAMENTE cuando su canto
+       inferior cruza el borde superior del visor.
+
+       NO HACE FALTA HISTERESIS y conviene decir por que: el encogimiento no
+       mueve NADA de la maqueta —el encabezado es `fixed` y solo cambia un
+       `transform`—, asi que cruzar el umbral no puede desplazar el elemento
+       observado. Es la trampa clasica de las cabeceras que se encogen
+       cambiando la altura del documento, y aqui no existe por construccion.
+
+       Sin JavaScript, sin IntersectionObserver o en el portafolio (que no
+       tiene lamina 1) el encabezado se queda GRANDE, que es un estado
+       completo y legible. */
 (function(){
-  var raiz=document.documentElement;
-  var heroCta=document.querySelector('.hero-cta .btn-primary');
-  var hdrCta=document.querySelector('.site-nav a.cta');
-  if(!heroCta||!hdrCta||!('IntersectionObserver' in window)) return;
-  raiz.className+=' relevo';
+  var raiz = document.documentElement, l1 = document.getElementById("inicio");
+  if(!l1 || !("IntersectionObserver" in window)) return;
   new IntersectionObserver(function(e){
-    raiz.classList.toggle('cta-on', !e[0].isIntersecting);
-  },{threshold:0}).observe(heroCta);
+    raiz.classList.toggle("hdr-chico", !e[0].isIntersecting);
+  }, {threshold:0}).observe(l1);
 })();
-})();
-</script>
-<script>
-/* ==========================================================================
-   LA AGENTE compAI — nube de partículas.  CinemAI · 29-ago-2026
-   --------------------------------------------------------------------------
-   LA FIGURA NO ES UN ARCHIVO. Sustituye a los tres mp4 del agente y a sus
-   tres fotogramas de respaldo por un enjambre de ~4.600 glifos —3 de cada 4
-   son un '0' o un '1'— que persigue un mapa de tono horneado (5,6 KB de
-   texto) con una inercia distinta por partícula. Al desplazarse la página el
-   DESTINO se mueve y cada partícula lo sigue a su ritmo: la nube se estira,
-   se retrasa y se recompone. No hay ninguna figura rígida y no viaja un solo
-   byte de vídeo.
 
-   Tres gestos, un solo motor:
-
-   1 · LA REVERENCIA DE SALUDO (portada). Encargo textual de Sebastián: «la
-       presentación del sitio la hace compai en primer plano al tener contacto
-       con la pantalla, al recomponerse LENTAMENTE en la página de inicio, al
-       lado del título, sólo debería quedar levitando o simular una reverencia
-       de saludo». Las mayúsculas de LENTAMENTE son suyas.
-
-   2 · LA AGENTE PRESENTE. No sigue un recorrido escrito: MIDE el layout de
-       cada sección y se coloca en el hueco real que esa sección deja. El
-       hueco decide el tamaño Y el encuadre —cuerpo entero, plano medio o
-       plano cerrado—. Si no hay hueco digno, no aparece.
-
-   3 · EL DESTAQUE. Encargo textual: «destacando algo con las mismas
-       partículas y/o códigos». Definido como función abajo, en §F.
-
-   Cero librerías · cero CDN · cero peticiones · cero base64.
-   La paleta y la tipografía son tokens de VisuAI: aquí se LEEN, no se tocan.
-   ========================================================================== */
-(function(){
-'use strict';
-
-var raiz   = document.documentElement;
-var fig    = document.getElementById('agente');
-var lienzo = document.getElementById('nube');
-if(!fig || !lienzo) return;
-
-var reducido = matchMedia('(prefers-reduced-motion:reduce)').matches;
-raiz.className += ' js';
-
-/* ------------------------------------------------------------------ curvas */
-function _A(a,b){return 1-3*b+3*a}
-function _B(a,b){return 3*b-6*a}
-function _C(a){return 3*a}
-function _cal(t,a,b){return ((_A(a,b)*t+_B(a,b))*t+_C(a))*t}
-function _pen(t,a,b){return 3*_A(a,b)*t*t+2*_B(a,b)*t+_C(a)}
-function bez(x1,y1,x2,y2){
-  return function(x){
-    if(x<=0)return 0; if(x>=1)return 1;
-    var t=x,s;
-    for(var i=0;i<7;i++){ s=_pen(t,x1,x2); if(!s)break; t-=(_cal(t,x1,x2)-x)/s; if(t<0)t=0; if(t>1)t=1; }
-    return _cal(t,y1,y2);
-  };
-}
-var ENTRA = bez(.16,1,.3,1);      /* algo aparece: desacelera fuerte     */
-var SALE  = bez(.7,0,.84,0);      /* algo se va: acelera                 */
-var MICRO = bez(.34,1.56,.64,1);  /* micro-gesto, con sobrepaso          */
-var RITMO = bez(.45,0,.55,1);     /* la dilatación del tiempo, simétrica */
-function sat(v){return v<0?0:v>1?1:v}
-
-/* ==================================================================
-   A · EL BUSCADOR DE HUECOS
-   Rasteriza lo que la sección OCUPA y busca el mayor rectángulo libre.
-   No hay una sola coordenada escrita a mano.
-   ================================================================== */
-var CAJA = 'img,svg,video,canvas,input,textarea,select,button,table,iframe';
-var CEL = 8;
-var secciones = [], ocupados = [];
-
-/* Qué cuenta como OCUPADO: el texto por sus LÍNEAS (Range.getClientRects),
-   que siguen a la tinta —la caja del párrafo miente cuando una palabra larga
-   desborda—, y por separado todo lo que tiene presencia visual propia:
-   controles, medios y cualquier elemento con borde o fondo, porque el
-   interior vacío de una tarjeta con marco tampoco es un hueco. */
-function opaco(cs){
-  if(cs.backgroundImage !== 'none') return true;
-  var b = cs.backgroundColor;
-  if(b.indexOf('rgba(') === 0){ if(parseFloat(b.split(',')[3]) > 0.02) return true; }
-  else if(b && b !== 'transparent') return true;
-  return !!(parseFloat(cs.borderTopWidth) || parseFloat(cs.borderBottomWidth) ||
-            parseFloat(cs.borderLeftWidth) || parseFloat(cs.borderRightWidth));
-}
-function recoger(sec, sx, sy){
-  var lista = [], i, j;
-  function mete(r){ if(r.width > 2 && r.height > 2)
-    lista.push({x:r.left+sx, y:r.top+sy, w:r.width, h:r.height}); }
-  var todos = sec.querySelectorAll('*');
-  for(i=0;i<todos.length;i++){
-    var el = todos[i], cs = getComputedStyle(el);
-    if(cs.visibility === 'hidden' || cs.display === 'none') continue;
-    if(el.matches(CAJA) || opaco(cs)) mete(el.getBoundingClientRect());
-  }
-  var tw = document.createTreeWalker(sec, NodeFilter.SHOW_TEXT, null), n, rs;
-  var rg = document.createRange();
-  while((n = tw.nextNode())){
-    if(!/\S/.test(n.nodeValue)) continue;
-    rg.selectNodeContents(n);
-    rs = rg.getClientRects();
-    for(j=0;j<rs.length;j++) mete(rs[j]);
-  }
-  return lista;
-}
-
-/* Los rectángulos libres maximales NO dependen del aspecto: sólo su
-   puntuación. Se enumeran UNA vez y se puntúan con los tres encuadres. */
-function mayor(caja, lista, pad, ars){
-  var cols = Math.floor(caja.w/CEL), filas = Math.floor(caja.h/CEL);
-  if(cols < 4 || filas < 4) return null;
-  var occ = new Uint8Array(cols*filas), i, j;
-  for(var n=0;n<lista.length;n++){
-    var r = lista[n];
-    var a = Math.floor((r.x - pad - caja.x)/CEL), b = Math.ceil((r.x + r.w + pad - caja.x)/CEL);
-    var c = Math.floor((r.y - pad - caja.y)/CEL), d = Math.ceil((r.y + r.h + pad - caja.y)/CEL);
-    if(a<0)a=0; if(c<0)c=0; if(b>cols)b=cols; if(d>filas)d=filas;
-    for(j=c;j<d;j++){ var o=j*cols; for(i=a;i<b;i++) occ[o+i]=1; }
-  }
-  /* el clásico del histograma: alturas por columna y pila monótona */
-  var h = new Int32Array(cols), pX = new Int32Array(cols+1), pH = new Int32Array(cols+1);
-  var mejor = new Array(ars.length); for(i=0;i<ars.length;i++) mejor[i]=null;
-  for(j=0;j<filas;j++){
-    for(i=0;i<cols;i++) h[i] = occ[j*cols+i] ? 0 : h[i]+1;
-    var top = 0;
-    for(i=0;i<=cols;i++){
-      var cur = (i<cols) ? h[i] : 0, ini = i;
-      while(top>0 && pH[top-1] >= cur){
-        top--;
-        var hh = pH[top]; ini = pX[top];
-        var w = (i-ini)*CEL, ht = hh*CEL;
-        if(w>=40 && ht>=40){
-          var rx = caja.x + ini*CEL, ry = caja.y + (j-hh+1)*CEL;
-          for(var z=0;z<ars.length;z++){
-            var cabe = Math.min(w/ars[z], ht), M = mejor[z];
-            if(!M || cabe*cabe*ars[z] > M.cabe*M.cabe*ars[z])
-              mejor[z] = {x:rx, y:ry, w:w, h:ht, cabe:cabe};
-          }
-        }
-      }
-      pX[top]=ini; pH[top]=cur; top++;
-    }
-  }
-  return mejor;
-}
-
-/* DÓNDE dentro del hueco. 0 = pegada al contenido, 1 = al canto opuesto.
-   0,28 salió de mirar cuatro secciones con 0 / 0,28 / 0,5 / 1: acompaña al
-   contenido sin tocarlo, que es lo único que funciona en los cuatro casos. */
-var BIAS = 0.28;
-function colocar(bs, vh, cx, forzar, yMin){
-  if(!bs) return null;
-  /* EL HUECO ELIGE EL ENCUADRE, y gana el que MÁS LLENA el hueco —no «el
-     primero que quepa», probado así el cuerpo entero cabía siempre—. La
-     aritmética resuelve sola la regla: alto pide cuerpo, ancho pide cara. */
-  var mejorP = null, mejorA = 0;
-  for(var q=0;q<ENC.length;q++){
-    if(forzar !== null && forzar !== undefined && q !== forzar) continue;
-    var E = ENC[q], b = bs[q];
-    if(!b) continue;
-    /* EL TECHO SE QUEDA COMO ESTABA: MARCHA ATRAS MIA DEL 31-ago. Lo cambie
-       por uno de igual AREA (`vh*0.68*sqrt(ar_cerrado/ar)`) razonando que el
-       limite es cuanta pantalla ocupa la figura, no su alto. Razonamiento
-       correcto, efecto malo y medido: (1) con el techo dentro de la
-       puntuacion los tres encuadres empatan en area y gana el primero del
-       array POR ORDEN, no por forma -en `cotizar` puso un cuerpo entero de
-       320x810 donde la seccion pide plano medio, silueta 4,7 contra 20-37-;
-       y (2) 810 px de figura en una ventana de 900 no se ven enteros, que es
-       lo que el encargo pide. Y no hacia falta: el hueco de la portada lo
-       fija el slot. LA REGLA QUE QUEDA: una correccion que arregla la pieza
-       que miro y cambia el criterio de eleccion de las otras cuatro no es una
-       correccion, es un cambio de alcance. */
-    var H = Math.min(b.cabe*0.88, vh*0.68, 640);
-    /* EL AIRE CEDE ANTES QUE LA FIGURA, medido a 805 px de alto -un
-       portatil-: alli el hueco de la portada da cabe 552 y el 0,88 de aire lo
-       deja en 486, seis px bajo la puerta, y la portada se quedaba SIN
-       FIGURA. El sitio estaba; se lo comia el margen. Se toma lo justo para
-       pasar y ni un pixel mas. Los topes duros -`vh*0.68` y 640- NO ceden:
-       existen para que el cuerpo entero quepa en pantalla. A 900 no se
-       dispara (H=542 ya pasa) y la portada publicada no se mueve. */
-    if(H < E.min && Math.min(b.cabe*0.98, vh*0.68, 640) >= E.min) H = E.min;
-    var W = H*E.ar;
-    if(W > b.w*0.92){ W = b.w*0.92; H = W/E.ar; }
-    var y = b.y + (b.h-H)/2;
-    /* EL TECHO SE APLICA AQUI Y NO EN EL RASTERIZADOR. Primero lo meti como
-       una banda ocupada mas y la PORTADA se movio: 214x542 -> 206x521, grano
-       5,52 -> 5,25. Marcar la banda cambia la enumeracion de rectangulos
-       maximales de TODA la seccion, tambien donde el techo no tapaba nada.
-       Aqui la condicion va al final y solo muerde si muerde: lo que no
-       quedaba bajo el header sale identico al ultimo decimal. */
-    if(yMin && y < yMin){
-      var disp = b.y + b.h - yMin;
-      if(H > disp){
-        H = disp; W = H*E.ar;
-        if(W > b.w*0.92){ W = b.w*0.92; H = W/E.ar; }
-      }
-      y = yMin;
-    }
-    /* LA PUERTA NO BORRA UNA DECISION EDITORIAL: donde hay `data-enc` -escrito
-       a mano por un encargo literal- hay figura, y la puerta solo puede
-       quedarse corta. Donde el motor elige solo, la puerta manda. Sin esto,
-       bajo ~740 px de alto de ventana la portada se quedaba EN BLANCO. Lo que
-       cuesta, dicho: bajo ese alto su glifo no llega a 5 px -tambien en lo
-       publicado, 4,54- y se pinta en puntos. */
-    if(H < E.min && (forzar === null || forzar === undefined)) continue;
-    if(W*H > mejorA){
-      var f = (cx !== null && cx < b.x + b.w/2) ? BIAS : 1-BIAS;
-      mejorA = W*H;
-      mejorP = {h:H, w:W, enc:q, x:b.x + (b.w-W)*f, y:y};
-    }
-  }
-  return mejorP;
-}
-
-/* EL TECHO PEGAJOSO, y por que faltaba: el buscador de huecos razona en
-   coordenadas de PAGINA y el <header> vive en coordenadas de VISOR, asi que
-   ningun rectangulo del rasterizador lo veia. En `cotizar` la caja arrancaba
-   29 px POR ENCIMA del borde del visor y el header se comia sus 95 px de
-   arriba —la cabeza, que es lo de mas contraste—: cociente 2,13 contra 18-27
-   del resto. Defecto de mi instrumento, no limitacion del diseno.
-   No se busca por clase -la maqueta es de VisuAI-: vale cualquier pegado o
-   fijo ANCLADO EN CERO que no contenga secciones, que es lo que separa al
-   header de `.cine-stage` (sticky con `top:var(--hdr)` y con `[data-sec]`). */
-function techo(){
-  var t = 0, todos = document.body.querySelectorAll('*'), i;
-  for(i=0;i<todos.length;i++){
-    var el = todos[i], cs = getComputedStyle(el);
-    if(cs.position !== 'fixed' && cs.position !== 'sticky') continue;
-    if(parseFloat(cs.top) !== 0) continue;
-    if(el.querySelector('[data-sec]') || el.hasAttribute('data-sec')) continue;
-    /* TIENE QUE TAPAR, no solo estar pegado arriba: sin esto el primer
-       candidato es MI PROPIO lienzo -`#nube` es fixed, top 0, pantalla
-       entera-, `techo()` daba 900 y se quedaban sin figura las CINCO
-       secciones. Se reusa `opaco()`, el mismo criterio de ocupacion. */
-    if(!opaco(cs)) continue;
-    var r = el.getBoundingClientRect();
-    if(r.width < innerWidth*0.5 || r.height <= 0) continue;   /* una barra, no un panel */
-    if(r.height > innerHeight*0.4) continue;                  /* una barra, no una portada */
-    if(r.height > t) t = r.height;
-  }
-  return t;
-}
-
-function medir(){
-  var sx = window.pageXOffset, sy = window.pageYOffset;
-  var vw = innerWidth, vh = innerHeight;
-  var mg  = Math.max(16, Math.min(44, vw*0.03));
-  var pad = Math.max(14, Math.min(34, vw*0.02));
-  if(!ENC[0].min) calibrarMin();
-  var hdr = techo();
-  var docH = document.documentElement.scrollHeight;
-  secciones = []; ocupados = [];
-  var ars = ENC.map(function(E){return E.ar;});
-  var secs = document.querySelectorAll('[data-sec]');
-  for(var s=0;s<secs.length;s++){
-    var sec = secs[s], sr = sec.getBoundingClientRect();
-    var lista = recoger(sec, sx, sy);
-    for(var e=0;e<lista.length;e++) ocupados.push(lista[e]);
-    var x0 = Math.max(sr.left+sx, mg), x1 = Math.min(sr.right+sx, vw-mg);
-    var caja = {x:x0, y:sr.top+sy, w:x1-x0, h:sr.height};
-    /* HASTA DONDE LLEGA EL TECHO EN COORDENADAS DE PAGINA, en la PARADA de
-       esta seccion: el scroll donde `elegir()` la da por activa, o sea su
-       centro en el centro del visor, topado por el documento. */
-    var yMin = 0;
-    if(hdr > 0){
-      var sc = Math.max(0, Math.min(docH - vh, sr.top+sy + sr.height/2 - vh/2));
-      yMin = sc + hdr + pad;
-    }
-    var mx = 0, ma = 0;
-    for(e=0;e<lista.length;e++){          /* el centro de masa es del CONTENIDO */
-      var q = lista[e], ar = q.w*q.h;
-      mx += (q.x + q.w/2)*ar; ma += ar;
-    }
-    /* data-enc fuerza el encuadre de una sección. Existe por un encargo
-       literal —la presentación es «en primer plano»— y se declara en el
-       HTML para que se pueda cambiar sin tocar el motor. */
-    var fz = sec.getAttribute('data-enc');
-    var idx = null;
-    if(fz){ for(var z=0;z<ENC.length;z++) if(ENC[z].n===fz) idx=z; }
-    /* los tres candidatos se GUARDAN. Cuando una seccion se queda sin figura
-       hay que poder decir con numero cuanto hueco le falta -es una peticion a
-       la maqueta, que es de VisuAI- y no «no cabe». */
-    var bs = mayor(caja,lista,pad,ars);
-    secciones.push({el:sec, top:sr.top+sy, bot:sr.bottom+sy, bs:bs, yMin:yMin,
-                    luz:sec.querySelector('[data-luz]'),
-                    pos:colocar(bs, vh, ma ? mx/ma : null, idx, yMin)});
-  }
-}
-
-function libre(a,b){
-  var x0=Math.min(a.x,b.x), y0=Math.min(a.y,b.y);
-  var x1=Math.max(a.x+a.w,b.x+b.w), y1=Math.max(a.y+a.h,b.y+b.h);
-  if(y1-y0 > innerHeight*2.0) return false;
-  for(var i=0;i<ocupados.length;i++){
-    var o=ocupados[i];
-    if(o.x-6 < x1 && o.x+o.w+6 > x0 && o.y-6 < y1 && o.y+o.h+6 > y0) return false;
-  }
-  return true;
-}
-
-function elegir(){
-  var mid = window.pageYOffset + innerHeight/2, q, i;
-  for(i=0;i<secciones.length;i++){ q=secciones[i]; if(mid>=q.top && mid<q.bot) return q; }
-  return secciones.length ? secciones[mid < secciones[0].top ? 0 : secciones.length-1] : null;
-}
-
-/* ==================================================================
-   B · ESTADO DE LA FIGURA
-   ================================================================== */
-var cx=0, cy=0, tx=0, ty=0;
-var baseH=300, k=1;
-var ca=0, fa=null;
-var destino=null, pendiente=null, seccion=null;
-var modo = 'espera', tLlego = -1e9;
-
-function reescalar(H){
-  var pintado = baseH*k;
-  baseH = H; k = pintado/H;
-  fig.style.height = H.toFixed(2)+'px';
-  fig.style.width  = (H*ARa).toFixed(2)+'px';
-}
-function fundir(a, dur, curva){ fa = {de:ca, a:a, t0:reloj, d:dur, c:curva}; }
-
-/* ==================================================================
-   C · LA NUBE
-   ================================================================== */
-/* EL MAPA DE TONO, HORNEADO DESDE LA FIGURA OFICIAL. Rejilla de 88x165
-   celdas de 3.74 px nativos sobre la caja 329x617 recortada de
-   `Hola, soy Compai.jfif`; tono cuantizado a 16 niveles. A..P = tono 1..15;
-   el resto = carrera de ceros. 6.178 B de texto, sin una sola petición ni un
-   byte de base64.
-
-   DE DÓNDE SALE Y POR QUÉ CAMBIÓ. El 30-ago Sebastián miró el sitio ya
-   publicado: «me gusta el movimiento, el agente NO es el de la imagen
-   original». El motor no tenía culpa —el mapa anterior venía de
-   `_agente-viva/_fig-mirada.png`, un derivado ESTIRADO (aspecto 0,351) de la
-   familia correcta, y esa deformación borraba las piernas y fundía el bajo
-   del vestido en un charco de luz—. La figura oficial tiene aspecto 0,533 y
-   piernas. El fallo de fondo era de TRAZABILIDAD: el mapa vivía como una
-   cadena dentro de un HTML de 79 KB sin un byte que dijera de qué imagen
-   salió. Ahora lo hornea `hornear.py` desde el archivo oficial y escribe su
-   fuente, su sha1 y sus hitos en `_mapa.json`.
-
-   GW y GH NO son magia: el ancho lo fija el barrido de `hornear.py` y el
-   alto sale del aspecto real de la caja, así que `GW/GH` ES el aspecto de la
-   figura y las coordenadas de rejilla se normalizan con ellos. Antes había
-   un 300 y un 855 escritos a mano en cuatro sitios: si el mapa cambiaba de
-   tamaño, la figura salía desplazada sin un solo error. */
-var MASA='++++++++++ZB+3C+3CCBBBBBBXBSB+YBWBBBCDCDDDCCCBTICSC+dBQBCFKHJLJOPGIHFCBBQBGDRC+ZFDSFBCGMOJMOKLLHPNKHDCCBQCBCB+WBWDEIKLLIPNJEHLOONINFCCBBDC+YGDUGHMJLJFLJIGIJNOPPNFDCCDFC+YECTBCINJHFFIIIEIHKKPNPOMFCDBBC+YCBBCCCILKJDDEFGEDEINJMIOPPFECQBDF+RBVCBBCGNGJEEDDCGFFEFKHNJOPPNECBBBCB+QDVBCBCKLGFEECCCCDFEHMGNHMPPKECBBRCB+WBCCFOMFGKCDCBBDEDDFEMMNOPPHCCCRED+WBCDJPMMKIEDBQBCDDDICILLPPOHCCECB+YBCDKNPPKEDCCBCDGGDIDIMPOPKLCCCCCB8DYBCDJNOJGGDDBBBDDCBBCFJLHMPLDECBBBC+WBCDKPOKLGEDCEBQCBCGCEJMNPPNFDDCBQBBB5BQCRBQBCQBCDHPILKGFEBCBDFDBGCIHMPOPPHCCBCCBDRBBUBtDRCDWBCCDKPMOPIFCDDQBRCDCHHNMJMPNCCBSCCRBCDyHQBHCBBSBCCDEKONOMEFDBBQCCCEFCCEIIILHDCCBUBQBBCCDFxBDEFDBBDDEDEFNPNONGFCCBBEFFCDCDJJLKMLECBBVCCRBCFsBQEBDDQDDBDDCGFIGHPPKPMEECCCBDCCCGCFHIHMPLECCBVCDTEuBRCCBBBIJJIKEFIPPLNKFHECFDBCDCECFHLJINOKECBWBBSBsCTBCDCBECIFEGHJOPOMLHGFDDCDDDDFCEHJMKOMMCGDE2CVBDBBEEBFDKFFHKPPNNGFDFECBCCFKDEGJJNONHFECDBCB1BRBCCFCBBCBCDFDDJMPNPPIFDCGCBBFGGDHOPPPPPKDDBRFC0BWBBBDCFCFCDIJNPPPNIEEFBDBCEFFGOPPMKLGDBB+SBBBBBBCCGKILPPPPGDCDCCCCFIEHOPPMMLFECBBBBBRBC5EBQFCBCELIKLPNPPNKEDCEGDDGFOPPPNMGEDCBBBBBRCE8BCCIEHIINPPPPPKFDEDDGGGMPOPMLLIHFBBBBBB8DCEQCEBCCDIHLNPNOPOIEDFGIGINPLNOMNKCEBBEDB+RBDBBCDGEDGJOONPJFFGEEIJJJOMOKLHKDDCCCCB+RBFDBCEDECGHKJJPKEFEDFFHLKOJNGEJICCCBBB7BTBBSBBCCCEJKJIKGFFDCDDGGIOGHGDGFJCBDDVCE0BTDEUBBDDFMNPKHDEGDCCDDHMOKIKDIJEEB3BSCCBRDDBBUBBCEKPNJMFDECBCBCCFIKPOLGFFCDTDTCzBCRBBDQBFRDDCEJMOOIFDDECQCCBCGJHKJMNKFCCBTBDRCwBRCDQBTBBBCFIGEGGGLEHDCFDRCBDFDGKHGJIKKHESCQCxBBEDBCDCBUBEJHHFCJEGFECCDDECBCBCCHFDEDIGDGHIHCWCCxBIFDDDEDCDLLHEEDCCDGECBBEFCDFCBBICDGCCEFGGMKCBQDRGyBQBTBCCCHPJEFCDECDFFCCQCDCCCBBBECGEBCDCEGGFGCBBRDyDTBRBBFLIDDBBCEDCCBEEBQCBBBSCBFCBEGCDEEEIDE1BEDUCFBEIFCCCCCEBEICECCBEVHCDFCDGEEECDFKCTERCuBWBCDFFGGBCCDCDDCDDBBBBQBQCQECDDCDDBBCCDGICCCBSCuCFRBBSBDHHGGCRBCCDDCEDDBBRBSHEDHQIIBRCEHLGFBGUC1EHNGDGCDDBDBBEQCCRCCCBQBQCBFGQEGCQBDIHHESFTC2HJGJFCBBBDCDCQEDSCDCEHQGCDDQCECDGGHMGDWCCyDCRBCIEBCHGBFCDFQFERCBCBDFQEBFGQBCBDDDILHDZBwBRGDEIEEDFDCFCCBRCSCDCQDQDCCDQDFBBBEGJOFRCQCSB2CMOGLHDDCGCDBBEDRBCDCQHQIECDQFHBDDFHINCTCSBxDTBHOGGFCDCDDBCQCSCCDRCQCBEFQBFDFCBEEGCBCECRC4BIKDEDGJHGEDDQCBQCQBCQCFQGEQBQDDFFBQCCIFWBCCQBzCMGFDEGNLEDCDQECSBRDFQFCBCBDDDBBCBBFE+BCLDCDFFPPKHDFBBRBQDCRCRDBBBDECBCBBDFIXCBBzDCGFCEFFOPKICDQBRBQCBRFRECCCJIFCBBQDCCCSBQBDB0BCHGCFFHLPPKJECQBRBQBBRCQEDDCCJIMGCCBDCGKSCxCWCIGHJFGINPKJEDCDCBCQCBQCEQECEFGHHPIDBQBEDETCQB2BJIFEEHKLPPNFEDECCEQCREGRBJKKIJIEDCQCQCDTE4DHEGDHKLIPNOFICDCBBQCSBRBEEFMPGFFDCDRDDBB4EQEFEIFDHKHNLPIHECBCFQBRDGQBCGGDIMGDHEBBQCHKDDQDQC0DCHDCDBDJMFIJKIHDCQCFTBEBCCFGDFGGCIJDCQCIEDTD1DFDEBCFDDENNKHMFFTDEDBCBDDHJIIHGDFOFEQDBQD0DUCCCGBCDIDJPLLGIECTDFEBBBEEIJKMIIDDMHECDRFUCEtCUCDEDBEHEDFKJIIGEDQCDBCCBBBBBDHFJMPLDCFDDDCBDIHvCYCFCBCDDGDFJJIGHEFCCBQCCBCECGEGHHKNOFCEECCDDHQG3CQBJBCBCCEDJIIIJICFQCCQDCQEJCEDGHHMPNICCCCCQEEDC0DRDCHCBBFEFEDLFGHGFBECCEQCDDCCCGDFGJLPKJCBBCGBDCCECxFQBRCQCBBCBEECIKDGFEFFEEBCQDCCDJBDDHGGFKEJCBEGDCFBGGEB0EQDEDDQBCECFEDFEDDSDDCDDCBFBDCFJHFGFDEBBDDFBQCEBuCDRCRCRDQCBQFDDJLEFGDGQEBCFBEFCEFDHGGIHGHDGHBBCGBCDFEBTBvCQBFDQDBDDCFLKEGLBDQDQCEQEEDFHDEEFFDDFCEEBBEKDBCDBFTDTBgBYCCBLCCEDDCCGHIEFFBEQCBBDQFFCCCBECFGEDDCDDBBBGGDCCEKFwBTCKEGGCCCCHDIDDHCDQEDSFFBFJQGFJJGFBBDECRCGICFFEDtBBQCESCDCCEIDBBFCECBFCEQBRBQDCQFJQECFGDFFBCFCSEEDIIGFBsCCBICERCHHGCDCCEGFHCEJDIQIFSFDQBFQFFHGDJHBCFBBQBCIIJHMGByDCCIEBDFEDGFCEBFFSGEQCQFCRCRBFICECBCDFBQBCJHHGHCEsFWCGBBCGCGIDCJBCCDFSCDWDBGHQFHBECICDBBDDIHLKIBXCnEFBDGCEEFCMJDDHBBBBDSBDQCBTEBFFQGICEDHDBBBDHNFIIFCFtBQEBBJIGEFDCNMFEFBCCBETBQCBVBCQDGCCELJBBBDGLMNMLDCtBRBCLHECIBCNKDDHBQCDFVFUEBGJQIHDDEHJDQBDFLPMNNFCBSDrDCLGEEJCDHMGDDRBQBVCSCQBQFHQDFCCEGIBBBCDNIKOOLFBSCoERFDLEKDECDFJFEFRBQFTEWCTDGCGGEEDBBEHJGHONODBaBXBRBUCQBBCJJGFGCDHJEEFSBDTGWETBCBFHEFICBCHIHHIIMGBsBBBCGKJJJHDGPPHCCBERDQHEQBQCBTCTGGEFDDGKCBCCFOIHHHICrBDDBCGJKFHLEIOMFFGCBQBFQCBCEBFDTEDSGGBDDCENGBBCIMIKHIMEBVDdEUDDFCDMIJNNLELILFECCBBCDSFHBGFREQHISGFCEFDEIHCBCFKGJHHMFDZCXCQDBTDBQBDNHKNMNGHFKFDBCDDEDQECCKBFEBSHESEFFFDEEHKBBDCGEHFFGCaCZBHBTCQBEMJJPPNGHGHEDDBDCCGCCBDICGFTFDSCEGKFFEFHCBBCDEFKGJDRECDDEbDBQCXBDIMNPPNGHIMHCBQCDBHCGFINCDCTEDSEFEEEEDHHDBBCCGDDGFUBQBDkDQBCJMOPOKFKLNIDCCDDFIEEEHLCGFTEESBCBCFFCDGEBBCDECCFBGsBQBCHNMOOMGJFLLFDBDCEECFEIIBFETIGBRFGCCCDDKIGCCCJJGDBQBSBhBVDQBCFKPPOGKLHNJEHDDEGHCFEIMCDGCBRCCCREECCDECFFGDCCFECBvFBBCDGOPOFHGEKFEIEEFEDCGDCCBGJFBRGHBRDDDCCDCFFDGCCBSBCmBQCWBCDIONHIDGLGDDDDDDHCEDCQBCEGBCBIGSGGBDDGEDGHFCCBXDgCbBBCFDCFHDHEEDEEEGFEECBBBFHFCCBHDDBQFFEHCGCFEDHHCDVCrEUBBBCEDDJFGHEEGFJDDDFJBEFEBDBIGECQGKEGDLHGGDDGCBQETBrEXBEGFMEECCGDDJEFDCBBFGFBDQEFCBQHLFGCKGGCDDGEBWDzBFGHFCCDCHGEEDDDEFBFDEDBQFJGCQDGEEBHGJEGGHLCBrBUBRBUCGEFJEDFCEDCBDFDGHBDECBREEGGDGHEGDHEIEEEILDBCByCUGFEFECCDCFFDDEEBBDBFIFCDBEHFCBDFEEBEDEJIMGJDCCCBBVEDCBjCXGDCEGDDIFFEFDDFDDHDDGHCCBDHIDBFKCDBEDENNHHGIGHCBDQCrCXHHCEHCDGCDFEECGFBCCHJLECBEEGGBGIFGCEDLKKJJJNHGDBRC0IFDCCBEGEIFFCCEDCHFIGLHECGGGCFEDCCDHFKIHGMMKEHFCQCSCtERCGBECIDDGDJHFCBDBEEDFFJKJFFGFDEFHBCEHGMIGHFEDCBBRC0BDBFCICHKFJJEBCHCEGCEHLNJDGKJDBDEDCGEHJHIIDCBRBDCD5DCEGDFJFCCBCBDFJGLNJFEFEDDGHFJDCFGCDBBBQDBEvBbFCRBCICECBBBDIMFDFDDDCQBCBDGHKFHGDBRDCFGFEUB1BTBGIECGDQEEIDCECCBCQBCBEIIGDCCBeC5BIDFBGQCDDFFCHHDBBCBQEHIKDFCB+bBGFDBCBQCEFGCDDCFECCCHJHICECUC+XDFDBCCDCEHFBCDDEEECBFFFFCBBXCE8DUHFBCEBQCEFDBFHFCEEBCGEKHCCBSCTB+TDIDBBBCDEEFCCCGCDECBDEGGHCDB+cDIEBCQBHHEFDDEJHGCDDFFEIHCBZD+SBEDDBQGCEGFCDHNIDCDHHHIKICDB+ZBBBBEFCCQDFCFECDJNKHKHJGHINFBCYBB9BDBBCIGDBBCCDDCCDJNLJHKIGJLLEBUBUC8DBFBBDHGDFEBDGFDCDJMIKGHHFFLIDBUB+WBEIKGEFECCEEEEDHHFHGEFGJMECWC+TBQBCGIFDCCGEJHGCCEHFKJGILLJDE+XBSBRBEDDDBCGDFGICCDJJJGGIHKDBB+VCQBSCSFDBDCEGDFDGCEEKJHJJGGECB+gCGEDBCEDDEIEJHKIIFIIICBCD+VCTCTBDDBQBDDDFGFKKHHGEFJGBBQBQC+TBTDTBDCFBBCDECJILLJEDCGHCBSBCBC+WCCBRBGFIBGECFCFHIKJDDEEFBTE+dBCDECBECCDDDEJJFGFEGFBUB+bBBBEECBCBCCFFCHIGDEGKEBTCFCB+YCFRCDDBECCDDCCCDCCCDGJBRBBQB+cDBBDDBECDGCCBBEDDDDHJCBQBC+YBTBDCBBCEDCBFBCBCFDCDDDFCBTBQB+dCCDCCDDFEBDHDEBCDEDUBDD+XCUBEDCECEDDBEIEFCCDFDUB+ZBRBCQCGECECCBBBCDDBBBQCEBSCBQB+bBQBGECEBDGCBCDBBBCDFGECUE+eFHDCBBDBBBDCBBQCDFGDSBQD+YBBTFFBBDFFBBCGCBCDCFIGB+bBRDTBDCBDCDEBQDFDDCDCFHD+hBCRBCBEDCDBBBDDCCBEFGC+iBQBBCDDCDDCBBBCCEDFHHC+gDRDBBDCBCDFCBBDDCGGEGFB+kBBCCDCDEEBBBBDFDCDBVB+dBQBGEEDEFGBBBBCCBBB+hBSDBCFHEFEEGCBB+nCQBBCCFFGEFEFGCCBB+oCDCDIHFFFFHHECBB+oCDCGIHGEGGGHDCBB+mDQCCCGHHHHHHHHEBB+nBCECEHHHHFGHHHEBB+oCBDEHGHFEGFEHFCB+oBBCDHGFDDEDFGGCB+qBCEEEFEDDEFDB+tBCCDDDDCCB++++++++++++++R';
-var CER='QRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-var GW=88, GH=165;
-
-/* CUÁNTAS. Elegido MIRANDO el barrido 2.600/3.400/4.200/5.000/6.200 a 612 px:
-   por debajo de 4.000 la figura es un fantasma y a partir de ~5.600 el pelo se
-   cuaja en pasta y deja de leerse hecho de dígitos. El techo NO es el
-   rendimiento —a 1,8-2,4 ms de mediana por cuadro caben ~10.000—: es la imagen. */
-var NP = 4600;
-var DEN = 40;                 /* la inercia se sortea 1..41 fotogramas */
-var CDF = null, encActual = 0;
-var ARa = 0;                  /* se fija ABAJO, cuando ENC ya existe */
-var NPB = NP;
-
-/* EL SEMITONO. El volumen sale de la densidad local, no de un contorno:
-   agrupar aclara, enralecer oscurece. GAMA=1,00 hace que la densidad lleve el
-   tono uno a uno (contraste de densidad 15:1 sobre el mapa); y como la
-   densidad YA lleva el tono, la opacidad se APLANA para no castigar dos veces
-   —su único trabajo es que el borde se disuelva, doctrina §2.5—. */
-var GAMA = 1.55, OPEXP = 0.45, OPPISO = 0.10;
-/* GAMA 1,00 -> 1,55 y OPPISO 0,22 -> 0,10 el 31-ago, MIRANDO el recorte de la
-   caja a 2x y no la pagina entera. Con GAMA 1 la densidad llevaba el tono uno
-   a uno y el enjambre repartia particulas por todo el rectangulo: 68 % de las
-   celdas del encuadre `cerrado` tienen tinta, asi que un reparto plano PINTA
-   EL RECTANGULO, no la persona. Con 1,55 el muestreo se concentra donde el
-   mapa es claro (pelo, hombros, manos) y el piso de opacidad mas bajo deja
-   que el canto se disuelva de verdad -doctrina 2.5-. Medido con `silueta.py`
-   dentro de la caja, a igual ALFA: cociente 11,81 -> 16,14 y correlacion con
-   el mapa 0,652 -> 0,722. Ni una particula mas: NP no se toca. ALFA se vuelve
-   a DESPEJAR con `afinar.py` para que la vara de VisuAI no se mueva.       */
-
-/* Un hueco alto y angosto pide el cuerpo entero; uno bajo y ancho pide el
-   primer plano. Lo que NO se puede hacer y queda registrado: «de perfil» de
-   verdad exige un SEGUNDO mapa horneado —el material es frontal y no hay
-   información lateral que muestrear—. Aquí no se finge un perfil. */
-/* LOS TRES ENCUADRES, REMEDIDOS SOBRE EL MAPA CANÓNICO (30-ago). No se
-   heredan: los del mapa anterior recortaban por sitios que en esta figura no
-   son los mismos, porque la otra estaba estirada y no tenía piernas. Los
-   hitos salen del ANCHO DE TINTA POR FILA -que dibuja el perfil del cuerpo
-   mucho mejor que la suma de tinta, que sólo dice dónde hay brillo- y quedan
-   escritos en `_mapa.json`:
-
-     coronilla v 0,043 · línea de hombro v 0,128 · más ancho (dobladillo y
-     manos) v 0,555 · dobladillo v 0,677 · pie v 0,957.
-     Tinta: v 0,055..0,939 · u 0,161..0,816.  Cabeza y hombros: u 0,184..0,770.
-
-   Proporción, que es lo que delataba al mapa viejo: aquí la cabeza mide el
-   12 % del alto (0,043..0,128), o sea ~1/8 de cuerpo, que es una persona. En
-   el mapa estirado medía el 20 % y por eso el cuerpo entero salía sin piernas.
-
-   ENVOLVENTE DEL CUERPO ENTERO, y esto es una decisión que cambia: venía con
-   cab 0,44 / pie 0,66 porque VisuAI pidió disolver «el bulto de cabeza y
-   hombros arriba y el charco de luz del pie abajo». En la figura canónica no
-   hay charco -era un artefacto del mapa estirado- y ese pie 0,66 borra las
-   PIERNAS, que es justo lo que Sebastián echó en falta. Se retira a los
-   cantos de verdad: cab 0,10 / pie 0,94. Los dos v de este encuadre caen
-   FUERA de la tinta (0,030 < 0,055 y 0,975 > 0,939), así que el recorte no
-   corta nada y la envolvente sólo tiene que rematar el canto del cuadro.
-   Queda anotado para VisuAI: si prefiere volver a la disolución, son dos
-   números en esta línea.
-
-   EL PLANO CERRADO SE ABRE HASTA v1 0,480, Y NO POR GUSTO. Con v1 0,290
-   -cabeza y hombros literales- el recorte sale APAISADO (ar 1,26), porque en
-   esta figura los hombros son más anchos que alto tiene la banda cabeza-pecho;
-   el buscador de huecos le daba entonces una caja de 514x407 y ahí el glifo
-   -que escala con la magnificación- se come la estructura: rendido y mirado,
-   es una niebla rectangular de dígitos, no una persona. Barrido en la página
-   real a 1440 (`_barre_cerrado.py`), v1 -> aspecto -> caja que da el hueco:
-
-     0,290 -> 1,262 -> 514x407     0,420 -> 0,841 -> 420x500
-     0,360 -> 0,994 -> 497x500     0,480 -> 0,729 -> 364x500
-
-   A 0,480 el retrato vuelve a ser VERTICAL y es el único de los cuatro en el
-   que se leen la corona de pelo, el óvalo oscuro de la cara y la caída de los
-   hombros. La escalera queda 0,395 / 0,557 / 0,729 de aspecto y 1,00 / 1,41 /
-   1,97 de magnificación: tres opciones bien separadas para el hueco, que es
-   para lo que existen. */
-/* GAMA ES POR ENCUADRE, y no por gusto (31-ago). GAMA existe para pelear el
-   RECTANGULO: si el recorte tiene tinta en casi todas sus celdas, un reparto
-   plano pinta la caja y no la persona, y hay que concentrar el muestreo donde
-   el mapa es claro. Pero «casi todas» depende del recorte, y esta medido:
-   tinta 68,4 % en el cerrado, 64,6 % en el medio, 55,9 % en el CUERPO ENTERO
-   -que ademas tiene una silueta que se reconoce sola-. El 1,55 se despejo
-   mirando el primer plano; heredado al cuerpo entero MATA LAS PIERNAS, que
-   son tono medio: con GAMA 1,55 el peso del pelo contra el de una pierna es
-   5,4:1 y con 1,00 es 3,0:1. Se barre por encuadre y se mira. */
-/* `min` ya NO se escribe: lo despeja `calibrarMin()` de la ley del grano en
-   cuanto `campo()` conoce NP y la tinta de cada recorte. Arranca en 0 y
-   `medir()` no coloca nada hasta que este calibrado. */
-var ENC = [
-  {n:'entero',  u0:0.140, u1:0.840, v0:0.030, v1:0.975, min:0, cab:0.10, pie:0.94, gama:1.55},
-  {n:'medio',   u0:0.140, u1:0.840, v0:0.030, v1:0.700, min:0, cab:0.10, pie:0.74, gama:1.55},
-  {n:'cerrado', u0:0.170, u1:0.785, v0:0.030, v1:0.480, min:0, cab:0.10, pie:0.90, gama:1.55}
-];
-for(var e_=0;e_<ENC.length;e_++)
-  ENC[e_].ar = (ENC[e_].u1-ENC[e_].u0)*GW / ((ENC[e_].v1-ENC[e_].v0)*GH);
-/* VA AQUÍ Y NO ARRIBA. Con `ARa = ENC[0].ar` colocado antes de la asignación
-   de `var ENC`, el hoisting deja ENC en undefined y el script entero revienta
-   —y la página se ve vacía SIN UN SOLO ERROR registrado, porque el manejador
-   vive dentro del script que muere—. Regla general, no anécdota: el colector
-   de errores va en un <script> aparte y ANTES (ver el <head>). */
-ARa = ENC[0].ar;
-
-/* LA ENVOLVENTE VERTICAL, Y AHORA UNA POR ENCUADRE. VisuAI: a 1440 la nube no
-   falla porque FALTE la persona sino porque SOBRA la insinuación de persona,
-   así que en el CUERPO ENTERO se disuelven los dos extremos que delatan al
-   cuerpo —el bulto de cabeza y hombros arriba, el charco de luz del pie
-   abajo—: cab 0,44 / pie 0,66, calibrado y medido (el charco cayó de 17,5 %
-   a 7,0 % de la masa y la cabeza de 10,7 % a 2,1 %).
-
-   Pero esos mismos números aplicados al PRIMER PLANO lo destruyen, y esto
-   salió de mirarlo: el recorte cerrado ES la cabeza y los hombros, o sea que
-   cab 0,44 apaga la corona y pie 0,66 apaga los hombros, y lo único que
-   sobrevive es la banda del medio —que en un contraluz es la parte OSCURA—.
-   Rendido a 435x500 daba una neblina rectangular sin cabeza ni hombros.
-   La envolvente existe para disolver el CANTO DEL ENCUADRE, y en un primer
-   plano el canto de arriba es la coronilla (que ya se desvanece sola en el
-   mapa) mientras el de abajo es un corte arbitrario por el pecho: es ése el
-   que hay que fundir.
-
-   SEGUNDA CORRECCIÓN, la que zanjó el choque: cab 0,08 / pie 0,70 seguía
-   dando un DONUT —un anillo de pelo flotando sin cuello ni hombros—, y no
-   por casualidad: con el recorte v 0,060..0,340, la barbilla cae en v local
-   0,70 EXACTO, o sea pie 0,70 disolvía justo los hombros. Se abre el recorte
-   hasta v1 0,402 (los hombros completos, medidos: la cabeza ocupa v
-   0,088..0,257 y el hombro va hasta v 0,339) y la envolvente se retira a los
-   cantos de verdad: cab 0,10 / pie 0,90. Un primer plano ES cabeza y hombros;
-   sin los hombros no hay primer plano, hay una mancha.
-
-   Y lo que NO se puede hacer, medido y no supuesto: el mapa NO TIENE CARA.
-   Rasterizada la cabeza del material —los tres mp4 y el fotograma de origen—
-   el rostro es un óvalo NEGRO dentro de un halo de pelo: es un contraluz y no
-   hay ni un ojo que muestrear. «Legible como cara» no está sobre la mesa con
-   este material; «legible como cabeza y hombros en contraluz» sí, y es lo que
-   se entrega. Inventar rasgos sería dibujarlos yo, que es exactamente el
-   fallo del 24-ago que creó este agente.
-
-   Sebastián zanjó el choque con VisuAI a favor del primer plano legible. La
-   palanca para volver atrás sigue siendo una línea: u/v y cab/pie del cerrado.
-
-   Va sobre la v LOCAL de cada encuadre: con la v global, el primer plano se
-   muestrea justo de la banda que la envolvente del cuerpo entero apaga. */
-var ENVP = 0.04;
-function env(v, E){
-  var CAB = E.cab, PIE = E.pie;
-  var a = v<CAB ? v/CAB : 1, b = v>PIE ? (1-v)/(1-PIE) : 1, s = a<b?a:b;
-  return ENVP + (1-ENVP)*s*s*(3-2*s);
-}
-
-/* LA GANANCIA GLOBAL. El criterio de oficio se escribe con un número: la
-   figura no debe pasar de ~3x la masa luminosa del botón de cotizar en el
-   primer pliegue, o el CTA deja de ser el destino de la mirada. Un solo
-   número y multiplica AL FINAL, para que no haya dos sitios donde subirle el
-   volumen a la figura. Se mide con `_agente-viva/masa.py`.
-
-   0,2582 NO se eligió: se DESPEJÓ midiendo, con `afinar.py`, hasta caer en
-   2,41x —bajo la línea de ~3x que fijó VisuAI—. Y hay que despejarlo porque
-   la masa no es lineal en ALFA: medido, 0,1554 da 1,21x y 0,85 da 13,67x, o
-   sea multiplicar por 5,47 el alfa multiplicó por 11,3 la masa. La causa es
-   la EOTF —la vara suma luz LINEAL sobre una captura de 8 bits en sRGB, y
-   cerca del negro un escalón de código vale poquísima luz—, así que cualquier
-   regla de tres sale corta: el primer barrido apuntó a 2,5x y aterrizó en
-   1,20/1,35/1,62x. Con el encuadre anterior esto valía 0,40 y daba 1,05x: la
-   figura pesaba lo mismo que el botón y por eso no se leía. */
-var ALFA = 0.3961;
-
-var CUERPO = 1/139, FRENTE = 0.075, ZOOM = 3.0;
-
-/* EL GRANO SE ACERCA CON LA CÁMARA, y esto faltaba. El cuerpo del glifo valía
-   H/139 —proporcional a la CAJA— y la caja mide lo mismo en los tres
-   encuadres, así que el mismo hueco pintaba el cuerpo entero y el primer plano
-   con glifos del MISMO tamaño. Es un error de cámara: en un primer plano el
-   sujeto está 2,7 veces más cerca, y su grano tiene que estar 2,7 veces más
-   cerca también. Con el grano fijo, el primer plano salía sembrado de confeti
-   —3.071 puntos de 3,6 px repartidos por 417x500— y por eso no cerraba forma.
-   MAG es la magnificación vertical del encuadre contra el cuerpo entero:
-   entero 1,00 · medio 1,68 · cerrado 2,69. Es un cociente medido del propio
-   recorte, no una constante elegida.
-
-   Y el detalle que explicaba el confeti mejor que ninguna otra cosa: el
-   dibujante cambia de técnica bajo 5 px —«por debajo de 5 px un '0' no es un
-   dígito, es un punto»— y con el grano fijo el primer plano caía a 3,6 px, o
-   sea el 92,5 % de sus partículas se pintaban como PUNTOS de 1 px. El plano
-   cerrado nunca llegó a estar hecho de dígitos. Ahora son 9,66 px.
-
-   El exponente se barrió a IGUAL MASA (`barrer.py --obj`, cada punto con su
-   propio ALFA despejado, porque si no se compara brillo y no grano): 0,50 /
-   0,75 / 1,00. Gana 1,00 mirándolo, y es además el único que no necesita
-   justificación: es la magnificación real de la cámara. */
-var MAGEXP = 1.0000;
-function mag(E){ return Math.pow((ENC[0].v1-ENC[0].v0)/(E.v1-E.v0), MAGEXP); }
-
-/* EL GRANO SIGUE AL ESPACIADO, NO A LA CAMARA. Correccion del 31-ago, y
-   corrige a MI mismo: `mag` es la magnificacion vertical del encuadre y
-   dice «en un primer plano el sujeto esta 2,10 veces mas cerca, luego su
-   grano tambien». Eso seria cierto si al acercar la camara llegaran 2,10
-   veces mas particulas, y NO llegan: NP es el mismo numero repartido dentro
-   del recorte. Lo que gobierna si el enjambre se ve TEJIDO o se ve POLVO no
-   es la camara, es la razon entre el cuerpo del glifo y la DISTANCIA MEDIA
-   entre particulas vecinas; con glifo mayor que la distancia hay masa
-   continua, con glifo menor hay huecos.
-
-   Medido en la pieza publicada, que es lo que delata el error: el primer
-   plano pinta 4.401 glifos de 7,55 px sobre 364x500 con tinta en el 68,4 %
-   del recorte -> distancia media 5,32 px, glifo/distancia 1,42, masa
-   continua. El cuerpo entero con el mismo `mag` pinta los mismos 4.401 de
-   5,01 px sobre 275x697 con tinta en el 55,9 % -> distancia 4,94 px,
-   glifo/distancia 1,01: la MITAD de cobertura por glifo, y por eso salia
-   difuso aunque los numeros de silueta subieran.
-
-   La distancia media entre particulas es sqrt(area_de_tinta / NP), asi que:
-
-       gb = KGRANO * sqrt(W * H * tinta(encuadre) / NP)
-
-   `tinta` NO se escribe a mano: la cuenta `cdfDe` sobre el propio mapa al
-   arrancar, de modo que si el mapa cambia el grano se recalibra solo. KGRANO
-   se despejo para que el PRIMER PLANO publicado no se mueva ni un decimal
-   (7,55 px con 364,3x499,8 y tinta 0,684), asi que esto no re-afina nada de
-   lo ya juzgado: solo arregla los otros dos encuadres. El equivalente en la
-   escala vieja pasa de 1,00/1,41/2,10 a 1,50/1,78/2,10. */
-var KGRANO = 1.4195;
-var TINTA = [1, 1, 1];   /* lo rellena campo(); 1 solo hasta que exista mapa */
-/* escalera geometrica del 5 % en el cuerpo del glifo: con el cuerpo cambiando
-   en cada cuadro la cache de glifos de Skia no acierta nunca. Es funcion y no
-   linea suelta para que la sonda de verificacion lea EL MISMO numero que se
-   pinta -un gb que se recalcula en dos sitios se separa sin avisar-. */
-function granoDe(q, H){
-  var g = KGRANO*H*Math.sqrt(ENC[q].ar*TINTA[q]/NP);
-  if(g<0.6) g=0.6;
-  return Math.exp(Math.round(Math.log(g)/0.04879)*0.04879);
-}
-function grano(H){ return granoDe(encActual, H); }
-
-/* EL UMBRAL NO ES UNA OPINION: ES EL INTERRUPTOR DE ESTE RENDERIZADOR. Mas
-   abajo esta escrito `if(g >= 5)` -fillText, un digito- y su `else`
-   -fillRect, un punto-. Por debajo de 5 px el 92,5 % de la figura deja de
-   estar hecha de digitos; solo el plano de FRENTE (7,5 %) tiene suelo propio
-   de 7 px. Ampliado a 3x en vecino mas cercano: a 5,52 px se leen 1, 0, 4, 5;
-   a 2,53 px es una espuma de motas MAS FINA que la lluvia del campo (11-16
-   px), o sea el material invertido. El umbral se hereda del renderizador. */
-var GBMIN = 5;
-
-/* CUANTO ALTO PIDE CADA ENCUADRE PARA LLEGARLE. `min` estaba escrito a mano
-   -210/170/120- en la escala VIEJA del grano; al cambiar la ley del grano por
-   la portada no volvi a derivar la puerta, y seguia dejando pasar huecos que
-   la ley nueva condena: 4 de las 5 secciones publicadas pintaban por debajo
-   del interruptor. No eran dos secciones sueltas, era la REGLA. Ahora se
-   despeja de la ley y se sube por la escalera del 5 % hasta que el grano QUE
-   SE PINTA pasa: cambia el mapa o el NP y se recalibra sola. */
-function calibrarMin(){
-  if(!CDF) return;
-  for(var q=0;q<ENC.length;q++){
-    var H = GBMIN/(KGRANO*Math.sqrt(ENC[q].ar*TINTA[q]/NP));
-    var t = 0;
-    while(granoDe(q,H) < GBMIN && t++ < 200) H *= 1.005;
-    ENC[q].min = Math.ceil(H);
-  }
-}
-/* LOS GLIFOS, ordenados por TINTA MEDIDA: 'L' el más ligero, 'Q' el más
-   pesado, 2,08:1 de rango. Y el hallazgo que lo hace gratis: '0' pesa 277,6 y
-   '1' pesa 180,9 — el propio par binario YA es un semitono de dos niveles. */
-var GLI = 'L7TJFI1CY352SEZPV4UK96XAHGORD8NB0WMQ', SESGO = 0.62;
-var BINARIO = 0.75;     /* 76,4 % binario, 23,6 % letras (barrido mirado) */
-var DESTELLO = 0.60;
-
-var g2 = lienzo.getContext('2d');
-var LW=0, LH=0, DPR=1, FAM='monospace';
-var pu,pv,pin,pinl,pgl,pjx,pjy,pxs,pys,pfa,pz,pop,pmk,pdx,pdy,tramos=[],ND=0;
-var paleta = ['#96948E','#ABA8A1','#BFBCB4','#D5D1C7','#EBE6DB','#FFFCEF'];
-var sSuave=0, sembrar='pantalla', asentar=false;
-var sucio=[0,0,0,0];
-
-/* PRNG determinista (mulberry32): ?t= tiene que dar SIEMPRE el mismo cuadro,
-   o ninguna captura sirve para juzgar. */
-function dado(s){ return function(){
-  s|=0; s=s+0x6D2B79F5|0;
-  var t=Math.imul(s^s>>>15,1|s);
-  t=t+Math.imul(t^t>>>7,61|t)^t;
-  return ((t^t>>>14)>>>0)/4294967296;
-};}
-
-function tallar(){
-  DPR = Math.min(2, window.devicePixelRatio || 1);
-  LW = innerWidth; LH = innerHeight;
-  lienzo.width  = Math.round(LW*DPR);
-  lienzo.height = Math.round(LH*DPR);
-  g2.setTransform(DPR,0,0,DPR,0,0);
-  g2.textAlign='center'; g2.textBaseline='middle';
-  sucio=[0,0,LW,LH];
-  var cs = getComputedStyle(raiz);
-  FAM = (cs.getPropertyValue('--font-data')||'monospace').trim() || 'monospace';
-  /* LA FAMILIA DE CREMAS. Ni un tono nuevo: seis escalones interpolados en
-     Lab entre los dos neutros que la página YA tiene (--crema-60 y --crema),
-     declarados como tokens en :root. Medido, todos quedan entre C*=3,45 y
-     C*=6,68 contra los C*=50,2 del cobre del CTA: el botón sigue siendo la
-     única nota de color por un factor de 7,5 como mínimo. */
-  var p = [];
-  for(var i=1;i<=6;i++){
-    var v = (cs.getPropertyValue('--nube-'+i)||'').trim();
-    if(v) p.push(v);
-  }
-  if(p.length===6) paleta = p;
-  /* el atlas del primer termino depende de FAM: se hornea aqui y no antes */
-  hornearAtlas();
-}
-
-/* la opacidad de una partícula: el tono APLANADO por OPEXP con su piso, por la
-   envolvente del encuadre vigente. Está aquí y no en línea porque hay que
-   recalcularla al reencuadrar: cada encuadre disuelve por SUS cantos. */
-function opacidad(t, v, E){
-  var op = Math.pow(t,OPEXP);
-  if(op<OPPISO) op=OPPISO; if(op>1) op=1;
-  return op*env(v, E);
-}
-var TONO = null;
-
-function campo(){
-  /* 1 · descomprimir el mapa de tono */
-  var tono = TONO = new Uint8Array(GW*GH), i=0, k, c;
-  for(k=0;k<MASA.length;k++){
-    c = MASA.charCodeAt(k);
-    if(c>=65 && c<=80) tono[i++] = c-65;
-    else i += CER.indexOf(MASA.charAt(k)) + 1;
-  }
-  /* 2 · muestreo por RECHAZO con peso tono^GAMA, y NO con un umbral: el alfa
-     del material no es binario —62,5 % en cero, sólo 9,9 % sobre 224 y un
-     22 % entre 8 y 128, que es el vestido y el desvanecido del borde— y con
-     el umbral literal lo que queda no es nadie. Una CDF POR ENCUADRE: fuera
-     del recorte el peso es cero. */
-  function cdfDe(E){
-    var c = new Float64Array(GW*GH), a = 0, cr = 0, q, gx_, gy_, uu, vv;
-    var cel = 0, tin = 0;      /* celdas del recorte y cuantas llevan tinta */
-    for(var j=0;j<tono.length;j++){
-      gx_ = j%GW; gy_ = (j/GW)|0;
-      uu = gx_/(GW-1); vv = gy_/(GH-1);
-      q = Math.pow(tono[j]/15, E.gama); cr += q;
-      if(uu < E.u0 || uu > E.u1 || vv < E.v0 || vv > E.v1) q = 0;
-      else { cel++; if(tono[j] > 0) tin++;
-             q *= env((vv - E.v0)/(E.v1 - E.v0), E); }
-      a += q; c[j] = a;
-    }
-    return {c:c, acc:a, cru:cr, tinta: cel ? tin/cel : 1};
-  }
-  CDF = [];
-  for(i=0;i<ENC.length;i++){ CDF.push(cdfDe(ENC[i])); TINTA[i] = CDF[i].tinta; }
-  var cdf = CDF[0].c, acc = CDF[0].acc, cru = CDF[0].cru;
-  /* la envolvente QUITA partículas en vez de reubicarlas: NP se reescala con
-     su propia integral, así lo que se le quita al pelo y al charco se quita
-     DE VERDAD y no se muda de sitio */
-  NP = Math.round(NPB*acc/cru);
-  var rnd = dado(20260829);
-  var bruto = [];
-  for(i=0;i<NP;i++){
-    var r = rnd()*acc, lo=0, hi=cdf.length-1, mid;
-    while(lo<hi){ mid=(lo+hi)>>1; if(cdf[mid]<r) lo=mid+1; else hi=mid; }
-    var gx = lo%GW, gy = (lo/GW)|0;
-    var E0 = ENC[0];
-    var u = (((gx+rnd())/GW) - E0.u0)/(E0.u1-E0.u0);
-    var v = (((gy+rnd())/GH) - E0.v0)/(E0.v1-E0.v0);
-    var t = tono[lo]/15;
-    var op = opacidad(t, v, E0);
-    var z = rnd()<FRENTE ? 1 : 0;
-    var q = SESGO*t + (1-SESGO)*rnd(); if(q<0)q=0; if(q>0.9999)q=0.9999;
-    var j = (q*36)|0;
-    var gl = rnd()<BINARIO ? (j>=18 ? '0' : '1') : GLI.charAt(j);
-    var w = 0.55*t + 0.30*z + 0.15*rnd();
-    var ci = Math.min(paleta.length-1, (w*paleta.length)|0);
-    var de = (z && t > 0.62 && rnd() < DESTELLO) ? 1 : 0;
-    bruto.push({u:u, v:v, op:op, inercia: 1.5 + (1 + rnd()*DEN - 1.5),
-      gl:gl, c:ci, de:de, fa:rnd(), z:z, jx:rnd()*2-1, jy:rnd()*2-1});
-  }
-  /* 3 · ordenar por (destello, plano, crema, tramo de opacidad) para fijar el
-     estado del contexto UNA vez por tramo en vez de 4.600 veces por cuadro */
-  bruto.sort(function(a,b){
-    return (a.de-b.de) || (a.z-b.z) || (a.c-b.c) ||
-           ((Math.min(5,(a.op*6)|0)) - (Math.min(5,(b.op*6)|0)));
-  });
-  pu=new Float32Array(NP); pv=new Float32Array(NP);
-  pin=new Float32Array(NP); pinl=new Float32Array(NP); pgl=new Array(NP);
-  pjx=new Float32Array(NP); pjy=new Float32Array(NP);
-  pxs=new Float32Array(NP); pys=new Float32Array(NP);
-  pfa=new Float32Array(NP); pz=new Uint8Array(NP); pop=new Float32Array(NP);
-  pmk=new Uint8Array(NP); pdx=new Float32Array(NP); pdy=new Float32Array(NP);
-  tramos=[]; var clave=-1; ND=NP;
-  for(i=0;i<NP;i++){
-    var p=bruto[i];
-    pu[i]=p.u; pv[i]=p.v; pin[i]=p.inercia;
-    /* LA DELEGACIÓN VIAJA CON OTRA INERCIA, y salió de MIRARLO: con la del
-       cuerpo (1..41 fotogramas, calibrada para sostener una forma) el renglón
-       tardaba más de tres segundos en cuajar sobre un recorrido de ~700 px y
-       en la captura salía torcido y con los pasos desiguales. Un destaque es
-       un gesto DIRIGIDO, no la deriva del enjambre: 2..11 fotogramas —37 a
-       183 ms— y el renglón se tiende en ~550 ms, dentro de los 500-800 ms de
-       una entrada (§3). Se escala la inercia propia de cada partícula, no se
-       iguala: el escalonado de llegada se conserva. */
-    pinl[i]=2 + p.inercia*0.22;
-    pgl[i]=p.gl; pjx[i]=p.jx; pjy[i]=p.jy; pfa[i]=p.fa; pz[i]=p.z; pop[i]=p.op;
-    if(p.de){ if(ND===NP) ND=i; continue; }
-    var b = Math.min(5,(p.op*6)|0), cl = (p.z*6+b)*8+p.c;
-    if(cl!==clave){ tramos.push({i0:i,i1:i+1,z:p.z,c:p.c,a:0,s:0}); clave=cl; }
-    else tramos[tramos.length-1].i1 = i+1;
-    tramos[tramos.length-1].s += p.op;
-  }
-  for(i=0;i<tramos.length;i++) tramos[i].a = tramos[i].s/(tramos[i].i1-tramos[i].i0);
-  elegirDelegacion();
-  perfilar();
-  calibrarMin();
-}
-
-/* EL PERFIL VERTICAL DE CADA ENCUADRE, y NO se recorre el mapa otra vez: la
-   CDF acumulada ya integra tono x envolvente en orden de filas, así que la
-   masa de la fila r es c[(r+1)*GW-1] - c[r*GW-1]. Sirve para que el primer
-   término se ENCIENDA donde la cruza a ella y se apague donde no hay nadie.
-   No es realismo óptico —un plano delantero no sabe qué hay detrás—: es que
-   el código es SUYO. Y de paso quita la masa que no aportaba lectura, que era
-   la de los muñones de columna sobre fondo vacío. */
-function perfilar(){
-  PERF = [];
-  for(var q=0;q<CDF.length;q++){
-    var c = CDF[q].c, E = ENC[q], P = new Float32Array(CERBK), mx = 0, r, b;
-    for(r=0;r<GH;r++){
-      var vv = r/(GH-1);
-      if(vv < E.v0 || vv > E.v1) continue;
-      b = (((vv-E.v0)/(E.v1-E.v0))*CERBK)|0;
-      if(b<0) b=0; if(b>=CERBK) b=CERBK-1;
-      P[b] += c[(r+1)*GW-1] - (r ? c[r*GW-1] : 0);
-    }
-    for(r=0;r<CERBK;r++) if(P[r]>mx) mx=P[r];
-    if(mx>0) for(r=0;r<CERBK;r++) P[r]/=mx;
-    PERF.push(P);
-  }
-}
-
-/* REENCUADRAR. Lo que hace que esto se lea «recomponerse» y no como un corte:
-   las partículas NO se vuelven a crear. Cada una conserva identidad, glifo,
-   inercia y color, y lo único que cambia es SU DESTINO. */
-function reencuadrar(idx){
-  if(!CDF || idx===encActual || !pu) return;
-  encActual = idx; ARa = ENC[idx].ar;
-  var E = ENC[idx], D = CDF[idx], c = D.c, acc = D.acc;
-  var rnd = dado(70914 + idx*7919);
-  for(var i=0;i<NP;i++){
-    var r = rnd()*acc, lo=0, hi=c.length-1, mid;
-    while(lo<hi){ mid=(lo+hi)>>1; if(c[mid]<r) lo=mid+1; else hi=mid; }
-    var gx = lo%GW, gy = (lo/GW)|0;
-    pu[i] = (((gx+rnd())/GW) - E.u0)/(E.u1-E.u0);
-    pv[i] = (((gy+rnd())/GH) - E.v0)/(E.v1-E.v0);
-    /* LA OPACIDAD TAMBIÉN SE REENCUADRA, y esto faltaba: cada encuadre
-       disuelve por SUS cantos, así que dejarla como quedó en el cuerpo entero
-       le pinta al primer plano un corte duro por el pecho y le apaga la
-       coronilla. Se recalcula con el tono realmente muestreado. */
-    if(TONO) pop[i] = opacidad(TONO[lo]/15, pv[i], E);
-  }
-  /* la opacidad del tramo es la MEDIA de sus miembros: si cambian, cambia */
-  for(var t=0;t<tramos.length;t++){
-    var tr = tramos[t], s = 0;
-    for(i=tr.i0;i<tr.i1;i++) s += pop[i];
-    tr.a = s/(tr.i1-tr.i0);
-  }
-}
-
-/* Un cuadro de la nube. X,Y = esquina de la caja en coordenadas de DOCUMENTO;
-   W,H = su tamaño pintado; alfa = la opacidad global de la figura. */
-function nube(X, Y, W, H, alfa, dt, mudo){
-  var i, t, tr;
-  var sy = sSuave;
-  if(sembrar==='pantalla'){
-    for(i=0;i<NP;i++){ pxs[i]=(pjx[i]*0.5+0.5)*LW; pys[i]=(pjy[i]*0.5+0.5)*LH; }
-    sembrar=null;
-  } else if(sembrar==='caja'){
-    for(i=0;i<NP;i++){
-      pxs[i]=X+pu[i]*W+pjx[i]*H*0.62;
-      pys[i]=Y+pv[i]*H-sy+pjy[i]*H*0.62;
-    }
-    sembrar=null;
-  }
-  var uno = 16.667, x0=1e9, y0=1e9, x1=-1e9, y1=-1e9;
-  for(i=0;i<NP;i++){
-    /* el destino: el cuerpo, o —si la partícula está de delegación— el
-       renglón del destaque, que va en coordenadas de DOCUMENTO igual que él */
-    var dx = pmk[i] ? pdx[i]      : X + pu[i]*W;
-    var dy = pmk[i] ? pdy[i] - sy : Y + pv[i]*H - sy;
-    if(asentar){ pxs[i]=dx; pys[i]=dy; }
-    else{
-      var f = 1 - Math.exp(-dt/((pmk[i]?pinl[i]:pin[i])*uno));
-      pxs[i] += (dx-pxs[i])*f;
-      pys[i] += (dy-pys[i])*f;
-    }
-    if(pxs[i]<x0)x0=pxs[i]; if(pxs[i]>x1)x1=pxs[i];
-    if(pys[i]<y0)y0=pys[i]; if(pys[i]>y1)y1=pys[i];
-  }
-  asentar = false;
-  if(mudo) return;
-
-  /* Se borra SÓLO lo que se ensució: borrando el lienzo entero, 42 de 210
-     cuadros pasaban de 20 ms en un visor de 1440x900 a densidad 2. */
-  var pad = 24;
-  g2.clearRect(sucio[0]-pad, sucio[1]-pad, sucio[2]-sucio[0]+2*pad, sucio[3]-sucio[1]+2*pad);
-  sucio[0]=x0; sucio[1]=y0; sucio[2]=x1; sucio[3]=y1;
-  if(alfa < 0.004) return;
-  /* escalera geométrica del 5 % en el cuerpo del glifo: con el cuerpo
-     cambiando en cada cuadro la caché de glifos de Skia no acierta nunca */
-  var gb = grano(H);
-  for(t=0;t<tramos.length;t++){
-    tr = tramos[t];
-    g2.globalAlpha = tr.a*alfa;
-    g2.fillStyle = paleta[tr.c];
-    /* el plano de frente NUNCA baja de 7 px: por debajo de eso un '0' es una
-       mancha, y es justo la capa que existe para que el binario se lea */
-    var g = tr.z ? Math.max(gb*ZOOM, 7) : gb;
-    if(g >= 5){
-      g2.font = '400 '+g.toFixed(2)+'px '+FAM;
-      for(i=tr.i0;i<tr.i1;i++){
-        if(pmk[i]) continue;              /* las de delegación van aparte */
-        var x=pxs[i], y=pys[i];
-        if(x<-24||x>LW+24||y<-24||y>LH+24) continue;
-        g2.fillText(pgl[i], x, y);
-      }
-    } else {
-      /* por debajo de 5 px un '0' no es un dígito, es un punto: rectángulo,
-         y CLAVADO en la rejilla del dispositivo o la figura sale lechosa */
-      var s = Math.max(1, Math.round(g*0.66*DPR))/DPR, m2 = s*0.5;
-      for(i=tr.i0;i<tr.i1;i++){
-        var x2=pxs[i], y2=pys[i];
-        if(x2<-24||x2>LW+24||y2<-24||y2>LH+24) continue;
-        g2.fillRect(Math.round((x2-m2)*DPR)/DPR, Math.round((y2-m2)*DPR)/DPR, s, s);
-      }
-    }
-  }
-  /* EL RENGLÓN DEL DESTAQUE, en pasada aparte y por dos razones medidas. (1)
-     El CUERPO: dibujado con el de la figura salía a 7 px debajo de un titular
-     de 36 px y no se leía como un subrayado, se leía como suciedad; aquí lo
-     manda el TÉRMINO —un tercio de su cuerpo, entre 7 y 13 px—, que es como
-     se dimensiona un subrayado. (2) El ALFA: la figura entera va multiplicada
-     por la ganancia ALFA=0,40 para no comerse al CTA, y un destaque a 0,40 no
-     destaca nada; el renglón son unas decenas de glifos y su masa luminosa es
-     despreciable, así que sube a 0,85 de la opacidad viva. */
-  if(luzEl && LUZG > 0 && alfa > 0.004){
-    g2.font = '400 '+LUZG.toFixed(2)+'px '+FAM;
-    g2.fillStyle = paleta[paleta.length-2];
-    g2.globalAlpha = Math.min(1, alfa/ALFA*0.85);
-    for(i=0;i<deleg.length;i++){
-      var dj = deleg[i]; if(!pmk[dj]) continue;
-      var xl=pxs[dj], yl=pys[dj];
-      if(xl<-24||xl>LW+24||yl<-24||yl>LH+24) continue;
-      g2.fillText(pgl[dj], xl, yl);
-    }
-  }
-  /* LOS DESTELLOS, en pasada aparte: cada uno lleva su alfa y su cuerpo. Tres
-     seguros contra el parpadeo de discoteca: sólo destellan partículas claras
-     y de frente, el período es largo y distinto en cada una (5,3-9,7 s), y la
-     curva es sin^8 —un pico estrecho, ~0,98 s por encima de media altura—. Y
-     como el brillo no puede subir (la crema ya vale Y=0,80 contra Y=0,26 del
-     cobre), lo que hace legible la chispa es que FLOREZCA: +90 % de cuerpo. */
-  if(ND < NP){
-    var faseT = reducido ? 0 : reloj/1000;
-    g2.fillStyle = paleta[paleta.length-1];
-    var cuerpoP = -1, base = Math.max(gb*ZOOM, 7);
-    for(i=ND;i<NP;i++){
-      var xd=pxs[i], yd=pys[i];
-      if(xd<-24||xd>LW+24||yd<-24||yd>LH+24) continue;
-      var se = Math.sin(6.283185*(pfa[i] + faseT/(5.3+4.4*pfa[i])));
-      if(se<0) se=0;
-      var br = se*se; br=br*br; br=br*br;
-      g2.globalAlpha = (pop[i] + (1-pop[i])*br)*alfa;
-      var gd = Math.exp(Math.round(Math.log(base*(1+0.90*br))/0.04879)*0.04879);
-      if(gd !== cuerpoP){ g2.font = '400 '+gd.toFixed(2)+'px '+FAM; cuerpoP = gd; }
-      g2.fillText(pgl[i], xd, yd);
-    }
-  }
-  g2.globalAlpha = 1;
-
-  /* EL PRIMER TERMINO, y va aqui por una razon y no por orden de lectura:
-     se dibuja DESPUES de toda la figura porque la oclusion ES la senal de
-     profundidad. Su rectangulo se une al sucio o el borrado parcial deja
-     rastro: el estrato sale de la caja del enjambre por el radio del glifo. */
-  var rc = cerca(X, Y-sy, W, H, alfa, gb);
-  if(rc){
-    if(rc[0]<sucio[0])sucio[0]=rc[0]; if(rc[1]<sucio[1])sucio[1]=rc[1];
-    if(rc[2]>sucio[2])sucio[2]=rc[2]; if(rc[3]>sucio[3])sucio[3]=rc[3];
-  }
-}
-
-/* ==================================================================
-   D · EL PRIMER TÉRMINO — «que esté en un plano distinto, que juegue
-   a través del código»
-
-   DE DÓNDE SALE, Y NO DE UNA INTUICIÓN. Medida la referencia que entregó
-   Sebastián («Esta es CompAI.mp4», 1280x720, 24 fps) contra mi pieza con el
-   MISMO código (`planos.py`), sobre dos fotogramas consecutivos:
-
-                        referencia        mi pieza (antes)
-     relleno fig/campo     3,58x              3,68x
-     luz p90 fig/campo     2,75x              6,54x
-     parpadeo fig/campo    0,37x              0,37x
-     paso de rejilla    10x14 / 35x32      38x38 / 38x34
-
-   O sea: en los tres índices que yo tenía, ya estaba. Lo que NO estaba lo
-   dice el suelo del fotograma — referencia 19,9/255, mi pieza 1,14/255. En la
-   referencia ella está DENTRO de un campo de código que existe por todas
-   partes; en la mía el campo es negro y ella flota en el vacío. No se puede
-   estar «en otro plano» cuando sólo hay un plano. Y las dos hipótesis que
-   traía de mirar el vídeo salieron FALSAS al medirlas, y quedan escritas para
-   que nadie las repita: (1) no se separa por movimiento —el mejor
-   desplazamiento vertical es 0 px/fotograma en la figura Y en el campo: la
-   lluvia no traslada, parpadea en su sitio—; (2) no hay aura —la luz del
-   campo es plana a cualquier distancia de la silueta, 30,8 a 33,9 sobre 255—.
-
-   LO QUE SÍ HACE LA REFERENCIA, y es lo único accionable: la rejilla de
-   columnas del campo ATRAVIESA la cara. Medido dentro del rostro, 15 de 220
-   columnas caen bajo el 60 % de la mediana y el perfil horizontal va de 122,8
-   a 38,7 (min/max 0,32). Ella no está pintada ENCIMA del código: el código le
-   pasa por delante y por detrás.
-
-   ASÍ QUE LA PROFUNDIDAD SE CONSTRUYE CON UN TERCER ESTRATO, no subiéndole el
-   brillo a ella. Cuatro señales que apuntan al mismo sitio, que es lo que
-   hace que el ojo no dude:
-     1 OCLUSIÓN  · las columnas se dibujan DESPUÉS que ella y más claras. Lo
-                   que tapa está delante; no hay señal más barata ni más firme.
-     2 ESCALA    · cuerpo CERG veces el del plano de frente de la figura.
-     3 PARALAJE  · el fondo (#bg) es position:fixed y no se mueve nunca; ella
-                   va 1:1 con el documento; esto va a 1+CERPAR. Tres
-                   velocidades, tres planos, y se puede medir en píxeles.
-     4 FOCO      · desenfocadas. Un primer término fuera de foco es LA figura
-                   retórica del cine para decir «esto está más cerca», y es lo
-                   que separa una pieza cara de un montón de puntos.
-
-   POR QUÉ VIVE DENTRO DE LA CAJA DE LA FIGURA Y NO POR TODA LA PÁGINA: el
-   hueco lo firma el buscador de huecos, y ese contrato dice que la agente no
-   pisa el texto de VisuAI. Un campo de código a página completa sería
-   rediseñar su composición, que no es mi terreno. Recortado a su caja, el
-   primer término no puede invadir nada — y además es más fiel al encargo: el
-   código juega CON ELLA, no decora la página.
-
-   EL DESENFOQUE SE HORNEA UNA VEZ. `ctx.filter='blur()'` por glifo y por
-   cuadro es caro; aquí se pinta un atlas de CERGL glifos a cuerpo fijo con el
-   desenfoque puesto, y por cuadro sólo hay drawImage. Si el navegador no
-   soporta filter, el atlas sale nítido: pierde una de las cuatro señales y
-   conserva tres. Degrada, no se rompe.
-   ================================================================== */
-var CERG   = 1.55;   /* cuerpo, en múltiplos del plano de frente de la figura */
-var CERA   = 0.0;   /* alfa del estrato, sobre la opacidad viva de la figura.
-                        APAGADO el 31-ago y NO por gusto: MIRADO el sitio
-                        publicado, el estrato borraba a la figura. Medido con
-                        `silueta.py` dentro de la caja -tinta del mapa contra
-                        no-tinta-, el cociente pasa de 4,55 a 11,93 y la
-                        correlacion con el mapa de 0,584 a 0,653 al apagarlo.
-                        `planos.py` no lo veia porque comparaba la figura con
-                        el campo de FUERA de su caja. Y contradecia mi propia
-                        medicion del 30-ago sobre la referencia: alli figura y
-                        campo llevan el MISMO grano (10x14 contra 11x16) y no
-                        hay separacion por escala; este estrato la separaba
-                        4,7:1. Volver a encenderlo es cambiar este 0.0.       */
-var CERV   = 26;     /* px/s de caída, antes del reparto por columna          */
-var CERPAR = 0.34;   /* paralaje EXTRA sobre el 1:1 del documento             */
-var CERB   = 0.075;  /* desenfoque MAXIMO, en cuerpos: solo la columna mas
-                        cercana lo lleva entero. Plano y a 0,09 ya se leia como
-                        cristal sucio; medido mirando, no razonando.          */
-var CERNIV = 3;      /* niveles de foco horneados en el atlas                 */
-var CERESP = 2.1;   /* separación entre glifos de una columna, en cuerpos    */
-var CERANC = 60;     /* px de caja por columna: cuántas caben                 */
-var CERHUE = 0.08;   /* el HUECO CENTRAL, en fracción de media caja. Ver abajo */
-var CERBK  = 32;     /* cubos del perfil vertical de la figura                */
-var CERPISO= 0.22;   /* cuánto queda del estrato donde ella NO está           */
-var CERGL  = '01';   /* el primer término es binario y nada más: a este cuerpo
-                        una letra se lee como palabra y compite con el titular */
-var CERS0  = 40;     /* cuerpo del atlas horneado, en px                      */
-var CERJ   = 26;     /* glifos por columna: cubre cualquier caja con margen   */
-
-var atlas = null, atlasC = 0, atlasNit = false, PERF = null;
-function hornearAtlas(){
-  if(CERA <= 0){ atlas = null; return; }
-  var C = Math.ceil(CERS0*2.4);
-  var cv = document.createElement('canvas');
-  cv.width = C*CERGL.length; cv.height = C*CERNIV;
-  var g = cv.getContext('2d');
-  g.textAlign = 'center'; g.textBaseline = 'middle';
-  g.fillStyle = '#fff';
-  atlasNit = false;
-  /* una FILA por nivel de foco: 0 = nítido (fondo del estrato), el último =
-     CERB entero (la columna más cercana). Se hornea una vez y por cuadro sólo
-     hay drawImage; `ctx.filter` por glifo y por cuadro no cabe en presupuesto. */
-  for(var n=0;n<CERNIV;n++){
-    var rad = CERS0*CERB*n/(CERNIV-1);
-    var quiere = rad > 0.01 ? 'blur('+rad.toFixed(2)+'px)' : 'none';
-    g.filter = quiere;
-    if(rad > 0.01 && g.filter !== quiere) atlasNit = true;   /* sin soporte: nítido, no roto */
-    g.font = '400 '+CERS0+'px '+FAM;
-    for(var i=0;i<CERGL.length;i++) g.fillText(CERGL.charAt(i), C*i+C/2, C*n+C/2);
-  }
-  g.filter = 'none';
-  atlas = cv; atlasC = C;
-}
-
-/* Estado de las columnas. Se rehace al cambiar la caja de la figura, NO por
-   cuadro: una columna es un objeto estable; re-sortearla cada cuadro se ve
-   como ruido y no como un plano. */
-var cerX=[], cerV=[], cerA=[], cerF=[], cerG=[], cerZ=[], cerN=0, cerW=-1;
-function tallarCerca(W){
-  var n = Math.round(W/CERANC); if(n<3) n=3; if(n>12) n=12;
-  if(n===cerN && Math.abs(W-cerW)<1) return;
-  cerN = n; cerW = W;
-  var r = dado(31071977);
-  cerX=[]; cerV=[]; cerA=[]; cerF=[]; cerG=[]; cerZ=[];
-  /* EL HUECO CENTRAL, y sale de mirar el render con tres columnas: la del
-     medio caía sobre el eje de la figura y no se leía como código pasando por
-     delante, se leía como una BARRA que la parte por la cara. Un primer
-     término que destruye al sujeto es lo contrario de «que se note su
-     presencia». Las columnas se reparten desde el canto hacia dentro y paran
-     a CERHUE de media caja del eje; el centro queda libre.
-     Y la hondura ya no se sortea: va con la posición. La columna más INTERIOR
-     es la más cercana —la más desenfocada y la más tenue—, así que lo que roza
-     a la figura es una mancha blanda, y el código nítido la enmarca. */
-  var mitad = Math.max(1, Math.ceil(n/2)-1);
-  for(var i=0;i<n;i++){
-    var lado = (i%2) ? 1 : -1;
-    var rango = ((i>>1)/mitad);                 /* 0 = interior, 1 = canto */
-    cerX.push(0.5 + lado*(CERHUE + (0.48-CERHUE)*rango) + (r()-0.5)*0.05);
-    cerV.push(0.62 + r()*0.95);        /* cada columna a su velocidad     */
-    cerF.push(r());                    /* y a su fase                     */
-    /* LA HONDURA VA AL REVÉS DE LO QUE PROBÉ PRIMERO, y lo decidió el render.
-       Con las columnas interiores desenfocadas, las manchas blandas caían
-       sobre su cara y se leían como SUCIEDAD. Van al canto: el desenfoque de
-       primer término vive en el margen del cuadro —que es donde el cine lo
-       pone— y lo que le cruza a ella va nítido, que es lo que se lee como
-       código y no como mugre. Un 40 % de sorteo desordena el patrón. */
-    var z = (rango*0.92)*0.60 + r()*0.40;
-    cerZ.push(z);
-    cerA.push(1.05 - 0.35*z);
-    var s = '';
-    for(var j=0;j<CERJ;j++) s += (r()<0.5?0:1);
-    cerG.push(s);
-  }
-}
-
-/* Dibuja el estrato cercano. X,Y,W,H = la caja de la figura EN PANTALLA.
-   Devuelve el rectángulo ensuciado para que el borrado parcial lo cubra. */
-function cerca(X, Y, W, H, alfa, gb){
-  /* con CERA en 0 el bucle seguia haciendo un drawImage por glifo a
-     globalAlpha 0: invisible y pagado igual. La puerta va aqui. */
-  if(!atlas || alfa < 0.004 || CERA <= 0) return null;
-  tallarCerca(W);
-  var g0 = Math.max(gb*ZOOM, 7)*CERG;
-  var span0 = H + g0*CERESP*2;
-  /* el paralaje va sobre el scroll SUAVIZADO, el mismo que usa la figura: con
-     uno por el crudo y otro por el suavizado, el estrato tiembla contra ella
-     en cada rueda de ratón */
-  /* EL SIGNO DEL PARALAJE, y estaba al reves hasta que lo medi. Al sumar,
-     bajar la pagina RETRASA el estrato: se movia MENOS que ella, o sea se leia
-     como mas LEJOS, justo lo contrario de lo que existe para decir. Va restado:
-     mas rapido que el documento = mas cerca que ella. */
-  var fase = (reducido ? 0 : reloj/1000)*CERV - sSuave*CERPAR;
-  var borde = H*0.16;                  /* entra y sale fundida, nunca aparece */
-  var x0=1e9,y0=1e9,x1=-1e9,y1=-1e9, i, j;
-  for(i=0;i<cerN;i++){
-    var x = X + cerX[i]*W;
-    var g = g0*(0.78 + 0.44*cerZ[i]);
-    var d = atlasC*(g/CERS0), m = d*0.5;
-    var niv = Math.min(CERNIV-1, (cerZ[i]*CERNIV)|0);
-    var sep = g*CERESP;
-    var span = H + sep*2;
-    var off = (fase*cerV[i] + cerF[i]*span0) % span;
-    if(off<0) off += span;
-    for(j=0;j<CERJ;j++){
-      var y = Y - sep + ((off + j*sep) % span);
-      var rel = y - Y, f = 1;
-      if(rel < borde) f = sat(rel/borde);
-      else if(rel > H-borde) f = sat((H-rel)/borde);
-      if(PERF){
-        var bq = (rel/H*CERBK)|0; if(bq<0) bq=0; if(bq>=CERBK) bq=CERBK-1;
-        f *= CERPISO + (1-CERPISO)*PERF[encActual][bq];
-      }
-      if(f <= 0.02) continue;
-      if(x<-d||x>LW+d||y<-d||y>LH+d) continue;
-      g2.globalAlpha = alfa*CERA*cerA[i]*f;
-      g2.drawImage(atlas, atlasC*(+cerG[i].charAt(j)), atlasC*niv, atlasC, atlasC,
-                   x-m, y-m, d, d);
-      if(x-m<x0)x0=x-m; if(x+m>x1)x1=x+m;
-      if(y-m<y0)y0=y-m; if(y+m>y1)y1=y+m;
-    }
-  }
-  g2.globalAlpha = 1;
-  return x1>x0 ? [x0,y0,x1,y1] : null;
-}
-
-/* ==================================================================
-   F · EL DESTAQUE — «destacando algo con las mismas partículas y/o
-   códigos». Es una FUNCIÓN, no un adorno, así que queda definida:
-
-     QUÉ   · un término por sección, el que carga el dato verificable de esa
-             sección. Va marcado en el HTML con data-luz y CUÁL es lo decide
-             VisuAI: el atributo es el único sitio donde se cambia.
-     CUÁNDO· cuando ella YA está asentada en la sección (opacidad >= 0,90) y
-             DESPUÉS de un retardo, no a la vez: se encadena, no se
-             sincroniza. Si tres cosas entran juntas, es una sola cosa (§3).
-     CÓMO  · una delegación de SUS PROPIAS partículas —del plano de frente,
-             que es el que se lee como binario— cambia de destino y se tiende
-             en fila bajo el término. Conservan glifo, inercia, crema y
-             destello, así que llegan escalonadas y siguen respirando. Ni una
-             partícula nueva, ni un elemento nuevo en el DOM.
-     VUELTA· al cambiar de sección recuperan su destino en el cuerpo con su
-             propia inercia: el renglón se deshace HACIA ella, no se apaga.
-     QUIETO· con movimiento reducido se dibuja ya asentado y se queda. Quieto
-             no es ausente.
-   ================================================================== */
-var LUZFR = 0.075;            /* fracción del enjambre que va de delegación */
-var LUZESP = 0.78;            /* paso entre glifos, en cuerpos              */
-var LUZRET = 520;             /* el retardo, en ms, desde que ella cuaja    */
-var deleg = [], luzEl = null, LUZG = 0;
-
-function elegirDelegacion(){
-  /* del plano de FRENTE y sin los destellos: es la capa que se lee como
-     binario, y sacarle ~10 % no le quita cuerpo a la figura */
-  var cand = [];
-  for(var i=0;i<ND;i++) if(pz[i]) cand.push(i);
-  var n = Math.min(cand.length, Math.max(10, Math.round(NP*LUZFR)));
-  deleg = [];
-  if(!cand.length) return;
-  var paso_ = cand.length/n;
-  for(var j=0;j<n;j++) deleg.push(cand[Math.min(cand.length-1,Math.floor(j*paso_))]);
-}
-
-/* el canto inferior de la TINTA del término, no el de su caja de línea: se
-   compone la línea base con las métricas de la fuente y se le suma el
-   descendente real del texto medido. Sin esto el renglón se mete entre los
-   descendentes. */
-function cantoTinta(el, r){
-  var cs = getComputedStyle(el);
-  var fs = parseFloat(cs.fontSize) || 14;
-  /* el cuerpo del renglón lo manda el TÉRMINO, no la figura */
-  LUZG = Math.max(7, Math.min(13, fs*0.34));
-  var cv = cantoTinta._c || (cantoTinta._c = document.createElement('canvas').getContext('2d'));
-  cv.font = cs.fontStyle+' '+cs.fontWeight+' '+fs+'px '+cs.fontFamily;
-  var m = cv.measureText(el.textContent || 'Hg');
-  var asc = m.fontBoundingBoxAscent || fs*0.80;
-  var des = m.fontBoundingBoxDescent || fs*0.20;
-  var tinta = (m.actualBoundingBoxDescent !== undefined) ? m.actualBoundingBoxDescent : fs*0.16;
-  /* la línea base dentro de la caja de línea: media interlínea + ascendente */
-  var base = r.top + (r.height - (asc+des))/2 + asc;
-  return base + Math.max(tinta, 0) + 3;
-}
-
-function ponerLuz(el){
-  if(!deleg.length) return;
-  var i;
-  if(!el){
-    for(i=0;i<deleg.length;i++) pmk[deleg[i]] = 0;
-    luzEl = null; LUZG = 0;
+/* --- FORMULARIO: sin servidor, la unica via honesta es abrir el correo del
+       visitante ya redactado. La direccion vive en el codigo, NO a la vista:
+       el brief la pone en el pie y ahi es donde se lee. */
+var f = document.getElementById("qform");
+f.addEventListener("submit", function(e){
+  e.preventDefault();
+  var g = function(id){ return (document.getElementById(id).value || "").trim(); };
+  var nom = g("nom"), mail = g("mail"), tel = g("tel"), req = g("req");
+  var falta = [];
+  if(!nom) falta.push("tu nombre");
+  if(!mail) falta.push("tu correo");
+  if(!req) falta.push("qué necesitas");
+  var done = document.getElementById("done");
+  if(falta.length){
+    document.getElementById("doneTtl").textContent = "Falta " + (falta.length > 1 ? "algo:" : "");
+    document.getElementById("doneTxt").textContent = falta.join(", ") + ".";
+    done.className = "done on";
     return;
   }
-  var rg = document.createRange();
-  rg.selectNodeContents(el);
-  var rs = rg.getClientRects();
-  if(!rs.length){ ponerLuz(null); return; }
-  var r = rs[0];                       /* términos de una sola línea */
-  var sx = window.pageXOffset, sy = window.pageYOffset;
-  var y = cantoTinta(el, r) + sy;      /* fija LUZG con el cuerpo del término */
-  var n = Math.max(6, Math.min(deleg.length, Math.round(r.width/(LUZG*LUZESP))));
-  for(i=0;i<deleg.length;i++){
-    var d = deleg[i];
-    if(i < n){
-      pmk[d] = 1;
-      pdx[d] = r.left + sx + (i+0.5)*(r.width/n);
-      pdy[d] = y;
-    } else pmk[d] = 0;
-  }
-  luzEl = el;
-}
-
-/* ==================================================================
-   G · LA REVERENCIA DE SALUDO
-   No hay pose inclinada en el material —es un recorte frontal— así que la
-   reverencia se resuelve por lo que SÍ ocurre de frente cuando alguien se
-   inclina: el ESCORZO. La caja se comprime en vertical con el pivote ABAJO
-   —el canto que no se mueve— y la figura baja unos píxeles. La cabeza recorre
-   todo el gesto y los pies nada, que es el reparto exacto de una reverencia
-   vista de frente. Ni una partícula nueva y ni un píxel fuera de su hueco:
-   el descenso está topado por debajo del espacio personal del buscador.
-   Con anticipación —10 % del recorrido hacia ARRIBA antes de bajar— y con
-   sobrepaso a la vuelta. 940 ms en total: por debajo del segundo (§3). */
-var REV = {ant:90, baja:320, sos:140, sube:390};
-REV.fin = REV.ant + REV.baja + REV.sos + REV.sube;
-/* REVQ escorzo vertical · REVW la ANCHURA, que es la mitad que faltaba: de
-   frente, inclinarse acerca la cabeza a la cámara, así que la caja se comprime
-   en alto Y se ensancha un poco. Sin eso el gesto se leía como que la nube
-   «respira hacia abajo»; con eso se lee que viene hacia ti. REVY es el
-   descenso, topado en 10 px para no salirse nunca del hueco (el espacio
-   personal del buscador es de 14 px como mínimo). */
-var REVQ = 0.200, REVW = 0.050, REVY = 0.055, REVTOPE = 10;
-var revT = -1;
-function reverencia(t){
-  if(t < 0 || t > REV.fin) return 0;
-  if(t < REV.ant) return -0.10*Math.sin(Math.PI*(t/REV.ant));
-  if(t < REV.ant+REV.baja) return ENTRA((t-REV.ant)/REV.baja);
-  if(t < REV.ant+REV.baja+REV.sos) return 1;
-  return 1 - MICRO((t-REV.ant-REV.baja-REV.sos)/REV.sube);
-}
-
-/* LENTAMENTE — las mayúsculas son de Sebastián. No se toca la inercia de cada
-   partícula, que es lo que hace que la nube cuaje DESIGUAL: se DILATA EL
-   TIEMPO del enjambre. dt_nube = dt·RITMO(t) con RITMO subiendo de LENTO0 a 1.
-   Escalar dt escala todas las constantes de tiempo por igual, así que el
-   reparto desigual del cuaje queda intacto y sólo cambia la velocidad.
-   Es la única duración de la pieza por encima del segundo, y es un encargo
-   literal: la recomposición es una materialización, no un micro-gesto. */
-var LENTO0 = 0.18, LENTOT = 2900;
-/* cuándo se considera cuajada: distancia media al destino por debajo de este
-   umbral. Se MIDE, no se cronometra a ojo, y hay un tope duro por si no llega. */
-var CUAJE = 3.0, CUAJEMAX = 6400;
-
-function residuo(X,Y,W,H){
-  var s=0, n=0;
-  for(var i=0;i<NP;i+=8){
-    var dx = (pmk[i]?pdx[i]:X+pu[i]*W) - pxs[i];
-    var dy = (pmk[i]?pdy[i]-sSuave:Y+pv[i]*H-sSuave) - pys[i];
-    s += Math.abs(dx)+Math.abs(dy); n++;
-  }
-  return n ? s/n : 0;
-}
-
-/* ==================================================================
-   H · EL RELOJ
-   ================================================================== */
-var reloj = 0, previo = 0, congelado = null;
-var m = /[?&#]t=(\d+)/.exec(location.href);
-if(m) congelado = +m[1];
-
-/* Escribir el MISMO valor en style invalida igual: se escribe sólo cuando
-   el valor cambia. */
-function poner(el, prop, val){
-  var c = el.__c || (el.__c = {});
-  if(c[prop] === val) return;
-  c[prop] = val; el.style[prop] = val;
-}
-
-function paso(dt, mudo){
-  reloj += dt;
-
-  if(reducido){ sSuave = window.pageYOffset; asentar = true; }
-  else sSuave += (window.pageYOffset - sSuave)*(1-Math.exp(-dt/158));
-
-  var s = elegir();
-  var p = s ? s.pos : null;
-  if(p !== destino){
-    if(!p){ pendiente=null; destino=null; seccion=null; fundir(0,220,SALE); ponerLuz(null); }
-    else if(destino && ca>0.05 && p.enc===encActual &&
-             libre({x:cx,y:cy,w:baseH*ARa,h:baseH}, p)){
-      /* mismo encuadre y corredor libre: DESLIZA */
-      reescalar(p.h); tx=p.x; ty=p.y; destino=p; seccion=s; pendiente=null;
-      fundir(1,420,ENTRA); tLlego=reloj; ponerLuz(null);
-    } else {
-      pendiente = p; destino = p; seccion = s; fundir(0,200,SALE); ponerLuz(null);
-    }
-  }
-  if(pendiente && ca < 0.03){
-    reencuadrar(pendiente.enc||0);
-    reescalar(pendiente.h); cx=tx=pendiente.x; cy=ty=pendiente.y; k=1;
-    /* cuando el corredor no está libre la figura NO viaja: se deshace y se
-       rehace en el sitio nuevo. Con partículas eso no es un fundido: el
-       enjambre se esparce alrededor del hueco y vuelve a cuajar. */
-    if(!reducido) sembrar='caja';
-    pendiente=null; fundir(1,620,ENTRA); tLlego=reloj;
-  }
-  if(!pendiente && destino){
-    var f = 1 - Math.exp(-dt/190);
-    cx += (tx-cx)*f; cy += (ty-cy)*f;
-    k  += (1-k)*(1-Math.exp(-dt/210));
-  }
-  if(fa){
-    var pf = sat((reloj-fa.t0)/fa.d);
-    ca = fa.de + (fa.a-fa.de)*fa.c(pf);
-    if(pf>=1) fa=null;
-  }
-
-  /* levitar: deriva mínima de dos períodos primos entre sí, para que nunca se
-     repita a la vista. Nada de cadencia de paso, nada de inclinación. */
-  var lx=0, ly=0, lo=1;
-  /* MIENTRAS SE PRESENTA, NO LEVITA, y esto no es gusto: la levitación mueve
-     el destino a ~13 px/s y con constantes de tiempo de hasta 683 ms el
-     enjambre arrastra un retraso permanente —medido, 3,08 px de residuo medio
-     que no bajaba nunca—, así que el criterio de «ya cuajó» no se podía
-     cumplir jamás. Con el destino quieto el residuo sí baja a cero. Y de paso
-     el relato es el correcto: se materializa, saluda, y ENTONCES respira. */
-  var lev = (modo==='saludo') ? (revT<0 ? 0 : sat((reloj-(revT+REV.fin))/700)) : 1;
-  if(!reducido && ca>0.05 && lev>0){
-    lx = lev*2.2*Math.sin(reloj/4100*6.283185);
-    ly = lev*5.5*Math.sin(reloj/2600*6.283185);
-    lo = 1 - lev*(0.06 - 0.06*Math.sin(reloj/3300*6.283185));
-  }
-  /* la escala se ESCALONA en una escalera geométrica del 1 %: con la escala
-     variando de continuo Chrome vuelve a rasterizar en casi cada fotograma */
-  var kq = Math.exp(Math.round(Math.log(k)/0.00995)*0.00995);
-  var Wb = baseH*ARa*kq, Hb = baseH*kq;
-  var Xb = cx+lx, Yb = cy+ly;
-
-  /* LA PRESENTACIÓN: el tiempo dilatado y, cuando está cuajada, la reverencia */
-  var dtn = dt;
-  if(modo === 'saludo'){
-    dtn = dt*(LENTO0 + (1-LENTO0)*RITMO(sat(reloj/LENTOT)));
-    if(revT < 0 && reloj > 900 &&
-       (residuo(Xb,Yb,Wb,Hb) < CUAJE || reloj > CUAJEMAX)) revT = reloj;
-    if(revT >= 0 && reloj > revT + REV.fin){ modo='vivo'; tLlego=reloj; }
-  }
-
-  var u = (revT>=0) ? reverencia(reloj-revT) : 0;
-  var Hr = Hb*(1-REVQ*u);
-  var Wr = Wb*(1+REVW*u);
-  var Yr = Yb + (Hb-Hr) + Math.min(Hb*REVY, REVTOPE)*u;   /* pivote ABAJO */
-  var Xr = Xb - (Wr-Wb)/2;                                /* y centrado */
-
-  poner(fig,'transform','translate3d('+Xb.toFixed(2)+'px,'+Yb.toFixed(2)+'px,0) scale('+kq.toFixed(5)+')');
-  poner(fig,'opacity',(ca*lo).toFixed(3));
-
-  /* el destaque: encadenado, nunca simultáneo con su llegada */
-  var quiere = (destino && seccion && seccion.luz && ca>=0.90 &&
-                (reloj-tLlego) > LUZRET && modo!=='saludo') ? seccion.luz : null;
-  if(quiere !== luzEl) ponerLuz(quiere);
-
-  nube(Xr, Yr, Wr, Hr, ca*lo*ALFA, dtn, mudo);
-}
-
-var listo = false;
-function marco(ts){
-  var dt = previo ? Math.min(64, ts-previo) : 16; previo = ts;
-  if(congelado !== null){
-    if(!listo){
-      var n = Math.round(congelado/16.667), i;
-      paso(0, true);
-      for(i=0;i<n;i++) paso(16.667, i < n-1);   /* sólo se PINTA el último */
-      listo = true;
-    }
-  } else paso(dt, false);
-  requestAnimationFrame(marco);
-}
-
-/* ==================================================================
-   I · ARRANQUE
-   ================================================================== */
-function reponer(){
-  tallar(); medir();
-  var s = elegir(), p = s?s.pos:null;
-  /* FALTABA `reencuadrar`, y es un fallo real que se ve al cruzar los 980 px
-     redimensionando: la columna colapsa, el hueco cambia de forma y de
-     encuadre, pero como `reponer` fija `destino=p` a mano, `paso` nunca ve el
-     cambio y la figura sigue pintandose con el ar y la CDF del encuadre
-     anterior -o sea, estirada, y SIN UN SOLO ERROR-. `arrancar` si lo hacia;
-     el camino del resize no. */
-  if(p){ reencuadrar(p.enc||0); reescalar(p.h); cx=tx=p.x; cy=ty=p.y; destino=p; seccion=s; k=1; }
-  if(luzEl) ponerLuz(luzEl);
-}
-
-function arrancar(){
-  tallar(); campo(); medir();
-  sSuave = window.pageYOffset;
-  var s = elegir(), p = s?s.pos:null;
-  if(reducido){
-    /* EL PLEXUS TAMBIÉN SE PARA, y es un defecto real que la auditoría
-       encontró: `animation:none` y `transition:none` no detienen un <video>.
-       Medido con movimiento reducido, la página movía 66.444 píxeles en 2,5 s
-       con la nube ya quieta — todo el vídeo de fondo. Se pausa y queda su
-       fotograma, que es exactamente lo que pide quien pide menos movimiento. */
-    var vs = document.querySelectorAll('video');
-    for(var q=0;q<vs.length;q++){ try{ vs[q].pause(); }catch(e){} }
-    /* quieto NO es ausente: la nube se dibuja YA CUAJADA en su sitio, y el
-       destaque también. Dibujar antes de converger dejaría la figura
-       congelada en la nube del arranque, que es el bug del 24-ago del revés. */
-    modo='vivo'; destino=p; seccion=s; sembrar=null; asentar=true;
-    if(p){ reencuadrar(p.enc||0); reescalar(p.h); cx=tx=p.x; cy=ty=p.y; k=1; ca=0.94; }
-    if(s && s.luz) ponerLuz(s.luz);
-    requestAnimationFrame(marco);
-    return;
-  }
-  /* la nube arranca repartida por TODA la pantalla y se recompone LENTAMENTE */
-  sembrar='pantalla';
-  modo='saludo'; destino=p; seccion=s;
-  if(p){ reencuadrar(p.enc||0); reescalar(p.h); cx=tx=p.x; cy=ty=p.y; k=1; }
-  ca=0; fundir(1, 900, ENTRA);
-  requestAnimationFrame(marco);
-  /* SI EL VISITANTE SE MUEVE, LA PRESENTACIÓN SE ACABA. No es cortesía: si
-     baja, el enjambre se re-siembra en el hueco nuevo, el residuo se dispara y
-     el criterio de «ya cuajó» no se cumple hasta el tope duro — la agente se
-     quedaba sin levitar y sin destacar nada durante seis segundos. La
-     reverencia es un saludo al entrar; a quien ya entró no se le saluda. */
-  ['wheel','touchstart','keydown','pointerdown','scroll'].forEach(function(ev){
-    addEventListener(ev, function(){ if(modo==='saludo'){ modo='vivo'; tLlego=reloj; } },
-                     {passive:true, once:true});
-  });
-}
-
-var tRes;
-addEventListener('resize', function(){ clearTimeout(tRes); tRes=setTimeout(reponer,150); });
-if(document.readyState === 'complete') arrancar();
-else addEventListener('load', arrancar);
-
-/* gancho de verificación: la auditoría no le cree a estos números, mide el
-   DOM por su cuenta; esto sólo sirve para inspeccionar en vivo */
-window.__viva = {
-  enc:function(){return {i:encActual, n:ENC[encActual].n, ar:ARa,
-     tinta:+TINTA[encActual].toFixed(4), gb:+grano(baseH*k).toFixed(2),
-     gama:ENC[encActual].gama};},
-  modo:function(){return {modo:modo, reloj:Math.round(reloj), revT:Math.round(revT), alfa:+ca.toFixed(3)};},
-  secciones:function(){return secciones.map(function(q){
-     return {id:q.el.id||q.el.className, top:Math.round(q.top), bot:Math.round(q.bot),
-             pos:q.pos?{x:Math.round(q.pos.x),y:Math.round(q.pos.y),w:Math.round(q.pos.w),
-                        h:Math.round(q.pos.h),enc:ENC[q.pos.enc].n}:null,
-             luz:q.luz?q.luz.textContent:null,
-             hueco:q.bs?q.bs.map(function(b,z){ return b ? {n:ENC[z].n,
-                w:Math.round(b.w), h:Math.round(b.h),
-                da:Math.round(Math.min(b.cabe*0.88, innerHeight*0.68, 640)),
-                pide:ENC[z].min} : null;}) : null};});},
-  ocupados:function(){return ocupados;},
-  /* la puerta de dignidad, para que la verificacion lea LOS MISMOS numeros
-     que decide el motor y no una copia mia en Python */
-  puerta:function(){return {gbmin:GBMIN, hdr:techo(), NP:NP,
-     min:ENC.map(function(E,q){return {n:E.n, min:E.min, ar:+E.ar.toFixed(4),
-        tinta:+TINTA[q].toFixed(4)};})};},
-  luz:function(){var n=0;for(var i=0;i<NP;i++) if(pmk[i])n++;
-     return {el:luzEl?luzEl.textContent:null, delegadas:n, deNP:NP};},
-  destellos:function(){
-    var n=NP-ND, enc=0, i, faseT=reducido?0:reloj/1000, s=0;
-    for(i=ND;i<NP;i++){
-      var se=Math.sin(6.283185*(pfa[i]+faseT/(5.3+4.4*pfa[i]))); if(se<0)se=0;
-      var br=se*se; br=br*br; br=br*br;
-      if(br>0.5) enc++;
-      s += (1-pop[i])*br;
-    }
-    return {candidatas:n, deNP:NP, encendidas:enc, ganancia:s};},
-  nube:function(){
-    var X=cx, Y=cy, W=baseH*ARa*k, H=baseH*k, i, n=0, ex=0, s=0;
-    for(i=0;i<NP;i++){
-      var dx=(pmk[i]?pdx[i]:X+pu[i]*W)-pxs[i], dy=(pmk[i]?pdy[i]-sSuave:Y+pv[i]*H-sSuave)-pys[i];
-      var d=Math.sqrt(dx*dx+dy*dy); s+=d;
-      if(!pmk[i]){
-        var fx=pxs[i], fy=pys[i]+sSuave;
-        var e=Math.max(X-fx, fx-(X+W), Y-fy, fy-(Y+H));
-        if(e>ex) ex=e;
-      }
-      if(d>0.5) n++;
-    }
-    return {medio:s/NP, enVuelo:n, excursion:ex, caja:[X,Y,W,H], alfa:ca, NP:NP};}
-};
+  var cuerpo = "Nombre: " + nom + "\nCorreo: " + mail + "\nTeléfono: " + (tel || "—") +
+               "\n\nRequerimiento:\n" + req + "\n";
+  location.href = "mailto:hola@compai.cl?subject=" +
+    encodeURIComponent("Solicitud de cotización — " + nom) +
+    "&body=" + encodeURIComponent(cuerpo);
+  document.getElementById("doneTtl").textContent = "Listo.";
+  document.getElementById("doneTxt").textContent =
+    "Se abre tu correo con la solicitud escrita. Adjunta ahí las bases o la orden de compra.";
+  done.className = "done on";
+});
 })();
 </script>
 
-</body></html>
+<script src="motor.js"></script>
+</body>
+</html>

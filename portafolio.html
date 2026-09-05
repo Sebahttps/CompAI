@@ -1,0 +1,1124 @@
+<!-- =========================================================================
+     GENERADO POR `integrar.py`. NO SE EDITA A MANO.
+     La estructura, la tipografia, el copy y la composicion vienen de
+     `../_v16-visuai/index.html` (VisuAI) y se copian sin retipear.
+     El encabezado viene de `_cabecera.html` (CinemAI, fuente unica).
+     Para cambiar algo: se cambia el origen y se vuelve a correr el script.
+     ========================================================================= -->
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portafolio — CompAI · registros cine (CinemAI)</title>
+<meta name="theme-color" content="#08090C">
+<script>window.__err=[];addEventListener('error',function(e){window.__err.push(String(e.message||e))});</script>
+<style>
+/* =========================================================================
+   PORTAFOLIO · seis registros cine
+   -------------------------------------------------------------------------
+   EL ENCARGO, TEXTUAL: «el portafolio es la unica pagina que NO corre dentro
+   del scroll y cada uno de ellos es un registro cine o conjunto de fotos
+   animadas». Y la instruccion de fondo: «no es inventar cosas, es tener
+   conocimiento del oficio. Saber que es lo que solucionamos al Estado y eso
+   hacerlo video corto».
+
+   COMO SE LEE ESO, Y ES LA DECISION QUE MANDA SOBRE TODAS LAS DEMAS:
+   cada pieza tiene que nombrar UN dolor concreto del comprador publico con el
+   vocabulario exacto del tramite. Una animacion bonita que no nombre un dolor
+   real no sirve. Las seis salen de material del estudio, no de mi cabeza:
+   `sitio/CINE-DOLOR-DE-ESTADO.md`, `sitio/LINEAS.md`, `sitio/CATALOGO.md`,
+   `radar/MERCADO-PUBLICO-COMO-SE-OPERA.md` y los barridos reales de RAIdar.
+
+   EL PIPELINE QUE ORDENA TODO, y es el del COMPRADOR, no el nuestro:
+     Requerimiento -> Cotizacion -> Orden de compra -> Recepcion conforme -> Pago
+   Los dos traspasos marcados son actos del organismo. CompAI no los da.
+
+   CERO DATOS FALSOS: no hay ni un folio, ni un RUT, ni un organismo, ni una
+   cifra de rendimiento inventada. Donde hay un numero, esta medido y dice de
+   donde salio. Reproducir la FORMA de un documento del rubro es legitimo;
+   falsificar su contenido, no.
+
+   NO CORRE DENTRO DEL SCROLL: la pagina mide exactamente un visor
+   (`height:100dvh; overflow:hidden`). Se cambia de pieza por el carrete de la
+   izquierda, no bajando. Sin un byte de JavaScript: seis `<input type=radio>`
+   y `:checked ~`. La pieza que no esta elegida va en `display:none`, asi que
+   sus animaciones NO CORREN — un tablero con seis bucles a la vez es ruido y
+   es gasto.
+   ========================================================================= */
+:root{
+  --ink-900:#08090C; --ink-850:#0B0D12; --ink-800:#0E1015;
+  --ink-700:#161A21; --ink-600:#1F242D; --ink-500:#2C333F;
+  --crema:#F5F0E4; --crema-75:#BAB6AE; --crema-60:#96948E;
+  --crema-28:#4A4A48; --crema-12:#242526; --crema-06:#161719;
+  --terracota:#C87941; --terracota-400:#D88A52; --terracota-300:#E09A63;
+  --menta:#4CC48B; --menta-600:#2FA871; --menta-300:#6FD9A6;
+  --alerta:#D65454; --alerta-300:#F0A0A0;
+  --ambar:#C89A41;
+  --font-data:ui-monospace,"SF Mono","Cascadia Mono","Segoe UI Mono",Menlo,Consolas,"Courier New",monospace;
+  --font-body:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px;
+  --shell:1240px; --hdr:78px; --radio:3px; --radio-caja:4px;
+  /* los pide `_cabecera.html`, que es la fuente unica del encabezado */
+  --glow-menta:0 0 30px rgba(76,196,139,.34);
+  --sombra-texto:0 2px 10px rgba(8,9,12,.85);
+  --entra:cubic-bezier(.16,1,.3,1);
+  --sale:cubic-bezier(.7,0,.84,0);
+  --micro:cubic-bezier(.34,1.56,.64,1);
+  --anticipa:cubic-bezier(.36,-.55,.24,1);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0; background:var(--ink-900); color:var(--crema);
+  font-family:var(--font-body); font-size:16px; line-height:1.6;
+  -webkit-font-smoothing:antialiased; overflow:hidden}
+
+/* el plexus, mas apagado que en la portada: aqui el sujeto son las piezas */
+#bg{position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; background:var(--ink-900)}
+#bg video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.34;
+  filter:brightness(.7) sepia(.24) saturate(1.4) hue-rotate(-12deg)}
+#bg .veil{position:absolute; inset:0;
+  background:radial-gradient(120% 90% at 50% 0%, rgba(8,9,12,.25) 0%, rgba(8,9,12,.72) 70%, rgba(8,9,12,.92) 100%)}
+
+/* ===== ENCABEZADO: viene entero de `_cabecera.html`, fuente unica ===== */
+:root{
+  /* LAS CUATRO CURVAS DE LA DOCTRINA §3, mas la quinta de esta pieza.
+     Viven aqui una sola vez y no son color: son tiempo. */
+  --entra:cubic-bezier(.16,1,.3,1);      /* algo aparece: desacelera fuerte */
+  --sale:cubic-bezier(.7,0,.84,0);       /* algo se va: acelera            */
+  --micro:cubic-bezier(.34,1.56,.64,1);  /* micro-gesto, con sobrepaso     */
+  --anticipa:cubic-bezier(.36,-.55,.24,1);/* y1<0: el primer tramo va EN CONTRA */
+  /* LA CURVA DEL ENCOGIMIENTO, y no es ninguna de las cuatro.
+     No es --sale: --sale termina a toda velocidad y esto TIENE que detenerse
+     en un sitio nuevo. No es --entra: --entra gasta el 42 % de su duracion en
+     el ultimo 5 % del recorrido, y aqui ese 5 % son 0,55 px — tiempo muerto.
+     Medida: arranca al 2,4 % de la duracion, hace medio viaje en el 23 % y
+     llega al 95 % en el 65 %. Sobre 360 ms: responde a los 9 ms y esta puesta
+     a los 234.
+
+     Y AQUI VA UNA MARCHA ATRAS MIA, que es lo que se anota. La primera
+     version llevaba anticipacion metida en la curva (y1 = -0,18), como el
+     gesto de las cuatro lineas. Medida en la tira de fotogramas: el logotipo
+     BAJABA 0,05 px —invisible— y a cambio la curva se quedaba 63 ms sin
+     empezar. Mi doctrina §3 pide 2-3 px de anticipacion, que sobre un viaje
+     de 11 px serian el 20 % del recorrido en contra. Las dos salidas son
+     malas, y el motivo es el mismo: LA ANTICIPACION ES PARA UN GESTO QUE
+     ARRANCA EN REPOSO. Este arranca porque el visitante YA esta moviendo la
+     pagina; un retroceso ahi no se lee como que el encabezado respira, se lee
+     como que llego tarde. Fuera. */
+  --asienta:cubic-bezier(.33,.72,.4,1);
+  --t-encoge:360ms;   /* al salir de la lamina 1: es una retirada, va corta */
+  --t-crece:440ms;    /* al volver arriba: es una llegada, se permite mas   */
+}
+
+/* =========================================================================
+   1 · LA CAJA DEL ENCABEZADO — SIN FONDO, NUNCA. Zanjado por Sebastian el
+   4-sep: «que el encabezado se encoja al salir de la lamina 1». Lo que
+   cambia es el TAMANO; fondo no lleva y no llevara.
+
+   COMO SE ENCOGE, Y POR QUE ASI:
+
+   a) NO SE TOCA `--hdr`. El canal de la lamina 1 es
+      `padding-top:calc(var(--hdr) + var(--s5))`, asi que animar la variable
+      moveria el aviso de proveedor y la figura: el contenido saltaria bajo el
+      encabezado, que es exactamente lo que el encargo prohibe. La caja fija
+      se queda en 78 px —es invisible y no captura el cursor— y lo que viaja
+      es su CONTENIDO.
+
+   b) SOLO `transform`. La banda pasa de 78 a 56 px moviendo `.inner` 11 px
+      hacia arriba (el centro de 78 esta en 39; el de 56, en 28) y escalando
+      el logotipo a 0,737 (38 px -> 28 px, y 28x2 = 56). Cero `height`, cero
+      `top`, cero `margin`: ni un recalculo de maqueta por cuadro (doctrina §6).
+
+   c) EL PIVOTE DEL LOGO VA A LA IZQUIERDA (`transform-origin:0 50%`), que es
+      el canto del canal. Con el pivote al centro el logotipo se despega del
+      margen izquierdo al encoger y se lee como que la pagina se movio.
+   ========================================================================= */
+.hdr{position:fixed; top:0; left:0; right:0; z-index:60; min-height:var(--hdr);
+  display:flex; align-items:center; background:none; border:0;
+  /* la barra no captura el cursor: sin esto los 78 px de ancho completo se
+     comen los clics de todo lo que pase por debajo */
+  pointer-events:none}
+.hdr .inner{max-width:var(--shell); margin:0 auto; padding:0 var(--s5); width:100%;
+  display:flex; align-items:center; justify-content:space-between; gap:var(--s5);
+  transition:transform var(--t-crece) var(--asienta)}
+.hdr .inner > *{pointer-events:auto}
+.brand{display:flex; align-items:center; flex:0 0 auto}
+.brand .logo{height:38px; width:auto; display:block; overflow:visible;
+  transform-origin:0 50%;
+  /* la sombra va SOBRE LA PIEZA, no es una caja: es lo unico que el encargo
+     permite para despegar el logotipo de los fotogramas claros del plexus */
+  filter:drop-shadow(0 2px 9px rgba(8,9,12,.9));
+  transition:transform var(--t-crece) var(--asienta),
+             filter var(--t-crece) var(--entra)}
+@media (max-width:420px){.brand .logo{height:30px}}
+
+html.hdr-chico .hdr .inner{transform:translateY(-11px);
+  transition-duration:var(--t-encoge)}
+html.hdr-chico .brand .logo{transform:scale(.737);
+  transition-duration:var(--t-encoge)}
+
+/* EN TELEFONO EL LOGOTIPO NO SE ESCALA, Y ES UNA MEDIDA, no una preferencia.
+   Bajo 420 px el logotipo ya mide 30, y 0,737 lo dejaria en 22: los vistos de
+   menta son 2,2 unidades de trazo a 1,5x sobre una viewBox de 87, o sea menos
+   de un pixel entero. Medido con `contraste.py --w=390`: en el estado
+   encogido los vistos NO TIENEN NI UN PIXEL COMPLETAMENTE OPACO —el
+   instrumento devuelve «sin tinta aislable»—, mientras que a 30 px tiene 8.
+   Un elemento de marca que se disuelve en antialias no es un encabezado
+   encogido, es un encabezado roto.
+   La banda igual baja de 78 a 56 px: los 30 px del logotipo caben de sobra en
+   56 (ocupan de 13 a 43), asi que en telefono el encogimiento es la subida de
+   11 px sola, y eso es todo lo que hace falta. */
+@media (max-width:420px){
+  html.hdr-chico .brand .logo{transform:none}
+}
+
+/* =========================================================================
+   2 · EL GESTO DE LAS CUATRO LINEAS
+   «solo 4 lineas horizontales de este largo, una sobre otra ( ____ ) y que al
+   posar el cursor se unen, quedando solo una a la vista, iluminada, del mismo
+   estilo que los vistos color verde del logo compai. Conjunto a eso, se
+   despliega el menu con los titulos.»
+
+   TRES COMPASES ENCADENADOS, no tres cosas a la vez (doctrina §3):
+     1 · SE UNEN      0-320 ms · las cuatro viajan a la MISMA ordenada
+     2 · SE EXTIENDE  160-540 ms · la que queda crece hacia la izquierda
+     3 · SE DESPLIEGA 380-800 ms · el menu cuelga de ella, titulos a 55 ms
+
+   a) LAS TRES DE ARRIBA NO SE APAGAN. Las cuatro se superponen exactamente y
+      la que queda esta ILUMINADA porque la tinta se ACUMULA: cuatro trazos al
+      55 % en el mismo sitio dan 1-(0,45)^4 = 95,9 %. Apagar tres seria un
+      fundido —se leeria como que tres desaparecieron, no como que cuatro se
+      juntaron—. Medido el 4-sep: dispersion final 0,0 px entre las cuatro.
+
+   b) NO HAY UNA SEGUNDA LINEA VERDE. La MISMA linea unida se alarga y ES el
+      canto superior del menu. Por eso esto no es una hamburguesa: el trazo no
+      abre el menu, se CONVIERTE en el.
+
+   c) SE ALARGA CON `stroke-dashoffset`, no con `scaleX`. Escalar en X deforma
+      los remates redondos —justo lo que copia el estilo de los vistos— y
+      obliga a re-rasterizar.
+
+   EL LARGO EN REPOSO SON 42 px de los 252 del lienzo, que es la unica cifra
+   que el brief fija de oido («de ese largo ( ____ )»). VisuAI habia dibujado
+   34: la diferencia con la composicion suya es de 8 px.
+
+   EL LARGO DE LA LINEA UNIDA ES UNA CORRECCION MIA, HECHA MIRANDO, y conviene
+   que quede escrita porque es un choque real entre las dos maquetas. Mi
+   prototipo la alargaba a 247 px porque MI panel media 252 —seis titulos, con
+   numeracion y rotulos largos como «Tecnologia para el Estado»—. El panel de
+   VisuAI son CUATRO palabras en versales: mide 89 px. Con 247 la regla verde
+   no se lee como el canto del menu, se lee como un filete suelto que sobresale
+   158 px por la izquierda de la lista; comparadas las cuatro longitudes al
+   mismo fotograma (`_capturas/_largo-linea.png`: 247, 180, 130 y 95), 130 es
+   la que cierra la columna sin flotar. Sigue siendo un crecimiento de 3,1x
+   —42 -> 130—, o sea el momento «iluminada» del encargo sigue siendo un
+   acontecimiento y no un tic.
+
+   `--menu-largo` es UN solo numero y lo usan las dos piezas: el destino del
+   guion y el ancho minimo del panel. Si algun dia un titulo pasa de 130 px, el
+   panel crece y la linea no: se mueve este numero, no se parchea uno de los
+   dos lados.
+   ========================================================================= */
+:root{ --menu-largo:130px; }
+.mnu-zona{position:relative; display:flex; align-items:center; justify-content:flex-end}
+.mnu{position:relative; width:52px; height:52px; margin-right:-9px; padding:0; border:0;
+  background:none; cursor:pointer; display:grid; place-items:center; line-height:0;
+  -webkit-tap-highlight-color:transparent}
+.mnu:focus-visible{outline:2px solid var(--menta); outline-offset:4px; border-radius:var(--radio)}
+.mnu .vu{position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap}
+/* el lienzo mide lo que mide el MENU y sobresale del boton hacia la izquierda;
+   en reposo solo se ve su extremo derecho. `right:9px` cancela el
+   `margin-right:-9px` del boton: asi el trazo termina EXACTAMENTE en el canto
+   del canal (1316 px a 1440), que es donde VisuAI alineo sus cuatro lineas y
+   donde tiene que terminar el menu para que el trazo sea su canto. */
+.tr{position:absolute; right:9px; top:50%; margin-top:-13px;
+  width:252px; height:26px; overflow:visible; pointer-events:none;
+  filter:drop-shadow(0 2px 7px rgba(8,9,12,.9))}
+.tr g{fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round}
+.tr .t{stroke:var(--crema-75); opacity:.55;
+  stroke-dasharray:247; stroke-dashoffset:205;   /* se ven 42 de 247 */
+  transition:transform .32s var(--anticipa),
+             stroke-dashoffset .38s var(--entra) .16s,
+             stroke .22s var(--entra) .14s}
+/* las cuatro ordenadas y el destino comun: (3 + 24)/2 = 13.5 */
+.tr .t1{--dy:10.5px} .tr .t2{--dy:3.5px} .tr .t3{--dy:-3.5px} .tr .t4{--dy:-10.5px}
+/* EL HALO en un trazo APARTE, mas grueso y casi transparente, que en reposo
+   mide cero: asi la iluminacion no depende de `filter:drop-shadow` en bucle. */
+.tr .halo{stroke:var(--menta); stroke-width:7; opacity:0;
+  stroke-dasharray:247; stroke-dashoffset:205;
+  transition:opacity .26s var(--entra) .16s, transform .32s var(--anticipa),
+             stroke-dashoffset .38s var(--entra) .16s}
+
+.mnu-zona:hover .tr .t, .mnu-zona:focus-within .tr .t, .mnu-zona.abre .tr .t{
+  transform:translateY(var(--dy)); stroke:var(--menta);
+  stroke-dashoffset:calc(247px - var(--menu-largo))}
+.mnu-zona:hover .tr .halo, .mnu-zona:focus-within .tr .halo, .mnu-zona.abre .tr .halo{
+  opacity:.20; transform:translateY(var(--dy));
+  stroke-dashoffset:calc(247px - var(--menu-largo))}
+
+/* ---- COMPAS 3 · EL MENU QUE CUELGA DE LA LINEA -------------------------
+   Dos movimientos, no uno: el panel se DESCUELGA (clip-path de arriba abajo)
+   y dentro los titulos SUBEN escalonados. Uno solo se lee como que aparecio
+   un rectangulo; dos, como que se abrio algo.
+
+   `top:calc(50% + 10px)` y no `top:100%`: la linea unida vive en el centro
+   vertical de la zona, no debajo del boton. Con `top:100%` el panel arrancaba
+   34 px mas abajo y la linea dejaba de leerse como su canto.
+
+   LA TIPOGRAFIA ES DE VisuAI, literal de su archivo (12,5 px, 600, .16em,
+   versales, --crema-75, sombra propia y el filete de menta al posarse). Mi
+   version numeraba los titulos 01..06; la numeracion es tipografia y la
+   tipografia es suya, asi que se va.
+   ---------------------------------------------------------------------- */
+.mnu-panel{position:absolute; top:calc(50% + 10px); right:0; margin:0;
+  display:flex; flex-direction:column; align-items:flex-end; gap:0;
+  /* el MISMO numero que el destino del guion: asi la linea es el canto del
+     panel por construccion y no por coincidencia */
+  min-width:var(--menu-largo);
+  /* SIN FONDO, igual que el encabezado. La legibilidad la da la sombra, que
+     no es un recuadro, mas el paso atras del aviso de proveedor. */
+  filter:drop-shadow(0 10px 26px rgba(8,9,12,.94)) drop-shadow(0 2px 9px rgba(8,9,12,.92));
+  clip-path:inset(0 0 100% 0); pointer-events:none;
+  transition:clip-path .34s var(--sale)}
+.mnu-panel a{opacity:0; transform:translateY(9px);
+  font-family:var(--font-data); font-size:12.5px; font-weight:600;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--crema-75);
+  text-decoration:none; text-shadow:var(--sombra-texto);
+  min-height:44px; display:inline-flex; align-items:center; white-space:nowrap;
+  transition:opacity .24s var(--sale), transform .24s var(--sale), color .18s var(--micro)}
+.mnu-panel a::before{content:""; width:0; height:2px; border-radius:1px; margin-right:0;
+  background:var(--menta); box-shadow:var(--glow-menta);
+  transition:width .22s var(--micro), margin-right .22s var(--micro)}
+.mnu-panel a:hover, .mnu-panel a:focus-visible{color:var(--crema)}
+.mnu-panel a:hover::before, .mnu-panel a:focus-visible::before{width:16px; margin-right:var(--s2)}
+.mnu-panel a[aria-current="page"]{color:var(--crema)}
+
+.mnu-zona:hover .mnu-panel, .mnu-zona:focus-within .mnu-panel, .mnu-zona.abre .mnu-panel{
+  clip-path:inset(0 0 0 0); pointer-events:auto;
+  transition:clip-path .42s var(--entra) .38s}
+.mnu-zona:hover .mnu-panel a, .mnu-zona:focus-within .mnu-panel a, .mnu-zona.abre .mnu-panel a{
+  opacity:1; transform:none;
+  transition:opacity .42s var(--entra), transform .42s var(--entra), color .18s var(--micro)}
+/* EL ESCALONADO. 55 ms, dentro de los 40-80 de la doctrina §3, y va aqui
+   porque esto SI es una serie que APARECE (correccion del 3-sep: el
+   escalonado es para lo que aparece, no para un bloque rigido que se
+   desplaza). Arranca a los 420 ms, cuando la linea ya termino de alargarse:
+   primero se abre la puerta, despues entra la gente. */
+.mnu-zona:hover .mnu-panel a:nth-child(1), .mnu-zona:focus-within .mnu-panel a:nth-child(1), .mnu-zona.abre .mnu-panel a:nth-child(1){transition-delay:.42s}
+.mnu-zona:hover .mnu-panel a:nth-child(2), .mnu-zona:focus-within .mnu-panel a:nth-child(2), .mnu-zona.abre .mnu-panel a:nth-child(2){transition-delay:.475s}
+.mnu-zona:hover .mnu-panel a:nth-child(3), .mnu-zona:focus-within .mnu-panel a:nth-child(3), .mnu-zona.abre .mnu-panel a:nth-child(3){transition-delay:.53s}
+.mnu-zona:hover .mnu-panel a:nth-child(4), .mnu-zona:focus-within .mnu-panel a:nth-child(4), .mnu-zona.abre .mnu-panel a:nth-child(4){transition-delay:.585s}
+.mnu-zona:hover .mnu-panel a:nth-child(5), .mnu-zona:focus-within .mnu-panel a:nth-child(5), .mnu-zona.abre .mnu-panel a:nth-child(5){transition-delay:.64s}
+.mnu-zona:hover .mnu-panel a:nth-child(6), .mnu-zona:focus-within .mnu-panel a:nth-child(6), .mnu-zona.abre .mnu-panel a:nth-child(6){transition-delay:.695s}
+
+/* =========================================================================
+   3 · MOVIMIENTO REDUCIDO — TODO QUIETO Y EN SU ESTADO FINAL.
+   `animation:none` congela el estado INICIAL, no el final (doctrina §4, bug
+   real del 24-ago). Aqui las tres cosas del encabezado son `transition`, asi
+   que con la duracion a cero el navegador salta al estado COMPUTADO, que ya
+   es el final: el encabezado encogido sigue encogiendose al salir de la
+   lamina 1, el gesto sigue uniendo las cuatro lineas y el menu sigue
+   abriendose. Lo que desaparece es el trayecto, no el destino.
+   Se escribe explicito de todos modos, porque una restitucion que se da por
+   supuesta es la que falla.
+   ========================================================================= */
+@media (prefers-reduced-motion:reduce){
+  .hdr .inner, .brand .logo, .tr .t, .tr .halo, .mnu-panel, .mnu-panel a,
+  .mnu-panel a::before{transition-duration:.001ms !important; transition-delay:0s !important}
+  html.hdr-chico .hdr .inner{transform:translateY(-11px)}
+  html.hdr-chico .brand .logo{transform:scale(.737)}
+}
+/* Y LA EXCEPCION DE TELEFONO TAMBIEN, que si no se pierde. Defecto real cazado
+   midiendo a 390 px: la restitucion de arriba tiene la misma especificidad que
+   la regla de `max-width:420` y va DESPUES, asi que con movimiento reducido el
+   logotipo volvia a escalar a 22 px —el caso en que los vistos de menta se
+   quedan sin un solo pixel opaco— justo para quien pidio menos movimiento.
+   Restituir el estado final no sirve de nada si se restituye el equivocado. */
+@media (prefers-reduced-motion:reduce) and (max-width:420px){
+  html.hdr-chico .brand .logo{transform:none}
+}
+
+/* ========================= LA SALA ===================================== */
+.sala{position:relative; z-index:2; height:100dvh; max-width:var(--shell);
+  margin:0 auto; padding:var(--hdr) var(--s5) var(--s4);
+  display:grid; grid-template-columns:318px 1fr; gap:var(--s7); align-items:center}
+
+/* ---- EL CARRETE ---- */
+.carrete{list-style:none; margin:0; padding:0}
+.carrete .tope{font-family:var(--font-data); font-size:9.5px; letter-spacing:.22em;
+  text-transform:uppercase; color:var(--crema-28); margin-bottom:var(--s4)}
+.carrete label{display:flex; gap:12px; align-items:baseline; cursor:pointer;
+  padding:9px 0 9px 0; border-top:1px solid var(--crema-12); position:relative;
+  transition:padding-left .22s var(--micro)}
+.carrete li:last-child label{border-bottom:1px solid var(--crema-12)}
+.carrete .n{font-family:var(--font-data); font-size:10.5px; letter-spacing:.1em;
+  color:var(--crema-28); flex:0 0 auto; transition:color .22s var(--micro)}
+.carrete .tt{font-family:var(--font-data); font-size:12.5px; line-height:1.45;
+  color:var(--crema-60); transition:color .22s var(--micro)}
+.carrete label:hover .tt{color:var(--crema-75)}
+.carrete label:hover{padding-left:5px}
+/* la marca de la pieza elegida: una regla verde que crece desde la izquierda,
+   del mismo estilo que la linea del encabezado. Un solo elemento, un solo
+   `transform`. */
+.carrete label::before{content:""; position:absolute; left:-14px; top:calc(50% - 1.1px);
+  width:8px; height:2.2px; border-radius:1.1px; background:var(--menta);
+  transform:scaleX(0); transform-origin:0 50%;
+  transition:transform .26s var(--micro)}
+.carrete label{padding:11px 0}
+.carrete .nota{margin:var(--s5) 0 0; font-size:11.5px; line-height:1.65;
+  color:var(--crema-28); max-width:31ch}
+.carrete input{position:absolute; width:1px; height:1px; opacity:0; pointer-events:none}
+/* LOS SEIS RADIOS SALEN DEL FLUJO. Estaban como hijos directos del <body> y
+   sumaban 26 px: `scrollHeight` daba 926 contra un visor de 900 y la pagina
+   SI corria dentro del scroll —justo lo que el encargo prohibe—. 26 px no se
+   ven; se miden. `carrete.py` los comprueba en cada pasada. */
+.sel{position:absolute; top:0; left:0; width:1px; height:1px; opacity:0; pointer-events:none}
+.carrete input:focus-visible + label{outline:2px solid var(--menta); outline-offset:3px}
+
+/* ---- EL ESCENARIO ---- */
+.escenario{position:relative; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; height:100%; min-height:0}
+.marco{position:relative; width:660px; height:392px; flex:0 0 auto;
+  transform:scale(var(--k,1)); transform-origin:50% 50%;
+  border:1px solid var(--crema-12); border-radius:var(--radio-caja);
+  background:linear-gradient(180deg, rgba(14,16,21,.82), rgba(8,9,12,.9));
+  overflow:hidden}
+/* el pie de la pieza: el dolor dicho con el vocabulario del tramite */
+.pieplaca{width:660px; max-width:100%; transform:scale(var(--k,1)); transform-origin:50% 0;
+  margin-top:var(--s5)}
+.pieplaca h1{font-family:var(--font-data); font-size:19px; line-height:1.35;
+  font-weight:600; margin:0 0 6px; color:var(--crema); letter-spacing:-.01em}
+.pieplaca p{margin:0; font-size:14px; line-height:1.6; color:var(--crema-75); max-width:62ch}
+.pieplaca .linea{font-family:var(--font-data); font-size:9.5px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--menta-600); margin:0 0 10px;
+  /* el antetitulo NO hereda la medida de 62ch del cuerpo: en versalitas
+     monoespaciadas con .2em de espaciado, 62ch son 353 px y partia la frase en
+     dos renglones dentro de un marco de 660. */
+  max-width:none}
+.pieplaca .fuente{margin-top:9px; font-family:var(--font-data); font-size:10px;
+  color:var(--crema-28); letter-spacing:.04em}
+@media (max-height:860px){ .escenario{--k:.86} .pieplaca{--k:.86} }
+@media (max-height:780px){ .escenario{--k:.78} .pieplaca{--k:.78} }
+@media (max-width:1160px){ .escenario{--k:.74} .pieplaca{--k:.74} }
+
+/* LO QUE HACE QUE ESTO NO CORRA DENTRO DEL SCROLL Y ADEMAS NO GASTE: la pieza
+   que no esta elegida no esta oculta, esta FUERA. Con `display:none` el
+   navegador no corre sus animaciones — seis bucles simultaneos serian ruido
+   visual y trabajo tirado. */
+.pieza{display:none}
+#p1:checked ~ .sala .pieza[data-p="1"], #p2:checked ~ .sala .pieza[data-p="2"],
+#p3:checked ~ .sala .pieza[data-p="3"], #p4:checked ~ .sala .pieza[data-p="4"],
+#p5:checked ~ .sala .pieza[data-p="5"], #p6:checked ~ .sala .pieza[data-p="6"]{display:block}
+#p1:checked ~ .sala label[for="p1"] .tt, #p2:checked ~ .sala label[for="p2"] .tt,
+#p3:checked ~ .sala label[for="p3"] .tt, #p4:checked ~ .sala label[for="p4"] .tt,
+#p5:checked ~ .sala label[for="p5"] .tt, #p6:checked ~ .sala label[for="p6"] .tt{color:var(--crema)}
+#p1:checked ~ .sala label[for="p1"] .n, #p2:checked ~ .sala label[for="p2"] .n,
+#p3:checked ~ .sala label[for="p3"] .n, #p4:checked ~ .sala label[for="p4"] .n,
+#p5:checked ~ .sala label[for="p5"] .n, #p6:checked ~ .sala label[for="p6"] .n{color:var(--menta)}
+#p1:checked ~ .sala label[for="p1"]::before, #p2:checked ~ .sala label[for="p2"]::before,
+#p3:checked ~ .sala label[for="p3"]::before, #p4:checked ~ .sala label[for="p4"]::before,
+#p5:checked ~ .sala label[for="p5"]::before, #p6:checked ~ .sala label[for="p6"]::before{transform:scaleX(1)}
+
+/* ==================== VOCABULARIO COMUN DE LAS ESCENAS ================== */
+.esc{position:absolute; inset:0; font-family:var(--font-data)}
+.rot{position:absolute; font-size:9px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--crema-28)}
+.caja{position:absolute; border:1px solid var(--crema-12); border-radius:var(--radio);
+  background:rgba(22,26,33,.72)}
+.dato{font-size:11px; color:var(--crema-75); letter-spacing:.02em}
+.chapa{position:absolute; font-size:9.5px; letter-spacing:.14em; text-transform:uppercase;
+  padding:3px 7px; border-radius:2px; border:1px solid currentColor}
+/* la banda de estados del expediente: la lleva media pieza y es el reloj de
+   todas. Cinco rotulos y una regla que avanza. */
+.banda{position:absolute; left:22px; right:22px; top:20px; display:flex;
+  justify-content:space-between; font-size:8.5px; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--crema-28)}
+.banda i{font-style:normal; transition:color .2s}
+/* «PAGO» SALIA CORTADO POR EL CANTO DEL MARCO, y la causa no es el ancho: el
+   `letter-spacing` mete su espacio TAMBIEN DESPUES de la ultima letra, asi que
+   con `space-between` el ultimo rotulo empuja sus glifos fuera de la caja. Se
+   devuelve ese espacio sobrante y ni un pixel mas. */
+.banda i:last-child{margin-right:-.13em}
+.riel{position:absolute; left:22px; right:22px; top:42px; height:1px; background:var(--crema-12)}
+.riel b{position:absolute; inset:0 auto 0 0; background:var(--menta); width:100%;
+  transform-origin:0 50%; display:block}
+
+/* =========================================================================
+   PIEZA 1 · «La licencia vencio el martes»                LICENCIAS
+   La barra de vigencia se vacia en `linear` — es lo unico lineal de la pieza,
+   porque un plazo no acelera ni frena. El rotulo cae de VIGENTE a VENCIDA en
+   `steps(1)`: un estado administrativo no se desvanece, se cae de un cuadro
+   al otro; un fundido ahi seria una mentira de oficio. La orden de compra se
+   pierde por el canto ABIERTO del proveedor extranjero acelerando (curva de
+   salida) y el proveedor con RUT chileno sube y la recibe frenando (curva de
+   entrada, con 3 px de sobrepaso). El contraste entre una muerte lineal y una
+   llegada frenada es todo el golpe de la pieza.
+   ========================================================================= */
+.e1 .lic{left:40px; top:96px; width:250px; height:116px; padding:12px 14px}
+.e1 .lic .tit{font-size:11.5px; color:var(--crema); letter-spacing:.02em}
+.e1 .lic .sub{font-size:9.5px; color:var(--crema-28); letter-spacing:.13em;
+  text-transform:uppercase; margin-top:3px}
+.e1 .vig{position:absolute; left:14px; right:14px; bottom:30px; height:4px;
+  background:var(--crema-12); border-radius:2px; overflow:hidden}
+.e1 .vig i{position:absolute; inset:0; background:var(--menta); transform-origin:0 50%;
+  animation:e1vence 11s linear infinite}
+.e1 .est{position:absolute; left:14px; bottom:11px; font-size:9.5px; letter-spacing:.14em}
+.e1 .est .v{color:var(--menta); animation:e1vig 11s steps(1) infinite}
+.e1 .est .x{color:var(--alerta); position:absolute; left:0; top:0; opacity:0;
+  animation:e1venc 11s steps(1) infinite}
+/* EL RECUADRO DEL PROVEEDOR EXTRANJERO NO TIENE CANTO INFERIOR: la orden de
+   compra lo atraviesa y se pierde. No es un adorno — es el dibujo del problema. */
+.e1 .ext{left:352px; top:112px; width:268px; height:96px; border-bottom:0;
+  border-bottom-left-radius:0; border-bottom-right-radius:0; padding:20px 13px 11px}
+.e1 .loc{left:352px; top:262px; width:268px; height:96px; padding:30px 13px 11px;
+  opacity:0; transform:translateY(24px); animation:e1sube 11s var(--entra) infinite}
+/* la OC se posa SOBRE el canto de arriba de cada recuadro, como un documento
+   que alguien deja encima de una carpeta. Asi no tapa ni una linea de texto:
+   defecto real, la primera version la puso encima de dos. */
+.e1 .oc{position:absolute; left:392px; top:98px; width:150px; padding:6px 9px;
+  border:1px solid var(--terracota); color:var(--terracota-300); font-size:9.5px;
+  letter-spacing:.1em; text-transform:uppercase; border-radius:2px;
+  background:rgba(8,9,12,.9); animation:e1cae 11s infinite}
+@keyframes e1vence{0%{transform:scaleX(1)} 34%{transform:scaleX(1)}
+  56%{transform:scaleX(0)} 100%{transform:scaleX(0)}}
+@keyframes e1vig{0%,55%{opacity:1} 56%,100%{opacity:0}}
+@keyframes e1venc{0%,55%{opacity:0} 56%,100%{opacity:1}}
+/* la OC cae y se pierde por el canto abierto; despues vuelve a entrar y se
+   posa en el proveedor local */
+@keyframes e1cae{
+  0%,54%{transform:translateY(0); opacity:1}
+  56%{transform:translateY(0); opacity:1; animation-timing-function:cubic-bezier(.7,0,.84,0)}
+  66%{transform:translateY(268px); opacity:0}   /* se pierde por el canto abierto */
+  67%{transform:translateY(-52px); opacity:0}
+  70%{transform:translateY(-52px); opacity:0; animation-timing-function:cubic-bezier(.16,1,.3,1)}
+  84%{transform:translateY(153px); opacity:1}
+  88%{transform:translateY(147px); opacity:1}   /* 3 px de sobrepaso, y vuelve */
+  100%{transform:translateY(150px); opacity:1}}
+@keyframes e1sube{
+  0%,58%{opacity:0; transform:translateY(24px)}
+  74%{opacity:1; transform:translateY(0)}
+  100%{opacity:1; transform:translateY(0)}}
+
+/* =========================================================================
+   PIEZA 2 · «El respaldo no estaba en el precio»          HOSPEDAJE
+   Dos filas del MISMO largo total. Arriba: un tramo verde y, pasada la
+   compuerta de la orden de compra, dos tramos ambar que crecen CON SOBREPASO
+   del 7 %. Sobrepasar es un tic de micro-gesto y aqui dice exactamente lo que
+   tiene que decir: eso se metio a empujones y despues de que usted firmo.
+   Abajo: un solo tramo, dibujado de una vez y detenido en su marca.
+   ========================================================================= */
+/* LAS DOS FILAS MIDEN LO MISMO, Y LA PISTA TAMBIEN: 442 px, que es lo que
+   suman los tramos. Con `right:46px` la pista media 568 y sobraban 126 px de
+   carril vacio a la derecha — o sea el dibujo desmentia la frase «el mismo
+   alcance y el mismo largo total», que es todo el argumento de la pieza. */
+.e2 .fila{position:absolute; left:46px; width:442px; height:16px}
+.e2 .f1{top:132px} .e2 .f2{top:220px}
+.e2 .fila .pista{position:absolute; inset:0; border:1px dashed var(--crema-12); border-radius:2px}
+.e2 seg,.e2 .seg{position:absolute; top:2px; bottom:2px; border-radius:1px; transform-origin:0 50%}
+.e2 .s-base{left:2px; width:210px; background:var(--menta-600); animation:e2base 9s var(--entra) infinite}
+.e2 .s-a1{left:212px; width:132px; background:var(--ambar); animation:e2extra 9s var(--micro) infinite}
+.e2 .s-a2{left:344px; width:96px; background:var(--ambar); opacity:.8; animation:e2extra 9s var(--micro) infinite; animation-delay:.54s}
+.e2 .s-uno{left:2px; width:438px; background:var(--menta-600); animation:e2uno 9s var(--entra) infinite}
+.e2 .hito{position:absolute; top:-9px; bottom:-9px; width:1px; border-left:1px dashed var(--crema-28)}
+.e2 .compuerta{position:absolute; left:258px; top:104px; bottom:96px; width:1px;
+  background:var(--crema-28); opacity:.5}
+.e2 .cotiz{position:absolute; font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:var(--crema-28)}
+@keyframes e2base{0%,6%{transform:scaleX(0)} 26%,100%{transform:scaleX(1)}}
+@keyframes e2extra{0%,42%{transform:scaleX(0)} 62%{transform:scaleX(1.07)} 70%,100%{transform:scaleX(1)}}
+@keyframes e2uno{0%,10%{transform:scaleX(0)} 34%,100%{transform:scaleX(1)}}
+
+/* =========================================================================
+   PIEZA 3 · «Llego, se recibio, y ahi quedo»              PUESTA EN MARCHA
+   AQUI NO SE MUEVE NADA DURANTE UN TERCIO DE LA PIEZA, Y ESE ES EL PUNTO.
+   Entran dos cajas escalonadas y despues, entre el 34 y el 62 % del bucle, no
+   se mueve absolutamente nada salvo el reloj de arriba. Es la unica pieza del
+   estudio donde la AUSENCIA de movimiento es la actuacion: asi se siente una
+   compra cerrada con el requerimiento abierto. Para que el silencio no se lea
+   como una pagina rota, a mitad del vacio entra una sola linea.
+   Al final el hilo se dibuja con `stroke-dashoffset` y a velocidad `linear`:
+   el trazo no vale hasta que llega al otro lado.
+   ========================================================================= */
+/* EL RELOJ DEL SILENCIO. Entre el 34 y el 62 % de esta pieza no se mueve
+   NADA, y eso es deliberado: asi se siente una compra cerrada con el
+   requerimiento abierto. Pero un tercio de pieza sin un solo pixel en
+   movimiento se lee como una pagina rota, asi que queda esto —una regla de
+   plazo que avanza en `linear` durante todo el bucle— como prueba de que el
+   reloj sigue corriendo. Es el mismo oficio que los tres puntitos de
+   «escribiendo» de Pliego, dicho con nuestro vocabulario. */
+.e3 .plazo{position:absolute; left:58px; right:58px; top:52px; height:2px; background:var(--crema-12)}
+.e3 .plazo i{position:absolute; inset:0; background:var(--terracota); transform-origin:0 50%;
+  animation:e3plazo 12s linear infinite}
+@keyframes e3plazo{0%{transform:scaleX(0)} 100%{transform:scaleX(1)}}
+.e3 .cj{width:186px; height:78px; padding:11px 13px; opacity:0;
+  animation:e3entra 12s var(--entra) infinite}
+.e3 .c1{left:58px; top:112px}
+.e3 .c2{left:58px; top:216px; animation-delay:.34s}   /* escalonado de 340 ms */
+.e3 .cj .tit{font-size:11px; color:var(--crema); letter-spacing:.02em}
+.e3 .cj .sub{font-size:9px; color:var(--crema-28); letter-spacing:.12em;
+  text-transform:uppercase; margin-top:4px}
+.e3 .silencio{position:absolute; left:58px; right:58px; top:322px; text-align:left;
+  font-size:12px; color:var(--crema-60); opacity:0; animation:e3silencio 12s var(--entra) infinite}
+.e3 .hilo{position:absolute; inset:0}
+.e3 .hilo path{fill:none; stroke:var(--menta); stroke-width:1.4; stroke-linecap:round;
+  stroke-dasharray:var(--L); stroke-dashoffset:var(--L); animation:e3hilo 12s linear infinite}
+.e3 .andando{position:absolute; left:452px; top:186px; width:152px; padding:10px 12px;
+  border:1px solid var(--menta-600); border-radius:var(--radio); opacity:0;
+  animation:e3and 12s var(--entra) infinite}
+.e3 .andando .tit{font-size:11px; color:var(--menta-300); letter-spacing:.02em}
+@keyframes e3entra{0%{opacity:0; transform:translateX(-16px)} 9%{opacity:1; transform:none}
+  92%{opacity:1; transform:none} 100%{opacity:0; transform:none}}
+@keyframes e3silencio{0%,40%{opacity:0} 48%,88%{opacity:1} 100%{opacity:0}}
+@keyframes e3hilo{0%,62%{stroke-dashoffset:var(--L)} 84%,100%{stroke-dashoffset:0}}
+@keyframes e3and{0%,80%{opacity:0} 88%,100%{opacity:1}}
+
+/* =========================================================================
+   PIEZA 4 · «La recepcion abierta y el pago detras»       EQUIPAMIENTO
+   Cuatro lineas de un requerimiento. Dos ENTRAN desde la izquierda con 4 % de
+   desfase y se fijan con borde verde; dos SE DEVUELVEN a una canaleta abierta
+   a la derecha con la curva de salida, bajan a 52 % de opacidad y quedan
+   estacionadas y LEGIBLES, con el motivo escrito al lado. No se borran ni se
+   marcan en rojo: un error en rojo diria «falla»; una fila estacionada dice
+   «triaje», y un rechazo tranquilo y explicado es lo mas creible que puede
+   hacer un proveedor sin adjudicaciones.
+   ========================================================================= */
+/* LAS FILAS SE ACORTAN A 352 PX Y EL MOTIVO SE CORRE A 458. En la primera
+   version las devueltas se corrian 52 px y terminaban EN x=488, encima de su
+   propio motivo: «MEJOR CON BODEGA PROPIA» quedaba medio tapado. Es el mismo
+   defecto que ya cace el 26-ago en el capitulo 4 del scroll-cine —una fila
+   empujada contra el texto que la explica— y ahora la canaleta deja hueco. */
+.e4 .lin{position:absolute; left:44px; width:352px; height:38px; padding:9px 12px;
+  border:1px solid var(--crema-12); border-radius:var(--radio);
+  background:rgba(22,26,33,.72); font-size:11px; color:var(--crema-75);
+  display:flex; justify-content:space-between; align-items:center;
+  opacity:0; transform:translateX(-26px)}
+.e4 .l1{top:104px; animation:e4entra 10s var(--entra) infinite}
+.e4 .l2{top:152px; animation:e4entra 10s var(--entra) infinite; animation-delay:.4s}
+.e4 .l3{top:212px; animation:e4vuelve 10s infinite}
+.e4 .l4{top:260px; animation:e4vuelve 10s infinite; animation-delay:.4s}
+.e4 .motivo{position:absolute; left:458px; width:174px; font-size:9.5px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--crema-28); opacity:0; animation:e4motivo 10s var(--entra) infinite}
+.e4 .m3{top:222px} .e4 .m4{top:270px; animation-delay:.4s}
+.e4 .canaleta{position:absolute; left:406px; right:16px; top:196px; height:112px;
+  border-top:1px dashed var(--crema-12); border-bottom:1px dashed var(--crema-12);
+  border-left:1px dashed var(--crema-12); border-radius:var(--radio) 0 0 var(--radio)}
+@keyframes e4entra{
+  0%{opacity:0; transform:translateX(-26px); border-color:var(--crema-12)}
+  16%{opacity:1; transform:translateX(0); border-color:var(--crema-12)}
+  26%,100%{opacity:1; transform:translateX(0); border-color:var(--menta-600)}}
+@keyframes e4vuelve{
+  0%{opacity:0; transform:translateX(-26px)}
+  14%{opacity:1; transform:translateX(0); animation-timing-function:cubic-bezier(.16,1,.3,1)}
+  40%{opacity:1; transform:translateX(0); animation-timing-function:cubic-bezier(.7,0,.84,0)}
+  56%,100%{opacity:.52; transform:translateX(52px)}}
+@keyframes e4motivo{0%,54%{opacity:0} 66%,100%{opacity:1}}
+
+/* =========================================================================
+   PIEZA 5 · «El proveedor no estaba habil y la compra se rehace»
+   El expediente avanza por los cinco estados. En la orden de compra cae un
+   sello en `steps(1)` —un estado administrativo no se desvanece— y el
+   expediente RETROCEDE acelerando hasta el requerimiento. Lo unico que NO
+   retrocede es el reloj de arriba, que sigue en `linear`: el plazo no se
+   devuelve. Despues el expediente vuelve a subir, esta vez entero.
+   Es la unica pieza cuyo remate es la credencial, y por eso cierra el set.
+   ========================================================================= */
+/* LA BANDA SE ENCIENDE POR SUPERPOSICION, no rotulo a rotulo. Hay DOS copias
+   de los cinco rotulos: una apagada y otra en menta recortada por el MISMO
+   avance del expediente. Un elemento y un `clip-path` en vez de cinco
+   animaciones con cinco pares de tiempos que ademas habria que invertir en el
+   retroceso. Cuando el expediente se rehace, la banda se apaga sola. */
+.e5 .banda{top:36px}
+.e5 .banda i{font-size:8.5px}
+.e5 .banda.on{color:var(--menta); clip-path:inset(0 100% 0 0); animation:e5clip 12s infinite}
+.e5 .riel{top:62px}
+.e5 .riel b{animation:e5avanza 12s infinite}
+.e5 .plazo{position:absolute; left:22px; right:22px; top:92px; height:2px; background:var(--crema-12)}
+.e5 .plazo i{position:absolute; inset:0; background:var(--terracota); transform-origin:0 50%;
+  animation:e5plazo 12s linear infinite}
+.e5 .plazorot{position:absolute; left:22px; top:100px; font-size:8.5px; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--crema-28)}
+/* EL DOCUMENTO. Reproducir la FORMA de una orden de compra es legitimo;
+   inventarle folio, RUT, organismo o monto, no. Por eso las lineas del cuerpo
+   son REGLAS, no cifras: se lee como el documento que es sin afirmar un dato
+   que no existe. */
+.e5 .doc{position:absolute; left:120px; top:146px; width:420px; padding:14px 18px 16px;
+  border:1px solid var(--crema-12); border-radius:var(--radio-caja);
+  background:rgba(20,24,30,.94)}
+.e5 .doc .k{font-size:9px; letter-spacing:.16em; text-transform:uppercase; color:var(--crema-28)}
+.e5 .doc .v{font-size:13.5px; color:var(--crema); margin-top:4px; letter-spacing:.01em}
+.e5 .doc .reglas{margin-top:13px; display:flex; flex-direction:column; gap:7px}
+.e5 .doc .reglas u{display:block; height:5px; border-radius:2px; background:var(--crema-12); text-decoration:none}
+.e5 .doc .reglas u:nth-child(1){width:76%} .e5 .doc .reglas u:nth-child(2){width:88%}
+.e5 .doc .reglas u:nth-child(3){width:54%}
+.e5 .doc .pie{margin-top:15px; padding-top:11px; border-top:1px solid var(--crema-12);
+  display:flex; justify-content:space-between; align-items:flex-end; gap:16px}
+.e5 .doc .hab{font-size:12px; letter-spacing:.16em; text-transform:uppercase}
+.e5 .d1{animation:e5doc1 12s infinite}
+.e5 .d2{opacity:0; animation:e5doc2 12s infinite}
+.e5 .d1 .hab{color:var(--alerta)}
+.e5 .d2{border-color:var(--menta-600)}
+.e5 .d2 .hab{color:var(--menta)}
+/* EL SELLO CAE EN `steps(1)`: un estado administrativo no se desvanece, se cae
+   de un cuadro al otro. Un fundido aqui seria una mentira de oficio. Y dura
+   1,9 s de los 12 —el 16 %—, porque en la primera version duraba 1,2 s y en
+   seis capturas repartidas por el bucle NO SALIO EN NINGUNA: si no lo caza el
+   muestreo, tampoco lo caza el visitante. */
+.e5 .sello{position:absolute; left:352px; top:196px; color:var(--alerta);
+  font-size:11.5px; letter-spacing:.17em; text-transform:uppercase; padding:7px 12px;
+  border:1.5px solid var(--alerta); border-radius:2px; background:rgba(8,9,12,.86);
+  opacity:0; transform:rotate(-7deg); animation:e5sello 12s steps(1) infinite}
+.e5 .rehace{position:absolute; left:22px; top:346px; font-size:11px; color:var(--crema-60);
+  letter-spacing:0; text-transform:none; opacity:0; animation:e5rehace 12s var(--entra) infinite}
+@keyframes e5avanza{
+  0%{transform:scaleX(0)}
+  20%{transform:scaleX(.60)}                                    /* llega a la OC */
+  30%{transform:scaleX(.60); animation-timing-function:cubic-bezier(.7,0,.84,0)}
+  38%{transform:scaleX(0)}                                      /* se rehace */
+  46%{transform:scaleX(0); animation-timing-function:cubic-bezier(.16,1,.3,1)}
+  76%,100%{transform:scaleX(1)}}
+@keyframes e5clip{
+  0%{clip-path:inset(0 100% 0 0)}
+  /* 40 %, y no 48 %: con 48 el corte caia A MITAD de «ORDEN DE COMPRA» y se
+     leia como un fallo de pintado, no como un estado alcanzado. El rotulo se
+     enciende entero o no se enciende. */
+  20%{clip-path:inset(0 40% 0 0)}
+  30%{clip-path:inset(0 40% 0 0); animation-timing-function:cubic-bezier(.7,0,.84,0)}
+  38%{clip-path:inset(0 100% 0 0)}
+  46%{clip-path:inset(0 100% 0 0); animation-timing-function:cubic-bezier(.16,1,.3,1)}
+  76%,100%{clip-path:inset(0 0 0 0)}}
+/* EL PLAZO NO SE DEVUELVE. Es lo unico lineal de la pieza y no tiene ni un
+   solo tramo hacia atras: ahi esta dicho el dolor entero. */
+@keyframes e5plazo{0%{transform:scaleX(0)} 100%{transform:scaleX(1)}}
+@keyframes e5sello{0%,22%{opacity:0} 24%,40%{opacity:1} 42%,100%{opacity:0}}
+@keyframes e5doc1{
+  0%{opacity:0; transform:translateX(-30px)}
+  8%,30%{opacity:1; transform:translateX(0); animation-timing-function:cubic-bezier(.7,0,.84,0)}
+  42%,100%{opacity:0; transform:translateX(-120px)}}
+@keyframes e5doc2{
+  0%,44%{opacity:0; transform:translateX(-30px)}
+  58%{opacity:1; transform:translateX(0)}
+  100%{opacity:1; transform:translateX(0)}}
+@keyframes e5rehace{0%,26%{opacity:0} 34%,46%{opacity:1} 54%,100%{opacity:0}}
+
+/* =========================================================================
+   PIEZA 6 · CASERO — previo. Producto propio, en desarrollo.
+   Encargo textual: «alli pondria algo de la app Casero, un previo nada mas».
+   Es repo PRIVADO: aqui no entra ni un dato de su economia —ni planes, ni
+   comisiones, ni precios—. Solo las tres reglas de producto que la definen y
+   que ya estan escritas en su handoff: la unidad de confianza es el edificio,
+   las fichas duran 24 horas y se apagan solas a las 00:00, y la valoracion se
+   cuenta en marraquetas. Su paleta es la SUYA, no la de CompAI, y eso es
+   deliberado: se lee como otro producto, que es lo que es.
+   ========================================================================= */
+.e6{background:#EDEAE3}
+.e6 .tel{position:absolute; left:60px; top:26px; width:206px; height:340px;
+  border:2px solid #0E3D2C; border-radius:22px; background:#F6F1E6; overflow:hidden}
+.e6 .barra{position:absolute; left:0; right:0; top:0; height:38px; background:#0E3D2C;
+  color:#F6F1E6; font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+  display:flex; align-items:center; padding:0 12px}
+.e6 .fich{position:absolute; left:10px; right:10px; height:74px; border-radius:11px;
+  background:#fff; border:1px solid rgba(14,61,44,.14); padding:9px 10px;
+  opacity:0; transform:translateY(12px); animation:e6ficha 11s var(--entra) infinite}
+.e6 .fA{top:50px} .e6 .fB{top:134px; animation-delay:.32s} .e6 .fC{top:218px; animation-delay:.64s}
+/* el toldo del rubro vive arriba a la derecha, asi que el titulo le deja su
+   hueco: sin este `padding-right` el toldo se comia la ultima palabra. */
+.e6 .fich .t{font-size:11px; color:#1A2620; font-weight:600; padding-right:34px; line-height:1.3}
+.e6 .fich .m{font-size:9px; color:rgba(26,38,32,.6); margin-top:3px; letter-spacing:.04em}
+.e6 .toldo{position:absolute; right:9px; top:9px; width:26px; height:16px;
+  background:#F5B818; border-radius:3px}
+.e6 .cuenta{position:absolute; right:10px; bottom:8px; font-size:9px; color:#A32519;
+  letter-spacing:.08em}
+/* la ficha C se APAGA sola: es la regla de las 24 h, dicha con movimiento */
+.e6 .fC{animation:e6apaga 11s var(--entra) infinite}
+.e6 .reglas{position:absolute; left:300px; top:52px; right:34px; color:#1A2620}
+.e6 .reglas .tp{font-size:9px; letter-spacing:.19em; text-transform:uppercase;
+  color:rgba(26,38,32,.5); margin-bottom:12px}
+.e6 .reglas li{list-style:none; margin:0 0 15px; font-size:12.5px; line-height:1.5;
+  opacity:0; transform:translateY(8px); animation:e6regla 11s var(--entra) infinite;
+  font-family:var(--font-body)}
+.e6 .reglas li:nth-child(2){animation-delay:.42s}
+.e6 .reglas li:nth-child(3){animation-delay:.48s}
+.e6 .reglas li:nth-child(4){animation-delay:.54s}
+.e6 .marr{display:inline-flex; gap:3px; vertical-align:-2px; margin-left:5px}
+.e6 .marr i{width:9px; height:9px; border-radius:50% 50% 40% 40%; background:#957C23; display:block}
+.e6 .marr i:nth-child(4),.e6 .marr i:nth-child(5){background:rgba(149,124,35,.24)}
+.e6 .previo{position:absolute; right:16px; bottom:12px; font-size:9px; letter-spacing:.16em;
+  text-transform:uppercase; color:rgba(26,38,32,.42)}
+@keyframes e6ficha{0%{opacity:0; transform:translateY(12px)} 12%,100%{opacity:1; transform:translateY(0)}}
+@keyframes e6apaga{0%{opacity:0; transform:translateY(12px)} 12%{opacity:1; transform:translateY(0)}
+  58%{opacity:1} 70%,100%{opacity:.16}}
+@keyframes e6regla{0%,26%{opacity:0; transform:translateY(8px)} 40%,100%{opacity:1; transform:translateY(0)}}
+
+/* =========================================================================
+   EL `fill-mode` DE TODAS LAS ESCENAS, Y VA AL FINAL POR UNA RAZON MEDIDA.
+   -------------------------------------------------------------------------
+   EL DEFECTO, que la tira de fotogramas caza y el CSS no: durante su
+   `animation-delay` un elemento NO muestra el cuadro 0 % de su animacion,
+   muestra su estilo normal. El tramo ambar de la pieza 2 lleva 540 ms de
+   retardo y su estilo normal es `scaleX(1)`: durante ese medio segundo se
+   veia ENTERO, o sea el sobreprecio aparecia ANTES de la orden de compra —
+   exactamente lo contrario de lo que la pieza afirma. Un escalonado sin
+   `fill-mode` es un escalonado que miente.
+
+   Y EL SEGUNDO DEFECTO, que es el que obliga a escribirlo asi: la primera
+   correccion fue `.esc *{animation-fill-mode:both}` puesta arriba, y NO
+   SIRVIO — el ambar seguia entero en el mismo cuadro. La forma abreviada
+   `animation:` REINICIA `animation-fill-mode` a `none`, y `.e2 .s-a2` (0,2,0)
+   le gana a `.esc *` (0,1,1). Se arregla con especificidad y orden, no con
+   `!important`: `.esc.esc *` vale (0,2,1) y ademas va la ultima, asi que gana
+   tambien los empates. Una correccion que no se vuelve a mirar renderizada no
+   es una correccion.
+   ========================================================================= */
+.esc.esc, .esc.esc *, .esc.esc *::before, .esc.esc *::after{animation-fill-mode:both}
+
+/* =========================================================================
+   MOVIMIENTO REDUCIDO — todo quieto Y VISIBLE. `animation:none` congela el
+   estado INICIAL, no el final, asi que aqui se restituye a mano cada
+   propiedad que el bucle dejaba puesta. Es el bug del 24-ago y no se repite.
+   ========================================================================= */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important; transition:none !important}
+  #bg video{display:none}
+  .carrete label::before{transform:scaleX(0)}
+  #p1:checked ~ .sala label[for="p1"]::before, #p2:checked ~ .sala label[for="p2"]::before,
+  #p3:checked ~ .sala label[for="p3"]::before, #p4:checked ~ .sala label[for="p4"]::before,
+  #p5:checked ~ .sala label[for="p5"]::before, #p6:checked ~ .sala label[for="p6"]::before{transform:scaleX(1)}
+  .e1 .vig i{transform:scaleX(0)}                 /* la licencia, VENCIDA */
+  .e1 .est .v{opacity:0} .e1 .est .x{opacity:1}
+  .e1 .oc{transform:translateY(150px); opacity:1} /* posada en el local */
+  .e1 .loc{opacity:1; transform:none}
+  .e2 .s-base,.e2 .s-a1,.e2 .s-a2,.e2 .s-uno{transform:scaleX(1)}
+  .e3 .plazo i{transform:scaleX(1)}
+  .e3 .cj{opacity:1; transform:none}
+  .e3 .silencio{opacity:1}
+  .e3 .hilo path{stroke-dashoffset:0}
+  .e3 .andando{opacity:1}
+  .e4 .lin{opacity:1; transform:none}
+  .e4 .l1,.e4 .l2{border-color:var(--menta-600)}
+  .e4 .l3,.e4 .l4{opacity:.52; transform:translateX(52px)}
+  .e4 .motivo{opacity:1}
+  .e5 .riel b{transform:scaleX(1)}
+  .e5 .banda.on{clip-path:inset(0 0 0 0)}
+  .e5 .plazo i{transform:scaleX(1)}
+  .e5 .sello{opacity:0}                           /* el sello es un TRANSITO */
+  .e5 .rehace{opacity:0}                          /* y su leyenda, tambien   */
+  .e5 .d1{opacity:0}
+  .e5 .d2{opacity:1; transform:none}
+  .e6 .fich{opacity:1; transform:none} .e6 .fC{opacity:.16}
+  .e6 .reglas li{opacity:1; transform:none}
+}
+</style>
+</head>
+<body>
+
+<div id="bg" aria-hidden="true">
+  <video autoplay muted loop playsinline preload="metadata" poster="media/plexus-poster.jpg"><source src="media/plexus.mp4" type="video/mp4"></video>
+  <div class="veil"></div>
+</div>
+
+<header class="hdr">
+  <div class="inner">
+    <a class="brand" href="index.html" aria-label="compAI, ir al inicio"><svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="-16 4 328 87" role="img" aria-label="compAI">
+  <defs>
+    <filter id="brasa" x="-150%" y="-150%" width="400%" height="400%">
+      <feGaussianBlur stdDeviation="5" result="b1"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="b2"/>
+      <feMerge><feMergeNode in="b2"/><feMergeNode in="b1"/></feMerge>
+    </filter>
+    <g id="brillo"><path fill="#C87941" d="M172.205 52.695L170.937 49.460L158.049 49.460L156.755 52.695L158.049 52.695Q159.964 52.695 160.779 53.432Q161.595 54.170 161.595 55.360Q161.595 56.525 160.779 57.262Q159.964 58 158.049 58L150.907 58Q148.992 58 148.176 57.262Q147.361 56.525 147.361 55.334Q147.361 54.144 148.215 53.394Q149.069 52.643 151.036 52.695L159.369 31.940L155.901 31.940Q153.986 31.940 153.171 31.202Q152.356 30.465 152.356 29.274Q152.356 28.084 153.171 27.346Q153.986 26.609 155.901 26.609L167.366 26.635L177.924 52.695Q179.787 52.695 180.383 53.109Q181.573 53.963 181.573 55.360Q181.573 56.525 180.771 57.262Q179.969 58 178.054 58L170.911 58Q168.996 58 168.181 57.262Q167.366 56.525 167.366 55.334Q167.366 54.170 168.181 53.432Q168.996 52.695 170.911 52.695L172.205 52.695M160.171 44.155L168.737 44.155L164.467 33.648 M205.869 31.940L200.512 31.940L200.512 52.695L205.869 52.695Q207.784 52.695 208.599 53.432Q209.414 54.170 209.414 55.360Q209.414 56.525 208.599 57.262Q207.784 58 205.869 58L189.850 58Q187.935 58 187.120 57.262Q186.304 56.525 186.304 55.334Q186.304 54.170 187.120 53.432Q187.935 52.695 189.850 52.695L195.207 52.695L195.207 31.940L189.850 31.940Q187.935 31.940 187.120 31.202Q186.304 30.465 186.304 29.274Q186.304 28.084 187.120 27.346Q187.935 26.609 189.850 26.609L205.869 26.635Q207.784 26.635 208.599 27.359Q209.414 28.084 209.414 29.274Q209.414 30.465 208.599 31.202Q207.784 31.940 205.869 31.940"/><g transform="translate(259 20) scale(1.5)" fill="none" stroke="#4CC48B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8.5 L5 12.5 L12 4"/><path d="M10 8.5 L14 12.5 L21 4"/></g></g>
+    <g id="marca"><path fill="#F5F0E4" d="M33.340 37.547L25.766 38.914Q25.383 36.645 24.029 35.496Q22.676 34.348 20.516 34.348Q17.645 34.348 15.936 36.330Q14.227 38.313 14.227 42.961Q14.227 48.129 15.963 50.262Q17.699 52.395 20.625 52.395Q22.813 52.395 24.207 51.150Q25.602 49.906 26.176 46.871L33.723 48.156Q32.547 53.352 29.211 56.004Q25.875 58.656 20.270 58.656Q13.898 58.656 10.111 54.637Q6.324 50.617 6.324 43.508Q6.324 36.316 10.125 32.311Q13.926 28.305 20.406 28.305Q25.711 28.305 28.842 30.588Q31.973 32.871 33.340 37.547 M36.187 43.070Q36.187 39.242 38.073 35.660Q39.960 32.078 43.419 30.191Q46.878 28.305 51.144 28.305Q57.734 28.305 61.945 32.584Q66.155 36.863 66.155 43.398Q66.155 49.988 61.904 54.322Q57.652 58.656 51.198 58.656Q47.206 58.656 43.583 56.852Q39.960 55.047 38.073 51.561Q36.187 48.074 36.187 43.070M44.062 43.480Q44.062 47.801 46.112 50.098Q48.163 52.395 51.171 52.395Q54.179 52.395 56.216 50.098Q58.253 47.801 58.253 43.426Q58.253 39.160 56.216 36.863Q54.179 34.566 51.171 34.566Q48.163 34.566 46.112 36.863Q44.062 39.160 44.062 43.480 M70.397 58L70.397 28.961L77.479 28.961L77.479 32.926Q81.280 28.305 86.530 28.305Q89.319 28.305 91.370 29.453Q93.420 30.602 94.733 32.926Q96.647 30.602 98.862 29.453Q101.077 28.305 103.592 28.305Q106.791 28.305 109.006 29.604Q111.221 30.902 112.315 33.418Q113.108 35.277 113.108 39.434L113.108 58L105.424 58L105.424 41.402Q105.424 37.082 104.631 35.824Q103.565 34.184 101.350 34.184Q99.737 34.184 98.315 35.168Q96.893 36.152 96.264 38.053Q95.635 39.953 95.635 44.055L95.635 58L87.952 58L87.952 42.086Q87.952 37.848 87.541 36.617Q87.131 35.387 86.270 34.785Q85.409 34.184 83.932 34.184Q82.155 34.184 80.733 35.141Q79.311 36.098 78.696 37.902Q78.080 39.707 78.080 43.891L78.080 58 M119.345 69.047L119.345 28.961L126.509 28.961L126.509 33.227Q127.904 31.039 130.283 29.672Q132.662 28.305 135.560 28.305Q140.619 28.305 144.146 32.270Q147.673 36.234 147.673 43.316Q147.673 50.590 144.119 54.623Q140.564 58.656 135.505 58.656Q133.099 58.656 131.144 57.699Q129.189 56.742 127.029 54.418L127.029 69.047L119.345 69.047M126.947 42.988Q126.947 47.883 128.888 50.221Q130.830 52.559 133.619 52.559Q136.298 52.559 138.076 50.412Q139.853 48.266 139.853 43.371Q139.853 38.805 138.021 36.590Q136.189 34.375 133.482 34.375Q130.666 34.375 128.806 36.549Q126.947 38.723 126.947 42.988"/><path fill="#C87941" d="M172.205 52.695L170.937 49.460L158.049 49.460L156.755 52.695L158.049 52.695Q159.964 52.695 160.779 53.432Q161.595 54.170 161.595 55.360Q161.595 56.525 160.779 57.262Q159.964 58 158.049 58L150.907 58Q148.992 58 148.176 57.262Q147.361 56.525 147.361 55.334Q147.361 54.144 148.215 53.394Q149.069 52.643 151.036 52.695L159.369 31.940L155.901 31.940Q153.986 31.940 153.171 31.202Q152.356 30.465 152.356 29.274Q152.356 28.084 153.171 27.346Q153.986 26.609 155.901 26.609L167.366 26.635L177.924 52.695Q179.787 52.695 180.383 53.109Q181.573 53.963 181.573 55.360Q181.573 56.525 180.771 57.262Q179.969 58 178.054 58L170.911 58Q168.996 58 168.181 57.262Q167.366 56.525 167.366 55.334Q167.366 54.170 168.181 53.432Q168.996 52.695 170.911 52.695L172.205 52.695M160.171 44.155L168.737 44.155L164.467 33.648 M205.869 31.940L200.512 31.940L200.512 52.695L205.869 52.695Q207.784 52.695 208.599 53.432Q209.414 54.170 209.414 55.360Q209.414 56.525 208.599 57.262Q207.784 58 205.869 58L189.850 58Q187.935 58 187.120 57.262Q186.304 56.525 186.304 55.334Q186.304 54.170 187.120 53.432Q187.935 52.695 189.850 52.695L195.207 52.695L195.207 31.940L189.850 31.940Q187.935 31.940 187.120 31.202Q186.304 30.465 186.304 29.274Q186.304 28.084 187.120 27.346Q187.935 26.609 189.850 26.609L205.869 26.635Q207.784 26.635 208.599 27.359Q209.414 28.084 209.414 29.274Q209.414 30.465 208.599 31.202Q207.784 31.940 205.869 31.940"/><g transform="translate(259 20) scale(1.5)" fill="none" stroke="#4CC48B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8.5 L5 12.5 L12 4"/><path d="M10 8.5 L14 12.5 L21 4"/></g></g>
+  </defs>
+  <use href="#brillo" filter="url(#brasa)" opacity="0.9"/>
+  <use href="#marca"/>
+</svg></a>
+    <div class="mnu-zona" id="mnuZona">
+      <button class="mnu" id="mnuBtn" type="button" aria-expanded="false" aria-controls="mnuPanel">
+        <span class="vu">Men&uacute;</span>
+        <svg class="tr" viewBox="0 0 252 26" aria-hidden="true"><g>
+          <!-- el halo: mismo trazado, mas grueso, invisible en reposo -->
+          <path class="halo t1" d="M249.5 3 H2.5"/><path class="halo t2" d="M249.5 10 H2.5"/>
+          <path class="halo t3" d="M249.5 17 H2.5"/><path class="halo t4" d="M249.5 24 H2.5"/>
+          <!-- las cuatro lineas. Trazadas de DERECHA a IZQUIERDA: asi el guion
+               descubre su extremo derecho y crecer es llevar el desfase a 0. -->
+          <path class="t t1" d="M249.5 3 H2.5"/><path class="t t2" d="M249.5 10 H2.5"/>
+          <path class="t t3" d="M249.5 17 H2.5"/><path class="t t4" d="M249.5 24 H2.5"/>
+        </g></svg>
+      </button>
+      <nav class="mnu-panel" id="mnuPanel" aria-label="Secciones">
+        <a href="portafolio.html" aria-current="page">Portafolio</a>
+        <a href="index.html#agente-ia">Agente IA</a>
+        <a href="index.html#empresa">Empresa</a>
+        <a href="index.html#contacto">Contacto</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<input type="radio" name="pieza" id="p1" class="sel" checked>
+<input type="radio" name="pieza" id="p2" class="sel">
+<input type="radio" name="pieza" id="p3" class="sel">
+<input type="radio" name="pieza" id="p4" class="sel">
+<input type="radio" name="pieza" id="p5" class="sel">
+<input type="radio" name="pieza" id="p6" class="sel">
+
+<main class="sala">
+
+  <!-- ================= EL CARRETE ================= -->
+  <div>
+    <div class="carrete">
+      <div class="tope">Portafolio · seis registros</div>
+      <ul style="list-style:none;margin:0;padding:0">
+        <li><label for="p1"><span class="n">01</span><span class="tt">La licencia venció el martes</span></label></li>
+        <li><label for="p2"><span class="n">02</span><span class="tt">El respaldo no estaba en el precio</span></label></li>
+        <li><label for="p3"><span class="n">03</span><span class="tt">Llegó, se recibió, y ahí quedó</span></label></li>
+        <li><label for="p4"><span class="n">04</span><span class="tt">La recepción abierta y el pago detrás</span></label></li>
+        <li><label for="p5"><span class="n">05</span><span class="tt">No estaba hábil y la compra se rehace</span></label></li>
+        <li><label for="p6"><span class="n">06</span><span class="tt">Casero — producto propio, previo</span></label></li>
+      </ul>
+      <p class="nota">Seis dolores del comprador público, uno por línea publicada.
+        Ninguna pieza pasa de doce segundos y ninguna se repite hasta que termina.</p>
+    </div>
+  </div>
+
+  <!-- ================= EL ESCENARIO ================= -->
+  <div class="escenario">
+
+    <!-- ---------- 01 ---------- -->
+    <div class="pieza" data-p="1">
+      <div class="marco"><div class="esc e1">
+        <div class="rot" style="left:40px;top:74px">Requerimiento · licencia por vencer</div>
+        <div class="caja lic">
+          <div class="tit">Suscripción — 12 meses</div>
+          <div class="sub">Renovación anual</div>
+          <div class="vig"><i></i></div>
+          <div class="est"><span class="v">VIGENTE</span><span class="x">VENCIDA</span></div>
+        </div>
+        <div class="rot" style="left:352px;top:74px">Contra quién se emite la orden de compra</div>
+        <div class="caja ext">
+          <div class="dato" style="color:var(--crema-60)">Fabricante, sin RUT chileno</div>
+          <div class="dato" style="color:var(--crema-28);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;margin-top:7px">Cobra con tarjeta · no emite factura</div>
+        </div>
+        <div class="caja loc">
+          <div class="dato" style="color:var(--crema)">Proveedor con RUT chileno</div>
+          <div class="dato" style="color:var(--menta-300);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;margin-top:7px">Factura electrónica contra orden de compra</div>
+        </div>
+        <div class="oc">Orden de compra</div>
+      </div></div>
+      <div class="pieplaca">
+        <p class="linea">Línea 1 · Licencias de software</p>
+        <h1>«La licencia venció el martes»</h1>
+        <p>El fabricante cobra con tarjeta y no emite factura chilena: no hay contra quién emitir la orden de compra. La licencia es la misma; lo que cambia es contra quién se paga.</p>
+      </div>
+    </div>
+
+    <!-- ---------- 02 ---------- -->
+    <div class="pieza" data-p="2">
+      <div class="marco"><div class="esc e2">
+        <div class="rot" style="left:46px;top:64px">Lo cotizado y lo que llegó · mismo alcance</div>
+        <div class="compuerta"></div>
+        <div class="cotiz" style="left:264px;top:88px">Orden de compra emitida</div>
+        <div class="cotiz" style="left:46px;top:112px">Cotización de mercado</div>
+        <div class="fila f1">
+          <div class="pista"></div>
+          <div class="seg s-base"></div><div class="seg s-a1"></div><div class="seg s-a2"></div>
+          <div class="hito" style="left:212px"></div>
+        </div>
+        <div class="cotiz" style="left:46px;top:160px;color:var(--ambar)">Respaldo automático · monitoreo — aparecen después</div>
+        <div class="cotiz" style="left:46px;top:200px">Cotización CompAI</div>
+        <div class="fila f2"><div class="pista"></div><div class="seg s-uno"></div></div>
+        <div class="cotiz" style="left:46px;top:248px;color:var(--menta-600)">Un solo tramo, con los respaldos dentro</div>
+        <div class="rot" style="left:46px;top:322px;font-size:11px;letter-spacing:0;text-transform:none;color:var(--crema-60)">
+          El mismo valor. La diferencia es cuándo se lo dijeron.</div>
+      </div></div>
+      <div class="pieplaca">
+        <p class="linea">Línea 2 · Hospedaje y procesamiento de datos</p>
+        <h1>«El respaldo no estaba en el precio»</h1>
+        <p>Los respaldos automáticos vienen activados de fábrica y casi nunca están en el precio publicado. Aparecen después de emitida la orden de compra, cuando corregirla es otro trámite.</p>
+      </div>
+    </div>
+
+    <!-- ---------- 03 ---------- -->
+    <div class="pieza" data-p="3">
+      <div class="marco"><div class="esc e3">
+        <div class="plazo"><i></i></div>
+        <div class="rot" style="left:58px;top:60px">Recepción conforme dada · requerimiento abierto</div>
+        <div class="caja cj c1"><div class="tit">Licencia entregada</div><div class="sub">Clave por correo</div></div>
+        <div class="caja cj c2"><div class="tit">Equipo recibido</div><div class="sub">Guía de despacho firmada</div></div>
+        <svg class="hilo" viewBox="0 0 660 392" aria-hidden="true" style="--L:520">
+          <path d="M244 151 C 330 151, 340 196, 396 196 M244 255 C 330 255, 340 196, 396 196 M396 196 H 452"/>
+        </svg>
+        <div class="andando"><div class="tit">Andando</div>
+          <div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--crema-28);margin-top:4px">Configurado y en uso</div></div>
+        <div class="silencio">La compra está cerrada. El requerimiento, no.</div>
+      </div></div>
+      <div class="pieplaca">
+        <p class="linea">Línea 3 · Especificación, instalación y puesta en marcha</p>
+        <h1>«Llegó, se recibió, y ahí quedó»</h1>
+        <p>Que llegue la clave no es que quede funcionando. Entre la recepción conforme y el equipo andando hay un trabajo que nadie cotizó, y es el que decide si el presupuesto sirvió de algo.</p>
+      </div>
+    </div>
+
+    <!-- ---------- 04 ---------- -->
+    <div class="pieza" data-p="4">
+      <div class="marco"><div class="esc e4">
+        <div class="rot" style="left:44px;top:68px">Requerimiento · cuatro líneas</div>
+        <div class="rot" style="left:458px;top:176px">Se devuelven, con motivo</div>
+        <div class="canaleta"></div>
+        <div class="lin l1"><span>Computadores de escritorio</span><span style="color:var(--crema-28)">se toma</span></div>
+        <div class="lin l2"><span>Servidor y equipos de red</span><span style="color:var(--crema-28)">se toma</span></div>
+        <div class="lin l3"><span>Tóner e insumos</span><span style="color:var(--crema-28)">se devuelve</span></div>
+        <div class="lin l4"><span>Retiro en tres comunas</span><span style="color:var(--crema-28)">se devuelve</span></div>
+        <div class="motivo m3">Mejor con bodega propia</div>
+        <div class="motivo m4">Fuera de la Región Metropolitana</div>
+      </div></div>
+      <div class="pieplaca">
+        <p class="linea">Línea 4 · Equipamiento e insumos</p>
+        <h1>«La recepción abierta y el pago detrás»</h1>
+        <p>Mientras la recepción conforme no se cierre, el pago no avanza — y quien responde por eso es el comprador. Por eso las líneas que no podemos cumplir se devuelven al cotizar, con el motivo escrito, y no en la recepción.</p>
+      </div>
+    </div>
+
+    <!-- ---------- 05 ---------- -->
+    <div class="pieza" data-p="5">
+      <div class="marco"><div class="esc e5">
+        <div class="banda">
+          <i>Requerimiento</i><i>Cotización</i><i>▢ Orden de compra</i><i>▢ Recepción conforme</i><i>Pago</i>
+        </div>
+        <div class="banda on" aria-hidden="true">
+          <i>Requerimiento</i><i>Cotización</i><i>▢ Orden de compra</i><i>▢ Recepción conforme</i><i>Pago</i>
+        </div>
+        <div class="riel"><b></b></div>
+        <div class="plazo"><i></i></div>
+        <div class="plazorot">El plazo no se devuelve</div>
+
+        <div class="doc d1">
+          <div class="k">Orden de compra · en emisión</div>
+          <div class="v">Equipamiento y licencias</div>
+          <div class="reglas"><u></u><u></u><u></u></div>
+          <div class="pie">
+            <div><div class="k">Registro de Proveedores del Estado</div>
+                 <div class="v" style="font-size:11.5px">Estado de habilidad</div></div>
+            <div class="hab">No hábil</div>
+          </div>
+        </div>
+
+        <div class="doc d2">
+          <div class="k">Orden de compra · emitida</div>
+          <div class="v">Equipamiento y licencias</div>
+          <div class="reglas"><u></u><u></u><u></u></div>
+          <div class="pie">
+            <div><div class="k">Registro de Proveedores del Estado</div>
+                 <div class="v" style="font-size:11.5px">Estado de habilidad</div></div>
+            <div class="hab">Hábil</div>
+          </div>
+        </div>
+
+        <div class="sello">Proveedor no hábil</div>
+        <div class="rehace">La compra vuelve al requerimiento. El plazo, no.</div>
+      </div></div>
+      <div class="pieplaca">
+        <p class="linea">La credencial · los traspasos ▢ los da el organismo</p>
+        <h1>«No estaba hábil y la compra se rehace»</h1>
+        <p>Si el proveedor resulta no estar hábil, la compra se rehace desde el requerimiento — y el plazo sigue corriendo por debajo, sin devolverse. Verificar la ficha es el trámite; que esté verificada de antemano es lo que se compra.</p>
+      </div>
+    </div>
+
+    <!-- ---------- 06 ---------- -->
+    <div class="pieza" data-p="6">
+      <div class="marco"><div class="esc e6">
+        <div class="tel">
+          <div class="barra">Torre B · hoy</div>
+          <div class="fich fA"><div class="toldo"></div><div class="t">Pan amasado, 6 unidades</div>
+            <div class="m">Depto 704 · a 1 piso</div><div class="cuenta">quedan 6 h</div></div>
+          <div class="fich fB"><div class="toldo"></div><div class="t">Reparación de persianas</div>
+            <div class="m">Depto 302 · a 4 pisos</div><div class="cuenta">quedan 11 h</div></div>
+          <div class="fich fC"><div class="toldo"></div><div class="t">Empanadas de pino</div>
+            <div class="m">Depto 1105 · a 7 pisos</div><div class="cuenta">se apaga a las 00:00</div></div>
+        </div>
+        <div class="reglas">
+          <div class="tp">Casero · reglas de producto</div>
+          <ul style="margin:0;padding:0">
+            <li>La unidad de confianza es <b>el edificio</b>, no el usuario.</li>
+            <li>Las fichas duran <b>24 horas</b> y se apagan solas a las 00:00.</li>
+            <li>La distancia se mide <b>de portón a portón</b>, caminando.</li>
+            <li>La valoración se cuenta en <b>marraquetas</b>
+              <span class="marr"><i></i><i></i><i></i><i></i><i></i></span></li>
+          </ul>
+        </div>
+        <div class="previo">En desarrollo · previo</div>
+      </div></div>
+      <div class="pieplaca">
+        <p class="linea">Producto propio · no es un trabajo para el Estado</p>
+        <h1>Casero — marketplace vecinal por edificio</h1>
+        <p>Comprar y vender entre vecinos de la misma torre: comida casera, oficios, servicios. Va en el portafolio como lo que es, un previo de algo en desarrollo, y no como una entrega.</p>
+        <p class="fuente">Nada de su economía —planes, comisiones ni precios— entra acá: ese material es reservado.</p>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+/* --- MENU: el hover lo resuelve el CSS; esto es SOLO para tactil, donde el
+       hover no existe y ademas se queda pegado despues de tocar. Sin este
+       bloque el gesto sigue entero con cursor y con foco de teclado. */
+(function(){
+  var zona = document.getElementById("mnuZona"), btn = document.getElementById("mnuBtn");
+  if(!zona || !btn) return;
+  function marca(on){ document.documentElement.classList.toggle("menu-abierto", on); }
+  function cerrar(){ zona.classList.remove("abre"); btn.setAttribute("aria-expanded","false"); marca(false); }
+  zona.addEventListener("mouseenter", function(){ marca(true); });
+  zona.addEventListener("mouseleave", function(){ if(!zona.classList.contains("abre")) marca(false); });
+  zona.addEventListener("focusin",  function(){ marca(true); });
+  zona.addEventListener("focusout", function(){ if(!zona.classList.contains("abre")) marca(false); });
+  btn.addEventListener("click", function(e){
+    e.stopPropagation();
+    var abierto = zona.classList.toggle("abre");
+    btn.setAttribute("aria-expanded", abierto ? "true" : "false");
+    marca(abierto);
+  });
+  document.addEventListener("click", function(e){ if(!zona.contains(e.target)) cerrar(); });
+  document.addEventListener("keydown", function(e){ if(e.key === "Escape") cerrar(); });
+  Array.prototype.forEach.call(document.querySelectorAll(".mnu-panel a"), function(a){
+    a.addEventListener("click", cerrar);
+  });
+})();
+
+/* --- EL ENCOGIMIENTO. Zanjado por Sebastian: «que el encabezado se encoja al
+       salir de la lamina 1».
+
+       SE OBSERVA LA LAMINA 1, NO EL SCROLL. Un manejador de `scroll` compara
+       contra un numero que hay que mantener a mano y corre en cada cuadro;
+       `IntersectionObserver` no hace trabajo por cuadro y define el disparo
+       por lo que el encargo dice de verdad: la lamina 1 dejo de verse. Con
+       `threshold:0` la seccion deja de intersecar EXACTAMENTE cuando su canto
+       inferior cruza el borde superior del visor.
+
+       NO HACE FALTA HISTERESIS y conviene decir por que: el encogimiento no
+       mueve NADA de la maqueta —el encabezado es `fixed` y solo cambia un
+       `transform`—, asi que cruzar el umbral no puede desplazar el elemento
+       observado. Es la trampa clasica de las cabeceras que se encogen
+       cambiando la altura del documento, y aqui no existe por construccion.
+
+       Sin JavaScript, sin IntersectionObserver o en el portafolio (que no
+       tiene lamina 1) el encabezado se queda GRANDE, que es un estado
+       completo y legible. */
+(function(){
+  var raiz = document.documentElement, l1 = document.getElementById("inicio");
+  if(!l1 || !("IntersectionObserver" in window)) return;
+  new IntersectionObserver(function(e){
+    raiz.classList.toggle("hdr-chico", !e[0].isIntersecting);
+  }, {threshold:0}).observe(l1);
+})();
+/* EL PLEXUS TAMBIEN SE PARA con movimiento reducido. `animation:none` y
+   `transition:none` NO detienen un <video>, y `display:none` lo esconde pero
+   lo deja decodificando: quien pide menos movimiento tambien esta pidiendo que
+   su maquina deje de trabajar. Es el mismo defecto que la auditoria encontro
+   en el sitio publicado el 31-ago, y aqui no hay motor que lo haga. */
+(function(){
+  if(!matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  var v=document.querySelector('#bg video'); if(v){ try{ v.pause(); }catch(e){} }
+})();
+</script>
+</body>
+</html>
