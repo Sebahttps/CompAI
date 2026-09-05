@@ -131,6 +131,9 @@ html:not(.js) #agente, html:not(.js) #nube{display:none}
    ========================================================================= */
 .hdr{position:fixed; top:0; left:0; right:0; z-index:60; min-height:var(--hdr);
   display:flex; align-items:center; background:none; border:0;
+  transition:opacity var(--t-encoge) var(--entra),
+             transform var(--t-encoge) var(--entra),
+             visibility 0s linear 0s;
   /* la barra no captura el cursor: sin esto los 78 px de ancho completo se
      comen los clics de todo lo que pase por debajo */
   pointer-events:none}
@@ -148,10 +151,19 @@ html:not(.js) #agente, html:not(.js) #nube{display:none}
              filter var(--t-crece) var(--entra)}
 @media (max-width:420px){.brand .logo{height:30px}}
 
-html.hdr-chico .hdr .inner{transform:translateY(-11px);
-  transition-duration:var(--t-encoge)}
-html.hdr-chico .brand .logo{transform:scale(.737);
-  transition-duration:var(--t-encoge)}
+/* EL ENCABEZADO SE ESCONDE PASADA LA LAMINA 1 — corregido el 5-sep-2026.
+   Antes se ENCOGIA y se quedaba fijo, y ahi estaba el defecto que reporto
+   Sebastian: sin fondo por el brief («completamente translucido»), una barra
+   que se queda encima cruza por delante de los titulos de las laminas 2 a 6 y
+   los dos textos se leen uno sobre otro. Encogerlo no lo arregla: lo hace mas
+   chico y sigue cruzando. El encabezado vive en la lamina 1 —que es donde el
+   brief dice que el menu se ve POR PRIMERA VEZ— y se retira al salir de ella;
+   vuelve solo al volver arriba, porque el observador mira a #inicio en los
+   dos sentidos.
+   `visibility` va con retardo al esconder para que la opacidad alcance a
+   correr, y sin retardo al volver. */
+html.hdr-fuera .hdr{opacity:0; visibility:hidden; transform:translateY(-100%);
+  transition-delay:0s, 0s, var(--t-encoge)}
 
 /* EN TELEFONO EL LOGOTIPO NO SE ESCALA, Y ES UNA MEDIDA, no una preferencia.
    Bajo 420 px el logotipo ya mide 30, y 0,737 lo dejaria en 22: los vistos de
@@ -164,9 +176,8 @@ html.hdr-chico .brand .logo{transform:scale(.737);
    La banda igual baja de 78 a 56 px: los 30 px del logotipo caben de sobra en
    56 (ocupan de 13 a 43), asi que en telefono el encogimiento es la subida de
    11 px sola, y eso es todo lo que hace falta. */
-@media (max-width:420px){
-  html.hdr-chico .brand .logo{transform:none}
-}
+/* (La excepcion de telefono para el logotipo encogido se retiro con el
+   encogimiento mismo: escondido no hay tamano que medir.) */
 
 /* =========================================================================
    2 · EL GESTO DE LAS CUATRO LINEAS
@@ -321,8 +332,8 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 @media (prefers-reduced-motion:reduce){
   .hdr .inner, .brand .logo, .tr .t, .tr .halo, .mnu-panel, .mnu-panel a,
   .mnu-panel a::before{transition-duration:.001ms !important; transition-delay:0s !important}
-  html.hdr-chico .hdr .inner{transform:translateY(-11px)}
-  html.hdr-chico .brand .logo{transform:scale(.737)}
+  .hdr{transition-duration:.001ms !important}
+  html.hdr-fuera .hdr{opacity:0; visibility:hidden; transform:translateY(-100%)}
 }
 /* Y LA EXCEPCION DE TELEFONO TAMBIEN, que si no se pierde. Defecto real cazado
    midiendo a 390 px: la restitucion de arriba tiene la misma especificidad que
@@ -330,9 +341,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
    logotipo volvia a escalar a 22 px —el caso en que los vistos de menta se
    quedan sin un solo pixel opaco— justo para quien pidio menos movimiento.
    Restituir el estado final no sirve de nada si se restituye el equivocado. */
-@media (prefers-reduced-motion:reduce) and (max-width:420px){
-  html.hdr-chico .brand .logo{transform:none}
-}
+
 
 /* ======== LAMINAS ======== */
 .lam{position:relative; z-index:2}
@@ -389,6 +398,11 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
 .frase{margin:0; font-family:var(--font-data); font-weight:600; text-transform:uppercase;
   font-size:clamp(28px,5.6vw,66px); line-height:1.14; letter-spacing:-.005em;
   color:var(--crema); text-shadow:0 2px 14px rgba(8,9,12,.75); max-width:19ch}
+/* EL CORTE DE LA ORACION LO DECIDE EL AUTOR, NO EL ANCHO DE LA CAJA.
+   Sebastian, 5-sep: «el corte de la oracion ordena y da enfasis a la
+   informacion que queremos transmitir al lector». Por eso cada linea es un
+   bloque declarado y no el resultado de donde le toco partir al navegador. */
+.li{display:block}
 .frase .lo{display:block}
 .frase b{font:inherit; color:var(--terracota);
   text-shadow:0 2px 3px rgba(8,9,12,.55), var(--glow-terracota)}
@@ -402,9 +416,17 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
   padding:5px 10px; background:rgba(8,9,12,.5)}
 .l3 h2{margin:var(--s4) 0 0; font-family:var(--font-data); font-weight:600;
   text-transform:uppercase; letter-spacing:-.005em; line-height:1.14;
-  font-size:clamp(26px,3.4vw,42px); color:var(--crema); max-width:22ch}
-.l3 .lead{margin:var(--s4) 0 0; max-width:var(--measure); color:var(--crema-75); font-size:17px;
+  /* 34ch, no 22: con 22 la primera linea declarada («Clasifica cada
+     licitacion») se partia sola en dos y el titulo salia en tres lineas, o
+     sea el corte del autor mas uno del navegador encima. La caja tiene que
+     dar para la linea mas larga que se declaro. */
+  font-size:clamp(26px,3.4vw,42px); color:var(--crema); max-width:34ch}
+.l3 .lead{margin:var(--s4) 0 0; max-width:78ch; color:var(--crema-75); font-size:17px;
   text-shadow:var(--sombra-texto)}
+/* En movil la bajada vuelve a fluir: un corte pensado para 1440 partido a la
+   fuerza en 390 deja lineas huerfanas, que es lo contrario del enfasis. Los
+   titulos si mantienen su corte en todo ancho, porque sus lineas son cortas. */
+@media (max-width:700px){ .l3 .lead .li{display:inline} }
 .tabla{margin-top:var(--s7); border-top:1px solid var(--crema-12)}
 .fila{display:grid; grid-template-columns:1fr auto; align-items:center; gap:var(--s4);
   padding:var(--s5) 0; border-bottom:1px solid var(--crema-12); font-family:var(--font-data)}
@@ -505,14 +527,13 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
   display:flex; align-items:center; justify-content:space-between; gap:var(--s5); flex-wrap:wrap}
 .pie .fbrand{display:flex; align-items:center}
 .pie .fbrand .logo{height:28px; width:auto; display:block; opacity:.9; overflow:visible}
-/* El enlace es discreto, pero SE VE COMO ENLACE: la leccion de la ficha
-   tipografiada como metadato en un span que nadie apretaba. */
+/* HOY ES ROTULO Y SE VE COMO ROTULO — sin subrayado ni respuesta al cursor.
+   El principio de antes sigue siendo cierto al reves: si algo se ve como
+   enlace tiene que llevar a alguna parte, y desde el 5-sep no lleva. Un
+   subrayado que no obedece se lee como sitio roto. Cuando el destino vuelva
+   detras de clave, esto vuelve a ser <a> y se repone el subrayado. */
 .pie .intranet{font-family:var(--font-data); font-size:11.5px; letter-spacing:.06em;
-  color:var(--crema-60); text-decoration:underline; text-decoration-thickness:1px;
-  text-underline-offset:5px; text-decoration-color:var(--crema-28);
-  display:inline-flex; align-items:center; min-height:44px;
-  transition:color .18s ease, text-decoration-color .18s ease}
-.pie .intranet:hover, .pie .intranet:focus-visible{color:var(--crema); text-decoration-color:var(--crema-60)}
+  color:var(--crema-60); display:inline-flex; align-items:center; min-height:44px}
 
 /* ======== MOVIL ======== */
 @media (max-width:820px){
@@ -597,7 +618,7 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
              titulos siguen EN EL ORDEN DEL SCROLL; el portafolio es la unica
              pagina que no corre dentro de el, y encabeza por eso. -->
         <a href="portafolio.html">Portafolio</a>
-        <a href="#agente-ia">Agente IA</a>
+        <a href="#agente-ia">Grace Agente IA</a>
         <a href="#empresa">Empresa</a>
         <a href="#contacto">Contacto</a>
       </nav>
@@ -625,7 +646,7 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
     <div class="fig-slot" data-caja aria-hidden="true"></div>
   </div>
 
-  <a class="explorar" href="#frase">&mdash; Explorar &mdash;
+  <a class="explorar" href="#frase">Explorar
     <svg viewBox="0 0 24 14" aria-hidden="true" focusable="false"><path d="M2 2 L12 11 L22 2"/></svg>
   </a>
 
@@ -633,17 +654,22 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
 
 <!-- ====================== LAMINA 2 ====================== -->
 <section class="lam l2" id="frase">
-  <h1 class="frase">Tecnolog&iacute;a para el Estado chileno
-    <span class="lo">Ejecutada por <b>IA</b></span></h1>
+  <h1 class="frase"><span class="li">Tecnolog&iacute;a para</span><span
+      class="li">el Estado chileno</span><span class="li lo">Ejecutada por</span><span
+      class="li"><b>IA</b></span></h1>
 </section>
 
 <!-- ====================== LAMINA 3 ====================== -->
 <section class="lam l3" id="agente-ia">
   <div class="wrap">
-    <p class="chip">Agente IA &middot; pronto Agente Grace</p>
-    <h2>Clasifica cada licitaci&oacute;n de Mercado P&uacute;blico</h2>
-    <p class="lead">Grace monitorea las publicaciones, filtra por rubro y presupuesto,
-      y prepara la propuesta antes del cierre.</p>
+    <p class="chip">Grace Agente IA</p>
+    <h2><span class="li">Clasifica cada licitaci&oacute;n</span><span
+      class="li">de Mercado P&uacute;blico</span></h2>
+    <!-- El salto de linea va ENTRE las etiquetas, no dentro de una: en movil
+         estos dos bloques pasan a `inline` y sin ese espacio el texto sale
+         pegado («presupuesto,y prepara»). Cazado midiendo a 390 px. -->
+    <p class="lead"><span class="li">Grace monitorea las publicaciones, filtra por rubro y presupuesto,</span>
+      <span class="li">y prepara la propuesta antes del cierre.</span></p>
 
     <div class="tabla">
       <div class="fila">
@@ -755,7 +781,15 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
   </div>
   <div class="fila-baja">
     <a class="fbrand" href="#inicio" aria-label="compAI, ir al inicio"><svg class="logo" viewBox="-16 4 328 87" role="img" aria-label="compAI"><use href="#brillo" filter="url(#brasa)" opacity="0.9"/><use href="#marca"/></svg></a>
-    <a class="intranet" href="/estado/">Seguimiento de licitaciones ofertadas - Intranet</a>
+    <!-- ROTULO, NO ENLACE — 5-sep-2026, por instruccion de Sebastian: «todo el
+         resto que se encuentra en compai.cl/estado y estado/tablero es
+         interno, no tenia por que estar expuesto». Las dos paginas se
+         retiraron del sitio publico en el mismo cambio, asi que un enlace a
+         /estado/ hoy seria un 404 con nombre de intranet, que es peor que no
+         tenerlo. El rotulo se queda porque el brief lo pide en el pie
+         («Seguimiento de licitaciones ofertadas - Intranet — nada mas») y
+         vuelve a ser enlace cuando el destino este detras de clave. -->
+    <span class="intranet">Seguimiento de licitaciones ofertadas - Intranet</span>
   </div>
 </footer>
 
@@ -815,7 +849,7 @@ if(location.search.indexOf("slot=1") > -1){document.documentElement.className +=
   var raiz = document.documentElement, l1 = document.getElementById("inicio");
   if(!l1 || !("IntersectionObserver" in window)) return;
   new IntersectionObserver(function(e){
-    raiz.classList.toggle("hdr-chico", !e[0].isIntersecting);
+    raiz.classList.toggle("hdr-fuera", !e[0].isIntersecting);
   }, {threshold:0}).observe(l1);
 })();
 
