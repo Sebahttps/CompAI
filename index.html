@@ -595,8 +595,6 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
 .ct-correo:hover, .ct-correo:focus-visible{color:var(--terracota-200);
   text-decoration-color:var(--terracota-200)}
 .ct-bot{margin:var(--s4) 0 0; font-size:15px; color:var(--crema-75)}
-.ct-dominio{margin:var(--s6) 0 0; font-family:var(--font-data); font-size:12px;
-  letter-spacing:.18em; text-transform:lowercase; color:var(--crema-60)}
 @media (max-width:700px){ .contacto .ct-frase .li{display:inline} }
 
 /* --- LAMINA 6 --- pie alargado --- */
@@ -607,12 +605,8 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
   font-size:clamp(54px,12.4vw,150px); line-height:1; color:var(--crema)}
 .pie .loc{margin:var(--s5) 0 0; font-family:var(--font-data); font-size:12.5px;
   letter-spacing:.18em; text-transform:uppercase; color:var(--crema-60); line-height:1.9}
-.pie .correo{display:inline-flex; align-items:center; min-height:44px; margin-top:var(--s5);
-  font-family:var(--font-data); font-size:14px; letter-spacing:.06em; color:var(--terracota-300);
-  text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:6px;
-  text-decoration-color:var(--terracota-700);
-  transition:color .18s ease, text-decoration-color .18s ease}
-.pie .correo:hover, .pie .correo:focus-visible{color:var(--terracota-200); text-decoration-color:var(--terracota)}
+/* (`.pie .correo` y `.ct-dominio` se retiraron con sus elementos el 6-sep.
+   CSS que ya no viste nada confunde al siguiente que lea esto.) */
 .pie .fila-baja{max-width:var(--shell); margin:var(--s9) auto 0; padding:var(--s5) var(--s5) 0;
   border-top:1px solid var(--crema-12);
   display:flex; align-items:center; justify-content:space-between; gap:var(--s5); flex-wrap:wrap}
@@ -1001,7 +995,8 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
       <span class="li">Env&iacute;anos un correo a</span></p>
     <a class="ct-correo" href="mailto:hola@compai.cl">hola@compai.cl</a>
     <!-- <p class="ct-bot">o habla directamente con nuestra agente Grace</p> -->
-    <p class="ct-dominio">compai.cl</p>
+    <!-- «compai.cl» retirado el 6-sep: firmar la pagina con la direccion
+         de la pagina que se esta mirando no le dice nada a nadie. -->
   </div>
 </section>
 
@@ -1010,9 +1005,15 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
 <!-- ====================== LAMINA 7 - PIE ====================== -->
 <footer class="pie">
   <div class="centro">
-    <p class="rmcl">-RMCL.-</p>
+    <!-- Sin los guiones, 6-sep-2026 por instruccion de Sebastian. El brief
+         del 4-sep lo escribia «-RMCL.-» y asi se publico; hoy zanjo que los
+         guiones no iban, igual que los de «— Explorar —». -->
+    <p class="rmcl">RMCL.</p>
     <p class="loc">Santiago<br>Regi&oacute;n Metropolitana, Chile</p>
-    <a class="correo" href="mailto:hola@compai.cl">hola@compai.cl</a>
+    <!-- EL CORREO SALIO DE AQUI (6-sep). Estaba dos veces en la misma
+         pagina —en la lamina de Contacto y otra vez en el pie— y repetir
+         una direccion no la hace mas visible: la vuelve decorado. Queda
+         donde el visitante la va a buscar, que es Contacto. -->
   </div>
   <div class="fila-baja">
     <a class="fbrand" href="#inicio" aria-label="compAI, ir al inicio"><svg class="logo" viewBox="-16 4 328 87" role="img" aria-label="compAI"><use href="#brillo" filter="url(#brasa)" opacity="0.9"/><use href="#marca"/></svg></a>
