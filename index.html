@@ -391,6 +391,33 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
   animation:explorar-baja 2.4s ease-in-out infinite}
 @keyframes explorar-baja{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
 
+/* =========================================================================
+   LA ESCALA TIPOGRAFICA — corregida el 6-sep-2026 sobre medicion, no a ojo
+   «El sitio en general necesita matices en el tamaño de la letra con los
+   titulos» (Sebastian). Medido a 1440 px, el defecto era este:
+
+     titulos de seccion   42 / 38 / 34 px    tres tamanos casi iguales
+     cuerpos              17 / 19 px         dos tamanos casi iguales
+     KPI numero           44 px              MAS que el titulo de Empresa
+
+   Cuatro pixeles de diferencia entre dos titulos no se leen como jerarquia:
+   se leen como descuido. O son el mismo nivel y miden lo mismo, o son
+   distintos y la diferencia tiene que notarse. Aca son el mismo nivel: son
+   los titulos de cada lamina, y quien manda sobre ellos es la frase de la
+   lamina 2. Asi que:
+
+     66  la declaracion          una sola, y es la mayor
+     42  todo titulo de seccion  L3, L4 y L5, identicos
+     34  dato de apoyo y enlace  KPI y el correo: bajo el titulo, no sobre el
+     18  todo cuerpo de texto    un solo tamano de lectura
+     10.5 rotulos en mono        ya eran consistentes, no se tocan
+
+   El `-RMCL.-` del pie queda en 150 px. Sale de la escala a proposito y por
+   encargo textual del brief —«va grande y centrado»—; no es un titulo, es
+   una firma, y compite con la frase de la lamina 2 solo si se las mira en la
+   misma pantalla, cosa que no pasa.
+   ========================================================================= */
+
 /* --- LAMINA 2 --- solo la frase --- */
 .l2{min-height:82vh; min-height:82svh; max-width:var(--shell); margin:0 auto;
   display:grid; place-items:center;
@@ -421,7 +448,7 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
      sea el corte del autor mas uno del navegador encima. La caja tiene que
      dar para la linea mas larga que se declaro. */
   font-size:clamp(26px,3.4vw,42px); color:var(--crema); max-width:34ch}
-.l3 .lead{margin:var(--s4) 0 0; max-width:78ch; color:var(--crema-75); font-size:17px;
+.l3 .lead{margin:var(--s4) 0 0; max-width:78ch; color:var(--crema-75); font-size:18px;
   text-shadow:var(--sombra-texto)}
 /* En movil la bajada vuelve a fluir: un corte pensado para 1440 partido a la
    fuerza en 390 deja lineas huerfanas, que es lo contrario del enfasis. Los
@@ -483,7 +510,7 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
 .kpis{margin-top:var(--s8); display:grid; grid-template-columns:repeat(3,1fr); gap:var(--s5);
   border-top:1px solid var(--crema-12); padding-top:var(--s6)}
 .kpi b{display:block; font-family:var(--font-data); font-weight:600; line-height:1;
-  font-size:clamp(26px,3.6vw,44px); color:var(--crema); letter-spacing:-.01em}
+  font-size:clamp(24px,2.6vw,34px); color:var(--crema); letter-spacing:-.01em}
 .kpi span{display:block; margin-top:var(--s3); font-family:var(--font-data);
   font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--crema-60)}
 
@@ -493,8 +520,8 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
    escribe compAI. La razon social si va en versales, pero eso viene copiado
    del sitio vigente, no de una regla de esta hoja. */
 .l4 h2{margin:0; font-family:var(--font-data); font-weight:600;
-  font-size:clamp(24px,3.2vw,38px); line-height:1.18; letter-spacing:-.005em; color:var(--crema)}
-.l4 .bajada{margin:var(--s4) 0 0; max-width:var(--measure); font-size:19px; color:var(--crema);
+  font-size:clamp(26px,3.4vw,42px); line-height:1.18; letter-spacing:-.005em; color:var(--crema)}
+.l4 .bajada{margin:var(--s4) 0 0; max-width:var(--measure); font-size:18px; color:var(--crema);
   text-shadow:var(--sombra-texto)}
 .l4 .cuerpo{margin:var(--s5) 0 0; max-width:var(--measure); color:var(--crema-75);
   text-shadow:var(--sombra-texto)}
@@ -520,7 +547,7 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
 .kicker{margin:0; font-family:var(--font-data); font-size:10.5px; font-weight:700;
   letter-spacing:.16em; text-transform:uppercase; color:var(--crema-60)}
 .form-card h2{margin:var(--s3) 0 var(--s6); font-family:var(--font-data); font-weight:600;
-  text-transform:uppercase; font-size:clamp(24px,3vw,34px); line-height:1.16; color:var(--crema)}
+  text-transform:uppercase; font-size:clamp(26px,3.4vw,42px); line-height:1.16; color:var(--crema)}
 .form-card h2 i{font-style:normal; color:var(--terracota)}
 .fgrid{display:grid; gap:var(--s5)}
 .fpair{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s5)}
@@ -557,7 +584,7 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
 .l7{min-height:72vh; min-height:72svh; display:grid; place-items:center;
   text-align:center; padding:var(--s9) var(--s5)}
 .contacto .kicker{margin:0 0 var(--s5)}
-.ct-frase{margin:0; font-size:19px; color:var(--crema-75); line-height:1.5;
+.ct-frase{margin:0; font-size:18px; color:var(--crema-75); line-height:1.5;
   text-shadow:var(--sombra-texto)}
 .ct-correo{display:inline-block; margin:var(--s5) 0 0; font-family:var(--font-data);
   font-weight:600; font-size:clamp(22px,3.2vw,34px); color:var(--terracota);
