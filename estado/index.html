@@ -301,6 +301,21 @@ button:disabled{opacity:.5; cursor:default}
       var p=document.getElementById("puerta");
       if(p&&p.parentNode) p.parentNode.removeChild(p);
       document.body.innerHTML=d.cuerpo;
+      // EL ACCESO AL TABLERO LO PONE LA PORTADA, NO EL CONTENIDO CIFRADO.
+      // `estado.py` tiene un boton al tablero dentro del registro, pero ese
+      // registro se cifro antes de que existiera y volver a meterlo obligaria
+      // a Sebastian a poner la clave de nuevo solo para ganar un enlace. Esto
+      // se agrega despues de descifrar, desde la parte de la pagina que yo si
+      // puedo regenerar sin la clave. Si el registro ya trae el suyo, no se
+      // duplica.
+      if(!document.querySelector('a[href="tablero/"], a[href="/estado/tablero/"]')){
+        var nav=document.createElement("p");
+        nav.style.cssText="margin:32px 0 0;text-align:center;font-family:var(--font-data,ui-monospace,monospace);font-size:13px";
+        var a=document.createElement("a");
+        a.href="tablero/"; a.textContent="Ir al tablero de decisiones →";
+        a.style.cssText="color:var(--terracota,#C87941);text-decoration:underline;text-underline-offset:5px";
+        nav.appendChild(a); document.body.appendChild(nav);
+      }
       document.title="En qu\u00e9 va cada cosa \u00b7 COMPAI GLOBAL SOLUTIONS SPA";
       // Se guarda DESPUES de confirmar que la clave abrio de verdad (nunca
       // antes): si se guardara al escribirla, una clave mala tambien
