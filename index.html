@@ -36,10 +36,10 @@
   --crema-12:#242526; --crema-06:#161719;
   --terracota:#C87941; --terracota-700:#8A4F27; --terracota-600:#A66234;
   --terracota-400:#D88A52; --terracota-300:#E09A63; --terracota-200:#EFB98C;
-  --menta:#4CC48B; --menta-600:#2FA871; --menta-300:#6FD9A6;
+  --azul:#2E8FB5; --azul-600:#13749A; --azul-300:#78C5E3;
   --alerta:#D65454; --alerta-300:#F0A0A0;
   --glow-terracota:0 0 34px rgba(200,121,65,.38);
-  --glow-menta:0 0 30px rgba(76,196,139,.34);
+  --glow-azul:0 0 30px rgba(46,143,181,.34);
   --sombra-texto:0 2px 10px rgba(8,9,12,.85);
   --font-data:ui-monospace,"SF Mono","Cascadia Mono","Segoe UI Mono",Menlo,Consolas,"Courier New",monospace;
   --font-display:var(--font-data);
@@ -59,7 +59,7 @@ body{margin:0; position:relative; background:var(--ink-900); color:var(--crema);
      contenedor de scroll y deja inertes los view-timeline (doctrina §4) */
   overflow-x:clip}
 .wrap{max-width:var(--shell); margin:0 auto; padding:0 var(--s5)}
-:focus-visible{outline:2px solid var(--menta); outline-offset:3px}
+:focus-visible{outline:2px solid var(--azul); outline-offset:3px}
 
 /* ======== FONDO PLEXUS GLOBAL (identico al v15) ======== */
 #bg{position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; background:var(--ink-900)}
@@ -142,14 +142,14 @@ html:not(.js) #agente, html:not(.js) #nube{display:none}
   transition:transform var(--t-crece) var(--asienta)}
 .hdr .inner > *{pointer-events:auto}
 .brand{display:flex; align-items:center; flex:0 0 auto}
-.brand .logo{height:38px; width:auto; display:block; overflow:visible;
+.brand .logo{height:57px; width:auto; display:block; overflow:visible;
   transform-origin:0 50%;
   /* la sombra va SOBRE LA PIEZA, no es una caja: es lo unico que el encargo
      permite para despegar el logotipo de los fotogramas claros del plexus */
   filter:drop-shadow(0 2px 9px rgba(8,9,12,.9));
   transition:transform var(--t-crece) var(--asienta),
              filter var(--t-crece) var(--entra)}
-@media (max-width:420px){.brand .logo{height:30px}}
+@media (max-width:420px){.brand .logo{height:45px}}
 
 /* EL ENCABEZADO SE ESCONDE PASADA LA LAMINA 1 — corregido el 5-sep-2026.
    Antes se ENCOGIA y se quedaba fijo, y ahi estaba el defecto que reporto
@@ -166,16 +166,20 @@ html.hdr-fuera .hdr{opacity:0; visibility:hidden; transform:translateY(-100%);
   transition-delay:0s, 0s, var(--t-encoge)}
 
 /* EN TELEFONO EL LOGOTIPO NO SE ESCALA, Y ES UNA MEDIDA, no una preferencia.
-   Bajo 420 px el logotipo ya mide 30, y 0,737 lo dejaria en 22: los vistos de
-   menta son 2,2 unidades de trazo a 1,5x sobre una viewBox de 87, o sea menos
-   de un pixel entero. Medido con `contraste.py --w=390`: en el estado
-   encogido los vistos NO TIENEN NI UN PIXEL COMPLETAMENTE OPACO —el
-   instrumento devuelve «sin tinta aislable»—, mientras que a 30 px tiene 8.
-   Un elemento de marca que se disuelve en antialias no es un encabezado
+   Bajo 420 px el logotipo mide 45 y 0,737 lo dejaria en 33. ACTUALIZADO EL
+   11-SEP-2026 con el logotipo canonico: los vistos son ahora 2,8 unidades de
+   trazo a 1,5x sobre una viewBox de 131 —no 2,2 sobre 87—, o sea 1,44 px a
+   45 y 1,06 px a 33. La solida canonica es MAS GRUESA en pantalla que el
+   dibujo que reemplaza (1,14 px a la altura vieja), asi que el margen mejoro;
+   la regla se mantiene igual porque bajo un pixel entero el antialias se come
+   el remate, y un elemento de marca que se disuelve no es un encabezado
    encogido, es un encabezado roto.
-   La banda igual baja de 78 a 56 px: los 30 px del logotipo caben de sobra en
-   56 (ocupan de 13 a 43), asi que en telefono el encogimiento es la subida de
-   11 px sola, y eso es todo lo que hace falta. */
+   POR QUE LA SOLIDA Y NO LA HUELLA (manual 04): el minimo de la huella son
+   485 px de lockup; aqui la tinta mide 124 px medidos por CDP. Encoger la
+   huella en vez de cambiar a la solida es el error que el manual nombra.
+   La banda igual baja de 78 a 56 px: el archivo canonico trae su propio aire
+   (tinta de 47,2 sobre viewBox de 131), asi que de los 45 px solo 16 son
+   tinta y caben de sobra en 56. */
 /* (La excepcion de telefono para el logotipo encogido se retiro con el
    encogimiento mismo: escondido no hay tamano que medir.) */
 
@@ -231,7 +235,7 @@ html.hdr-fuera .hdr{opacity:0; visibility:hidden; transform:translateY(-100%);
 .mnu{position:relative; width:52px; height:52px; margin-right:-9px; padding:0; border:0;
   background:none; cursor:pointer; display:grid; place-items:center; line-height:0;
   -webkit-tap-highlight-color:transparent}
-.mnu:focus-visible{outline:2px solid var(--menta); outline-offset:4px; border-radius:var(--radio)}
+.mnu:focus-visible{outline:2px solid var(--azul); outline-offset:4px; border-radius:var(--radio)}
 .mnu .vu{position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap}
 /* el lienzo mide lo que mide el MENU y sobresale del boton hacia la izquierda;
    en reposo solo se ve su extremo derecho. `right:9px` cancela el
@@ -251,13 +255,13 @@ html.hdr-fuera .hdr{opacity:0; visibility:hidden; transform:translateY(-100%);
 .tr .t1{--dy:10.5px} .tr .t2{--dy:3.5px} .tr .t3{--dy:-3.5px} .tr .t4{--dy:-10.5px}
 /* EL HALO en un trazo APARTE, mas grueso y casi transparente, que en reposo
    mide cero: asi la iluminacion no depende de `filter:drop-shadow` en bucle. */
-.tr .halo{stroke:var(--menta); stroke-width:7; opacity:0;
+.tr .halo{stroke:var(--azul); stroke-width:7; opacity:0;
   stroke-dasharray:247; stroke-dashoffset:205;
   transition:opacity .26s var(--entra) .16s, transform .32s var(--anticipa),
              stroke-dashoffset .38s var(--entra) .16s}
 
 .mnu-zona:hover .tr .t, .mnu-zona:focus-within .tr .t, .mnu-zona.abre .tr .t{
-  transform:translateY(var(--dy)); stroke:var(--menta);
+  transform:translateY(var(--dy)); stroke:var(--azul);
   stroke-dashoffset:calc(247px - var(--menu-largo))}
 .mnu-zona:hover .tr .halo, .mnu-zona:focus-within .tr .halo, .mnu-zona.abre .tr .halo{
   opacity:.20; transform:translateY(var(--dy));
@@ -273,7 +277,7 @@ html.hdr-fuera .hdr{opacity:0; visibility:hidden; transform:translateY(-100%);
    34 px mas abajo y la linea dejaba de leerse como su canto.
 
    LA TIPOGRAFIA ES DE VisuAI, literal de su archivo (12,5 px, 600, .16em,
-   versales, --crema-75, sombra propia y el filete de menta al posarse). Mi
+   versales, --crema-75, sombra propia y el filete de azul al posarse). Mi
    version numeraba los titulos 01..06; la numeracion es tipografia y la
    tipografia es suya, asi que se va.
    ---------------------------------------------------------------------- */
@@ -294,7 +298,7 @@ html.hdr-fuera .hdr{opacity:0; visibility:hidden; transform:translateY(-100%);
   min-height:44px; display:inline-flex; align-items:center; white-space:nowrap;
   transition:opacity .24s var(--sale), transform .24s var(--sale), color .18s var(--micro)}
 .mnu-panel a::before{content:""; width:0; height:2px; border-radius:1px; margin-right:0;
-  background:var(--menta); box-shadow:var(--glow-menta);
+  background:var(--azul); box-shadow:var(--glow-azul);
   transition:width .22s var(--micro), margin-right .22s var(--micro)}
 .mnu-panel a:hover, .mnu-panel a:focus-visible{color:var(--crema)}
 .mnu-panel a:hover::before, .mnu-panel a:focus-visible::before{width:16px; margin-right:var(--s2)}
@@ -338,8 +342,8 @@ html.hdr-fuera .hdr{opacity:0; visibility:hidden; transform:translateY(-100%);
 /* Y LA EXCEPCION DE TELEFONO TAMBIEN, que si no se pierde. Defecto real cazado
    midiendo a 390 px: la restitucion de arriba tiene la misma especificidad que
    la regla de `max-width:420` y va DESPUES, asi que con movimiento reducido el
-   logotipo volvia a escalar a 22 px —el caso en que los vistos de menta se
-   quedan sin un solo pixel opaco— justo para quien pidio menos movimiento.
+   logotipo volvia a escalar a 33 px —el caso en que los vistos se acercan al
+   pixel unico— justo para quien pidio menos movimiento.
    Restituir el estado final no sirve de nada si se restituye el equivocado. */
 
 
@@ -366,11 +370,11 @@ html.menu-abierto .prov{opacity:0; transform:translateY(8px); pointer-events:non
 .prov .t2{font-size:11px; letter-spacing:.11em; text-transform:uppercase;
   color:var(--crema-75); font-weight:600}
 .prov .ficha{display:inline-flex; align-items:center; min-height:44px; margin-top:2px;
-  color:var(--menta-300); text-decoration:none; font-size:10.5px; font-weight:600;
+  color:var(--azul-300); text-decoration:none; font-size:10.5px; font-weight:600;
   letter-spacing:.09em; text-decoration:underline; text-decoration-thickness:1px;
-  text-underline-offset:5px; text-decoration-color:rgba(76,196,139,.45);
+  text-underline-offset:5px; text-decoration-color:rgba(46,143,181,.45);
   transition:color .18s ease, text-decoration-color .18s ease}
-.prov .ficha:hover, .prov .ficha:focus-visible{color:var(--menta); text-decoration-color:var(--menta)}
+.prov .ficha:hover, .prov .ficha:focus-visible{color:var(--azul); text-decoration-color:var(--azul)}
 
 /* Hueco de la figura. NO se pinta nada aqui: las particulas son de CinemAI.
    El hueco reserva el sitio para que la composicion no salte cuando entren.
@@ -438,8 +442,8 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
 .l3{padding:var(--s9) 0}
 .chip{display:inline-flex; align-items:center; gap:var(--s2);
   font-family:var(--font-data); font-size:10.5px; font-weight:700; letter-spacing:.16em;
-  text-transform:uppercase; color:var(--menta-300);
-  border:1px solid rgba(76,196,139,.36); border-radius:var(--radio);
+  text-transform:uppercase; color:var(--azul-300);
+  border:1px solid rgba(46,143,181,.36); border-radius:var(--radio);
   padding:5px 10px; background:rgba(8,9,12,.5)}
 .l3 h2{margin:var(--s4) 0 0; font-family:var(--font-data); font-weight:600;
   text-transform:uppercase; letter-spacing:-.005em; line-height:1.14;
@@ -466,7 +470,7 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
   overflow-y:auto; overscroll-behavior:contain;
   border-top:1px solid var(--crema-12);
   scrollbar-width:thin; scrollbar-color:var(--crema-28) transparent}
-.lics:focus-visible{outline:2px solid var(--menta-300); outline-offset:3px}
+.lics:focus-visible{outline:2px solid var(--azul-300); outline-offset:3px}
 .lics::-webkit-scrollbar{width:6px}
 .lics::-webkit-scrollbar-thumb{background:var(--crema-28); border-radius:3px}
 .lics-lista{list-style:none; margin:0; padding:0}
@@ -477,10 +481,10 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
   border-radius:var(--radio); padding:5px 8px; text-align:center; white-space:nowrap}
 /* El orden de prioridad se lee tambien en el color: lo ganado brilla, lo
    descartado se apaga. Ninguno usa --crema-28 como texto (2,24:1). */
-.lic-est.e-ganada{color:var(--ink-900); background:var(--menta); font-weight:700}
-.lic-est.e-ofertada{color:var(--menta-300); border:1px solid rgba(76,196,139,.5); background:rgba(76,196,139,.12)}
+.lic-est.e-ganada{color:var(--ink-900); background:var(--azul); font-weight:700}
+.lic-est.e-ofertada{color:var(--azul-300); border:1px solid rgba(46,143,181,.5); background:rgba(46,143,181,.12)}
 .lic-est.e-consulta{color:var(--terracota-300); border:1px solid rgba(200,121,65,.45); background:rgba(200,121,65,.10)}
-.lic-est.e-pertinente{color:var(--menta-300); border:1px solid rgba(76,196,139,.36); background:none}
+.lic-est.e-pertinente{color:var(--azul-300); border:1px solid rgba(46,143,181,.36); background:none}
 .lic-est.e-descartada{color:var(--crema-60); border:1px solid var(--crema-28); background:none}
 .lic-nom{font-size:14px; color:var(--crema); letter-spacing:.01em; line-height:1.45}
 .lic-cod{display:block; font-size:11px; color:var(--crema-60); letter-spacing:.04em}
@@ -505,7 +509,7 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
 .fila .lic .pto{color:var(--crema-60); padding:0 6px}
 .ver{font-size:10.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
   border-radius:var(--radio); padding:5px 10px; white-space:nowrap}
-.ver.si{color:var(--menta-300); border:1px solid rgba(76,196,139,.36); background:rgba(76,196,139,.07)}
+.ver.si{color:var(--azul-300); border:1px solid rgba(46,143,181,.36); background:rgba(46,143,181,.07)}
 .ver.no{color:var(--crema-60); border:1px solid var(--crema-28); background:none}
 .kpis{margin-top:var(--s8); display:grid; grid-template-columns:repeat(3,1fr); gap:var(--s5);
   border-top:1px solid var(--crema-12); padding-top:var(--s6)}
@@ -536,7 +540,7 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
 .d dd b{color:var(--crema)}
 .d .mt{font-family:var(--font-data); font-size:11.5px; font-weight:700; letter-spacing:.1em;
   color:var(--crema)}
-.d .mt[data-luz]{color:var(--menta)}
+.d .mt[data-luz]{color:var(--azul)}
 .d .verif{font-family:var(--font-data); font-size:10.5px; color:var(--crema-60)}
 
 /* --- LAMINA 5 --- formulario. SIN el correo de compAI. --- */
@@ -611,7 +615,7 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
   border-top:1px solid var(--crema-12);
   display:flex; align-items:center; justify-content:space-between; gap:var(--s5); flex-wrap:wrap}
 .pie .fbrand{display:flex; align-items:center}
-.pie .fbrand .logo{height:28px; width:auto; display:block; opacity:.9; overflow:visible}
+.pie .fbrand .logo{height:42px; width:auto; display:block; opacity:.9; overflow:visible}
 /* Discreto, pero SE VE COMO ENLACE: la leccion de la ficha tipografiada como
    metadato en un span que nadie apretaba. Estuvo un dia como rotulo sin
    subrayado —lo correcto mientras no llevaba a ninguna parte— y vuelve a
@@ -672,16 +676,16 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
 <!-- ====================== ENCABEZADO ====================== -->
 <header class="hdr">
   <div class="inner">
-    <a class="brand" href="#inicio" aria-label="compAI, ir al inicio"><svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="-16 4 328 87" role="img" aria-label="compAI">
+    <a class="brand" href="#inicio" aria-label="compAI, ir al inicio"><svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="-38 -18 372 131" role="img" aria-label="compAI">
   
   <defs>
     <filter id="brasa" x="-150%" y="-150%" width="400%" height="400%">
-      <feGaussianBlur stdDeviation="5" result="b1"/>
-      <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="b2"/>
-      <feMerge><feMergeNode in="b2"/><feMergeNode in="b1"/></feMerge>
+      <feGaussianBlur stdDeviation="5" result="b1">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="b2">
+      <feMerge><feMergeNode in="b2"><feMergeNode in="b1"></feMerge>
     </filter>
-    <g id="brillo"><path fill="#C87941" d="M172.205 52.695L170.937 49.460L158.049 49.460L156.755 52.695L158.049 52.695Q159.964 52.695 160.779 53.432Q161.595 54.170 161.595 55.360Q161.595 56.525 160.779 57.262Q159.964 58 158.049 58L150.907 58Q148.992 58 148.176 57.262Q147.361 56.525 147.361 55.334Q147.361 54.144 148.215 53.394Q149.069 52.643 151.036 52.695L159.369 31.940L155.901 31.940Q153.986 31.940 153.171 31.202Q152.356 30.465 152.356 29.274Q152.356 28.084 153.171 27.346Q153.986 26.609 155.901 26.609L167.366 26.635L177.924 52.695Q179.787 52.695 180.383 53.109Q181.573 53.963 181.573 55.360Q181.573 56.525 180.771 57.262Q179.969 58 178.054 58L170.911 58Q168.996 58 168.181 57.262Q167.366 56.525 167.366 55.334Q167.366 54.170 168.181 53.432Q168.996 52.695 170.911 52.695L172.205 52.695M160.171 44.155L168.737 44.155L164.467 33.648 M205.869 31.940L200.512 31.940L200.512 52.695L205.869 52.695Q207.784 52.695 208.599 53.432Q209.414 54.170 209.414 55.360Q209.414 56.525 208.599 57.262Q207.784 58 205.869 58L189.850 58Q187.935 58 187.120 57.262Q186.304 56.525 186.304 55.334Q186.304 54.170 187.120 53.432Q187.935 52.695 189.850 52.695L195.207 52.695L195.207 31.940L189.850 31.940Q187.935 31.940 187.120 31.202Q186.304 30.465 186.304 29.274Q186.304 28.084 187.120 27.346Q187.935 26.609 189.850 26.609L205.869 26.635Q207.784 26.635 208.599 27.359Q209.414 28.084 209.414 29.274Q209.414 30.465 208.599 31.202Q207.784 31.940 205.869 31.940"/><g transform="translate(259 20) scale(1.5)" fill="none" stroke="#4CC48B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8.5 L5 12.5 L12 4"/><path d="M10 8.5 L14 12.5 L21 4"/></g></g>
-    <g id="marca"><path fill="#F5F0E4" d="M33.340 37.547L25.766 38.914Q25.383 36.645 24.029 35.496Q22.676 34.348 20.516 34.348Q17.645 34.348 15.936 36.330Q14.227 38.313 14.227 42.961Q14.227 48.129 15.963 50.262Q17.699 52.395 20.625 52.395Q22.813 52.395 24.207 51.150Q25.602 49.906 26.176 46.871L33.723 48.156Q32.547 53.352 29.211 56.004Q25.875 58.656 20.270 58.656Q13.898 58.656 10.111 54.637Q6.324 50.617 6.324 43.508Q6.324 36.316 10.125 32.311Q13.926 28.305 20.406 28.305Q25.711 28.305 28.842 30.588Q31.973 32.871 33.340 37.547 M36.187 43.070Q36.187 39.242 38.073 35.660Q39.960 32.078 43.419 30.191Q46.878 28.305 51.144 28.305Q57.734 28.305 61.945 32.584Q66.155 36.863 66.155 43.398Q66.155 49.988 61.904 54.322Q57.652 58.656 51.198 58.656Q47.206 58.656 43.583 56.852Q39.960 55.047 38.073 51.561Q36.187 48.074 36.187 43.070M44.062 43.480Q44.062 47.801 46.112 50.098Q48.163 52.395 51.171 52.395Q54.179 52.395 56.216 50.098Q58.253 47.801 58.253 43.426Q58.253 39.160 56.216 36.863Q54.179 34.566 51.171 34.566Q48.163 34.566 46.112 36.863Q44.062 39.160 44.062 43.480 M70.397 58L70.397 28.961L77.479 28.961L77.479 32.926Q81.280 28.305 86.530 28.305Q89.319 28.305 91.370 29.453Q93.420 30.602 94.733 32.926Q96.647 30.602 98.862 29.453Q101.077 28.305 103.592 28.305Q106.791 28.305 109.006 29.604Q111.221 30.902 112.315 33.418Q113.108 35.277 113.108 39.434L113.108 58L105.424 58L105.424 41.402Q105.424 37.082 104.631 35.824Q103.565 34.184 101.350 34.184Q99.737 34.184 98.315 35.168Q96.893 36.152 96.264 38.053Q95.635 39.953 95.635 44.055L95.635 58L87.952 58L87.952 42.086Q87.952 37.848 87.541 36.617Q87.131 35.387 86.270 34.785Q85.409 34.184 83.932 34.184Q82.155 34.184 80.733 35.141Q79.311 36.098 78.696 37.902Q78.080 39.707 78.080 43.891L78.080 58 M119.345 69.047L119.345 28.961L126.509 28.961L126.509 33.227Q127.904 31.039 130.283 29.672Q132.662 28.305 135.560 28.305Q140.619 28.305 144.146 32.270Q147.673 36.234 147.673 43.316Q147.673 50.590 144.119 54.623Q140.564 58.656 135.505 58.656Q133.099 58.656 131.144 57.699Q129.189 56.742 127.029 54.418L127.029 69.047L119.345 69.047M126.947 42.988Q126.947 47.883 128.888 50.221Q130.830 52.559 133.619 52.559Q136.298 52.559 138.076 50.412Q139.853 48.266 139.853 43.371Q139.853 38.805 138.021 36.590Q136.189 34.375 133.482 34.375Q130.666 34.375 128.806 36.549Q126.947 38.723 126.947 42.988"/><path fill="#C87941" d="M172.205 52.695L170.937 49.460L158.049 49.460L156.755 52.695L158.049 52.695Q159.964 52.695 160.779 53.432Q161.595 54.170 161.595 55.360Q161.595 56.525 160.779 57.262Q159.964 58 158.049 58L150.907 58Q148.992 58 148.176 57.262Q147.361 56.525 147.361 55.334Q147.361 54.144 148.215 53.394Q149.069 52.643 151.036 52.695L159.369 31.940L155.901 31.940Q153.986 31.940 153.171 31.202Q152.356 30.465 152.356 29.274Q152.356 28.084 153.171 27.346Q153.986 26.609 155.901 26.609L167.366 26.635L177.924 52.695Q179.787 52.695 180.383 53.109Q181.573 53.963 181.573 55.360Q181.573 56.525 180.771 57.262Q179.969 58 178.054 58L170.911 58Q168.996 58 168.181 57.262Q167.366 56.525 167.366 55.334Q167.366 54.170 168.181 53.432Q168.996 52.695 170.911 52.695L172.205 52.695M160.171 44.155L168.737 44.155L164.467 33.648 M205.869 31.940L200.512 31.940L200.512 52.695L205.869 52.695Q207.784 52.695 208.599 53.432Q209.414 54.170 209.414 55.360Q209.414 56.525 208.599 57.262Q207.784 58 205.869 58L189.850 58Q187.935 58 187.120 57.262Q186.304 56.525 186.304 55.334Q186.304 54.170 187.120 53.432Q187.935 52.695 189.850 52.695L195.207 52.695L195.207 31.940L189.850 31.940Q187.935 31.940 187.120 31.202Q186.304 30.465 186.304 29.274Q186.304 28.084 187.120 27.346Q187.935 26.609 189.850 26.609L205.869 26.635Q207.784 26.635 208.599 27.359Q209.414 28.084 209.414 29.274Q209.414 30.465 208.599 31.202Q207.784 31.940 205.869 31.940"/><g transform="translate(259 20) scale(1.5)" fill="none" stroke="#4CC48B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8.5 L5 12.5 L12 4"/><path d="M10 8.5 L14 12.5 L21 4"/></g></g>
+    <g id="brillo"><g fill="none"><path transform="translate(4.000 58.000) scale(0.056000 -0.056000)" d="M522.00 187.00H388.00C370.00 131.00 342.00 104.00 288.00 104.00C217.00 104.00 174.00 161.00 174.00 266.00C174.00 365.00 200.00 436.00 288.00 436.00C345.00 436.00 372.00 409.00 388.00 338.00H522.00C512.00 470.00 424.00 549.00 289.00 549.00C128.00 549.00 34.00 450.00 34.00 266.00C34.00 88.00 127.00 -9.00 287.00 -9.00C418.00 -9.00 509.00 72.00 522.00 187.00Z"/><path transform="translate(33.936 58.000) scale(0.056000 -0.056000)" d="M569.00 266.00C569.00 449.00 470.00 549.00 301.00 549.00C136.00 549.00 35.00 447.00 35.00 270.00C35.00 92.00 136.00 -9.00 302.00 -9.00C466.00 -9.00 569.00 93.00 569.00 266.00ZM429.00 268.00C429.00 167.00 377.00 104.00 302.00 104.00C226.00 104.00 175.00 167.00 175.00 270.00C175.00 373.00 226.00 436.00 302.00 436.00C379.00 436.00 429.00 374.00 429.00 268.00Z"/><path transform="translate(66.952 58.000) scale(0.056000 -0.056000)" d="M824.00 0.00V382.00C824.00 487.00 760.00 549.00 652.00 549.00C584.00 549.00 536.00 525.00 494.00 469.00C468.00 520.00 414.00 549.00 347.00 549.00C285.00 549.00 245.00 528.00 199.00 473.00V540.00H60.00V0.00H200.00V324.00C200.00 390.00 236.00 430.00 296.00 430.00C343.00 430.00 372.00 403.00 372.00 360.00V0.00H512.00V324.00C512.00 390.00 548.00 430.00 608.00 430.00C655.00 430.00 684.00 403.00 684.00 360.00V0.00Z"/><path transform="translate(115.536 58.000) scale(0.056000 -0.056000)" d="M574.00 270.00C574.00 430.00 489.00 549.00 348.00 549.00C280.00 549.00 232.00 520.00 198.00 460.00V540.00H58.00V-218.00H198.00V72.00C232.00 12.00 280.00 -9.00 348.00 -9.00C478.00 -9.00 574.00 106.00 574.00 270.00ZM434.00 268.00C434.00 170.00 385.00 108.00 316.00 108.00C246.00 108.00 198.00 169.00 198.00 270.00C198.00 371.00 246.00 432.00 316.00 432.00C387.00 432.00 434.00 371.00 434.00 268.00Z"/></g><g fill="#C87941"><path transform="translate(148.552 58.000) scale(0.025879 -0.025879)" d="M798.00 1122.00 1088.00 205.00H1175.00Q1199.00 205.00 1212.00 197.00Q1225.00 189.00 1231.50 167.00Q1238.00 145.00 1238.00 103.00Q1238.00 61.00 1231.50 39.00Q1225.00 17.00 1212.00 8.50Q1199.00 0.00 1175.00 0.00H751.00Q727.00 0.00 714.00 8.50Q701.00 17.00 694.50 39.00Q688.00 61.00 688.00 103.00Q688.00 145.00 694.50 167.00Q701.00 189.00 714.00 197.00Q727.00 205.00 751.00 205.00H837.00L792.00 350.00H428.00L383.00 205.00H457.00Q481.00 205.00 494.00 197.00Q507.00 189.00 513.50 167.00Q520.00 145.00 520.00 103.00Q520.00 61.00 513.50 39.00Q507.00 17.00 494.00 8.50Q481.00 0.00 457.00 0.00H53.00Q29.00 0.00 16.00 8.50Q3.00 17.00 -3.50 39.00Q-10.00 61.00 -10.00 103.00Q-10.00 145.00 -3.50 167.00Q3.00 189.00 16.00 197.00Q29.00 205.00 53.00 205.00H137.00L390.00 982.00H223.00Q199.00 982.00 186.00 990.50Q173.00 999.00 166.50 1021.00Q160.00 1043.00 160.00 1085.00Q160.00 1127.00 166.50 1149.00Q173.00 1171.00 186.00 1179.00Q199.00 1187.00 223.00 1187.00H697.00Q737.00 1187.00 762.00 1171.50Q787.00 1156.00 798.00 1122.00ZM609.00 982.00 486.00 555.00H735.00L615.00 982.00Z"/><path transform="translate(181.931 58.000) scale(0.025879 -0.025879)" d="M1038.00 1084.00Q1038.00 1042.00 1031.50 1020.00Q1025.00 998.00 1012.00 990.00Q999.00 982.00 975.00 982.00H739.00V205.00H995.00Q1019.00 205.00 1032.00 196.50Q1045.00 188.00 1051.50 166.00Q1058.00 144.00 1058.00 102.00Q1058.00 60.00 1051.50 38.00Q1045.00 16.00 1032.00 8.00Q1019.00 0.00 995.00 0.00H233.00Q209.00 0.00 196.00 8.00Q183.00 16.00 176.50 38.00Q170.00 60.00 170.00 102.00Q170.00 144.00 176.50 166.00Q183.00 188.00 196.00 196.50Q209.00 205.00 233.00 205.00H489.00V982.00H253.00Q229.00 982.00 216.00 990.00Q203.00 998.00 196.50 1020.00Q190.00 1042.00 190.00 1084.00Q190.00 1126.00 196.50 1148.00Q203.00 1170.00 216.00 1178.50Q229.00 1187.00 253.00 1187.00H975.00Q999.00 1187.00 1012.00 1178.50Q1025.00 1170.00 1031.50 1148.00Q1038.00 1126.00 1038.00 1084.00Z"/></g><g transform="translate(259 20) scale(1.5)"><g fill="none" stroke="#2E8FB5" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8.5 L5 12.5 L12 4"/><path d="M10 8.5 L14 12.5 L21 4"/></g></g></g>
+    <g id="marca"><g fill="#F5F0E4"><path transform="translate(4.000 58.000) scale(0.056000 -0.056000)" d="M522.00 187.00H388.00C370.00 131.00 342.00 104.00 288.00 104.00C217.00 104.00 174.00 161.00 174.00 266.00C174.00 365.00 200.00 436.00 288.00 436.00C345.00 436.00 372.00 409.00 388.00 338.00H522.00C512.00 470.00 424.00 549.00 289.00 549.00C128.00 549.00 34.00 450.00 34.00 266.00C34.00 88.00 127.00 -9.00 287.00 -9.00C418.00 -9.00 509.00 72.00 522.00 187.00Z"/><path transform="translate(33.936 58.000) scale(0.056000 -0.056000)" d="M569.00 266.00C569.00 449.00 470.00 549.00 301.00 549.00C136.00 549.00 35.00 447.00 35.00 270.00C35.00 92.00 136.00 -9.00 302.00 -9.00C466.00 -9.00 569.00 93.00 569.00 266.00ZM429.00 268.00C429.00 167.00 377.00 104.00 302.00 104.00C226.00 104.00 175.00 167.00 175.00 270.00C175.00 373.00 226.00 436.00 302.00 436.00C379.00 436.00 429.00 374.00 429.00 268.00Z"/><path transform="translate(66.952 58.000) scale(0.056000 -0.056000)" d="M824.00 0.00V382.00C824.00 487.00 760.00 549.00 652.00 549.00C584.00 549.00 536.00 525.00 494.00 469.00C468.00 520.00 414.00 549.00 347.00 549.00C285.00 549.00 245.00 528.00 199.00 473.00V540.00H60.00V0.00H200.00V324.00C200.00 390.00 236.00 430.00 296.00 430.00C343.00 430.00 372.00 403.00 372.00 360.00V0.00H512.00V324.00C512.00 390.00 548.00 430.00 608.00 430.00C655.00 430.00 684.00 403.00 684.00 360.00V0.00Z"/><path transform="translate(115.536 58.000) scale(0.056000 -0.056000)" d="M574.00 270.00C574.00 430.00 489.00 549.00 348.00 549.00C280.00 549.00 232.00 520.00 198.00 460.00V540.00H58.00V-218.00H198.00V72.00C232.00 12.00 280.00 -9.00 348.00 -9.00C478.00 -9.00 574.00 106.00 574.00 270.00ZM434.00 268.00C434.00 170.00 385.00 108.00 316.00 108.00C246.00 108.00 198.00 169.00 198.00 270.00C198.00 371.00 246.00 432.00 316.00 432.00C387.00 432.00 434.00 371.00 434.00 268.00Z"/></g><g fill="#C87941"><path transform="translate(148.552 58.000) scale(0.025879 -0.025879)" d="M798.00 1122.00 1088.00 205.00H1175.00Q1199.00 205.00 1212.00 197.00Q1225.00 189.00 1231.50 167.00Q1238.00 145.00 1238.00 103.00Q1238.00 61.00 1231.50 39.00Q1225.00 17.00 1212.00 8.50Q1199.00 0.00 1175.00 0.00H751.00Q727.00 0.00 714.00 8.50Q701.00 17.00 694.50 39.00Q688.00 61.00 688.00 103.00Q688.00 145.00 694.50 167.00Q701.00 189.00 714.00 197.00Q727.00 205.00 751.00 205.00H837.00L792.00 350.00H428.00L383.00 205.00H457.00Q481.00 205.00 494.00 197.00Q507.00 189.00 513.50 167.00Q520.00 145.00 520.00 103.00Q520.00 61.00 513.50 39.00Q507.00 17.00 494.00 8.50Q481.00 0.00 457.00 0.00H53.00Q29.00 0.00 16.00 8.50Q3.00 17.00 -3.50 39.00Q-10.00 61.00 -10.00 103.00Q-10.00 145.00 -3.50 167.00Q3.00 189.00 16.00 197.00Q29.00 205.00 53.00 205.00H137.00L390.00 982.00H223.00Q199.00 982.00 186.00 990.50Q173.00 999.00 166.50 1021.00Q160.00 1043.00 160.00 1085.00Q160.00 1127.00 166.50 1149.00Q173.00 1171.00 186.00 1179.00Q199.00 1187.00 223.00 1187.00H697.00Q737.00 1187.00 762.00 1171.50Q787.00 1156.00 798.00 1122.00ZM609.00 982.00 486.00 555.00H735.00L615.00 982.00Z"/><path transform="translate(181.931 58.000) scale(0.025879 -0.025879)" d="M1038.00 1084.00Q1038.00 1042.00 1031.50 1020.00Q1025.00 998.00 1012.00 990.00Q999.00 982.00 975.00 982.00H739.00V205.00H995.00Q1019.00 205.00 1032.00 196.50Q1045.00 188.00 1051.50 166.00Q1058.00 144.00 1058.00 102.00Q1058.00 60.00 1051.50 38.00Q1045.00 16.00 1032.00 8.00Q1019.00 0.00 995.00 0.00H233.00Q209.00 0.00 196.00 8.00Q183.00 16.00 176.50 38.00Q170.00 60.00 170.00 102.00Q170.00 144.00 176.50 166.00Q183.00 188.00 196.00 196.50Q209.00 205.00 233.00 205.00H489.00V982.00H253.00Q229.00 982.00 216.00 990.00Q203.00 998.00 196.50 1020.00Q190.00 1042.00 190.00 1084.00Q190.00 1126.00 196.50 1148.00Q203.00 1170.00 216.00 1178.50Q229.00 1187.00 253.00 1187.00H975.00Q999.00 1187.00 1012.00 1178.50Q1025.00 1170.00 1031.50 1148.00Q1038.00 1126.00 1038.00 1084.00Z"/></g><g transform="translate(259 20) scale(1.5)"><g fill="none" stroke="#2E8FB5" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8.5 L5 12.5 L12 4"/><path d="M10 8.5 L14 12.5 L21 4"/></g></g></g>
   </defs>
   <use href="#brillo" filter="url(#brasa)" opacity="0.9"/>
   <use href="#marca"/>
@@ -778,27 +782,317 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
 <!--LICITACIONES:INICIO-->
         <li class="lic-fila">
           <span class="lic-est e-pertinente">Pertinente</span>
-          <span class="lic-nom"><span class="lic-cod">1198-31-LE26</span>Adquisición de Activos Fijos No Financieros SNCD</span>
-          <span class="lic-plazo">cierra en <b>5</b> d&iacute;as</span>
+          <span class="lic-nom"><span class="lic-cod">1057489-237-I226</span>Servicio de Arriendo de Infraestructura Data Center y Servidores para el HDS</span>
+          <span class="lic-plazo">cierra en <b>3</b> d&iacute;as</span>
         </li>
         <li class="lic-fila">
           <span class="lic-est e-pertinente">Pertinente</span>
-          <span class="lic-nom"><span class="lic-cod">1469-196-L126</span>20-43498 Adquisición de Equipos Computacionales, Universidad de Talca</span>
-          <span class="lic-plazo">cierra en <b>5</b> d&iacute;as</span>
+          <span class="lic-nom"><span class="lic-cod">1057536-116-LP26</span>Equipos Plan Nacional del Cancer</span>
+          <span class="lic-plazo">cierra en <b>3</b> d&iacute;as</span>
         </li>
         <li class="lic-fila">
           <span class="lic-est e-pertinente">Pertinente</span>
-          <span class="lic-nom"><span class="lic-cod">5155-33-LE26</span>510 - Adquisición de pendrives para Servel</span>
-          <span class="lic-plazo">cierra en <b>6</b> d&iacute;as</span>
+          <span class="lic-nom"><span class="lic-cod">1172239-15-LP26</span>Compra de Equipos Tecnologicos Laptop Y Desktop</span>
+          <span class="lic-plazo">cierra en <b>3</b> d&iacute;as</span>
         </li>
         <li class="lic-fila">
           <span class="lic-est e-pertinente">Pertinente</span>
           <span class="lic-nom"><span class="lic-cod">1274285-46-LE26</span>Adquisición de Equipos computacionales</span>
-          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+          <span class="lic-plazo">cierra en <b>3</b> d&iacute;as</span>
         </li>
         <li class="lic-fila">
           <span class="lic-est e-pertinente">Pertinente</span>
           <span class="lic-nom"><span class="lic-cod">1305541-3-LE26</span>Arriendo de Software de Inventario</span>
+          <span class="lic-plazo">cierra en <b>3</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1339159-27-LE26</span>Adquisición de Dispositivos de Redes Inalámbricas</span>
+          <span class="lic-plazo">cierra en <b>3</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1605-46-LP26</span>LP-5087 Renovación Licencias IBM CMOD</span>
+          <span class="lic-plazo">cierra en <b>3</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1979-185-LP26</span>185.26 “servicio de Mantencion Preventiva Y Correctiva para Sistema Correo Neumatico para Nodo Costero: Hospital de Nueva Imperial.”</span>
+          <span class="lic-plazo">cierra en <b>3</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2380-46-LP26</span>“renovación Y Adquisición de Licencias para Dom Y</span>
+          <span class="lic-plazo">cierra en <b>3</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">3917-8-LE26</span>Compra de laboratorio movil C-20 SEP</span>
+          <span class="lic-plazo">cierra en <b>3</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">4127-34-LE26</span>[DIVIN] LICENCIAS AEC COLLECTION y AUTOCAD-IST</span>
+          <span class="lic-plazo">cierra en <b>3</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">4192-52-LE26</span>Compra Equipamiento Municipal 2026</span>
+          <span class="lic-plazo">cierra en <b>3</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">4596-30-LE26</span>Soporte Y Mantenimiento de Sistema de Reloj Control para Establecimientos Educacionales San Nicolás</span>
+          <span class="lic-plazo">cierra en <b>3</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">4895-12-CO26</span>Pendón Led y podio interactivo Led</span>
+          <span class="lic-plazo">cierra en <b>3</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">584105-21-LE26</span>Adquisición Licencias Aruba</span>
+          <span class="lic-plazo">cierra en <b>3</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">585-8-LE26</span>Renovación de licencias de firewall Palo Alto</span>
+          <span class="lic-plazo">cierra en <b>3</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">612-38-LE26</span>Adquisición Switch 24 bocas PoE+ de comunicaciones</span>
+          <span class="lic-plazo">cierra en <b>3</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">628-17-LP26</span>Renov. licenciamiento Infraestructura Tecnológica</span>
+          <span class="lic-plazo">cierra en <b>3</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">858-64-LE26</span>Mantención sitio web oficial IND por 24 meses</span>
+          <span class="lic-plazo">cierra en <b>3</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">885-82-LE26</span>Renovación y adquisición de licencias de software TOAD para la Contraloría General de la República</span>
+          <span class="lic-plazo">cierra en <b>3</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1057541-40-LP26</span>Servicio de Contactabilidad de Pacientes</span>
+          <span class="lic-plazo">cierra en <b>4</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1145-60-LE26</span>Adquisición de monitores 49 y 65</span>
+          <span class="lic-plazo">cierra en <b>4</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1171317-79-LE26</span>Adquisición Licencias de Software Chillán</span>
+          <span class="lic-plazo">cierra en <b>4</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1233613-63-LP26</span>Sistema de Remuneraciones Y Gestión de Personas</span>
+          <span class="lic-plazo">cierra en <b>4</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1562-55-LE26</span>Restauración Mantención Y Soporte de Plataformas</span>
+          <span class="lic-plazo">cierra en <b>4</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2348-34-LP26</span>Adquisición de Licencias de Software</span>
+          <span class="lic-plazo">cierra en <b>4</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2445-109-LP26</span>Servicio Software Gestión Asistencia Depto. Salud</span>
+          <span class="lic-plazo">cierra en <b>4</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2483-248-CO26</span>Adquisición de Diferentes Licencias para la Unidad de Comunicaciones del Departamento de Salud Municipal</span>
+          <span class="lic-plazo">cierra en <b>4</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2741-58-LE26</span>Mejoramiento Y Actualizacion de Sistema Central de</span>
+          <span class="lic-plazo">cierra en <b>4</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">3797-48-LE26</span>Adquisicion Servidor Institucional</span>
+          <span class="lic-plazo">cierra en <b>4</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">3902-39-LP26</span>Servicio Software Sistemas de Información Bulnes</span>
+          <span class="lic-plazo">cierra en <b>4</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">619133-109-LE26</span>Arriendo con Compromiso de Compra de la Adquisición de “1 Equipo Servidor” para la Unidad de Tecnología de la Información Y Comunicación del Hospital San Camilo de San Felipe</span>
+          <span class="lic-plazo">cierra en <b>4</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">622844-4-LE26</span>Renovación de Licencias AutoCAD</span>
+          <span class="lic-plazo">cierra en <b>4</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">634-76-LE26</span>Insumos Y Repuestos de Radiocomunicaciones</span>
+          <span class="lic-plazo">cierra en <b>4</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">813-87-LE26</span>Arriendo dispositivo almacenamiento E1O2RT9</span>
+          <span class="lic-plazo">cierra en <b>4</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">831-23-LE26</span>Productos ArcGIS por 12 meses</span>
+          <span class="lic-plazo">cierra en <b>4</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">938-30-LE26</span>Mantenimiento Sistemas de Grabación de Audio Atc</span>
+          <span class="lic-plazo">cierra en <b>4</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1020-45-LE26</span>Renovación Licencias Software Solarwinds Dameware</span>
+          <span class="lic-plazo">cierra en <b>5</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1020-46-LE26</span>Adq. Sopor. y Actual. Software ServiceTonic MOP</span>
+          <span class="lic-plazo">cierra en <b>5</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1075963-332-LP26</span>SERVICIO DE ARRIENDO DE SERVIDORES y UPS</span>
+          <span class="lic-plazo">cierra en <b>5</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1133353-43-LR26</span>Arriendo de Software Integral para la Gestión Municipal Áreas de Salud Y Municipal Comuna de Rauco</span>
+          <span class="lic-plazo">cierra en <b>5</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2434-20-LP26</span>Serv. Plataforma Integral para Gestion Municipal</span>
+          <span class="lic-plazo">cierra en <b>5</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2933-69-LE26</span>Sistema de Informacion Y Gestión 2026</span>
+          <span class="lic-plazo">cierra en <b>5</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">3250-18-LE26</span>Servicio de Desarme Y Retiro de Infraestructura de Telecomunicaciones de la Gobernación Marítima de Puerto Montt</span>
+          <span class="lic-plazo">cierra en <b>5</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">3447-142-LE26</span>Adquisición de Sistema de Control de Asistencia</span>
+          <span class="lic-plazo">cierra en <b>5</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">4127-36-LE26</span>[TIC] Suscripción licencias de software escáner de</span>
+          <span class="lic-plazo">cierra en <b>5</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">4457-73-L126</span>Implementos Programa Mais Cesfam, Cecosf</span>
+          <span class="lic-plazo">cierra en <b>5</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">622-57-LE26</span>Renovacion de Licencias Trellix o Similar para TGR</span>
+          <span class="lic-plazo">cierra en <b>5</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">85-35-LE26</span>Adquisición Licencias Ia Generativa</span>
+          <span class="lic-plazo">cierra en <b>5</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">879-17-L126</span>Adquisición de licencias ATLAS.ti</span>
+          <span class="lic-plazo">cierra en <b>5</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">434-104-LE26</span>Servidor de Datos Segun Formulario N°14 Informatica</span>
+          <span class="lic-plazo">cierra en <b>6</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">4371-35-LE26</span>Renovación Y Adquisicion de Licencias Autocad</span>
+          <span class="lic-plazo">cierra en <b>6</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1016-9-LE26</span>Equipamiento Informático 11 Notebook Workstation</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1028897-38-LE26</span>Adquisición de Equipamiento Tecnológico Ee Slepca</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1057429-83-LE26</span>Mantencion Preventiva Y Correctiva Escaner Phili</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1110404-193-L126</span>“adquisición de Equipamiento Tecnológico, Audiovisual Y de Apoyo para Establecimientos Educacionales Pertenecientes al Slep Chinchorro”</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1111089-8-LP26</span>Administracion Sistemas Ti e Infrastructura Tecnol</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1153624-18-L126</span>Adquisición Licencia Snyk Team</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1232565-35-LE26</span>Adquisición de Escáner Laser Proyecto ULS 23992</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1239966-8-LP26</span>Convenio Agl</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1456839-6-LP26</span>Servicio de Arriendo Y Mantención de Software de Remuneraciones Y Gestión de Personas</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1469-183-L126</span>Servicio de Consultoría Y Desarrollo en los Módulos Erp Sap para Dirección de Finanzas de la Universidad de Talca</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1469-188-LE26</span>Gabinete de Bioseguridad Clase Ii</span>
           <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
         </li>
         <li class="lic-fila">
@@ -808,83 +1102,733 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
         </li>
         <li class="lic-fila">
           <span class="lic-est e-pertinente">Pertinente</span>
-          <span class="lic-nom"><span class="lic-cod">3797-48-LE26</span>Adquisicion Servidor Institucional</span>
+          <span class="lic-nom"><span class="lic-cod">1500781-8-LP26</span>Contratación del Servicio Integral de Ticketera</span>
           <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
         </li>
         <li class="lic-fila">
           <span class="lic-est e-pertinente">Pertinente</span>
-          <span class="lic-nom"><span class="lic-cod">4192-52-LE26</span>Compra Equipamiento Municipal 2026</span>
+          <span class="lic-nom"><span class="lic-cod">1593-24-LP26</span>Adquisición instalación plataforma almacenamiento</span>
           <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
         </li>
         <li class="lic-fila">
           <span class="lic-est e-pertinente">Pertinente</span>
-          <span class="lic-nom"><span class="lic-cod">612-38-LE26</span>Adquisición Switch 24 bocas PoE+ de comunicaciones</span>
+          <span class="lic-nom"><span class="lic-cod">1638-89-LE26</span>Adquisición de vestuario técnico y equipamiento de protección para labores operativas en terreno bajo condiciones climáticas extremas y exposición a riesgos físicos y químicos SM N°7970</span>
           <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
         </li>
         <li class="lic-fila">
           <span class="lic-est e-pertinente">Pertinente</span>
-          <span class="lic-nom"><span class="lic-cod">885-82-LE26</span>Renovación y adquisición de licencias de software TOAD para la Contraloría General de la República</span>
+          <span class="lic-nom"><span class="lic-cod">1736-99-LE26</span>Insumos para el Departamento de Comunicaciones</span>
           <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
         </li>
         <li class="lic-fila">
           <span class="lic-est e-pertinente">Pertinente</span>
-          <span class="lic-nom"><span class="lic-cod">2741-58-LE26</span>Mejoramiento Y Actualizacion de Sistema Central de</span>
-          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+          <span class="lic-nom"><span class="lic-cod">2287-28-LE26</span>Ser. Arriendo de Radio Comunicadores para Central</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
         </li>
         <li class="lic-fila">
           <span class="lic-est e-pertinente">Pertinente</span>
-          <span class="lic-nom"><span class="lic-cod">434-104-LE26</span>Servidor de Datos Segun Formulario N°14 Informatica</span>
-          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+          <span class="lic-nom"><span class="lic-cod">229-96-LE26</span>Adquisición de Licencias de Software para los Sistemas Que Usa la I. Municipalidad de Coihueco</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
         </li>
         <li class="lic-fila">
           <span class="lic-est e-pertinente">Pertinente</span>
-          <span class="lic-nom"><span class="lic-cod">813-87-LE26</span>Arriendo dispositivo almacenamiento E1O2RT9</span>
-          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+          <span class="lic-nom"><span class="lic-cod">2563-34-LR26</span>Equipos para Redes Informáticas Y Licencias</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2710-55-LE26</span>Servicio de Arriendo Totem</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2736-35-LE26</span>Licencias Google</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2775-113-CO26</span>Implementación Y Equipamiento Clínica Veterinaria: Adquisición de Equipos de Laboratorio Y Monitoreo para Atención en Veterinaria Municipal de Rengo</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">3047-54-LE26</span>Adquisicion de Equipos de Red Y Accesorios para Departamento Informatica</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">3084-30-LR26</span>Contratación Servicio de Suscripción de Licencias</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">3134-85-LE26</span>Tarjetas PCB Y Componentes para Reparación Radar</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">3378-57-LE26</span>Adquisición de Licencias de Mensajeria Kerio_connect para Sistema de Correo del Hospital Militar de Santiago” por 12 Meses</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">3384-20-LP26</span>Arriendo de 28 estaciones de trabajo para el IGM</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">3810-23-LE26</span>Adquisicion de Software de Diseño Cad Y Revision de Modelos Bim para la Direccion de Obras Municipales de la I. Municipalidad de Pichilemu</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">4044-54-LE26</span>Servicio de Gestion Y Monitoreo Satelital</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">4146-10-L126</span>Contratación de Actualización de Licencia Software</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">425-49-LR26</span>Equipos de Almacenamiento y Switches SAN del PJ</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">4306-31-LE26</span>Implementacion Sistema de Radiocomunicaciones</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">4451-103-LE26</span>Adquisicion de Licencias de Software</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">5418-13-LE26</span>Digitalización Documentos Almacenados Bodega</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">5482-102-LE26</span>Arriendo Y Mantención de 2 Escaneres para Dom</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">5865-11-LE26</span>Computadores de Alto Rendimiento - Jayma Uta</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
         </li>
         <li class="lic-fila">
           <span class="lic-est e-pertinente">Pertinente</span>
           <span class="lic-nom"><span class="lic-cod">598-20-LE26</span>Adquisición Licencias de Software para DIPRECA</span>
-          <span class="lic-plazo">cierra en <b>17</b> d&iacute;as</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">612-19-LE26</span>Almacenaje y digitalización de Doc. Confidenciales</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">624-22-LE26</span>Sistema Portatil de Transmision Consejo Regional</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
         </li>
         <li class="lic-fila">
           <span class="lic-est e-pertinente">Pertinente</span>
           <span class="lic-nom"><span class="lic-cod">721703-42-LE26</span>Adquisición de equipo computacional MacBook Pro o equivalente</span>
-          <span class="lic-plazo">cierra en <b>17</b> d&iacute;as</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">728-9-LE26</span>Licencias Blue Marble Geographics Global Mapp</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
         </li>
         <li class="lic-fila">
           <span class="lic-est e-pertinente">Pertinente</span>
           <span class="lic-nom"><span class="lic-cod">85-41-LE26</span>Plataforma Integral Soporte Ti con Control Remoto</span>
-          <span class="lic-plazo">cierra en <b>17</b> d&iacute;as</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">867990-92-L126</span>Adquisición de equipamiento audiovisual y tecnológico</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">885-81-LP26</span>Renovación de suscripciones para la plataforma de parchado virtual vRx Vicarius</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">948354-133-LE26</span>Adquisición de Licencias MCP Bronze o Similar para el Hospital Dipreca</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">956-62-LE26</span>Adquisición Licencias Autocad para el Servicio de Salud Valparaíso - San Antonio</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">979-40-LP26</span>Adquisición de Equipos Portátiles</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">979-45-LP26</span>Adquisición de Equipos – Escritorio con Pantalla- Desktop GAMA 3 Intensivo</span>
+          <span class="lic-plazo">cierra en <b>10</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1062018-24-L126</span>Sistema Institucional de Gestión de Requerimientos</span>
+          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1079967-23-LE26</span>Adquisición de Suscripción Inseyets</span>
+          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1114377-1-LP26</span>Adquisición de un equipo de rayos X doble vista</span>
+          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1404452-14-CO26</span>Sistema de trazabilidad y seguridad de visitantes</span>
+          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1562-49-LR26</span>Sistema de monitoreo integral de ciberseguridad</span>
+          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1605-47-LP26</span>LP-5153 Renovación Suscripción IBM MQ Appliance</span>
+          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1867-42-LE26</span>Adquisición de Programas Computacionales</span>
+          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2282-97-LR26</span>PP 192-2025 Arriendo de Sistema para la Gestión de</span>
+          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2427-66-LE26</span>Adquisición de Tomógrafo Accesorios Y Herramientas de Diagnóstico de Arbolado Urbano</span>
+          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2446-263-LE26</span>Equipamiento para Transmisión Eventos Municipales</span>
+          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">3948-38-LE26</span>Adquisición Equipos Radiocomunicaciones</span>
+          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">425-50-LP26</span>Provisión Instalación y Mantención de Respaldo</span>
+          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">4778-14-LP26</span>Serv. Administrado Contact Center Omnicanal con Ia</span>
+          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
         </li>
         <li class="lic-fila">
           <span class="lic-est e-pertinente">Pertinente</span>
           <span class="lic-nom"><span class="lic-cod">5413-71-LE26</span>Servicio de Plataforma de Libros Contables Y Auxiliares Electrónicos Y Documentos Tributarios Electrónicos Dte para la Universidad de los Lagos</span>
-          <span class="lic-plazo">cierra en <b>18</b> d&iacute;as</span>
+          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">586-52-LP26</span>Adquisición de licencias de software Redhat</span>
+          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">630-25-LE26</span>Servicio Continuidad Operativa Y Soporte Microsoft</span>
+          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">688-11-LP26</span>Arriendo Infraestructura de Respaldo</span>
+          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">837-101-LP26</span>CDP 477 Servicio de Operación Sistema de Control Centralizado BMS Y Sistema de Televigilancia Software Hikcentral Professional de Edificio Institucional SML Santiago</span>
+          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">885-83-LE26</span>Servicios de soporte y mantenimiento de la plataforma de seguridad F5 de la Contraloría General de la República</span>
+          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">938-31-LE26</span>Adquisición mediante importación directa módulos para mantenimiento de sistemas de comunicaciones para equipos VHF AM</span>
+          <span class="lic-plazo">cierra en <b>11</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1082957-30-LE26</span>Servicio de soporte mantención y desarrollo evolutivo para sitio web institucional de ProChile</span>
+          <span class="lic-plazo">cierra en <b>12</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1469-185-L126</span>Equipamiento Tecnológico</span>
+          <span class="lic-plazo">cierra en <b>12</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1725-197-LP26</span>Infraestruc.tecnológica Plataforma Fondos Concursa</span>
+          <span class="lic-plazo">cierra en <b>12</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2020-21-LE26</span>Mejora de la Plataforma Informática para la BCN</span>
+          <span class="lic-plazo">cierra en <b>12</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2445-116-LE26</span>Servicio de Mensajeria Instantanea Via Api Whatsap</span>
+          <span class="lic-plazo">cierra en <b>12</b> d&iacute;as</span>
         </li>
         <li class="lic-fila">
           <span class="lic-est e-pertinente">Pertinente</span>
           <span class="lic-nom"><span class="lic-cod">3015-47-B226</span>Servicio Transacciones Vía Tarjeta Débito Crédito</span>
-          <span class="lic-plazo">cierra en <b>19</b> d&iacute;as</span>
+          <span class="lic-plazo">cierra en <b>12</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">3868-16-LE26</span>Adq. Soluc. Almac. Y Protecc. Datos Labocar 2</span>
+          <span class="lic-plazo">cierra en <b>12</b> d&iacute;as</span>
         </li>
         <li class="lic-fila">
           <span class="lic-est e-pertinente">Pertinente</span>
           <span class="lic-nom"><span class="lic-cod">5240-100-LP26</span>Adquisición de Workstation Forense</span>
-          <span class="lic-plazo">cierra en <b>19</b> d&iacute;as</span>
+          <span class="lic-plazo">cierra en <b>12</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">5865-12-LE26</span>Sistema de Almacenamiento Nas - Jayma Uta</span>
+          <span class="lic-plazo">cierra en <b>12</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1020-40-LP26</span>Serv.Cloud Amazon Web Services AWS o Equivalente</span>
+          <span class="lic-plazo">cierra en <b>13</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1973-93-LR26</span>Sistema de Información de Gestión Administrativa Y Farmacia</span>
+          <span class="lic-plazo">cierra en <b>13</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2494-81-LP26</span>Gestor Documental para Municipalidad de Coyhaique</span>
+          <span class="lic-plazo">cierra en <b>13</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">593951-43-LP26</span>Servicio de Continuidad Operativa Sap Netweaver</span>
+          <span class="lic-plazo">cierra en <b>13</b> d&iacute;as</span>
         </li>
         <li class="lic-fila">
           <span class="lic-est e-pertinente">Pertinente</span>
           <span class="lic-nom"><span class="lic-cod">732434-20-LP26</span>Servicio Informático para el Centro de Sangre Conc</span>
-          <span class="lic-plazo">cierra en <b>20</b> d&iacute;as</span>
+          <span class="lic-plazo">cierra en <b>13</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">85-34-LP26</span>Plataforma Gestión Y Control Seguridad Información</span>
+          <span class="lic-plazo">cierra en <b>13</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1079486-23-LE26</span>Adq. Servicio Reparacion Antenas Telecomunicacion</span>
+          <span class="lic-plazo">cierra en <b>14</b> d&iacute;as</span>
         </li>
         <li class="lic-fila">
           <span class="lic-est e-pertinente">Pertinente</span>
           <span class="lic-nom"><span class="lic-cod">2048-57-LP26</span>Convenio de Software de Gestión de Mantenimiento</span>
+          <span class="lic-plazo">cierra en <b>14</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">3019-20-LE26</span>Software Carrera Funcionaria Aps Lota</span>
+          <span class="lic-plazo">cierra en <b>14</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">4469-175-L126</span>SC 40531 (jra) - Licencia de Suscripcion Chatgpt Plus para 12 Meses Dginform Upa 22991</span>
+          <span class="lic-plazo">cierra en <b>14</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">4469-176-L126</span>S.C. N° 40529 (P.C) Adquisición de PC de Escritorio para Apoyo Actividades de Gestión ; Proyecto Red 40529</span>
+          <span class="lic-plazo">cierra en <b>14</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">548874-81-LE26</span>Servicio de Soporte de Licencias Quest Toad</span>
+          <span class="lic-plazo">cierra en <b>14</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">591-20-LE26</span>Compra de Licencia e Implementac. de la Suite Jira</span>
+          <span class="lic-plazo">cierra en <b>14</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">603663-5-LR26</span>Servicios de Data Center e Internet para el Indh</span>
+          <span class="lic-plazo">cierra en <b>14</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1175-69-LP26</span>59.26 “arriendo de 1 Servidor para el Ssas”</span>
+          <span class="lic-plazo">cierra en <b>17</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1274285-45-LP26</span>Software de gestión Droguería Comunal</span>
+          <span class="lic-plazo">cierra en <b>17</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1305527-5-LP26</span>Contratación de infraestructura Cloud</span>
+          <span class="lic-plazo">cierra en <b>17</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1607-13-LR26</span>servicio SD-WAN LAN telefonía en la nube y enlaces</span>
+          <span class="lic-plazo">cierra en <b>17</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2981-257-LE26</span>Adquisicion de Equipos Tipo Notebook Estandar con Perifericos Incluidos - Plan Frontera</span>
+          <span class="lic-plazo">cierra en <b>17</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">3269-9-LP26</span>Sistema de Captura Rpas Y Sensores Compatib Sa 063</span>
+          <span class="lic-plazo">cierra en <b>17</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">4170-58-B226</span>Servicios de Sistemas Computacionales</span>
+          <span class="lic-plazo">cierra en <b>17</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">425-51-LP26</span>Infraestructura GPU en Clúster para el Poder Judic</span>
+          <span class="lic-plazo">cierra en <b>17</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">548874-79-LE26</span>Servicio Soporte Software Informix para Ips</span>
+          <span class="lic-plazo">cierra en <b>17</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">619284-8-LE26</span>Adquisición de suscripción de licencias Aimsun Nex</span>
+          <span class="lic-plazo">cierra en <b>17</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">622-58-LP26</span>Licencias Ibm MQ Processor Value Unit Pvu TGR</span>
+          <span class="lic-plazo">cierra en <b>17</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">726931-1-LE26</span>Plataforma Integral Alumni Y Empleabilidad Uta</span>
+          <span class="lic-plazo">cierra en <b>17</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">858-62-LR26</span>Enlace Telecomunicaciones Red Corporativa Ind</span>
+          <span class="lic-plazo">cierra en <b>17</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1020-38-LP26</span>Adquisición de Plataforma Next Generation Firewall</span>
+          <span class="lic-plazo">cierra en <b>18</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1447930-11-LP26</span>SSP - Plataforma de virtualización On Premise</span>
+          <span class="lic-plazo">cierra en <b>18</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2667-73-LE26</span>Servicio SAAS para Continuidad Operativa del Sitio HUB Vitacura</span>
+          <span class="lic-plazo">cierra en <b>18</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">3666-12-LE26</span>Gestion Documental Y Digital Municipalidad Tiltil</span>
+          <span class="lic-plazo">cierra en <b>18</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">507428-108-LP26</span>Arriendo Servidor de Almacenamiento Rispacs DSSCH</span>
+          <span class="lic-plazo">cierra en <b>18</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1002592-6-LP26</span>Servicio integral de Cloud Computing con Hosting</span>
+          <span class="lic-plazo">cierra en <b>19</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1057489-285-LP26</span>Arriendo de Huelleros digitales y Pistola Escáner</span>
+          <span class="lic-plazo">cierra en <b>19</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1456836-3-LP26</span>Software de Gestión de Personas y Remuneraciones</span>
+          <span class="lic-plazo">cierra en <b>19</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">3269-10-LP26</span>S.a. 68 Soporte Y Mantto Plataforma Datos Qumulo</span>
+          <span class="lic-plazo">cierra en <b>19</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">4099-25-LE26</span>Servicio de Arriendo de Gestor Documental</span>
+          <span class="lic-plazo">cierra en <b>19</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">5482-100-LP26</span>Plataforma de Gestión Territorial Y de Rentas</span>
+          <span class="lic-plazo">cierra en <b>19</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">5482-103-LP26</span>Plataforma de Gestión Territorial Y de Rentas</span>
+          <span class="lic-plazo">cierra en <b>19</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">548874-72-LR26</span>Serv. de Administracion Plataformas Tecnologicas</span>
+          <span class="lic-plazo">cierra en <b>19</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">591-26-LP26</span>Plataforma de Observabilidad Avanzada Multicloud para Fonasa</span>
+          <span class="lic-plazo">cierra en <b>19</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1425525-5-LR26</span>Adquisición de Bienes e Infraestructura</span>
+          <span class="lic-plazo">cierra en <b>20</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2684-45-LR26</span>Pp 44-2026 Servicio de arriendo de equipos multifuncionales impresoras fotocopiadoras y escáner para las unidades municipales</span>
+          <span class="lic-plazo">cierra en <b>20</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2771-62-LR26</span>“sistemas Administrativos de Gestión Y Procesos Municipales”</span>
+          <span class="lic-plazo">cierra en <b>20</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">514862-122-LE26</span>10032845 Adq.e Implement. de Sistema Comunicion</span>
+          <span class="lic-plazo">cierra en <b>20</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">599-36-LR26</span>Arriendo de Equipos Computacionales por 8 Meses</span>
+          <span class="lic-plazo">cierra en <b>20</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">858-69-LP26</span>Renovación Y Adquisición Licencias de Informática</span>
+          <span class="lic-plazo">cierra en <b>20</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1020-48-LP26</span>Adquisición e implementación de una Solución de Prevención de Intrusiones [IPS] para DNS  para el Ministerio de Obras Públicas [MOP]</span>
           <span class="lic-plazo">cierra en <b>21</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1020-49-LP26</span>Adq. Ampliación Vigencia Licencias Sophos MOP</span>
+          <span class="lic-plazo">cierra en <b>21</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1588-25-LR26</span>Servicio de Housing Gerenciado</span>
+          <span class="lic-plazo">cierra en <b>21</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">188-83-LP26</span>Plataforma de Control de Proyectos COMUDEF</span>
+          <span class="lic-plazo">cierra en <b>21</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2429-8-LP26</span>Renovación de Infraestructura de Red Informática Y Normalización de Cableado Estructurado de las Dependencias de la Ima</span>
+          <span class="lic-plazo">cierra en <b>21</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">548874-74-LR26</span>Serv de Plataforma Siem Nueva Generación Saas Ips</span>
+          <span class="lic-plazo">cierra en <b>21</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2305-12-LR26</span>Administración-soporte infraestructura tecnológica</span>
+          <span class="lic-plazo">cierra en <b>24</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">548874-77-LR26</span>Mantención Y Mejora Sistema Ciberseguridad NCH Iso</span>
+          <span class="lic-plazo">cierra en <b>25</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1562-60-LR26</span>Arriendo Infraestructura de Procesamiento Y Almace</span>
+          <span class="lic-plazo">cierra en <b>32</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">2770-120-LR26</span>Sistema de Gestión Integrado Smapa</span>
+          <span class="lic-plazo">cierra en <b>32</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">5482-101-LR26</span>Plataforma IA para video y seguridad urbana</span>
+          <span class="lic-plazo">cierra en <b>32</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">548874-78-LR26</span>Servicio de Licencias Cloud Successfactors</span>
+          <span class="lic-plazo">cierra en <b>34</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">591-19-LR26</span>Servicio de Recaudacion Electronica de Cotizaciones de Salud</span>
+          <span class="lic-plazo">cierra en <b>38</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">1020-35-LR26</span>Serv Ingeniería y Licencias para Renovación Máximo</span>
+          <span class="lic-plazo">cierra en <b>39</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-pertinente">Pertinente</span>
+          <span class="lic-nom"><span class="lic-cod">577290-2-LP26</span>Servicio Tecnológico Integral Red Regional</span>
+          <span class="lic-plazo">cierra en <b>48</b> d&iacute;as</span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-descartada">Descartada</span>
+          <span class="lic-nom"><span class="lic-cod">1056854-6-LE26</span>Adquisición de un Servidor en Red NAS con Instalac</span>
+          <span class="lic-plazo"><b>cierra hoy</b></span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-descartada">Descartada</span>
+          <span class="lic-nom"><span class="lic-cod">1232565-34-LE26</span>Renovación de Suscripciones de Software ULS23992</span>
+          <span class="lic-plazo"><b>cierra hoy</b></span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-descartada">Descartada</span>
+          <span class="lic-nom"><span class="lic-cod">1305552-6-LE26</span>Software de Inventario Carga Y Normalización</span>
+          <span class="lic-plazo"><b>cierra hoy</b></span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-descartada">Descartada</span>
+          <span class="lic-nom"><span class="lic-cod">1562-52-LE26</span>Adquisición Renovación Plataforma Rocscience</span>
+          <span class="lic-plazo"><b>cierra hoy</b></span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-descartada">Descartada</span>
+          <span class="lic-nom"><span class="lic-cod">1588-28-LE26</span>Renovación Plataforma Jira Service SAAS y Soporte</span>
+          <span class="lic-plazo"><b>cierra hoy</b></span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-descartada">Descartada</span>
+          <span class="lic-nom"><span class="lic-cod">1606-27-CO26</span>Adquisición e Instalación de Hardware Servidor Pmi</span>
+          <span class="lic-plazo"><b>cierra hoy</b></span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-descartada">Descartada</span>
+          <span class="lic-nom"><span class="lic-cod">2107-142-LE26</span>Arriendo de Totems Autoadministrados para HSC</span>
+          <span class="lic-plazo"><b>cierra hoy</b></span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-descartada">Descartada</span>
+          <span class="lic-nom"><span class="lic-cod">2189-2-LS26</span>Servicios Personales Esp para Consultorías en Salud Red Ssmaule</span>
+          <span class="lic-plazo"><b>cierra hoy</b></span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-descartada">Descartada</span>
+          <span class="lic-nom"><span class="lic-cod">2200-24-LE26</span>Adquisición de Equipo Y Equipamiento Clínico Y No Clínico para el Nuevo Establecimiento Sar Segismundo Iturra - RRFF</span>
+          <span class="lic-plazo"><b>cierra hoy</b></span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-descartada">Descartada</span>
+          <span class="lic-nom"><span class="lic-cod">2305-11-LE26</span>Suscripción anual licenciamiento Microsoft</span>
+          <span class="lic-plazo"><b>cierra hoy</b></span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-descartada">Descartada</span>
+          <span class="lic-nom"><span class="lic-cod">2963-31-LP26</span>Arriendo Servidor SQL Y Licenciamiento Asociado</span>
+          <span class="lic-plazo"><b>cierra hoy</b></span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-descartada">Descartada</span>
+          <span class="lic-nom"><span class="lic-cod">3134-84-LE26</span>Servidor de Montaje en Rack Estándar de 19 Pulgada</span>
+          <span class="lic-plazo"><b>cierra hoy</b></span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-descartada">Descartada</span>
+          <span class="lic-nom"><span class="lic-cod">425-39-LR26</span>Adquisición Y Renovación de Licencias de Software para el Poder Judicial</span>
+          <span class="lic-plazo"><b>cierra hoy</b></span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-descartada">Descartada</span>
+          <span class="lic-nom"><span class="lic-cod">4610-70-LE26</span>Adquisicion de Sitema Integral de Pantalla Y Audio</span>
+          <span class="lic-plazo"><b>cierra hoy</b></span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-descartada">Descartada</span>
+          <span class="lic-nom"><span class="lic-cod">5586-128-LE26</span>BR Contratación de Plataforma Tecnológica Tipo Saas de Gestión Digital</span>
+          <span class="lic-plazo"><b>cierra hoy</b></span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-descartada">Descartada</span>
+          <span class="lic-nom"><span class="lic-cod">5586-133-LE26</span>BC Provisión de Discos de Almacenamiento SSD</span>
+          <span class="lic-plazo"><b>cierra hoy</b></span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-descartada">Descartada</span>
+          <span class="lic-nom"><span class="lic-cod">652-37-LP26</span>Arriendo Servidor Informatico para Programa Sissa</span>
+          <span class="lic-plazo"><b>cierra hoy</b></span>
+        </li>
+        <li class="lic-fila">
+          <span class="lic-est e-descartada">Descartada</span>
+          <span class="lic-nom"><span class="lic-cod">867990-82-LE26</span>CDP 90396 CC102 infraestructura de cómputo</span>
+          <span class="lic-plazo"><b>cierra hoy</b></span>
         </li>
 <!--LICITACIONES:FIN-->
       </ol>
     </div>
-    <p class="lics-pie" id="lics-pie">Barrido del 4 de septiembre de 2026 &middot; 517 licitaciones revisadas, 21 de nuestros rubros</p>
+    <p class="lics-pie" id="lics-pie">Barrido del 11 de septiembre de 2026 &middot; 4.739 licitaciones revisadas, 209 de nuestros rubros</p>
 
     <div class="kpis">
       <div class="kpi"><b>24/7</b><span>Operaci&oacute;n continua</span></div>
@@ -963,7 +1907,7 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
         </div>
       </form>
       <div class="done" id="done" role="status" aria-live="polite">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--menta)"><path d="M4 12.5 9.5 18 20 6"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--azul)"><path d="M4 12.5 9.5 18 20 6"/></svg>
         <p><b id="doneTtl">Listo.</b> <span id="doneTxt"></span></p>
       </div>
     </div>
@@ -1016,7 +1960,7 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
          donde el visitante la va a buscar, que es Contacto. -->
   </div>
   <div class="fila-baja">
-    <a class="fbrand" href="#inicio" aria-label="compAI, ir al inicio"><svg class="logo" viewBox="-16 4 328 87" role="img" aria-label="compAI"><use href="#brillo" filter="url(#brasa)" opacity="0.9"/><use href="#marca"/></svg></a>
+    <a class="fbrand" href="#inicio" aria-label="compAI, ir al inicio"><svg class="logo" viewBox="-38 -18 372 131" role="img" aria-label="compAI"><use href="#brillo" filter="url(#brasa)" opacity="0.9"/><use href="#marca"/></svg></a>
     <!-- ROTULO, NO ENLACE — 5-sep-2026, por instruccion de Sebastian: «todo el
          resto que se encuentra en compai.cl/estado y estado/tablero es
          interno, no tenia por que estar expuesto». Las dos paginas se

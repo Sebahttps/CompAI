@@ -52,7 +52,7 @@
   --crema:#F5F0E4; --crema-75:#BAB6AE; --crema-60:#96948E;
   --crema-28:#4A4A48; --crema-12:#242526; --crema-06:#161719;
   --terracota:#C87941; --terracota-400:#D88A52; --terracota-300:#E09A63;
-  --menta:#4CC48B; --menta-600:#2FA871; --menta-300:#6FD9A6;
+  --azul:#2E8FB5; --azul-600:#13749A; --azul-300:#78C5E3;
   --alerta:#D65454; --alerta-300:#F0A0A0;
   --ambar:#C89A41;
   --font-data:ui-monospace,"SF Mono","Cascadia Mono","Segoe UI Mono",Menlo,Consolas,"Courier New",monospace;
@@ -60,7 +60,7 @@
   --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px;
   --shell:1240px; --hdr:78px; --radio:3px; --radio-caja:4px;
   /* los pide `_cabecera.html`, que es la fuente unica del encabezado */
-  --glow-menta:0 0 30px rgba(76,196,139,.34);
+  --glow-azul:0 0 30px rgba(46,143,181,.34);
   --sombra-texto:0 2px 10px rgba(8,9,12,.85);
   --entra:cubic-bezier(.16,1,.3,1);
   --sale:cubic-bezier(.7,0,.84,0);
@@ -144,14 +144,14 @@ body{margin:0; background:var(--ink-900); color:var(--crema);
   transition:transform var(--t-crece) var(--asienta)}
 .hdr .inner > *{pointer-events:auto}
 .brand{display:flex; align-items:center; flex:0 0 auto}
-.brand .logo{height:38px; width:auto; display:block; overflow:visible;
+.brand .logo{height:57px; width:auto; display:block; overflow:visible;
   transform-origin:0 50%;
   /* la sombra va SOBRE LA PIEZA, no es una caja: es lo unico que el encargo
      permite para despegar el logotipo de los fotogramas claros del plexus */
   filter:drop-shadow(0 2px 9px rgba(8,9,12,.9));
   transition:transform var(--t-crece) var(--asienta),
              filter var(--t-crece) var(--entra)}
-@media (max-width:420px){.brand .logo{height:30px}}
+@media (max-width:420px){.brand .logo{height:45px}}
 
 html.hdr-chico .hdr .inner{transform:translateY(-11px);
   transition-duration:var(--t-encoge)}
@@ -159,16 +159,20 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   transition-duration:var(--t-encoge)}
 
 /* EN TELEFONO EL LOGOTIPO NO SE ESCALA, Y ES UNA MEDIDA, no una preferencia.
-   Bajo 420 px el logotipo ya mide 30, y 0,737 lo dejaria en 22: los vistos de
-   menta son 2,2 unidades de trazo a 1,5x sobre una viewBox de 87, o sea menos
-   de un pixel entero. Medido con `contraste.py --w=390`: en el estado
-   encogido los vistos NO TIENEN NI UN PIXEL COMPLETAMENTE OPACO —el
-   instrumento devuelve «sin tinta aislable»—, mientras que a 30 px tiene 8.
-   Un elemento de marca que se disuelve en antialias no es un encabezado
+   Bajo 420 px el logotipo mide 45 y 0,737 lo dejaria en 33. ACTUALIZADO EL
+   11-SEP-2026 con el logotipo canonico: los vistos son ahora 2,8 unidades de
+   trazo a 1,5x sobre una viewBox de 131 —no 2,2 sobre 87—, o sea 1,44 px a
+   45 y 1,06 px a 33. La solida canonica es MAS GRUESA en pantalla que el
+   dibujo que reemplaza (1,14 px a la altura vieja), asi que el margen mejoro;
+   la regla se mantiene igual porque bajo un pixel entero el antialias se come
+   el remate, y un elemento de marca que se disuelve no es un encabezado
    encogido, es un encabezado roto.
-   La banda igual baja de 78 a 56 px: los 30 px del logotipo caben de sobra en
-   56 (ocupan de 13 a 43), asi que en telefono el encogimiento es la subida de
-   11 px sola, y eso es todo lo que hace falta. */
+   POR QUE LA SOLIDA Y NO LA HUELLA (manual 04): el minimo de la huella son
+   485 px de lockup; aqui la tinta mide 124 px medidos por CDP. Encoger la
+   huella en vez de cambiar a la solida es el error que el manual nombra.
+   La banda igual baja de 78 a 56 px: el archivo canonico trae su propio aire
+   (tinta de 47,2 sobre viewBox de 131), asi que de los 45 px solo 16 son
+   tinta y caben de sobra en 56. */
 @media (max-width:420px){
   html.hdr-chico .brand .logo{transform:none}
 }
@@ -225,7 +229,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 .mnu{position:relative; width:52px; height:52px; margin-right:-9px; padding:0; border:0;
   background:none; cursor:pointer; display:grid; place-items:center; line-height:0;
   -webkit-tap-highlight-color:transparent}
-.mnu:focus-visible{outline:2px solid var(--menta); outline-offset:4px; border-radius:var(--radio)}
+.mnu:focus-visible{outline:2px solid var(--azul); outline-offset:4px; border-radius:var(--radio)}
 .mnu .vu{position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap}
 /* el lienzo mide lo que mide el MENU y sobresale del boton hacia la izquierda;
    en reposo solo se ve su extremo derecho. `right:9px` cancela el
@@ -245,13 +249,13 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 .tr .t1{--dy:10.5px} .tr .t2{--dy:3.5px} .tr .t3{--dy:-3.5px} .tr .t4{--dy:-10.5px}
 /* EL HALO en un trazo APARTE, mas grueso y casi transparente, que en reposo
    mide cero: asi la iluminacion no depende de `filter:drop-shadow` en bucle. */
-.tr .halo{stroke:var(--menta); stroke-width:7; opacity:0;
+.tr .halo{stroke:var(--azul); stroke-width:7; opacity:0;
   stroke-dasharray:247; stroke-dashoffset:205;
   transition:opacity .26s var(--entra) .16s, transform .32s var(--anticipa),
              stroke-dashoffset .38s var(--entra) .16s}
 
 .mnu-zona:hover .tr .t, .mnu-zona:focus-within .tr .t, .mnu-zona.abre .tr .t{
-  transform:translateY(var(--dy)); stroke:var(--menta);
+  transform:translateY(var(--dy)); stroke:var(--azul);
   stroke-dashoffset:calc(247px - var(--menu-largo))}
 .mnu-zona:hover .tr .halo, .mnu-zona:focus-within .tr .halo, .mnu-zona.abre .tr .halo{
   opacity:.20; transform:translateY(var(--dy));
@@ -267,7 +271,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
    34 px mas abajo y la linea dejaba de leerse como su canto.
 
    LA TIPOGRAFIA ES DE VisuAI, literal de su archivo (12,5 px, 600, .16em,
-   versales, --crema-75, sombra propia y el filete de menta al posarse). Mi
+   versales, --crema-75, sombra propia y el filete de azul al posarse). Mi
    version numeraba los titulos 01..06; la numeracion es tipografia y la
    tipografia es suya, asi que se va.
    ---------------------------------------------------------------------- */
@@ -288,7 +292,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   min-height:44px; display:inline-flex; align-items:center; white-space:nowrap;
   transition:opacity .24s var(--sale), transform .24s var(--sale), color .18s var(--micro)}
 .mnu-panel a::before{content:""; width:0; height:2px; border-radius:1px; margin-right:0;
-  background:var(--menta); box-shadow:var(--glow-menta);
+  background:var(--azul); box-shadow:var(--glow-azul);
   transition:width .22s var(--micro), margin-right .22s var(--micro)}
 .mnu-panel a:hover, .mnu-panel a:focus-visible{color:var(--crema)}
 .mnu-panel a:hover::before, .mnu-panel a:focus-visible::before{width:16px; margin-right:var(--s2)}
@@ -332,8 +336,8 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 /* Y LA EXCEPCION DE TELEFONO TAMBIEN, que si no se pierde. Defecto real cazado
    midiendo a 390 px: la restitucion de arriba tiene la misma especificidad que
    la regla de `max-width:420` y va DESPUES, asi que con movimiento reducido el
-   logotipo volvia a escalar a 22 px —el caso en que los vistos de menta se
-   quedan sin un solo pixel opaco— justo para quien pidio menos movimiento.
+   logotipo volvia a escalar a 33 px —el caso en que los vistos se acercan al
+   pixel unico— justo para quien pidio menos movimiento.
    Restituir el estado final no sirve de nada si se restituye el equivocado. */
 @media (prefers-reduced-motion:reduce) and (max-width:420px){
   html.hdr-chico .brand .logo{transform:none}
@@ -362,7 +366,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
    del mismo estilo que la linea del encabezado. Un solo elemento, un solo
    `transform`. */
 .carrete label::before{content:""; position:absolute; left:-14px; top:calc(50% - 1.1px);
-  width:8px; height:2.2px; border-radius:1.1px; background:var(--menta);
+  width:8px; height:2.2px; border-radius:1.1px; background:var(--azul);
   transform:scaleX(0); transform-origin:0 50%;
   transition:transform .26s var(--micro)}
 .carrete label{padding:11px 0}
@@ -374,7 +378,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
    SI corria dentro del scroll —justo lo que el encargo prohibe—. 26 px no se
    ven; se miden. `carrete.py` los comprueba en cada pasada. */
 .sel{position:absolute; top:0; left:0; width:1px; height:1px; opacity:0; pointer-events:none}
-.carrete input:focus-visible + label{outline:2px solid var(--menta); outline-offset:3px}
+.carrete input:focus-visible + label{outline:2px solid var(--azul); outline-offset:3px}
 
 /* ---- EL ESCENARIO ---- */
 .escenario{position:relative; display:flex; flex-direction:column;
@@ -391,7 +395,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   font-weight:600; margin:0 0 6px; color:var(--crema); letter-spacing:-.01em}
 .pieplaca p{margin:0; font-size:14px; line-height:1.6; color:var(--crema-75); max-width:62ch}
 .pieplaca .linea{font-family:var(--font-data); font-size:9.5px; letter-spacing:.2em;
-  text-transform:uppercase; color:var(--menta-600); margin:0 0 10px;
+  text-transform:uppercase; color:var(--azul-300); margin:0 0 10px;
   /* el antetitulo NO hereda la medida de 62ch del cuerpo: en versalitas
      monoespaciadas con .2em de espaciado, 62ch son 353 px y partia la frase en
      dos renglones dentro de un marco de 660. */
@@ -415,7 +419,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 #p5:checked ~ .sala label[for="p5"] .tt, #p6:checked ~ .sala label[for="p6"] .tt{color:var(--crema)}
 #p1:checked ~ .sala label[for="p1"] .n, #p2:checked ~ .sala label[for="p2"] .n,
 #p3:checked ~ .sala label[for="p3"] .n, #p4:checked ~ .sala label[for="p4"] .n,
-#p5:checked ~ .sala label[for="p5"] .n, #p6:checked ~ .sala label[for="p6"] .n{color:var(--menta)}
+#p5:checked ~ .sala label[for="p5"] .n, #p6:checked ~ .sala label[for="p6"] .n{color:var(--azul)}
 #p1:checked ~ .sala label[for="p1"]::before, #p2:checked ~ .sala label[for="p2"]::before,
 #p3:checked ~ .sala label[for="p3"]::before, #p4:checked ~ .sala label[for="p4"]::before,
 #p5:checked ~ .sala label[for="p5"]::before, #p6:checked ~ .sala label[for="p6"]::before{transform:scaleX(1)}
@@ -441,7 +445,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
    devuelve ese espacio sobrante y ni un pixel mas. */
 .banda i:last-child{margin-right:-.13em}
 .riel{position:absolute; left:22px; right:22px; top:42px; height:1px; background:var(--crema-12)}
-.riel b{position:absolute; inset:0 auto 0 0; background:var(--menta); width:100%;
+.riel b{position:absolute; inset:0 auto 0 0; background:var(--azul); width:100%;
   transform-origin:0 50%; display:block}
 
 /* =========================================================================
@@ -461,10 +465,10 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   text-transform:uppercase; margin-top:3px}
 .e1 .vig{position:absolute; left:14px; right:14px; bottom:30px; height:4px;
   background:var(--crema-12); border-radius:2px; overflow:hidden}
-.e1 .vig i{position:absolute; inset:0; background:var(--menta); transform-origin:0 50%;
+.e1 .vig i{position:absolute; inset:0; background:var(--azul); transform-origin:0 50%;
   animation:e1vence 11s linear infinite}
 .e1 .est{position:absolute; left:14px; bottom:11px; font-size:9.5px; letter-spacing:.14em}
-.e1 .est .v{color:var(--menta); animation:e1vig 11s steps(1) infinite}
+.e1 .est .v{color:var(--azul); animation:e1vig 11s steps(1) infinite}
 .e1 .est .x{color:var(--alerta); position:absolute; left:0; top:0; opacity:0;
   animation:e1venc 11s steps(1) infinite}
 /* EL RECUADRO DEL PROVEEDOR EXTRANJERO NO TIENE CANTO INFERIOR: la orden de
@@ -516,10 +520,10 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 .e2 .f1{top:132px} .e2 .f2{top:220px}
 .e2 .fila .pista{position:absolute; inset:0; border:1px dashed var(--crema-12); border-radius:2px}
 .e2 seg,.e2 .seg{position:absolute; top:2px; bottom:2px; border-radius:1px; transform-origin:0 50%}
-.e2 .s-base{left:2px; width:210px; background:var(--menta-600); animation:e2base 9s var(--entra) infinite}
+.e2 .s-base{left:2px; width:210px; background:var(--azul-600); animation:e2base 9s var(--entra) infinite}
 .e2 .s-a1{left:212px; width:132px; background:var(--ambar); animation:e2extra 9s var(--micro) infinite}
 .e2 .s-a2{left:344px; width:96px; background:var(--ambar); opacity:.8; animation:e2extra 9s var(--micro) infinite; animation-delay:.54s}
-.e2 .s-uno{left:2px; width:438px; background:var(--menta-600); animation:e2uno 9s var(--entra) infinite}
+.e2 .s-uno{left:2px; width:438px; background:var(--azul-600); animation:e2uno 9s var(--entra) infinite}
 .e2 .hito{position:absolute; top:-9px; bottom:-9px; width:1px; border-left:1px dashed var(--crema-28)}
 .e2 .compuerta{position:absolute; left:258px; top:104px; bottom:96px; width:1px;
   background:var(--crema-28); opacity:.5}
@@ -560,12 +564,12 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 .e3 .silencio{position:absolute; left:58px; right:58px; top:322px; text-align:left;
   font-size:12px; color:var(--crema-60); opacity:0; animation:e3silencio 12s var(--entra) infinite}
 .e3 .hilo{position:absolute; inset:0}
-.e3 .hilo path{fill:none; stroke:var(--menta); stroke-width:1.4; stroke-linecap:round;
+.e3 .hilo path{fill:none; stroke:var(--azul); stroke-width:1.4; stroke-linecap:round;
   stroke-dasharray:var(--L); stroke-dashoffset:var(--L); animation:e3hilo 12s linear infinite}
 .e3 .andando{position:absolute; left:452px; top:186px; width:152px; padding:10px 12px;
-  border:1px solid var(--menta-600); border-radius:var(--radio); opacity:0;
+  border:1px solid var(--azul-600); border-radius:var(--radio); opacity:0;
   animation:e3and 12s var(--entra) infinite}
-.e3 .andando .tit{font-size:11px; color:var(--menta-300); letter-spacing:.02em}
+.e3 .andando .tit{font-size:11px; color:var(--azul-300); letter-spacing:.02em}
 @keyframes e3entra{0%{opacity:0; transform:translateX(-16px)} 9%{opacity:1; transform:none}
   92%{opacity:1; transform:none} 100%{opacity:0; transform:none}}
 @keyframes e3silencio{0%,40%{opacity:0} 48%,88%{opacity:1} 100%{opacity:0}}
@@ -605,7 +609,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 @keyframes e4entra{
   0%{opacity:0; transform:translateX(-26px); border-color:var(--crema-12)}
   16%{opacity:1; transform:translateX(0); border-color:var(--crema-12)}
-  26%,100%{opacity:1; transform:translateX(0); border-color:var(--menta-600)}}
+  26%,100%{opacity:1; transform:translateX(0); border-color:var(--azul-600)}}
 @keyframes e4vuelve{
   0%{opacity:0; transform:translateX(-26px)}
   14%{opacity:1; transform:translateX(0); animation-timing-function:cubic-bezier(.16,1,.3,1)}
@@ -623,13 +627,13 @@ html.hdr-chico .brand .logo{transform:scale(.737);
    Es la unica pieza cuyo remate es la credencial, y por eso cierra el set.
    ========================================================================= */
 /* LA BANDA SE ENCIENDE POR SUPERPOSICION, no rotulo a rotulo. Hay DOS copias
-   de los cinco rotulos: una apagada y otra en menta recortada por el MISMO
+   de los cinco rotulos: una apagada y otra en azul recortada por el MISMO
    avance del expediente. Un elemento y un `clip-path` en vez de cinco
    animaciones con cinco pares de tiempos que ademas habria que invertir en el
    retroceso. Cuando el expediente se rehace, la banda se apaga sola. */
 .e5 .banda{top:36px}
 .e5 .banda i{font-size:8.5px}
-.e5 .banda.on{color:var(--menta); clip-path:inset(0 100% 0 0); animation:e5clip 12s infinite}
+.e5 .banda.on{color:var(--azul); clip-path:inset(0 100% 0 0); animation:e5clip 12s infinite}
 .e5 .riel{top:62px}
 .e5 .riel b{animation:e5avanza 12s infinite}
 .e5 .plazo{position:absolute; left:22px; right:22px; top:92px; height:2px; background:var(--crema-12)}
@@ -656,8 +660,8 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 .e5 .d1{animation:e5doc1 12s infinite}
 .e5 .d2{opacity:0; animation:e5doc2 12s infinite}
 .e5 .d1 .hab{color:var(--alerta)}
-.e5 .d2{border-color:var(--menta-600)}
-.e5 .d2 .hab{color:var(--menta)}
+.e5 .d2{border-color:var(--azul-600)}
+.e5 .d2 .hab{color:var(--azul)}
 /* EL SELLO CAE EN `steps(1)`: un estado administrativo no se desvanece, se cae
    de un cuadro al otro. Un fundido aqui seria una mentira de oficio. Y dura
    1,9 s de los 12 —el 16 %—, porque en la primera version duraba 1,2 s y en
@@ -794,7 +798,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   .e3 .hilo path{stroke-dashoffset:0}
   .e3 .andando{opacity:1}
   .e4 .lin{opacity:1; transform:none}
-  .e4 .l1,.e4 .l2{border-color:var(--menta-600)}
+  .e4 .l1,.e4 .l2{border-color:var(--azul-600)}
   .e4 .l3,.e4 .l4{opacity:.52; transform:translateX(52px)}
   .e4 .motivo{opacity:1}
   .e5 .riel b{transform:scaleX(1)}
@@ -818,15 +822,15 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 
 <header class="hdr">
   <div class="inner">
-    <a class="brand" href="index.html" aria-label="compAI, ir al inicio"><svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="-16 4 328 87" role="img" aria-label="compAI">
+    <a class="brand" href="index.html" aria-label="compAI, ir al inicio"><svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="-38 -18 372 131" role="img" aria-label="compAI">
   <defs>
     <filter id="brasa" x="-150%" y="-150%" width="400%" height="400%">
-      <feGaussianBlur stdDeviation="5" result="b1"/>
-      <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="b2"/>
-      <feMerge><feMergeNode in="b2"/><feMergeNode in="b1"/></feMerge>
+      <feGaussianBlur stdDeviation="5" result="b1">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="b2">
+      <feMerge><feMergeNode in="b2"><feMergeNode in="b1"></feMerge>
     </filter>
-    <g id="brillo"><path fill="#C87941" d="M172.205 52.695L170.937 49.460L158.049 49.460L156.755 52.695L158.049 52.695Q159.964 52.695 160.779 53.432Q161.595 54.170 161.595 55.360Q161.595 56.525 160.779 57.262Q159.964 58 158.049 58L150.907 58Q148.992 58 148.176 57.262Q147.361 56.525 147.361 55.334Q147.361 54.144 148.215 53.394Q149.069 52.643 151.036 52.695L159.369 31.940L155.901 31.940Q153.986 31.940 153.171 31.202Q152.356 30.465 152.356 29.274Q152.356 28.084 153.171 27.346Q153.986 26.609 155.901 26.609L167.366 26.635L177.924 52.695Q179.787 52.695 180.383 53.109Q181.573 53.963 181.573 55.360Q181.573 56.525 180.771 57.262Q179.969 58 178.054 58L170.911 58Q168.996 58 168.181 57.262Q167.366 56.525 167.366 55.334Q167.366 54.170 168.181 53.432Q168.996 52.695 170.911 52.695L172.205 52.695M160.171 44.155L168.737 44.155L164.467 33.648 M205.869 31.940L200.512 31.940L200.512 52.695L205.869 52.695Q207.784 52.695 208.599 53.432Q209.414 54.170 209.414 55.360Q209.414 56.525 208.599 57.262Q207.784 58 205.869 58L189.850 58Q187.935 58 187.120 57.262Q186.304 56.525 186.304 55.334Q186.304 54.170 187.120 53.432Q187.935 52.695 189.850 52.695L195.207 52.695L195.207 31.940L189.850 31.940Q187.935 31.940 187.120 31.202Q186.304 30.465 186.304 29.274Q186.304 28.084 187.120 27.346Q187.935 26.609 189.850 26.609L205.869 26.635Q207.784 26.635 208.599 27.359Q209.414 28.084 209.414 29.274Q209.414 30.465 208.599 31.202Q207.784 31.940 205.869 31.940"/><g transform="translate(259 20) scale(1.5)" fill="none" stroke="#4CC48B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8.5 L5 12.5 L12 4"/><path d="M10 8.5 L14 12.5 L21 4"/></g></g>
-    <g id="marca"><path fill="#F5F0E4" d="M33.340 37.547L25.766 38.914Q25.383 36.645 24.029 35.496Q22.676 34.348 20.516 34.348Q17.645 34.348 15.936 36.330Q14.227 38.313 14.227 42.961Q14.227 48.129 15.963 50.262Q17.699 52.395 20.625 52.395Q22.813 52.395 24.207 51.150Q25.602 49.906 26.176 46.871L33.723 48.156Q32.547 53.352 29.211 56.004Q25.875 58.656 20.270 58.656Q13.898 58.656 10.111 54.637Q6.324 50.617 6.324 43.508Q6.324 36.316 10.125 32.311Q13.926 28.305 20.406 28.305Q25.711 28.305 28.842 30.588Q31.973 32.871 33.340 37.547 M36.187 43.070Q36.187 39.242 38.073 35.660Q39.960 32.078 43.419 30.191Q46.878 28.305 51.144 28.305Q57.734 28.305 61.945 32.584Q66.155 36.863 66.155 43.398Q66.155 49.988 61.904 54.322Q57.652 58.656 51.198 58.656Q47.206 58.656 43.583 56.852Q39.960 55.047 38.073 51.561Q36.187 48.074 36.187 43.070M44.062 43.480Q44.062 47.801 46.112 50.098Q48.163 52.395 51.171 52.395Q54.179 52.395 56.216 50.098Q58.253 47.801 58.253 43.426Q58.253 39.160 56.216 36.863Q54.179 34.566 51.171 34.566Q48.163 34.566 46.112 36.863Q44.062 39.160 44.062 43.480 M70.397 58L70.397 28.961L77.479 28.961L77.479 32.926Q81.280 28.305 86.530 28.305Q89.319 28.305 91.370 29.453Q93.420 30.602 94.733 32.926Q96.647 30.602 98.862 29.453Q101.077 28.305 103.592 28.305Q106.791 28.305 109.006 29.604Q111.221 30.902 112.315 33.418Q113.108 35.277 113.108 39.434L113.108 58L105.424 58L105.424 41.402Q105.424 37.082 104.631 35.824Q103.565 34.184 101.350 34.184Q99.737 34.184 98.315 35.168Q96.893 36.152 96.264 38.053Q95.635 39.953 95.635 44.055L95.635 58L87.952 58L87.952 42.086Q87.952 37.848 87.541 36.617Q87.131 35.387 86.270 34.785Q85.409 34.184 83.932 34.184Q82.155 34.184 80.733 35.141Q79.311 36.098 78.696 37.902Q78.080 39.707 78.080 43.891L78.080 58 M119.345 69.047L119.345 28.961L126.509 28.961L126.509 33.227Q127.904 31.039 130.283 29.672Q132.662 28.305 135.560 28.305Q140.619 28.305 144.146 32.270Q147.673 36.234 147.673 43.316Q147.673 50.590 144.119 54.623Q140.564 58.656 135.505 58.656Q133.099 58.656 131.144 57.699Q129.189 56.742 127.029 54.418L127.029 69.047L119.345 69.047M126.947 42.988Q126.947 47.883 128.888 50.221Q130.830 52.559 133.619 52.559Q136.298 52.559 138.076 50.412Q139.853 48.266 139.853 43.371Q139.853 38.805 138.021 36.590Q136.189 34.375 133.482 34.375Q130.666 34.375 128.806 36.549Q126.947 38.723 126.947 42.988"/><path fill="#C87941" d="M172.205 52.695L170.937 49.460L158.049 49.460L156.755 52.695L158.049 52.695Q159.964 52.695 160.779 53.432Q161.595 54.170 161.595 55.360Q161.595 56.525 160.779 57.262Q159.964 58 158.049 58L150.907 58Q148.992 58 148.176 57.262Q147.361 56.525 147.361 55.334Q147.361 54.144 148.215 53.394Q149.069 52.643 151.036 52.695L159.369 31.940L155.901 31.940Q153.986 31.940 153.171 31.202Q152.356 30.465 152.356 29.274Q152.356 28.084 153.171 27.346Q153.986 26.609 155.901 26.609L167.366 26.635L177.924 52.695Q179.787 52.695 180.383 53.109Q181.573 53.963 181.573 55.360Q181.573 56.525 180.771 57.262Q179.969 58 178.054 58L170.911 58Q168.996 58 168.181 57.262Q167.366 56.525 167.366 55.334Q167.366 54.170 168.181 53.432Q168.996 52.695 170.911 52.695L172.205 52.695M160.171 44.155L168.737 44.155L164.467 33.648 M205.869 31.940L200.512 31.940L200.512 52.695L205.869 52.695Q207.784 52.695 208.599 53.432Q209.414 54.170 209.414 55.360Q209.414 56.525 208.599 57.262Q207.784 58 205.869 58L189.850 58Q187.935 58 187.120 57.262Q186.304 56.525 186.304 55.334Q186.304 54.170 187.120 53.432Q187.935 52.695 189.850 52.695L195.207 52.695L195.207 31.940L189.850 31.940Q187.935 31.940 187.120 31.202Q186.304 30.465 186.304 29.274Q186.304 28.084 187.120 27.346Q187.935 26.609 189.850 26.609L205.869 26.635Q207.784 26.635 208.599 27.359Q209.414 28.084 209.414 29.274Q209.414 30.465 208.599 31.202Q207.784 31.940 205.869 31.940"/><g transform="translate(259 20) scale(1.5)" fill="none" stroke="#4CC48B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8.5 L5 12.5 L12 4"/><path d="M10 8.5 L14 12.5 L21 4"/></g></g>
+    <g id="brillo"><g fill="none"><path transform="translate(4.000 58.000) scale(0.056000 -0.056000)" d="M522.00 187.00H388.00C370.00 131.00 342.00 104.00 288.00 104.00C217.00 104.00 174.00 161.00 174.00 266.00C174.00 365.00 200.00 436.00 288.00 436.00C345.00 436.00 372.00 409.00 388.00 338.00H522.00C512.00 470.00 424.00 549.00 289.00 549.00C128.00 549.00 34.00 450.00 34.00 266.00C34.00 88.00 127.00 -9.00 287.00 -9.00C418.00 -9.00 509.00 72.00 522.00 187.00Z"/><path transform="translate(33.936 58.000) scale(0.056000 -0.056000)" d="M569.00 266.00C569.00 449.00 470.00 549.00 301.00 549.00C136.00 549.00 35.00 447.00 35.00 270.00C35.00 92.00 136.00 -9.00 302.00 -9.00C466.00 -9.00 569.00 93.00 569.00 266.00ZM429.00 268.00C429.00 167.00 377.00 104.00 302.00 104.00C226.00 104.00 175.00 167.00 175.00 270.00C175.00 373.00 226.00 436.00 302.00 436.00C379.00 436.00 429.00 374.00 429.00 268.00Z"/><path transform="translate(66.952 58.000) scale(0.056000 -0.056000)" d="M824.00 0.00V382.00C824.00 487.00 760.00 549.00 652.00 549.00C584.00 549.00 536.00 525.00 494.00 469.00C468.00 520.00 414.00 549.00 347.00 549.00C285.00 549.00 245.00 528.00 199.00 473.00V540.00H60.00V0.00H200.00V324.00C200.00 390.00 236.00 430.00 296.00 430.00C343.00 430.00 372.00 403.00 372.00 360.00V0.00H512.00V324.00C512.00 390.00 548.00 430.00 608.00 430.00C655.00 430.00 684.00 403.00 684.00 360.00V0.00Z"/><path transform="translate(115.536 58.000) scale(0.056000 -0.056000)" d="M574.00 270.00C574.00 430.00 489.00 549.00 348.00 549.00C280.00 549.00 232.00 520.00 198.00 460.00V540.00H58.00V-218.00H198.00V72.00C232.00 12.00 280.00 -9.00 348.00 -9.00C478.00 -9.00 574.00 106.00 574.00 270.00ZM434.00 268.00C434.00 170.00 385.00 108.00 316.00 108.00C246.00 108.00 198.00 169.00 198.00 270.00C198.00 371.00 246.00 432.00 316.00 432.00C387.00 432.00 434.00 371.00 434.00 268.00Z"/></g><g fill="#C87941"><path transform="translate(148.552 58.000) scale(0.025879 -0.025879)" d="M798.00 1122.00 1088.00 205.00H1175.00Q1199.00 205.00 1212.00 197.00Q1225.00 189.00 1231.50 167.00Q1238.00 145.00 1238.00 103.00Q1238.00 61.00 1231.50 39.00Q1225.00 17.00 1212.00 8.50Q1199.00 0.00 1175.00 0.00H751.00Q727.00 0.00 714.00 8.50Q701.00 17.00 694.50 39.00Q688.00 61.00 688.00 103.00Q688.00 145.00 694.50 167.00Q701.00 189.00 714.00 197.00Q727.00 205.00 751.00 205.00H837.00L792.00 350.00H428.00L383.00 205.00H457.00Q481.00 205.00 494.00 197.00Q507.00 189.00 513.50 167.00Q520.00 145.00 520.00 103.00Q520.00 61.00 513.50 39.00Q507.00 17.00 494.00 8.50Q481.00 0.00 457.00 0.00H53.00Q29.00 0.00 16.00 8.50Q3.00 17.00 -3.50 39.00Q-10.00 61.00 -10.00 103.00Q-10.00 145.00 -3.50 167.00Q3.00 189.00 16.00 197.00Q29.00 205.00 53.00 205.00H137.00L390.00 982.00H223.00Q199.00 982.00 186.00 990.50Q173.00 999.00 166.50 1021.00Q160.00 1043.00 160.00 1085.00Q160.00 1127.00 166.50 1149.00Q173.00 1171.00 186.00 1179.00Q199.00 1187.00 223.00 1187.00H697.00Q737.00 1187.00 762.00 1171.50Q787.00 1156.00 798.00 1122.00ZM609.00 982.00 486.00 555.00H735.00L615.00 982.00Z"/><path transform="translate(181.931 58.000) scale(0.025879 -0.025879)" d="M1038.00 1084.00Q1038.00 1042.00 1031.50 1020.00Q1025.00 998.00 1012.00 990.00Q999.00 982.00 975.00 982.00H739.00V205.00H995.00Q1019.00 205.00 1032.00 196.50Q1045.00 188.00 1051.50 166.00Q1058.00 144.00 1058.00 102.00Q1058.00 60.00 1051.50 38.00Q1045.00 16.00 1032.00 8.00Q1019.00 0.00 995.00 0.00H233.00Q209.00 0.00 196.00 8.00Q183.00 16.00 176.50 38.00Q170.00 60.00 170.00 102.00Q170.00 144.00 176.50 166.00Q183.00 188.00 196.00 196.50Q209.00 205.00 233.00 205.00H489.00V982.00H253.00Q229.00 982.00 216.00 990.00Q203.00 998.00 196.50 1020.00Q190.00 1042.00 190.00 1084.00Q190.00 1126.00 196.50 1148.00Q203.00 1170.00 216.00 1178.50Q229.00 1187.00 253.00 1187.00H975.00Q999.00 1187.00 1012.00 1178.50Q1025.00 1170.00 1031.50 1148.00Q1038.00 1126.00 1038.00 1084.00Z"/></g><g transform="translate(259 20) scale(1.5)"><g fill="none" stroke="#2E8FB5" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8.5 L5 12.5 L12 4"/><path d="M10 8.5 L14 12.5 L21 4"/></g></g></g>
+    <g id="marca"><g fill="#F5F0E4"><path transform="translate(4.000 58.000) scale(0.056000 -0.056000)" d="M522.00 187.00H388.00C370.00 131.00 342.00 104.00 288.00 104.00C217.00 104.00 174.00 161.00 174.00 266.00C174.00 365.00 200.00 436.00 288.00 436.00C345.00 436.00 372.00 409.00 388.00 338.00H522.00C512.00 470.00 424.00 549.00 289.00 549.00C128.00 549.00 34.00 450.00 34.00 266.00C34.00 88.00 127.00 -9.00 287.00 -9.00C418.00 -9.00 509.00 72.00 522.00 187.00Z"/><path transform="translate(33.936 58.000) scale(0.056000 -0.056000)" d="M569.00 266.00C569.00 449.00 470.00 549.00 301.00 549.00C136.00 549.00 35.00 447.00 35.00 270.00C35.00 92.00 136.00 -9.00 302.00 -9.00C466.00 -9.00 569.00 93.00 569.00 266.00ZM429.00 268.00C429.00 167.00 377.00 104.00 302.00 104.00C226.00 104.00 175.00 167.00 175.00 270.00C175.00 373.00 226.00 436.00 302.00 436.00C379.00 436.00 429.00 374.00 429.00 268.00Z"/><path transform="translate(66.952 58.000) scale(0.056000 -0.056000)" d="M824.00 0.00V382.00C824.00 487.00 760.00 549.00 652.00 549.00C584.00 549.00 536.00 525.00 494.00 469.00C468.00 520.00 414.00 549.00 347.00 549.00C285.00 549.00 245.00 528.00 199.00 473.00V540.00H60.00V0.00H200.00V324.00C200.00 390.00 236.00 430.00 296.00 430.00C343.00 430.00 372.00 403.00 372.00 360.00V0.00H512.00V324.00C512.00 390.00 548.00 430.00 608.00 430.00C655.00 430.00 684.00 403.00 684.00 360.00V0.00Z"/><path transform="translate(115.536 58.000) scale(0.056000 -0.056000)" d="M574.00 270.00C574.00 430.00 489.00 549.00 348.00 549.00C280.00 549.00 232.00 520.00 198.00 460.00V540.00H58.00V-218.00H198.00V72.00C232.00 12.00 280.00 -9.00 348.00 -9.00C478.00 -9.00 574.00 106.00 574.00 270.00ZM434.00 268.00C434.00 170.00 385.00 108.00 316.00 108.00C246.00 108.00 198.00 169.00 198.00 270.00C198.00 371.00 246.00 432.00 316.00 432.00C387.00 432.00 434.00 371.00 434.00 268.00Z"/></g><g fill="#C87941"><path transform="translate(148.552 58.000) scale(0.025879 -0.025879)" d="M798.00 1122.00 1088.00 205.00H1175.00Q1199.00 205.00 1212.00 197.00Q1225.00 189.00 1231.50 167.00Q1238.00 145.00 1238.00 103.00Q1238.00 61.00 1231.50 39.00Q1225.00 17.00 1212.00 8.50Q1199.00 0.00 1175.00 0.00H751.00Q727.00 0.00 714.00 8.50Q701.00 17.00 694.50 39.00Q688.00 61.00 688.00 103.00Q688.00 145.00 694.50 167.00Q701.00 189.00 714.00 197.00Q727.00 205.00 751.00 205.00H837.00L792.00 350.00H428.00L383.00 205.00H457.00Q481.00 205.00 494.00 197.00Q507.00 189.00 513.50 167.00Q520.00 145.00 520.00 103.00Q520.00 61.00 513.50 39.00Q507.00 17.00 494.00 8.50Q481.00 0.00 457.00 0.00H53.00Q29.00 0.00 16.00 8.50Q3.00 17.00 -3.50 39.00Q-10.00 61.00 -10.00 103.00Q-10.00 145.00 -3.50 167.00Q3.00 189.00 16.00 197.00Q29.00 205.00 53.00 205.00H137.00L390.00 982.00H223.00Q199.00 982.00 186.00 990.50Q173.00 999.00 166.50 1021.00Q160.00 1043.00 160.00 1085.00Q160.00 1127.00 166.50 1149.00Q173.00 1171.00 186.00 1179.00Q199.00 1187.00 223.00 1187.00H697.00Q737.00 1187.00 762.00 1171.50Q787.00 1156.00 798.00 1122.00ZM609.00 982.00 486.00 555.00H735.00L615.00 982.00Z"/><path transform="translate(181.931 58.000) scale(0.025879 -0.025879)" d="M1038.00 1084.00Q1038.00 1042.00 1031.50 1020.00Q1025.00 998.00 1012.00 990.00Q999.00 982.00 975.00 982.00H739.00V205.00H995.00Q1019.00 205.00 1032.00 196.50Q1045.00 188.00 1051.50 166.00Q1058.00 144.00 1058.00 102.00Q1058.00 60.00 1051.50 38.00Q1045.00 16.00 1032.00 8.00Q1019.00 0.00 995.00 0.00H233.00Q209.00 0.00 196.00 8.00Q183.00 16.00 176.50 38.00Q170.00 60.00 170.00 102.00Q170.00 144.00 176.50 166.00Q183.00 188.00 196.00 196.50Q209.00 205.00 233.00 205.00H489.00V982.00H253.00Q229.00 982.00 216.00 990.00Q203.00 998.00 196.50 1020.00Q190.00 1042.00 190.00 1084.00Q190.00 1126.00 196.50 1148.00Q203.00 1170.00 216.00 1178.50Q229.00 1187.00 253.00 1187.00H975.00Q999.00 1187.00 1012.00 1178.50Q1025.00 1170.00 1031.50 1148.00Q1038.00 1126.00 1038.00 1084.00Z"/></g><g transform="translate(259 20) scale(1.5)"><g fill="none" stroke="#2E8FB5" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8.5 L5 12.5 L12 4"/><path d="M10 8.5 L14 12.5 L21 4"/></g></g></g>
   </defs>
   <use href="#brillo" filter="url(#brasa)" opacity="0.9"/>
   <use href="#marca"/>
@@ -900,7 +904,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
         </div>
         <div class="caja loc">
           <div class="dato" style="color:var(--crema)">Proveedor con RUT chileno</div>
-          <div class="dato" style="color:var(--menta-300);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;margin-top:7px">Factura electrónica contra orden de compra</div>
+          <div class="dato" style="color:var(--azul-300);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;margin-top:7px">Factura electrónica contra orden de compra</div>
         </div>
         <div class="oc">Orden de compra</div>
       </div></div>
@@ -926,7 +930,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
         <div class="cotiz" style="left:46px;top:160px;color:var(--ambar)">Respaldo automático · monitoreo — aparecen después</div>
         <div class="cotiz" style="left:46px;top:200px">Cotización CompAI</div>
         <div class="fila f2"><div class="pista"></div><div class="seg s-uno"></div></div>
-        <div class="cotiz" style="left:46px;top:248px;color:var(--menta-600)">Un solo tramo, con los respaldos dentro</div>
+        <div class="cotiz" style="left:46px;top:248px;color:var(--azul-300)">Un solo tramo, con los respaldos dentro</div>
         <div class="rot" style="left:46px;top:322px;font-size:11px;letter-spacing:0;text-transform:none;color:var(--crema-60)">
           El mismo valor. La diferencia es cuándo se lo dijeron.</div>
       </div></div>
