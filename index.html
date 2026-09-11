@@ -151,6 +151,101 @@ html:not(.js) #agente, html:not(.js) #nube{display:none}
              filter var(--t-crece) var(--entra)}
 @media (max-width:420px){.brand .logo{height:45px}}
 
+/* =========================================================================
+   LA HUELLA EN ESCRITORIO — 11-SEP-2026. SEGUNDA PASADA: BAJA DE 226 A 151.
+   Encargo de Sebastian, con la tabla de medicion delante: «portada, una menos
+   151 px». 151 es el escalon anterior de esa misma tabla y esta objetado por
+   escrito —a 151 la cresta mide 1,00 px, que el manual llama minimo ABSOLUTO
+   y no legible—. La objecion sigue en pie y la decision tambien: se ejecuta.
+
+   LO QUE MIDE LA PIEZA A 151
+     · tinta del lockup = 151 x 281,5 / 131 = 324,6 px
+       (el manual pide 485 para «legible» y 324 como piso absoluto: quedamos
+        0,6 px sobre el piso, sin margen ninguno)
+     · cresta = 1,50 x 151 / 226 = 1,00 px
+       a dpr 2 son 2 px de dispositivo y se lee; a dpr 1 es un pixel entero
+       sin subpixel y queda gris. Rasterizado honesto en la captura 03.
+
+   LA BANDA NO SUBE: BAJA A 102, Y ESO ES LO QUE MIDIO EL BARRIDO.
+   Primero, el techo. El techo de la banda NUNCA lo puso el logotipo —el
+   logotipo la desbordaba—: lo pone «EXPLORAR», la unica accion de la lamina
+   1, y ese techo no se movio ni un pixel al encoger la pieza. A 1440x900 la
+   lamina sigue midiendo banda + 747 y EXPLORAR sigue terminando 32 px antes
+   de su final, asi que el limite sigue siendo banda <= 185. Confirmado:
+
+       banda 200 -> lamina 947 -> EXPLORAR en 915   se pierde por 15
+       banda 190 -> lamina 937 -> EXPLORAR en 905   se pierde por 5
+       banda 185 -> lamina 932 -> EXPLORAR en 900   justo en el filo
+       banda 176 -> lamina 923 -> EXPLORAR en 891   9 de holgura  <- la heredada
+
+   Y AHI APARECIO LO QUE NADIE HABIA MEDIDO: la banda de 176 estaba afinada
+   para UNA pantalla, la de 900 de alto. Barriendo la ALTURA a 1440 de ancho,
+   el estado publicado (logotipo 226 / banda 176) pierde EXPLORAR en todo lo
+   que mida menos de ~890 px de alto —o sea en cualquier portatil de 768—:
+
+       1440x900 -> +9      1440x860 -> -6      1440x800 -> -29
+       1440x768 -> -41     1440x720 -> -59     1440x700 -> -67
+
+   Segundo, el piso, que es lo unico que movio el logotipo mas bajo: 151 es la
+   primera banda que CONTIENE la caja del logotipo en vez de ser desbordada
+   por ella. Pero 151 tampoco es el mejor valor, y la razon es que a 900 de
+   alto LA BANDA ES GRATIS: `min-height:100svh` deja la lamina en 900 y
+   EXPLORAR en 868 con banda 151, 120 o 102 —exactamente el mismo pixel—. La
+   banda solo se cobra en las pantallas BAJAS. Medido a 1440 de ancho:
+
+       alto   banda 151      banda 120      banda 102
+       900    868  (+32)     868  (+32)     868  (+32)   empatan
+       768    784  (-16)     753  (+15)     736  (+32)
+       700    742  (-42)     711  (-11)     693   (+7)
+       660    717  (-57)     686  (-26)     668   (-8)
+
+   Asi que el mejor valor no es el mayor que cabe: es el MENOR que siga siendo
+   una medida y no un capricho. Ese es 102, y esta anclado dos veces:
+     · la TINTA del logotipo termina en y=101,7 —la caja sigue hasta 151, pero
+       esos 49 px son el aire del archivo canonico, no dibujo—;
+     · el boton de menu termina en y=102, porque va centrado en una cabecera
+       que mide 151 por su contenido.
+   O sea los dos elementos del encabezado comparten borde inferior con 2 px de
+   diferencia, y la banda es ese borde. El aviso de proveedor arranca en 126,
+   exactamente un --s5 mas abajo, que es el ritmo de la pagina.
+   Con eso EXPLORAR aguanta hasta ~690 px de alto en vez de ~890: 200 px de
+   pantallas recuperadas. LIMITE HONESTO: bajo 690 se sigue yendo al pliegue,
+   y eso ya no lo arregla la banda —lo tendria que dar el contenido—.
+
+   EL CORTE DE DENSIDAD BAJA DE 1200 A 1024, Y TAMBIEN ES MEDICION.
+   La tinta pasa de 485 a 324 px: un tercio menos, asi que a cada ancho de
+   pantalla el logotipo pesa un tercio menos. El techo de densidad que ya esta
+   aprobado en produccion es el de ayer —485 px a 1200 = 40,4 % del ancho—; con
+   324 px ese mismo techo recien se alcanza a los 802 px de ancho. Medido:
+
+       1200 -> 27,0 %   1100 -> 29,5 %   1024 -> 31,7 %   960 -> 33,8 %
+        900 -> 36,1 %    840 -> 38,6 %    768 -> 42,2 %
+
+   Se elige 1024 y no 821, que es hasta donde la densidad dejaria llegar:
+   a 1024 la huella pesa 31,7 %, casi nueve puntos bajo el techo aprobado, o
+   sea sigue siendo el remitente sin discusion posible; a 821 pasaria por 0,8
+   puntos —cumplir de suerte no es cumplir— y ademas pondria el logotipo de
+   portada en anchos donde el resto de la pagina ya empezo a colapsar a una
+   columna. Con 1024 se gana toda la franja 1024-1199, que es el portatil
+   comun y la tablet apaisada, sin gastar el margen.
+   Bajo 1024 vuelve la solida. A 390 px es obligatorio: el canal util son
+   342 px y ahi la huella entraria por 17 px dejando al boton de menu sin
+   sitio, que es tenerla nominalmente y no verla.
+
+   COMO SE CONMUTA SIN DUPLICAR EL DIBUJO: los dos logotipos son el MISMO
+   archivo salvo el doble check —la solida son 2 trazos a 2,8; la huella son
+   6 a 0,58, y 2 de esos 6 son exactamente los 2 de la solida—. Asi que en el
+   <defs> viajan las 4 crestas extra y dos variables CSS heredadas deciden:
+   `--chk-trazo` adelgaza el trazo central y `--chk-crestas` enciende las
+   otras cuatro. Cuestan 4 trazados, no un segundo logotipo.
+   El logotipo del PIE no las recibe: sigue siendo solido a 42 px, que es su
+   sitio en el manual (firma, no hero).
+   ========================================================================= */
+@media (min-width:1024px){
+  :root{--hdr:102px}
+  .brand .logo{height:151px; --chk-trazo:0.58; --chk-crestas:block}
+}
+
 /* EL ENCABEZADO SE ESCONDE PASADA LA LAMINA 1 — corregido el 5-sep-2026.
    Antes se ENCOGIA y se quedaba fijo, y ahi estaba el defecto que reporto
    Sebastian: sin fondo por el brief («completamente translucido»), una barra
@@ -369,12 +464,35 @@ html.menu-abierto .prov{opacity:0; transform:translateY(8px); pointer-events:non
 .prov .t1{font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--crema-60)}
 .prov .t2{font-size:11px; letter-spacing:.11em; text-transform:uppercase;
   color:var(--crema-75); font-weight:600}
+/* EL AZUL DEL ENLACE BAJA UN ESCALON — 11-sep-2026, encargo de Sebastian
+   («ver ficha proveedor, en azul oscuro»). Medido antes de aplicar, contra
+   `--ink-900` #08090C, que es el PISO real: el plexus solo SUMA luz y el velo
+   solo acerca el fondo a ese hex, asi que ningun pixel detras del enlace es
+   mas oscuro. Lo que da el peor contraste posible para una tinta oscura es
+   justo el negro puro, y ese es el numero que vale.
+
+     #78C5E3  azul-300, el de ayer .......... 10,33:1   pasaba con holgura
+     #2E8FB5  azul base, EL QUE QUEDA ........ 5,42:1   pasa  <-- aplicado
+     #13749A  azul-600, el «oscuro» .......... 3,79:1   NO PASA
+     #0F5C7A  azul de papel .................. 2,69:1   NO PASA, ni de lejos
+
+   El enlace mide 10,5 px: es texto normal y le toca 4,5:1, no 3:1. El azul-600
+   se queda a 0,71 del minimo y el de papel a menos de la mitad — este ultimo
+   ya esta prohibido por doctrina sobre fondo oscuro, porque es el tono con el
+   que las crestas del simbolo desaparecen.
+   Barrido el tono completo, el mas oscuro de esta familia que aun pasa es
+   #2981A3 (4,52:1): dos centesimas de margen. Un enlace que cumple por dos
+   centesimas no cumple, cumple de suerte — y ademas seria un hex nuevo fuera
+   de la rampa, que es la deriva que se arreglo el 9-sep. Queda `--azul`.
+   El estado ACLARA en vez de oscurecer: en reposo la tinta es mas oscura que
+   ayer, y al posar el cursor sube a azul-300. Asi el hover sigue siendo un
+   acontecimiento y no hay que inventar un quinto azul. */
 .prov .ficha{display:inline-flex; align-items:center; min-height:44px; margin-top:2px;
-  color:var(--azul-300); text-decoration:none; font-size:10.5px; font-weight:600;
+  color:var(--azul); text-decoration:none; font-size:10.5px; font-weight:600;
   letter-spacing:.09em; text-decoration:underline; text-decoration-thickness:1px;
-  text-underline-offset:5px; text-decoration-color:rgba(46,143,181,.45);
+  text-underline-offset:5px; text-decoration-color:rgba(46,143,181,.55);
   transition:color .18s ease, text-decoration-color .18s ease}
-.prov .ficha:hover, .prov .ficha:focus-visible{color:var(--azul); text-decoration-color:var(--azul)}
+.prov .ficha:hover, .prov .ficha:focus-visible{color:var(--azul-300); text-decoration-color:var(--azul-300)}
 
 /* Hueco de la figura. NO se pinta nada aqui: las particulas son de CinemAI.
    El hueco reserva el sitio para que la composicion no salte cuando entren.
@@ -445,6 +563,51 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
   text-transform:uppercase; color:var(--azul-300);
   border:1px solid rgba(46,143,181,.36); border-radius:var(--radio);
   padding:5px 10px; background:rgba(8,9,12,.5)}
+/* =========================================================================
+   EL HALO DE GRACE - 11-sep-2026. Sebastian lo dejo como un «quiza puede
+   llevar halo», o sea una idea a explorar. Se probaron DOS y esta es la que
+   quedo; la otra se descarto midiendola contra el fondo, no opinando.
+
+   LO QUE SE DESCARTO - «aureola»: el rotulo entero encendido, con
+   `box-shadow:0 0 34px` azul alrededor de la caja. Dos defectos, los dos
+   visibles en la captura sobre el plexus real:
+     1 · un resplandor ancho sobre una malla de puntos brillantes no se lee
+         como luz, se lee como MANCHA: el halo no tiene borde y el plexus
+         tampoco, asi que se confunden y el rotulo pierde canto;
+     2 · un rotulo con relieve y brillo se parece a un boton, y este es un
+         <p>. Ya hubo una correccion de ClAI-nte por lo contrario -una accion
+         tipografiada como metadato-, y este seria el mismo error al reves:
+         metadato tipografiado como accion. Nadie lo va a poder apretar.
+
+   LO QUE QUEDA - «latido»: un punto de 7 px que respira. La caja del rotulo
+   no cambia ni un pixel. El halo es del tamano del punto, no del rotulo, asi
+   que tiene borde y no compite con el plexus.
+
+   Y RESUELVE ALGO QUE YA ESTABA ROTO, que es el motivo de peso: en esta
+   misma lamina hay cuatro rotulos de estado (`.lic-est.e-pertinente`) con el
+   mismo azul, el mismo borde y el mismo cuerpo que el de Grace. Hasta hoy el
+   nombre de la agente y el estado de una licitacion se veian IGUAL. El punto
+   los separa, y los separa diciendo algo cierto: Grace esta corriendo; los
+   otros cuatro son una clasificacion, no un proceso.
+
+   NO COMPITE CON EL COBRE, y se verifico mirando: el cobre vive en el
+   logotipo de la lamina 1 y en la cursiva del formulario, y esta lamina no
+   comparte pantalla con ninguno de los dos. La unica luz de la lamina 3 es
+   esta, y por eso puede ser pequena.
+
+   3,6 s Y NO 1 s: un pulso rapido es una alarma. Este tiene que decir «esta
+   viva», no «hay un problema». Con `prefers-reduced-motion` el punto se queda
+   encendido y quieto: pierde el latido, no la informacion.
+   ========================================================================= */
+.chip::before{content:""; width:7px; height:7px; border-radius:50%;
+  background:var(--azul); flex:0 0 auto;
+  box-shadow:0 0 0 0 rgba(46,143,181,.50), 0 0 9px rgba(46,143,181,.55);
+  animation:grace-late 3.6s ease-in-out infinite}
+@keyframes grace-late{
+  0%,100%{box-shadow:0 0 0 0 rgba(46,143,181,.50), 0 0 9px rgba(46,143,181,.55)}
+  50%    {box-shadow:0 0 0 6px rgba(46,143,181,0), 0 0 20px rgba(46,143,181,1)}}
+@media (prefers-reduced-motion:reduce){
+  .chip::before{animation:none; box-shadow:0 0 12px rgba(46,143,181,.85)}}
 .l3 h2{margin:var(--s4) 0 0; font-family:var(--font-data); font-weight:600;
   text-transform:uppercase; letter-spacing:-.005em; line-height:1.14;
   /* 34ch, no 22: con 22 la primera linea declarada («Clasifica cada
@@ -562,6 +725,15 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
   padding:13px var(--s4); min-height:48px; transition:border-color .18s ease, box-shadow .18s ease}
 .f textarea{min-height:132px; resize:vertical; line-height:1.6}
 .f input::placeholder, .f textarea::placeholder{color:var(--crema-60)}
+/* La marca de opcional NO cambia de color ni se achica: es la MISMA tinta de
+   la etiqueta. Lo unico que cambia es la caja de la palabra -minuscula y sin
+   el espaciado de versales- porque lo que tiene que leerse distinto es el
+   rango del campo, no su importancia. Bajarle el contraste seria esconder
+   justo el dato que libera al visitante de llenarlo. */
+.f label .opt{text-transform:none; letter-spacing:.02em; font-weight:400}
+/* El ID es un codigo, no una frase: va en la tipografia de datos, como todas
+   las cifras del sitio, y sin corrector ortografico encima. */
+#idmp{font-family:var(--font-data); font-size:15px; letter-spacing:.04em}
 .f input:focus, .f textarea:focus{outline:0; border-color:var(--terracota); box-shadow:var(--glow-terracota)}
 .adj{display:flex; align-items:flex-start; gap:var(--s3); border:1px dashed var(--crema-28);
   border-radius:var(--radio); padding:var(--s4); color:var(--crema-75); font-size:14px}
@@ -645,7 +817,32 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
   .fila .ver{justify-self:start}
   .kpis{grid-template-columns:1fr; gap:var(--s5); text-align:left}
   .kpi{border-left:2px solid var(--crema-12); padding-left:var(--s4)}
-  .prov .t1{font-size:10px; letter-spacing:.09em}
+  /* EL AVISO DE PROVEEDOR ENCOGE, SOLO EN TELEFONO - 11-sep-2026, encargo de
+     Sebastian («en la portada de telefono, lo del registro MP y ver ficha no
+     reduciria en tamano un poco»). En escritorio no se toca nada.
+     NO ENCOGEN LOS TRES IGUAL, Y ESA ES LA DECISION: el rotulo baja 15 % y el
+     enlace solo 9,5 %. El rotulo es el respaldo —dice de donde viene la
+     confianza— y el enlace es lo unico que se puede APRETAR en toda la lamina
+     1 junto con EXPLORAR. Bajarlos parejo habria mantenido al aviso pesando
+     mas que su propia accion, que es el defecto que ya costo una correccion
+     («nunca tipografiar una accion como metadato»). Asi el orden queda
+     8,5 / 9,5 / 9,5: el enlace pasa a ser el texto mas grande del bloque.
+     LO QUE NO SE TOCA Y ES EL HALLAZGO: el `min-height:44px` del enlace.
+     El objetivo del dedo no depende del tamano de la letra —lo sostiene esa
+     regla, no la tipografia—, asi que letra y objetivo se mueven por separado
+     y aqui solo se movio la letra. Efecto lateral honesto: de los 78 px que
+     mide el bloque, 44 son ese objetivo, o sea AIRE invisible alrededor del
+     enlace; por eso la tinta baja ~17 % pero el bloque en el layout baja
+     mucho menos. Achicar mas el bloque obligaria a achicar el dedo, y eso no
+     se hace.
+     El color no se mueve: el enlace sigue en `--azul` con sus 5,42:1, y el
+     umbral que le aplica (4,5:1, texto normal) es el mismo a 10,5 que a 9,5
+     px, asi que encoger no cambia nada del contraste. */
+  .prov{line-height:1.4}
+  .prov .t1{font-size:8.5px; letter-spacing:.08em}
+  .prov .t2{font-size:9.5px; letter-spacing:.09em}
+  .prov .ficha{font-size:9.5px; letter-spacing:.08em; margin-top:0;
+    text-underline-offset:4px}
   .fig-slot{height:min(52svh,440px)}
   .pie .fila-baja{margin-top:var(--s8)}
 }
@@ -684,8 +881,8 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
       <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="b2">
       <feMerge><feMergeNode in="b2"><feMergeNode in="b1"></feMerge>
     </filter>
-    <g id="brillo"><g fill="none"><path transform="translate(4.000 58.000) scale(0.056000 -0.056000)" d="M522.00 187.00H388.00C370.00 131.00 342.00 104.00 288.00 104.00C217.00 104.00 174.00 161.00 174.00 266.00C174.00 365.00 200.00 436.00 288.00 436.00C345.00 436.00 372.00 409.00 388.00 338.00H522.00C512.00 470.00 424.00 549.00 289.00 549.00C128.00 549.00 34.00 450.00 34.00 266.00C34.00 88.00 127.00 -9.00 287.00 -9.00C418.00 -9.00 509.00 72.00 522.00 187.00Z"/><path transform="translate(33.936 58.000) scale(0.056000 -0.056000)" d="M569.00 266.00C569.00 449.00 470.00 549.00 301.00 549.00C136.00 549.00 35.00 447.00 35.00 270.00C35.00 92.00 136.00 -9.00 302.00 -9.00C466.00 -9.00 569.00 93.00 569.00 266.00ZM429.00 268.00C429.00 167.00 377.00 104.00 302.00 104.00C226.00 104.00 175.00 167.00 175.00 270.00C175.00 373.00 226.00 436.00 302.00 436.00C379.00 436.00 429.00 374.00 429.00 268.00Z"/><path transform="translate(66.952 58.000) scale(0.056000 -0.056000)" d="M824.00 0.00V382.00C824.00 487.00 760.00 549.00 652.00 549.00C584.00 549.00 536.00 525.00 494.00 469.00C468.00 520.00 414.00 549.00 347.00 549.00C285.00 549.00 245.00 528.00 199.00 473.00V540.00H60.00V0.00H200.00V324.00C200.00 390.00 236.00 430.00 296.00 430.00C343.00 430.00 372.00 403.00 372.00 360.00V0.00H512.00V324.00C512.00 390.00 548.00 430.00 608.00 430.00C655.00 430.00 684.00 403.00 684.00 360.00V0.00Z"/><path transform="translate(115.536 58.000) scale(0.056000 -0.056000)" d="M574.00 270.00C574.00 430.00 489.00 549.00 348.00 549.00C280.00 549.00 232.00 520.00 198.00 460.00V540.00H58.00V-218.00H198.00V72.00C232.00 12.00 280.00 -9.00 348.00 -9.00C478.00 -9.00 574.00 106.00 574.00 270.00ZM434.00 268.00C434.00 170.00 385.00 108.00 316.00 108.00C246.00 108.00 198.00 169.00 198.00 270.00C198.00 371.00 246.00 432.00 316.00 432.00C387.00 432.00 434.00 371.00 434.00 268.00Z"/></g><g fill="#C87941"><path transform="translate(148.552 58.000) scale(0.025879 -0.025879)" d="M798.00 1122.00 1088.00 205.00H1175.00Q1199.00 205.00 1212.00 197.00Q1225.00 189.00 1231.50 167.00Q1238.00 145.00 1238.00 103.00Q1238.00 61.00 1231.50 39.00Q1225.00 17.00 1212.00 8.50Q1199.00 0.00 1175.00 0.00H751.00Q727.00 0.00 714.00 8.50Q701.00 17.00 694.50 39.00Q688.00 61.00 688.00 103.00Q688.00 145.00 694.50 167.00Q701.00 189.00 714.00 197.00Q727.00 205.00 751.00 205.00H837.00L792.00 350.00H428.00L383.00 205.00H457.00Q481.00 205.00 494.00 197.00Q507.00 189.00 513.50 167.00Q520.00 145.00 520.00 103.00Q520.00 61.00 513.50 39.00Q507.00 17.00 494.00 8.50Q481.00 0.00 457.00 0.00H53.00Q29.00 0.00 16.00 8.50Q3.00 17.00 -3.50 39.00Q-10.00 61.00 -10.00 103.00Q-10.00 145.00 -3.50 167.00Q3.00 189.00 16.00 197.00Q29.00 205.00 53.00 205.00H137.00L390.00 982.00H223.00Q199.00 982.00 186.00 990.50Q173.00 999.00 166.50 1021.00Q160.00 1043.00 160.00 1085.00Q160.00 1127.00 166.50 1149.00Q173.00 1171.00 186.00 1179.00Q199.00 1187.00 223.00 1187.00H697.00Q737.00 1187.00 762.00 1171.50Q787.00 1156.00 798.00 1122.00ZM609.00 982.00 486.00 555.00H735.00L615.00 982.00Z"/><path transform="translate(181.931 58.000) scale(0.025879 -0.025879)" d="M1038.00 1084.00Q1038.00 1042.00 1031.50 1020.00Q1025.00 998.00 1012.00 990.00Q999.00 982.00 975.00 982.00H739.00V205.00H995.00Q1019.00 205.00 1032.00 196.50Q1045.00 188.00 1051.50 166.00Q1058.00 144.00 1058.00 102.00Q1058.00 60.00 1051.50 38.00Q1045.00 16.00 1032.00 8.00Q1019.00 0.00 995.00 0.00H233.00Q209.00 0.00 196.00 8.00Q183.00 16.00 176.50 38.00Q170.00 60.00 170.00 102.00Q170.00 144.00 176.50 166.00Q183.00 188.00 196.00 196.50Q209.00 205.00 233.00 205.00H489.00V982.00H253.00Q229.00 982.00 216.00 990.00Q203.00 998.00 196.50 1020.00Q190.00 1042.00 190.00 1084.00Q190.00 1126.00 196.50 1148.00Q203.00 1170.00 216.00 1178.50Q229.00 1187.00 253.00 1187.00H975.00Q999.00 1187.00 1012.00 1178.50Q1025.00 1170.00 1031.50 1148.00Q1038.00 1126.00 1038.00 1084.00Z"/></g><g transform="translate(259 20) scale(1.5)"><g fill="none" stroke="#2E8FB5" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8.5 L5 12.5 L12 4"/><path d="M10 8.5 L14 12.5 L21 4"/></g></g></g>
-    <g id="marca"><g fill="#F5F0E4"><path transform="translate(4.000 58.000) scale(0.056000 -0.056000)" d="M522.00 187.00H388.00C370.00 131.00 342.00 104.00 288.00 104.00C217.00 104.00 174.00 161.00 174.00 266.00C174.00 365.00 200.00 436.00 288.00 436.00C345.00 436.00 372.00 409.00 388.00 338.00H522.00C512.00 470.00 424.00 549.00 289.00 549.00C128.00 549.00 34.00 450.00 34.00 266.00C34.00 88.00 127.00 -9.00 287.00 -9.00C418.00 -9.00 509.00 72.00 522.00 187.00Z"/><path transform="translate(33.936 58.000) scale(0.056000 -0.056000)" d="M569.00 266.00C569.00 449.00 470.00 549.00 301.00 549.00C136.00 549.00 35.00 447.00 35.00 270.00C35.00 92.00 136.00 -9.00 302.00 -9.00C466.00 -9.00 569.00 93.00 569.00 266.00ZM429.00 268.00C429.00 167.00 377.00 104.00 302.00 104.00C226.00 104.00 175.00 167.00 175.00 270.00C175.00 373.00 226.00 436.00 302.00 436.00C379.00 436.00 429.00 374.00 429.00 268.00Z"/><path transform="translate(66.952 58.000) scale(0.056000 -0.056000)" d="M824.00 0.00V382.00C824.00 487.00 760.00 549.00 652.00 549.00C584.00 549.00 536.00 525.00 494.00 469.00C468.00 520.00 414.00 549.00 347.00 549.00C285.00 549.00 245.00 528.00 199.00 473.00V540.00H60.00V0.00H200.00V324.00C200.00 390.00 236.00 430.00 296.00 430.00C343.00 430.00 372.00 403.00 372.00 360.00V0.00H512.00V324.00C512.00 390.00 548.00 430.00 608.00 430.00C655.00 430.00 684.00 403.00 684.00 360.00V0.00Z"/><path transform="translate(115.536 58.000) scale(0.056000 -0.056000)" d="M574.00 270.00C574.00 430.00 489.00 549.00 348.00 549.00C280.00 549.00 232.00 520.00 198.00 460.00V540.00H58.00V-218.00H198.00V72.00C232.00 12.00 280.00 -9.00 348.00 -9.00C478.00 -9.00 574.00 106.00 574.00 270.00ZM434.00 268.00C434.00 170.00 385.00 108.00 316.00 108.00C246.00 108.00 198.00 169.00 198.00 270.00C198.00 371.00 246.00 432.00 316.00 432.00C387.00 432.00 434.00 371.00 434.00 268.00Z"/></g><g fill="#C87941"><path transform="translate(148.552 58.000) scale(0.025879 -0.025879)" d="M798.00 1122.00 1088.00 205.00H1175.00Q1199.00 205.00 1212.00 197.00Q1225.00 189.00 1231.50 167.00Q1238.00 145.00 1238.00 103.00Q1238.00 61.00 1231.50 39.00Q1225.00 17.00 1212.00 8.50Q1199.00 0.00 1175.00 0.00H751.00Q727.00 0.00 714.00 8.50Q701.00 17.00 694.50 39.00Q688.00 61.00 688.00 103.00Q688.00 145.00 694.50 167.00Q701.00 189.00 714.00 197.00Q727.00 205.00 751.00 205.00H837.00L792.00 350.00H428.00L383.00 205.00H457.00Q481.00 205.00 494.00 197.00Q507.00 189.00 513.50 167.00Q520.00 145.00 520.00 103.00Q520.00 61.00 513.50 39.00Q507.00 17.00 494.00 8.50Q481.00 0.00 457.00 0.00H53.00Q29.00 0.00 16.00 8.50Q3.00 17.00 -3.50 39.00Q-10.00 61.00 -10.00 103.00Q-10.00 145.00 -3.50 167.00Q3.00 189.00 16.00 197.00Q29.00 205.00 53.00 205.00H137.00L390.00 982.00H223.00Q199.00 982.00 186.00 990.50Q173.00 999.00 166.50 1021.00Q160.00 1043.00 160.00 1085.00Q160.00 1127.00 166.50 1149.00Q173.00 1171.00 186.00 1179.00Q199.00 1187.00 223.00 1187.00H697.00Q737.00 1187.00 762.00 1171.50Q787.00 1156.00 798.00 1122.00ZM609.00 982.00 486.00 555.00H735.00L615.00 982.00Z"/><path transform="translate(181.931 58.000) scale(0.025879 -0.025879)" d="M1038.00 1084.00Q1038.00 1042.00 1031.50 1020.00Q1025.00 998.00 1012.00 990.00Q999.00 982.00 975.00 982.00H739.00V205.00H995.00Q1019.00 205.00 1032.00 196.50Q1045.00 188.00 1051.50 166.00Q1058.00 144.00 1058.00 102.00Q1058.00 60.00 1051.50 38.00Q1045.00 16.00 1032.00 8.00Q1019.00 0.00 995.00 0.00H233.00Q209.00 0.00 196.00 8.00Q183.00 16.00 176.50 38.00Q170.00 60.00 170.00 102.00Q170.00 144.00 176.50 166.00Q183.00 188.00 196.00 196.50Q209.00 205.00 233.00 205.00H489.00V982.00H253.00Q229.00 982.00 216.00 990.00Q203.00 998.00 196.50 1020.00Q190.00 1042.00 190.00 1084.00Q190.00 1126.00 196.50 1148.00Q203.00 1170.00 216.00 1178.50Q229.00 1187.00 253.00 1187.00H975.00Q999.00 1187.00 1012.00 1178.50Q1025.00 1170.00 1031.50 1148.00Q1038.00 1126.00 1038.00 1084.00Z"/></g><g transform="translate(259 20) scale(1.5)"><g fill="none" stroke="#2E8FB5" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8.5 L5 12.5 L12 4"/><path d="M10 8.5 L14 12.5 L21 4"/></g></g></g>
+    <g id="brillo"><g fill="none"><path transform="translate(4.000 58.000) scale(0.056000 -0.056000)" d="M522.00 187.00H388.00C370.00 131.00 342.00 104.00 288.00 104.00C217.00 104.00 174.00 161.00 174.00 266.00C174.00 365.00 200.00 436.00 288.00 436.00C345.00 436.00 372.00 409.00 388.00 338.00H522.00C512.00 470.00 424.00 549.00 289.00 549.00C128.00 549.00 34.00 450.00 34.00 266.00C34.00 88.00 127.00 -9.00 287.00 -9.00C418.00 -9.00 509.00 72.00 522.00 187.00Z"/><path transform="translate(33.936 58.000) scale(0.056000 -0.056000)" d="M569.00 266.00C569.00 449.00 470.00 549.00 301.00 549.00C136.00 549.00 35.00 447.00 35.00 270.00C35.00 92.00 136.00 -9.00 302.00 -9.00C466.00 -9.00 569.00 93.00 569.00 266.00ZM429.00 268.00C429.00 167.00 377.00 104.00 302.00 104.00C226.00 104.00 175.00 167.00 175.00 270.00C175.00 373.00 226.00 436.00 302.00 436.00C379.00 436.00 429.00 374.00 429.00 268.00Z"/><path transform="translate(66.952 58.000) scale(0.056000 -0.056000)" d="M824.00 0.00V382.00C824.00 487.00 760.00 549.00 652.00 549.00C584.00 549.00 536.00 525.00 494.00 469.00C468.00 520.00 414.00 549.00 347.00 549.00C285.00 549.00 245.00 528.00 199.00 473.00V540.00H60.00V0.00H200.00V324.00C200.00 390.00 236.00 430.00 296.00 430.00C343.00 430.00 372.00 403.00 372.00 360.00V0.00H512.00V324.00C512.00 390.00 548.00 430.00 608.00 430.00C655.00 430.00 684.00 403.00 684.00 360.00V0.00Z"/><path transform="translate(115.536 58.000) scale(0.056000 -0.056000)" d="M574.00 270.00C574.00 430.00 489.00 549.00 348.00 549.00C280.00 549.00 232.00 520.00 198.00 460.00V540.00H58.00V-218.00H198.00V72.00C232.00 12.00 280.00 -9.00 348.00 -9.00C478.00 -9.00 574.00 106.00 574.00 270.00ZM434.00 268.00C434.00 170.00 385.00 108.00 316.00 108.00C246.00 108.00 198.00 169.00 198.00 270.00C198.00 371.00 246.00 432.00 316.00 432.00C387.00 432.00 434.00 371.00 434.00 268.00Z"/></g><g fill="#C87941"><path transform="translate(148.552 58.000) scale(0.025879 -0.025879)" d="M798.00 1122.00 1088.00 205.00H1175.00Q1199.00 205.00 1212.00 197.00Q1225.00 189.00 1231.50 167.00Q1238.00 145.00 1238.00 103.00Q1238.00 61.00 1231.50 39.00Q1225.00 17.00 1212.00 8.50Q1199.00 0.00 1175.00 0.00H751.00Q727.00 0.00 714.00 8.50Q701.00 17.00 694.50 39.00Q688.00 61.00 688.00 103.00Q688.00 145.00 694.50 167.00Q701.00 189.00 714.00 197.00Q727.00 205.00 751.00 205.00H837.00L792.00 350.00H428.00L383.00 205.00H457.00Q481.00 205.00 494.00 197.00Q507.00 189.00 513.50 167.00Q520.00 145.00 520.00 103.00Q520.00 61.00 513.50 39.00Q507.00 17.00 494.00 8.50Q481.00 0.00 457.00 0.00H53.00Q29.00 0.00 16.00 8.50Q3.00 17.00 -3.50 39.00Q-10.00 61.00 -10.00 103.00Q-10.00 145.00 -3.50 167.00Q3.00 189.00 16.00 197.00Q29.00 205.00 53.00 205.00H137.00L390.00 982.00H223.00Q199.00 982.00 186.00 990.50Q173.00 999.00 166.50 1021.00Q160.00 1043.00 160.00 1085.00Q160.00 1127.00 166.50 1149.00Q173.00 1171.00 186.00 1179.00Q199.00 1187.00 223.00 1187.00H697.00Q737.00 1187.00 762.00 1171.50Q787.00 1156.00 798.00 1122.00ZM609.00 982.00 486.00 555.00H735.00L615.00 982.00Z"/><path transform="translate(181.931 58.000) scale(0.025879 -0.025879)" d="M1038.00 1084.00Q1038.00 1042.00 1031.50 1020.00Q1025.00 998.00 1012.00 990.00Q999.00 982.00 975.00 982.00H739.00V205.00H995.00Q1019.00 205.00 1032.00 196.50Q1045.00 188.00 1051.50 166.00Q1058.00 144.00 1058.00 102.00Q1058.00 60.00 1051.50 38.00Q1045.00 16.00 1032.00 8.00Q1019.00 0.00 995.00 0.00H233.00Q209.00 0.00 196.00 8.00Q183.00 16.00 176.50 38.00Q170.00 60.00 170.00 102.00Q170.00 144.00 176.50 166.00Q183.00 188.00 196.00 196.50Q209.00 205.00 233.00 205.00H489.00V982.00H253.00Q229.00 982.00 216.00 990.00Q203.00 998.00 196.50 1020.00Q190.00 1042.00 190.00 1084.00Q190.00 1126.00 196.50 1148.00Q203.00 1170.00 216.00 1178.50Q229.00 1187.00 253.00 1187.00H975.00Q999.00 1187.00 1012.00 1178.50Q1025.00 1170.00 1031.50 1148.00Q1038.00 1126.00 1038.00 1084.00Z"/></g><g transform="translate(259 20) scale(1.5)"><g fill="none" stroke="#2E8FB5" stroke-linecap="round" stroke-linejoin="round" style="stroke-width:var(--chk-trazo,2.8)"><path d="M1 8.5 L5 12.5 L12 4"/><path d="M10 8.5 L14 12.5 L21 4"/></g><g fill="none" stroke="#2E8FB5" stroke-width="0.58" stroke-linecap="round" stroke-linejoin="round" style="display:var(--chk-crestas,none)"><path d="M2.56 7.37L4.86 9.68L9.83 3.64"/><path d="M0.22 10.41L5.14 15.32L12.26 6.67"/><path d="M11.56 7.37L13.86 9.68L18.83 3.64"/><path d="M9.22 10.41L14.14 15.32L21.26 6.67"/></g></g></g>
+    <g id="marca"><g fill="#F5F0E4"><path transform="translate(4.000 58.000) scale(0.056000 -0.056000)" d="M522.00 187.00H388.00C370.00 131.00 342.00 104.00 288.00 104.00C217.00 104.00 174.00 161.00 174.00 266.00C174.00 365.00 200.00 436.00 288.00 436.00C345.00 436.00 372.00 409.00 388.00 338.00H522.00C512.00 470.00 424.00 549.00 289.00 549.00C128.00 549.00 34.00 450.00 34.00 266.00C34.00 88.00 127.00 -9.00 287.00 -9.00C418.00 -9.00 509.00 72.00 522.00 187.00Z"/><path transform="translate(33.936 58.000) scale(0.056000 -0.056000)" d="M569.00 266.00C569.00 449.00 470.00 549.00 301.00 549.00C136.00 549.00 35.00 447.00 35.00 270.00C35.00 92.00 136.00 -9.00 302.00 -9.00C466.00 -9.00 569.00 93.00 569.00 266.00ZM429.00 268.00C429.00 167.00 377.00 104.00 302.00 104.00C226.00 104.00 175.00 167.00 175.00 270.00C175.00 373.00 226.00 436.00 302.00 436.00C379.00 436.00 429.00 374.00 429.00 268.00Z"/><path transform="translate(66.952 58.000) scale(0.056000 -0.056000)" d="M824.00 0.00V382.00C824.00 487.00 760.00 549.00 652.00 549.00C584.00 549.00 536.00 525.00 494.00 469.00C468.00 520.00 414.00 549.00 347.00 549.00C285.00 549.00 245.00 528.00 199.00 473.00V540.00H60.00V0.00H200.00V324.00C200.00 390.00 236.00 430.00 296.00 430.00C343.00 430.00 372.00 403.00 372.00 360.00V0.00H512.00V324.00C512.00 390.00 548.00 430.00 608.00 430.00C655.00 430.00 684.00 403.00 684.00 360.00V0.00Z"/><path transform="translate(115.536 58.000) scale(0.056000 -0.056000)" d="M574.00 270.00C574.00 430.00 489.00 549.00 348.00 549.00C280.00 549.00 232.00 520.00 198.00 460.00V540.00H58.00V-218.00H198.00V72.00C232.00 12.00 280.00 -9.00 348.00 -9.00C478.00 -9.00 574.00 106.00 574.00 270.00ZM434.00 268.00C434.00 170.00 385.00 108.00 316.00 108.00C246.00 108.00 198.00 169.00 198.00 270.00C198.00 371.00 246.00 432.00 316.00 432.00C387.00 432.00 434.00 371.00 434.00 268.00Z"/></g><g fill="#C87941"><path transform="translate(148.552 58.000) scale(0.025879 -0.025879)" d="M798.00 1122.00 1088.00 205.00H1175.00Q1199.00 205.00 1212.00 197.00Q1225.00 189.00 1231.50 167.00Q1238.00 145.00 1238.00 103.00Q1238.00 61.00 1231.50 39.00Q1225.00 17.00 1212.00 8.50Q1199.00 0.00 1175.00 0.00H751.00Q727.00 0.00 714.00 8.50Q701.00 17.00 694.50 39.00Q688.00 61.00 688.00 103.00Q688.00 145.00 694.50 167.00Q701.00 189.00 714.00 197.00Q727.00 205.00 751.00 205.00H837.00L792.00 350.00H428.00L383.00 205.00H457.00Q481.00 205.00 494.00 197.00Q507.00 189.00 513.50 167.00Q520.00 145.00 520.00 103.00Q520.00 61.00 513.50 39.00Q507.00 17.00 494.00 8.50Q481.00 0.00 457.00 0.00H53.00Q29.00 0.00 16.00 8.50Q3.00 17.00 -3.50 39.00Q-10.00 61.00 -10.00 103.00Q-10.00 145.00 -3.50 167.00Q3.00 189.00 16.00 197.00Q29.00 205.00 53.00 205.00H137.00L390.00 982.00H223.00Q199.00 982.00 186.00 990.50Q173.00 999.00 166.50 1021.00Q160.00 1043.00 160.00 1085.00Q160.00 1127.00 166.50 1149.00Q173.00 1171.00 186.00 1179.00Q199.00 1187.00 223.00 1187.00H697.00Q737.00 1187.00 762.00 1171.50Q787.00 1156.00 798.00 1122.00ZM609.00 982.00 486.00 555.00H735.00L615.00 982.00Z"/><path transform="translate(181.931 58.000) scale(0.025879 -0.025879)" d="M1038.00 1084.00Q1038.00 1042.00 1031.50 1020.00Q1025.00 998.00 1012.00 990.00Q999.00 982.00 975.00 982.00H739.00V205.00H995.00Q1019.00 205.00 1032.00 196.50Q1045.00 188.00 1051.50 166.00Q1058.00 144.00 1058.00 102.00Q1058.00 60.00 1051.50 38.00Q1045.00 16.00 1032.00 8.00Q1019.00 0.00 995.00 0.00H233.00Q209.00 0.00 196.00 8.00Q183.00 16.00 176.50 38.00Q170.00 60.00 170.00 102.00Q170.00 144.00 176.50 166.00Q183.00 188.00 196.00 196.50Q209.00 205.00 233.00 205.00H489.00V982.00H253.00Q229.00 982.00 216.00 990.00Q203.00 998.00 196.50 1020.00Q190.00 1042.00 190.00 1084.00Q190.00 1126.00 196.50 1148.00Q203.00 1170.00 216.00 1178.50Q229.00 1187.00 253.00 1187.00H975.00Q999.00 1187.00 1012.00 1178.50Q1025.00 1170.00 1031.50 1148.00Q1038.00 1126.00 1038.00 1084.00Z"/></g><g transform="translate(259 20) scale(1.5)"><g fill="none" stroke="#2E8FB5" stroke-linecap="round" stroke-linejoin="round" style="stroke-width:var(--chk-trazo,2.8)"><path d="M1 8.5 L5 12.5 L12 4"/><path d="M10 8.5 L14 12.5 L21 4"/></g><g fill="none" stroke="#2E8FB5" stroke-width="0.58" stroke-linecap="round" stroke-linejoin="round" style="display:var(--chk-crestas,none)"><path d="M2.56 7.37L4.86 9.68L9.83 3.64"/><path d="M0.22 10.41L5.14 15.32L12.26 6.67"/><path d="M11.56 7.37L13.86 9.68L18.83 3.64"/><path d="M9.22 10.41L14.14 15.32L21.26 6.67"/></g></g></g>
   </defs>
   <use href="#brillo" filter="url(#brasa)" opacity="0.9"/>
   <use href="#marca"/>
@@ -712,7 +909,7 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
         <a href="portafolio.html">Portafolio</a>
         <a href="#agente-ia">Grace Agente IA</a>
         <a href="#empresa">Empresa</a>
-        <a href="#cotiza">Cotiza &Aacute;gil</a>
+        <a href="#cotiza">Cotizaci&oacute;n</a>
         <a href="#contacto">Contacto</a>
       </nav>
     </div>
@@ -1875,7 +2072,25 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
 <section class="lam l5" id="cotiza">
   <div class="wrap">
     <div class="form-card">
-      <p class="kicker">Cotiza &Aacute;gil</p>
+      <!-- EL ROTULO DEJA DE SER «COTIZA AGIL» - 11-sep-2026, encargo de
+           Sebastian («cotiza agil quiero que tenga otro nombre, Cotizador o
+           algo asi»). El roce que lo hacia sonar mal se puede nombrar: COMPRA
+           AGIL es una modalidad con nombre propio de Mercado Publico, y
+           «Cotiza Agil» es una variante de ese nombre puesta a un formulario
+           nuestro. Confunde el instrumento del Estado con un servicio de
+           CompAI, que es exactamente el modo en que la precision de oficio
+           juega en contra: el termino solo prueba que sabemos cuando se usa
+           donde corresponde. Aqui corresponde en el titular —«Gestiona una
+           compra agil», que describe el tramite real— y no en el rotulo.
+           «Cotizacion» es sustantivo, del mismo registro que Portafolio,
+           Empresa y Contacto en el menu, y promete exactamente lo que la
+           lamina entrega: pides una cotizacion y recibes una cotizacion.
+           EL `id` NO CAMBIA. Sigue siendo `cotiza` porque es la unica ancla
+           publicada: vive en el menu de esta pagina y puede estar pegada en
+           correos ya enviados. Un ancla rota no da error, simplemente no
+           salta, y eso no se descubre hasta que lo usa un cliente. El id no
+           se lee, el rotulo si. -->
+      <p class="kicker">Cotizaci&oacute;n</p>
       <h2>Gestiona una <i>compra &aacute;gil</i></h2>
       <form class="fgrid" id="qform" novalidate>
         <div class="f">
@@ -1895,6 +2110,36 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
         <div class="f">
           <label for="req">Detalla tus requerimientos</label>
           <textarea id="req" name="req" placeholder="Qu&eacute; necesitas comprar, cantidades, plazo y presupuesto estimado"></textarea>
+        </div>
+        <!-- ID DE MERCADO PUBLICO - 11-sep-2026, encargo de Sebastian
+             («le anadiria un campo de ID Mercado Publico (opcional)»).
+
+             VA AQUI Y NO ARRIBA. El bloque de la persona contesta «quien
+             eres»; este contesta «cual compra es», o sea pertenece al bloque
+             del requerimiento. Y va DESPUES del detalle, no antes: puesto
+             antes, el primero que lo lee es el visitante que NO viene de una
+             licitacion, y se encuentra un codigo que no tiene - friccion para
+             la mayoria a cambio de comodidad para la minoria. Puesto despues,
+             queda pegado a los adjuntos, que es el mismo bloque mental: los
+             papeles de la compra.
+
+             «(opcional)» EN LA ETIQUETA, no un asterisco ni un color: ningun
+             otro campo lleva marca, asi que la unica lectura sin ambiguedad
+             es decirlo con la palabra. En minuscula y sin el espaciado de
+             versales, para que se lea como aparte y no como parte del nombre
+             del campo.
+
+             EL PLACEHOLDER ENSENA EL FORMATO Y NO GASTA UNA LINEA. Es un ID
+             real de Compra Agil del barrido de RAIdar; se eligio el «-AG26»
+             y no un «-LP26» porque el tramite que ofrece esta lamina es la
+             compra agil, y el sufijo del ejemplo tiene que ser el del tramite
+             que la pagina ofrece. Un ID de licitacion publica aqui seria un termino del
+             rubro usado donde no corresponde, que es el unico modo en que la
+             precision de oficio juega en contra. -->
+        <div class="f">
+          <label for="idmp">ID Mercado P&uacute;blico <span class="opt">(opcional)</span></label>
+          <input id="idmp" name="idmp" type="text" placeholder="1057417-15390-AG26"
+                 autocomplete="off" spellcheck="false">
         </div>
         <div class="adj">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.4 11.05 12.25 20.2a5.5 5.5 0 0 1-7.78-7.78l9.19-9.19a3.67 3.67 0 0 1 5.18 5.18l-9.2 9.2a1.83 1.83 0 0 1-2.59-2.6l8.5-8.49"/></svg>
@@ -2044,7 +2289,7 @@ var f = document.getElementById("qform");
 f.addEventListener("submit", function(e){
   e.preventDefault();
   var g = function(id){ return (document.getElementById(id).value || "").trim(); };
-  var nom = g("nom"), mail = g("mail"), tel = g("tel"), req = g("req");
+  var nom = g("nom"), mail = g("mail"), tel = g("tel"), req = g("req"), idmp = g("idmp");
   var falta = [];
   if(!nom) falta.push("tu nombre");
   if(!mail) falta.push("tu correo");
@@ -2056,10 +2301,24 @@ f.addEventListener("submit", function(e){
     done.className = "done on";
     return;
   }
+  /* EL ID VIAJA CON SU ROTULO O NO VIAJA. Si va vacio no se concatena
+     nada: ni la etiqueta huerfana ni el salto de linea. El campo es
+     opcional y la mayoria de los correos no lo van a traer; un «ID:» en
+     blanco en la cabecera del mensaje no se lee como «no aplica», se lee
+     como un dato que se perdio en el camino.
+     VA ARRIBA, con los datos de identificacion, y no al final del texto
+     libre: quien lo recibe abre la compra en Mercado Publico ANTES de
+     leer el requerimiento, asi que el codigo tiene que estar donde se
+     mira primero.
+     Y entra tambien en el ASUNTO cuando existe. Eso es oficio del rubro,
+     no adorno: el comprador hila su bandeja por el ID de la compra, no
+     por el nombre del proveedor. Sin ID, el asunto queda exactamente
+     como estaba. */
+  var idlinea = idmp ? "\nID Mercado Público: " + idmp : "";
   var cuerpo = "Nombre: " + nom + "\nCorreo: " + mail + "\nTeléfono: " + (tel || "—") +
-               "\n\nRequerimiento:\n" + req + "\n";
+               idlinea + "\n\nRequerimiento:\n" + req + "\n";
   location.href = "mailto:hola@compai.cl?subject=" +
-    encodeURIComponent("Solicitud de cotización — " + nom) +
+    encodeURIComponent("Solicitud de cotización — " + nom + (idmp ? " · " + idmp : "")) +
     "&body=" + encodeURIComponent(cuerpo);
   document.getElementById("doneTtl").textContent = "Listo.";
   document.getElementById("doneTxt").textContent =
