@@ -137,19 +137,102 @@ html:not(.js) #agente, html:not(.js) #nube{display:none}
   /* la barra no captura el cursor: sin esto los 78 px de ancho completo se
      comen los clics de todo lo que pase por debajo */
   pointer-events:none}
-.hdr .inner{max-width:var(--shell); margin:0 auto; padding:0 var(--s5); width:100%;
+/* =========================================================================
+   EL ENCABEZADO SALE DEL CANAL Y SE VA AL CANTO DE LA VENTANA
+   12-sep-2026, encargo de Sebastian: «logo y menu estan en un plano o
+   posicion que hacen ver mi sitio angosto».
+
+   EL DIAGNOSTICO, medido por CDP a 1440x900 ANTES de tocar nada:
+       .hdr .inner        x=100   w=1240      (max-width:--shell + margin auto)
+       TINTA del logotipo a 174,6 px del canto izquierdo
+       trazo del menu     a 124,0 px del canto derecho
+   El encabezado se encuadraba en el MISMO canal de 1240 que el texto, asi que
+   el ojo lee el ancho del sitio como la distancia entre el logotipo y el menu
+   —1141 px de 1440— y no como el ancho de la ventana, aunque la figura de
+   particulas si ocupe la pantalla entera. La cabecera le ponia marco a algo
+   que no lo tiene.
+
+   POR QUE 64 px Y NO LOS 32 DE LA REFERENCIA — el numero se midio contra
+   NUESTRO logotipo, que no es el suyo:
+     · el archivo canonico trae su propio resguardo DENTRO del viewBox
+       (`viewBox="-38 -18 372 131"`, tinta desde x=5,9): son 43,9 unidades de
+       372, el 11,80 % de la caja, y a la altura de portada —151 px— eso son
+       50,6 px de aire ya dibujados. Medido con getBBox, no supuesto.
+     · el canto de la ventana no puede entrar en ese resguardo, o sea el canal
+       tiene que ser MAYOR que 50,6;
+     · el primer escalon de la escala de la pagina que lo supera es --s8 = 64.
+       El anterior, 48, dejaria el canto 2,6 px DENTRO del resguardo.
+   La referencia luce 32 px con un lockup pequeno; el nuestro mide 151 px de
+   alto en portada. Cuatro veces mas pieza pide mas aire, no el mismo.
+
+   EL CANAL IZQUIERDO DESCUENTA EL AIRE QUE EL ARCHIVO YA TRAE. Sin descuento
+   la TINTA quedaria a 64+50,6 = 114,6 px por la izquierda contra 64 por la
+   derecha: la misma asimetria de hoy, en pequeno. Con
+   `calc(var(--borde) - var(--logo-aire))` la tinta del logotipo y el trazo del
+   menu caen los dos a --borde exacto. `--logo-aire` = altura x 0,3351 y se
+   declara junto a CADA altura del logotipo, que es donde se decide.
+   El `max(0px, ...)` no es decoracion: entre 421 y 560 px el canal vale 16 y
+   el aire 19,1, o sea la resta se va a negativo y `padding` no admite
+   negativos. Ahi el descuento se agota y la tinta queda a 19,1 —3 px del
+   trazo, invisible— en vez de romper la maqueta.
+
+   BAJO 1024 EL CANAL NO SE APRIETA: sigue siendo el del cuerpo (24, y 16 bajo
+   560). Ahi el `max-width` ya no mordia —la ventana es mas angosta que 1240—
+   y llevarlo a 64 haria el encabezado MAS angosto, justo lo contrario del
+   encargo.
+
+   OBJECION REGISTRADA, y se ejecuta igual: a partir de 1024 el encabezado y el
+   cuerpo dejan de compartir linea. A 1440 la tinta del logotipo arranca en 64
+   y el texto de las laminas 2 a 6 en 124, asi que NADA del cuerpo se alinea
+   con el logotipo. Es una maqueta de dos canales —cabecera a sangre, texto en
+   medida—, legitima y comun, pero es un cambio de sistema y no un ajuste.
+   ========================================================================= */
+.hdr .inner{max-width:none; margin:0; width:100%;
+  padding-right:var(--borde);
+  padding-left:max(0px, calc(var(--borde) - var(--logo-aire)));
   display:flex; align-items:center; justify-content:space-between; gap:var(--s5);
   transition:transform var(--t-crece) var(--asienta)}
 .hdr .inner > *{pointer-events:auto}
 .brand{display:flex; align-items:center; flex:0 0 auto}
 .brand .logo{height:57px; width:auto; display:block; overflow:visible;
-  transform-origin:0 50%;
+  /* EL PIVOTE DEL ENCOGIMIENTO PASA DE LA CAJA A LA TINTA — 12-sep-2026.
+     Con el canal descontando el aire del archivo, el canto izquierdo de la
+     CAJA ya no es el canto del canal: la TINTA lo es, y esta 11,802 % mas a la
+     derecha (43,9 de las 372 unidades del viewBox, y el porcentaje es constante
+     a cualquier altura porque aire y caja escalan juntos). Con `0 50%` el
+     pivote se quedaria 50,6 px a la izquierda de la tinta y encoger la
+     arrastraria 13,3 px hacia el borde — se leeria como que la pagina se movio,
+     justo lo que el comentario de arriba manda evitar.
+     PERO ES PREVENTIVO, Y SE DICE: medido con la clase puesta a mano, hoy no
+     pasa nada, porque `hdr-chico` es codigo muerto en esta pagina desde el
+     5-sep —el encabezado ya no se encoge, se ESCONDE, y el observador conmuta
+     `hdr-fuera`—. La regla se corrige igual: una regla equivocada que no se
+     ejecuta es una trampa esperando a que alguien reviva el estado. */
+  transform-origin:11.802% 50%;
   /* la sombra va SOBRE LA PIEZA, no es una caja: es lo unico que el encargo
      permite para despegar el logotipo de los fotogramas claros del plexus */
   filter:drop-shadow(0 2px 9px rgba(8,9,12,.9));
   transition:transform var(--t-crece) var(--asienta),
              filter var(--t-crece) var(--entra)}
 @media (max-width:420px){.brand .logo{height:45px}}
+
+/* EL CANAL DE LA CABECERA Y EL AIRE PROPIO DEL LOGOTIPO. Los dos son medida:
+   --borde      sigue al canal del cuerpo (16 bajo 560, 24 hasta 1023) y a
+                partir de 1024 se despega de el y vale 64, porque ahi el canal
+                de 1240 deja de ser un borde y pasa a ser un marco.
+   --logo-aire  el resguardo que el archivo canonico ya trae dentro del
+                viewBox: altura x 0,3351. 57 -> 19,1 · 45 -> 15,1 · 151 -> 50,6
+
+   EL ORDEN DE ESTAS CUATRO LINEAS ES LA REGLA, no el formato. Los overrides
+   tienen la MISMA especificidad que la base, asi que van despues o no existen.
+   Cazado midiendo: con el override de 420 escrito arriba, a 390 px ganaba el
+   aire de 19,1 y `max(0px, 16-19,1)` se agotaba en 0 — la tinta caia en 15,1
+   y no en los 16 del canal. Un token que se pisa a si mismo no da error. */
+:root{ --borde:24px; --logo-aire:19.1px; }
+@media (max-width:560px){ :root{--borde:16px} }
+@media (max-width:420px){ :root{--logo-aire:15.1px} }
+@media (min-width:1024px){ :root{--borde:64px} }
+
 
 /* =========================================================================
    LA HUELLA EN ESCRITORIO — 11-SEP-2026. SEGUNDA PASADA: BAJA DE 226 A 151.
@@ -240,9 +323,38 @@ html:not(.js) #agente, html:not(.js) #nube{display:none}
    otras cuatro. Cuestan 4 trazados, no un segundo logotipo.
    El logotipo del PIE no las recibe: sigue siendo solido a 42 px, que es su
    sitio en el manual (firma, no hero).
+   TERCERA PASADA, 11-SEP-2026: «ACHICA SOLO UN POCO MAS» - NO SE BAJA, Y ES MEDICION.
+   151 no es un escalon mas de la tabla: es EL ULTIMO que cumple el manual. El minimo
+   ABSOLUTO de la huella son 324 px de tinta de lockup (manual, tabla «Las dos
+   densidades»), y esa cifra se alcanza exactamente a 150,8 px de recuadro:
+       H = 324 x 131 / 281,5 = 150,76  ->  151 es el primer entero que pasa.
+   Un pixel menos y la pieza publica la huella bajo su propio piso. Medido a dpr 1:
+
+       recuadro   151     148     145     140     135     130     125     120     110
+       tinta px   324,5   318,0   311,6   300,8   290,1   279,4   268,6   257,9  236,4
+       cresta px  1,00    0,98    0,96    0,93    0,90    0,86    0,83    0,80   0,73
+       tinta viva 115     103      98     102      92      95      90      84     79
+
+   «tinta viva» es la intensidad media del trazo recorriendo la cresta sobre el mapa de
+   bits REAL (captura a escala 1 y ampliada despues; pedirle a Chrome un clip con scale 8
+   redibuja el SVG limpio y miente). Dos lecturas:
+     · NO HAY ESCALON. El suavizado no se rompe de golpe en ninguna altura: se apaga
+       parejo, y lo que oscila -74, 74, 63, 72- es la fase del trazo contra la grilla de
+       pixeles, no legibilidad. O sea la pantalla NO ofrece un punto de corte propio; el
+       unico piso que existe es el normativo, y ya estamos en el.
+     · EL PRIMER PASO ABAJO YA ES MAL NEGOCIO: de 151 a 145 el logotipo encoge 4 % y la
+       tinta viva cae 15 %. Se paga casi cuatro veces lo que se ahorra.
+   Por eso «un poco mas chico» aqui no es un tamano: es la SOLIDA. Y eso es cambiar de
+   simbolo, no de escala, asi que no se aplica solo: se muestra y se decide. Capturas en
+   `cap4/logo-02-donde-se-rompe-la-cresta-x8.png` y `cap4/logo-03-huella-vs-solida...`.
+   COROLARIO: mientras el recuadro siga en 151, la banda (102) y el corte de densidad
+   (1024) NO se mueven - los dos se derivaron de esta misma altura y siguen vigentes.
    ========================================================================= */
 @media (min-width:1024px){
-  :root{--hdr:102px}
+  /* --logo-aire va AQUI y no en la cabecera compartida: esta es la unica
+     pagina que sube el logotipo a 151 px (la huella). El portafolio se
+     queda en 57 a todo ancho, asi que su aire sigue siendo 19,1. */
+  :root{--hdr:102px; --logo-aire:50.6px}
   .brand .logo{height:151px; --chk-trazo:0.58; --chk-crestas:block}
 }
 
@@ -383,19 +495,127 @@ html.hdr-fuera .hdr{opacity:0; visibility:hidden; transform:translateY(-100%);
   min-width:var(--menu-largo);
   /* SIN FONDO, igual que el encabezado. La legibilidad la da la sombra, que
      no es un recuadro, mas el paso atras del aviso de proveedor. */
-  filter:drop-shadow(0 10px 26px rgba(8,9,12,.94)) drop-shadow(0 2px 9px rgba(8,9,12,.92));
+  /* DOS DROP-SHADOW CORTOS MAS — 12-sep-2026. El `filter` del panel corre
+     DESPUES de pintar los enlaces, o sea toma la silueta del texto CON su
+     text-shadow ya puesta y le anade otro halo encima: multiplica en vez
+     de sumar, que es justo lo que hacia falta para los ultimos 0,05 del
+     piso de 4,5:1. Radio 5 porque el anillo que se mide va de 2 a 8 px;
+     los dos largos que ya estaban (26 y 9) no llegan ahi con tinta. */
+  filter:drop-shadow(0 10px 26px rgba(8,9,12,.94)) drop-shadow(0 2px 9px rgba(8,9,12,.92))
+         drop-shadow(0 0 5px rgba(8,9,12,.92)) drop-shadow(0 0 5px rgba(8,9,12,.92));
   clip-path:inset(0 0 100% 0); pointer-events:none;
   transition:clip-path .34s var(--sale)}
+/* EL TAMANO DEL MENU: 12,5 -> 15 px (+20 %), 12-sep-2026, encargo de
+   Sebastian («agranda los enunciados de los MENU»). El numero no es a ojo:
+   · 12,5 px era el techo de la escala mono de esta pagina (.send 13, .loc
+     12,5) y el menu es la unica pieza que, abierta, esta SOLA en pantalla:
+     no compite con nada, asi que no tiene por que medir como un pie de foto.
+   · 15 px en mono versalita con .16em de espaciado presenta una altura de
+     mayuscula equivalente a un texto corrido de ~17-18 px, o sea queda a la
+     altura de la prosa (body 17, .lead 18) y por debajo de los titulos:
+     crece sin ascender de rango.
+   · Y CABE, con los rotulos en espanol del 12-sep. Medido en Chrome a 1440
+     y a 390: los mas largos son PORTAFOLIO y COTIZA RUN, 106,5 px los dos
+     (el paso por el ingles dejo PORTFOLIO en 95,8; antes, a 12,5 px,
+     PORTAFOLIO y COTIZACION median 88,7). Siguen por debajo de los 130 px
+     de `--menu-largo`, asi que la linea del gesto sigue siendo el canto del
+     panel por construccion y ese numero NO se mueve: el panel mide los
+     mismos 130x220 px a 1440 y a 390, y `scrollWidth` sigue igual a
+     `clientWidth` en los dos anchos — cero desborde horizontal.
+   `min-height:44px` se queda tal cual —ya era el area tactil minima y el
+   texto crece dentro de ella—, y con eso el panel mide los mismos 220 px de
+   alto que antes: agrandar no empujo nada hacia abajo en telefono. */
+/* =========================================================================
+   COLOR POR ESTADO - 12-sep-2026. Encargo literal de Sebastian: «todos los
+   enlaces y servicios en el sitio, conectados o disponibles en azul oscuro.
+   Destacados en ambar». Es la regla de marca —AZUL = traza, AMBAR =
+   transaccion— bajada a los enlaces, y aqui queda escrita para que el
+   siguiente que agregue uno sepa de que color va sin preguntar.
+
+     AZUL  `--azul` #2E8FB5   conectado o disponible: lleva a alguna parte y
+                              esa parte existe. Menu, «Ver ficha proveedor»,
+                              «Explorar», «Intranet».
+     AMBAR `--terracota`      destacado: la accion que la lamina pide. El
+                              correo de contacto y el boton «Enviar». Son dos
+                              en toda la pagina, y por eso destacan.
+
+   EL TERCER ESTADO EXISTE Y NO SE PINTA DE AZUL, porque pintar de azul algo
+   que no lleva a ninguna parte le miente al visitante:
+     · `[aria-current="page"]` = donde ESTAS parado. No es un destino
+       disponible; se queda en `--crema`, que es el color de «aqui».
+     · `.lic-est.e-descartada` = licitacion que NO vamos a tomar, y
+       `.previo` del portafolio = producto en desarrollo. Gris `--crema-60`,
+       declarado, no azul apagado.
+
+   POR QUE ESTE AZUL Y NO EL OTRO - esto se decide por medida, no por gusto.
+   «Azul oscuro» tiene dos candidatos en los tokens y solo uno sirve para
+   texto sobre este lienzo:
+     `--azul`     #2E8FB5  sobre `--ink-900`  5,42:1   PASA AA
+     `--azul-600` #13749A  sobre `--ink-900`  3,79:1   NO PASA: solo trazo
+   Es ademas el azul de NOCHE de la marca, el unico que puede ir sobre fondo
+   oscuro (el de dia, #0F5C7A, da 2,69:1 aqui y desaparece).
+   El hover no cambia de familia: ACLARA a `--azul-300` (10,33:1), igual que
+   ya hacia «Ver ficha proveedor». Asi el azul significa SIEMPRE lo mismo y no
+   hace falta inventar un quinto tono.
+   ========================================================================= */
+/* HALO DEL MENU - 12-sep-2026, y es una CORRECCION de lo que entregue esta
+   tarde. Al pasar los rotulos a `--azul` medi y publique 4,04:1 para
+   «Contacto» sin marcarlo como defecto, en la misma tabla donde descartaba
+   `--azul-600` por 3,79. El piso de 4,5:1 vale para el enlace que la gente
+   lee, no solo para el token.
+
+   POR QUE NO SE ARREGLA CON UN FONDO. El encabezado es «SIN FONDO» por
+   diseno y la figura viva es la pieza: una barra opaca o un `backdrop-filter`
+   la tapan justo donde nace. El remedio tiene que ser LOCAL a la letra.
+
+   QUE ES ESTO. Cuatro capas del MISMO `--ink-900` (2, 5, 11 y 20 px de
+   desenfoque, opacidad decreciente): un halo que hunde en negro los tres o
+   cuatro pixeles alrededor del trazo, ahi donde una particula clara del
+   plexus arruinaba el contraste. No es un rectangulo, no tiene borde, no se
+   ve como pieza — y sobre un lienzo casi negro es invisible salvo por su
+   efecto. Cuesta cero marcado, cero script y no toca el video.
+
+   POR QUE NO ES «GLASS». No hay transparencia ni desenfoque del fondo: es
+   tinta propia de la letra. `prefers-reduced-transparency` no aplica porque
+   no hay nada translucido que degradar, y con `prefers-reduced-motion` o sin
+   JS el halo sigue puesto: es una propiedad quieta.
+
+   MEDIDO con el metodo del anillo —contraste de la tinta contra cada pixel
+   entre 2 y 8 px del trazo, leido sobre la pagina tal como se ve y barriendo
+   el video entero—, que es el unico que ve la sombra. Numeros en el log.
+   OJO AL MEDIR: el metodo que esconde la pieza para leer el lienzo esconde
+   TAMBIEN su sombra, asi que da el mismo numero antes y despues y declararia
+   inutil este arreglo. */
 .mnu-panel a{opacity:0; transform:translateY(9px);
-  font-family:var(--font-data); font-size:12.5px; font-weight:600;
-  letter-spacing:.16em; text-transform:uppercase; color:var(--crema-75);
-  text-decoration:none; text-shadow:var(--sombra-texto);
+  font-family:var(--font-data); font-size:15px; font-weight:600;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--azul);
+  text-decoration:none;
+  /* LA SOMBRA SE REFUERZA DONDE VIVE EL ANILLO — 12-sep-2026, y el motivo es
+     una medicion, no un gusto. Al llevar el menu del canal de 1240 al canto de
+     la ventana los cinco enlaces cambiaron el trozo de plexus que tienen
+     detras, y el peor p05 del metodo del anillo cayo de 4,90:1 a 3,89:1: bajo
+     el piso de 4,5. Los dos numeros son del MISMO video y el MISMO instrumento
+     —`contraste_menu.py`, con y sin `--viejo`—, o sea es el movimiento y no
+     otra cosa. El enlace que cae es siempre «Contacto», el ultimo del panel.
+     QUE SE CAMBIO Y QUE NO. No se toca el color —`--azul` #2E8FB5 se decidio
+     hoy— ni el tamano ni el video: en un panel SIN FONDO lo unico que el
+     encargo permite para despegarlo del plexus es su sombra propia.
+     POR QUE ESTOS RADIOS. El anillo que se mide va de 2 a 8 px de la tinta, y
+     ahi solo llegaban tres capas (2, 5 y 9). Las de 15 y 24 reparten su tinta
+     en un area cuatro veces mayor y a 8 px ya casi no pintan. Se anaden capas
+     CORTAS —4, 6 y 6 repetida, que multiplica en vez de sumar— y se sube la de
+     9. El coste son 96 bytes y cero pixeles de maqueta: la sombra no ocupa
+     sitio, no es un recuadro y no cambia el alto del panel. */
+  text-shadow:0 0 2px rgba(8,9,12,.97), 0 0 4px rgba(8,9,12,.96),
+              0 0 6px rgba(8,9,12,.95), 0 0 6px rgba(8,9,12,.95),
+              0 0 9px rgba(8,9,12,.94), 0 0 12px rgba(8,9,12,.9),
+              0 0 15px rgba(8,9,12,.86), 0 2px 24px rgba(8,9,12,.78);
   min-height:44px; display:inline-flex; align-items:center; white-space:nowrap;
   transition:opacity .24s var(--sale), transform .24s var(--sale), color .18s var(--micro)}
 .mnu-panel a::before{content:""; width:0; height:2px; border-radius:1px; margin-right:0;
   background:var(--azul); box-shadow:var(--glow-azul);
   transition:width .22s var(--micro), margin-right .22s var(--micro)}
-.mnu-panel a:hover, .mnu-panel a:focus-visible{color:var(--crema)}
+.mnu-panel a:hover, .mnu-panel a:focus-visible{color:var(--azul-300)}
 .mnu-panel a:hover::before, .mnu-panel a:focus-visible::before{width:16px; margin-right:var(--s2)}
 .mnu-panel a[aria-current="page"]{color:var(--crema)}
 
@@ -449,10 +669,21 @@ html.hdr-fuera .hdr{opacity:0; visibility:hidden; transform:translateY(-100%);
 /* El canal es el MISMO del encabezado: max-width shell + 24 de padding.
    Sin esto el aviso de proveedor sobresalia 100 px a la derecha del boton
    de menu y la desalineacion se veia a simple vista a 1440. */
+/* LA LAMINA 1 SUELTA EL CANAL CON LA CABECERA — 12-sep-2026.
+   El `max-width:--shell` de aqui existia por UNA razon escrita: que el aviso de
+   proveedor no sobresaliera del boton de menu. Con la cabecera en el canto ese
+   mismo max-width produce el defecto contrario —el aviso se quedaria 60 px
+   DENTRO del trazo del menu, y la desalineacion se ve a simple vista a 1440—,
+   asi que la lamina va DETRAS de la cabecera y no al reves.
+   ESTO NO TOCA EL CUERPO, y conviene decir por que: la lamina 1 no tiene texto.
+   Sus tres filas son el aviso (`justify-self:end`, el unico que se mueve), la
+   figura (`place-items:center`) y EXPLORAR (`justify-self:center`). Las dos
+   centradas caen en el MISMO pixel que antes —el canal tambien estaba
+   centrado— y la caja `data-caja` del motor conserva tamano y centro. La
+   medida de 66ch y el --shell de 1240 del texto no se tocan. */
 .l1{min-height:100vh; min-height:100svh;
-  max-width:var(--shell); margin:0 auto;
   display:grid; grid-template-rows:auto 1fr auto;
-  padding:calc(var(--hdr) + var(--s5)) var(--s5) var(--s6)}
+  padding:calc(var(--hdr) + var(--s5)) var(--borde) var(--s6)}
 .prov{justify-self:end; text-align:right; font-family:var(--font-data);
   color:var(--crema-60); font-size:10.5px; line-height:1.55;
   text-shadow:var(--sombra-texto);
@@ -505,9 +736,9 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
 
 .explorar{justify-self:center; display:inline-flex; flex-direction:column; align-items:center; gap:6px;
   padding:8px 4px; min-height:44px; font-family:var(--font-data); font-size:12px; font-weight:600;
-  letter-spacing:.22em; text-transform:uppercase; color:var(--crema-60); text-decoration:none;
+  letter-spacing:.22em; text-transform:uppercase; color:var(--azul); text-decoration:none;
   text-shadow:var(--sombra-texto); transition:color .18s ease}
-.explorar:hover, .explorar:focus-visible{color:var(--crema)}
+.explorar:hover, .explorar:focus-visible{color:var(--azul-300)}
 .explorar svg{width:22px; height:13px; fill:none; stroke:currentColor;
   stroke-width:2; stroke-linecap:round; stroke-linejoin:round;
   animation:explorar-baja 2.4s ease-in-out infinite}
@@ -534,7 +765,8 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
      18  todo cuerpo de texto    un solo tamano de lectura
      10.5 rotulos en mono        ya eran consistentes, no se tocan
 
-   El `-RMCL.-` del pie queda en 150 px. Sale de la escala a proposito y por
+   El `SCL.` del pie queda en 150 px (era `-RMCL.-`; el codigo cambio el
+   12-sep-2026 y el tamano no). Sale de la escala a proposito y por
    encargo textual del brief —«va grande y centrado»—; no es un titulo, es
    una firma, y compite con la frase de la lamina 2 solo si se las mira en la
    misma pantalla, cosa que no pasa.
@@ -793,11 +1025,11 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
    subrayado —lo correcto mientras no llevaba a ninguna parte— y vuelve a
    llevarlo ahora que el destino existe y pide clave. */
 .pie .intranet{font-family:var(--font-data); font-size:11.5px; letter-spacing:.06em;
-  color:var(--crema-60); text-decoration:underline; text-decoration-thickness:1px;
-  text-underline-offset:5px; text-decoration-color:var(--crema-28);
+  color:var(--azul); text-decoration:underline; text-decoration-thickness:1px;
+  text-underline-offset:5px; text-decoration-color:rgba(46,143,181,.55);
   display:inline-flex; align-items:center; min-height:44px;
   transition:color .18s ease, text-decoration-color .18s ease}
-.pie .intranet:hover, .pie .intranet:focus-visible{color:var(--crema); text-decoration-color:var(--crema-60)}
+.pie .intranet:hover, .pie .intranet:focus-visible{color:var(--azul-300); text-decoration-color:var(--azul-300)}
 
 /* ======== MOVIL ======== */
 @media (max-width:820px){
@@ -807,7 +1039,7 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
 }
 @media (max-width:560px){
   body{font-size:16px}
-  .l1{padding:calc(var(--hdr) + var(--s3)) var(--s4) var(--s5)}
+  .l1{padding:calc(var(--hdr) + var(--s3)) var(--borde) var(--s5)}
   .l2{padding-left:var(--s4); padding-right:var(--s4)}
   /* el canal del pie lo llevan sus bloques, no el .pie: sumados daban 40 */
   .pie .centro, .pie .fila-baja{padding-left:var(--s4); padding-right:var(--s4)}
@@ -902,14 +1134,48 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
         </g></svg>
       </button>
       <nav class="mnu-panel" id="mnuPanel" aria-label="Secciones">
-        <!-- EL PORTAFOLIO VA PRIMERO, en el sitio exacto que dejo marcado
-             VisuAI: «su enlace se inserta AQUI, antes de Agente IA». Los
-             titulos siguen EN EL ORDEN DEL SCROLL; el portafolio es la unica
-             pagina que no corre dentro de el, y encabeza por eso. -->
+        <!-- VUELVE AL ESPANOL Y CAMBIA EL ORDEN - 12-sep-2026. Encargo
+             LITERAL de Sebastian, el mismo dia y despues de la objecion de
+             idioma mixto que se dejo anotada aqui: «tomo la objecion y vuelvo
+             a espanol». El menu queda, en este orden y con estos enunciados:
+             Nucleo - Portafolio - Agente IA - Cotiza Run - Contacto.
+
+             NUCLEO VA PRIMERO y reemplaza a la vez a «Core» y a la antigua
+             «Empresa». Se mantiene la jerarquia declarada que trajo el cambio
+             anterior —primero quien somos, despues que hacemos— asi que el
+             menu sigue SIN describir el orden del scroll (Agente IA es la
+             lamina 3 y Nucleo la 4). Esta tomado y se deja escrito para que
+             nadie lo «arregle» creyendo que es un descuido.
+
+             LOS `id` NO CAMBIAN, por tercera vez y por la misma razon:
+             `#empresa`, `#agente-ia`, `#cotiza` y `#contacto` son las anclas
+             publicadas —viven en el menu del portafolio y pueden estar pegadas
+             en correos ya enviados—. Un ancla rota no da error, simplemente no
+             salta, y eso no se descubre hasta que lo usa un cliente. El id no
+             se lee; el rotulo si.
+
+             SE CIERRA EL PENDIENTE QUE YO MISMO DEJE ABIERTO. El 12-sep quedo
+             levantado que el menu y las laminas se contradecian: «Run» apuntaba
+             a una lamina rotulada «Cotizacion» y «Agent IA» rompia la condicion
+             con que el 11-sep se justifico ese rotulo —que la lamina CONTUVIERA
+             las palabras del menu—. Hoy Sebastian zanjo las dos: el kicker del
+             cotizador pasa a «Run - Formulario de Cotizacion» y el chip de la
+             lamina 3 a «Grace - Agente IA». Menu y lamina vuelven a decir lo
+             mismo, que es la unica manera de que el que hace clic reconozca
+             donde cayo.
+
+             COLOR: los cinco van en `--azul` (#2E8FB5), por la regla de estado
+             del 12-sep —«todos los enlaces y servicios conectados o disponibles
+             en azul oscuro; destacados en ambar»—. El azul de marca en su
+             variante de NOCHE es el unico que llega a 4,5:1 sobre este lienzo
+             (5,42:1); `--azul-600` da 3,79:1 y por eso no puede llevar texto.
+             El enlace de la pagina en que ya estas (`aria-current`) NO es azul:
+             no es un destino disponible, es donde estas parado, y se queda en
+             crema. Ver el bloque CSS del menu. -->
+        <a href="#empresa">N&uacute;cleo</a>
         <a href="portafolio.html">Portafolio</a>
-        <a href="#agente-ia">Grace Agente IA</a>
-        <a href="#empresa">Empresa</a>
-        <a href="#cotiza">Cotizaci&oacute;n</a>
+        <a href="#agente-ia">Agente IA</a>
+        <a href="#cotiza">Cotiza Run</a>
         <a href="#contacto">Contacto</a>
       </nav>
     </div>
@@ -952,7 +1218,13 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
 <!-- ====================== LAMINA 3 ====================== -->
 <section class="lam l3" id="agente-ia">
   <div class="wrap">
-    <p class="chip">Grace Agente IA</p>
+    <!-- «Grace - Agente IA» - 12-sep-2026, encargo literal de Sebastian.
+         Cierra el pendiente que yo mismo deje abierto esta manana: el
+         rotulo del menu dice «Agente IA» y la lamina tiene que CONTENER
+         esas dos palabras para que el que hace clic reconozca donde cayo.
+         El punto medio separa el nombre propio del agente de lo que es;
+         pegados, «Grace Agente IA» se leia como un titulo de cargo. -->
+    <p class="chip">Grace &middot; Agente IA</p>
     <h2><span class="li">Clasifica cada licitaci&oacute;n</span><span
       class="li">de Mercado P&uacute;blico</span></h2>
     <!-- El salto de linea va ENTRE las etiquetas, no dentro de una: en movil
@@ -2090,7 +2362,15 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
            correos ya enviados. Un ancla rota no da error, simplemente no
            salta, y eso no se descubre hasta que lo usa un cliente. El id no
            se lee, el rotulo si. -->
-      <p class="kicker">Cotizaci&oacute;n</p>
+      <!-- «Run - Formulario de Cotizacion» - 12-sep-2026, encargo literal
+           de Sebastian. Lo de arriba es el historico de por que esto dejo
+           de ser «Cotiza Agil»; hoy se le suma el nombre que el menu usa.
+           El kicker dice las dos cosas en el orden en que sirven: RUN es
+           el nombre —lo que el visitante acaba de apretar— y FORMULARIO DE
+           COTIZACION es que es —lo que va a hacer aqui—. Sigue sin tocar
+           COMPRA AGIL, que se queda donde corresponde: en el titular,
+           describiendo el tramite real del Estado. -->
+      <p class="kicker">Run &middot; Formulario de Cotizaci&oacute;n</p>
       <h2>Gestiona una <i>compra &aacute;gil</i></h2>
       <form class="fgrid" id="qform" novalidate>
         <div class="f">
@@ -2197,8 +2477,18 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
     <!-- Sin los guiones, 6-sep-2026 por instruccion de Sebastian. El brief
          del 4-sep lo escribia «-RMCL.-» y asi se publico; hoy zanjo que los
          guiones no iban, igual que los de «— Explorar —». -->
-    <p class="rmcl">RMCL.</p>
-    <p class="loc">Santiago<br>Regi&oacute;n Metropolitana, Chile</p>
+    <!-- SCL, Y DEBAJO SOLO «Santiago, Chile» - 12-sep-2026, encargo
+         literal de Sebastian: «ahora que dira SCL, abajo va solo Santiago,
+         Chile». SCL es el codigo de Santiago y se lee solo; «Region
+         Metropolitana» era la glosa de las cuatro letras viejas y con SCL
+         ya no explica nada. La linea baja de dos renglones a uno.
+         MEDIDO, no supuesto: «SCL.» son cuatro signos contra los cinco de
+         «RMCL.», asi que la pieza grande ENCOGE y no hay desborde posible
+         ni a 390 px. El domicilio legal de la lamina Nucleo (que dice
+         «Santiago, Region Metropolitana») es OTRA pieza —dato de empresa,
+         no rotulo— y no se toca desde aqui. -->
+    <p class="rmcl">SCL.</p>
+    <p class="loc">Santiago, Chile</p>
     <!-- EL CORREO SALIO DE AQUI (6-sep). Estaba dos veces en la misma
          pagina —en la lamina de Contacto y otra vez en el pie— y repetir
          una direccion no la hace mas visible: la vuelve decorado. Queda
@@ -2218,7 +2508,14 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
          /estado/ se habia retirado del sitio y un enlace ahi habria sido un 404
          con nombre de intranet. Hoy el destino existe otra vez y pide clave:
          Sebastian eligio B y la puso el mismo dia. -->
-    <a class="intranet" href="/estado/">- Intranet -</a>
+    <!-- SIN LOS GUIONES - 12-sep-2026, encargo de Sebastian. Mirado
+         renderizado antes de tocar: NO venian de un ::before ni de un
+         ::after —la regla `.pie .intranet` no declara ninguno—, estaban
+         escritos a mano dentro del texto del enlace. Eran el ultimo resto
+         de la tanda que el 6-sep saco los de «-RMCL.-» y «— Explorar —».
+         Con `--font-data` y `letter-spacing` parecian parte del dibujo, y
+         no lo eran: eran dos caracteres que el lector de pantalla leia. -->
+    <a class="intranet" href="/estado/">Intranet</a>
   </div>
 </footer>
 
