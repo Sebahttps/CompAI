@@ -139,19 +139,102 @@ body{margin:0; background:var(--ink-900); color:var(--crema);
   /* la barra no captura el cursor: sin esto los 78 px de ancho completo se
      comen los clics de todo lo que pase por debajo */
   pointer-events:none}
-.hdr .inner{max-width:var(--shell); margin:0 auto; padding:0 var(--s5); width:100%;
+/* =========================================================================
+   EL ENCABEZADO SALE DEL CANAL Y SE VA AL CANTO DE LA VENTANA
+   12-sep-2026, encargo de Sebastian: «logo y menu estan en un plano o
+   posicion que hacen ver mi sitio angosto».
+
+   EL DIAGNOSTICO, medido por CDP a 1440x900 ANTES de tocar nada:
+       .hdr .inner        x=100   w=1240      (max-width:--shell + margin auto)
+       TINTA del logotipo a 174,6 px del canto izquierdo
+       trazo del menu     a 124,0 px del canto derecho
+   El encabezado se encuadraba en el MISMO canal de 1240 que el texto, asi que
+   el ojo lee el ancho del sitio como la distancia entre el logotipo y el menu
+   —1141 px de 1440— y no como el ancho de la ventana, aunque la figura de
+   particulas si ocupe la pantalla entera. La cabecera le ponia marco a algo
+   que no lo tiene.
+
+   POR QUE 64 px Y NO LOS 32 DE LA REFERENCIA — el numero se midio contra
+   NUESTRO logotipo, que no es el suyo:
+     · el archivo canonico trae su propio resguardo DENTRO del viewBox
+       (`viewBox="-38 -18 372 131"`, tinta desde x=5,9): son 43,9 unidades de
+       372, el 11,80 % de la caja, y a la altura de portada —151 px— eso son
+       50,6 px de aire ya dibujados. Medido con getBBox, no supuesto.
+     · el canto de la ventana no puede entrar en ese resguardo, o sea el canal
+       tiene que ser MAYOR que 50,6;
+     · el primer escalon de la escala de la pagina que lo supera es --s8 = 64.
+       El anterior, 48, dejaria el canto 2,6 px DENTRO del resguardo.
+   La referencia luce 32 px con un lockup pequeno; el nuestro mide 151 px de
+   alto en portada. Cuatro veces mas pieza pide mas aire, no el mismo.
+
+   EL CANAL IZQUIERDO DESCUENTA EL AIRE QUE EL ARCHIVO YA TRAE. Sin descuento
+   la TINTA quedaria a 64+50,6 = 114,6 px por la izquierda contra 64 por la
+   derecha: la misma asimetria de hoy, en pequeno. Con
+   `calc(var(--borde) - var(--logo-aire))` la tinta del logotipo y el trazo del
+   menu caen los dos a --borde exacto. `--logo-aire` = altura x 0,3351 y se
+   declara junto a CADA altura del logotipo, que es donde se decide.
+   El `max(0px, ...)` no es decoracion: entre 421 y 560 px el canal vale 16 y
+   el aire 19,1, o sea la resta se va a negativo y `padding` no admite
+   negativos. Ahi el descuento se agota y la tinta queda a 19,1 —3 px del
+   trazo, invisible— en vez de romper la maqueta.
+
+   BAJO 1024 EL CANAL NO SE APRIETA: sigue siendo el del cuerpo (24, y 16 bajo
+   560). Ahi el `max-width` ya no mordia —la ventana es mas angosta que 1240—
+   y llevarlo a 64 haria el encabezado MAS angosto, justo lo contrario del
+   encargo.
+
+   OBJECION REGISTRADA, y se ejecuta igual: a partir de 1024 el encabezado y el
+   cuerpo dejan de compartir linea. A 1440 la tinta del logotipo arranca en 64
+   y el texto de las laminas 2 a 6 en 124, asi que NADA del cuerpo se alinea
+   con el logotipo. Es una maqueta de dos canales —cabecera a sangre, texto en
+   medida—, legitima y comun, pero es un cambio de sistema y no un ajuste.
+   ========================================================================= */
+.hdr .inner{max-width:none; margin:0; width:100%;
+  padding-right:var(--borde);
+  padding-left:max(0px, calc(var(--borde) - var(--logo-aire)));
   display:flex; align-items:center; justify-content:space-between; gap:var(--s5);
   transition:transform var(--t-crece) var(--asienta)}
 .hdr .inner > *{pointer-events:auto}
 .brand{display:flex; align-items:center; flex:0 0 auto}
 .brand .logo{height:57px; width:auto; display:block; overflow:visible;
-  transform-origin:0 50%;
+  /* EL PIVOTE DEL ENCOGIMIENTO PASA DE LA CAJA A LA TINTA — 12-sep-2026.
+     Con el canal descontando el aire del archivo, el canto izquierdo de la
+     CAJA ya no es el canto del canal: la TINTA lo es, y esta 11,802 % mas a la
+     derecha (43,9 de las 372 unidades del viewBox, y el porcentaje es constante
+     a cualquier altura porque aire y caja escalan juntos). Con `0 50%` el
+     pivote se quedaria 50,6 px a la izquierda de la tinta y encoger la
+     arrastraria 13,3 px hacia el borde — se leeria como que la pagina se movio,
+     justo lo que el comentario de arriba manda evitar.
+     PERO ES PREVENTIVO, Y SE DICE: medido con la clase puesta a mano, hoy no
+     pasa nada, porque `hdr-chico` es codigo muerto en esta pagina desde el
+     5-sep —el encabezado ya no se encoge, se ESCONDE, y el observador conmuta
+     `hdr-fuera`—. La regla se corrige igual: una regla equivocada que no se
+     ejecuta es una trampa esperando a que alguien reviva el estado. */
+  transform-origin:11.802% 50%;
   /* la sombra va SOBRE LA PIEZA, no es una caja: es lo unico que el encargo
      permite para despegar el logotipo de los fotogramas claros del plexus */
   filter:drop-shadow(0 2px 9px rgba(8,9,12,.9));
   transition:transform var(--t-crece) var(--asienta),
              filter var(--t-crece) var(--entra)}
 @media (max-width:420px){.brand .logo{height:45px}}
+
+/* EL CANAL DE LA CABECERA Y EL AIRE PROPIO DEL LOGOTIPO. Los dos son medida:
+   --borde      sigue al canal del cuerpo (16 bajo 560, 24 hasta 1023) y a
+                partir de 1024 se despega de el y vale 64, porque ahi el canal
+                de 1240 deja de ser un borde y pasa a ser un marco.
+   --logo-aire  el resguardo que el archivo canonico ya trae dentro del
+                viewBox: altura x 0,3351. 57 -> 19,1 · 45 -> 15,1 · 151 -> 50,6
+
+   EL ORDEN DE ESTAS CUATRO LINEAS ES LA REGLA, no el formato. Los overrides
+   tienen la MISMA especificidad que la base, asi que van despues o no existen.
+   Cazado midiendo: con el override de 420 escrito arriba, a 390 px ganaba el
+   aire de 19,1 y `max(0px, 16-19,1)` se agotaba en 0 — la tinta caia en 15,1
+   y no en los 16 del canal. Un token que se pisa a si mismo no da error. */
+:root{ --borde:24px; --logo-aire:19.1px; }
+@media (max-width:560px){ :root{--borde:16px} }
+@media (max-width:420px){ :root{--logo-aire:15.1px} }
+@media (min-width:1024px){ :root{--borde:64px} }
+
 
 html.hdr-chico .hdr .inner{transform:translateY(-11px);
   transition-duration:var(--t-encoge)}
@@ -282,19 +365,127 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   min-width:var(--menu-largo);
   /* SIN FONDO, igual que el encabezado. La legibilidad la da la sombra, que
      no es un recuadro, mas el paso atras del aviso de proveedor. */
-  filter:drop-shadow(0 10px 26px rgba(8,9,12,.94)) drop-shadow(0 2px 9px rgba(8,9,12,.92));
+  /* DOS DROP-SHADOW CORTOS MAS — 12-sep-2026. El `filter` del panel corre
+     DESPUES de pintar los enlaces, o sea toma la silueta del texto CON su
+     text-shadow ya puesta y le anade otro halo encima: multiplica en vez
+     de sumar, que es justo lo que hacia falta para los ultimos 0,05 del
+     piso de 4,5:1. Radio 5 porque el anillo que se mide va de 2 a 8 px;
+     los dos largos que ya estaban (26 y 9) no llegan ahi con tinta. */
+  filter:drop-shadow(0 10px 26px rgba(8,9,12,.94)) drop-shadow(0 2px 9px rgba(8,9,12,.92))
+         drop-shadow(0 0 5px rgba(8,9,12,.92)) drop-shadow(0 0 5px rgba(8,9,12,.92));
   clip-path:inset(0 0 100% 0); pointer-events:none;
   transition:clip-path .34s var(--sale)}
+/* EL TAMANO DEL MENU: 12,5 -> 15 px (+20 %), 12-sep-2026, encargo de
+   Sebastian («agranda los enunciados de los MENU»). El numero no es a ojo:
+   · 12,5 px era el techo de la escala mono de esta pagina (.send 13, .loc
+     12,5) y el menu es la unica pieza que, abierta, esta SOLA en pantalla:
+     no compite con nada, asi que no tiene por que medir como un pie de foto.
+   · 15 px en mono versalita con .16em de espaciado presenta una altura de
+     mayuscula equivalente a un texto corrido de ~17-18 px, o sea queda a la
+     altura de la prosa (body 17, .lead 18) y por debajo de los titulos:
+     crece sin ascender de rango.
+   · Y CABE, con los rotulos en espanol del 12-sep. Medido en Chrome a 1440
+     y a 390: los mas largos son PORTAFOLIO y COTIZA RUN, 106,5 px los dos
+     (el paso por el ingles dejo PORTFOLIO en 95,8; antes, a 12,5 px,
+     PORTAFOLIO y COTIZACION median 88,7). Siguen por debajo de los 130 px
+     de `--menu-largo`, asi que la linea del gesto sigue siendo el canto del
+     panel por construccion y ese numero NO se mueve: el panel mide los
+     mismos 130x220 px a 1440 y a 390, y `scrollWidth` sigue igual a
+     `clientWidth` en los dos anchos — cero desborde horizontal.
+   `min-height:44px` se queda tal cual —ya era el area tactil minima y el
+   texto crece dentro de ella—, y con eso el panel mide los mismos 220 px de
+   alto que antes: agrandar no empujo nada hacia abajo en telefono. */
+/* =========================================================================
+   COLOR POR ESTADO - 12-sep-2026. Encargo literal de Sebastian: «todos los
+   enlaces y servicios en el sitio, conectados o disponibles en azul oscuro.
+   Destacados en ambar». Es la regla de marca —AZUL = traza, AMBAR =
+   transaccion— bajada a los enlaces, y aqui queda escrita para que el
+   siguiente que agregue uno sepa de que color va sin preguntar.
+
+     AZUL  `--azul` #2E8FB5   conectado o disponible: lleva a alguna parte y
+                              esa parte existe. Menu, «Ver ficha proveedor»,
+                              «Explorar», «Intranet».
+     AMBAR `--terracota`      destacado: la accion que la lamina pide. El
+                              correo de contacto y el boton «Enviar». Son dos
+                              en toda la pagina, y por eso destacan.
+
+   EL TERCER ESTADO EXISTE Y NO SE PINTA DE AZUL, porque pintar de azul algo
+   que no lleva a ninguna parte le miente al visitante:
+     · `[aria-current="page"]` = donde ESTAS parado. No es un destino
+       disponible; se queda en `--crema`, que es el color de «aqui».
+     · `.lic-est.e-descartada` = licitacion que NO vamos a tomar, y
+       `.previo` del portafolio = producto en desarrollo. Gris `--crema-60`,
+       declarado, no azul apagado.
+
+   POR QUE ESTE AZUL Y NO EL OTRO - esto se decide por medida, no por gusto.
+   «Azul oscuro» tiene dos candidatos en los tokens y solo uno sirve para
+   texto sobre este lienzo:
+     `--azul`     #2E8FB5  sobre `--ink-900`  5,42:1   PASA AA
+     `--azul-600` #13749A  sobre `--ink-900`  3,79:1   NO PASA: solo trazo
+   Es ademas el azul de NOCHE de la marca, el unico que puede ir sobre fondo
+   oscuro (el de dia, #0F5C7A, da 2,69:1 aqui y desaparece).
+   El hover no cambia de familia: ACLARA a `--azul-300` (10,33:1), igual que
+   ya hacia «Ver ficha proveedor». Asi el azul significa SIEMPRE lo mismo y no
+   hace falta inventar un quinto tono.
+   ========================================================================= */
+/* HALO DEL MENU - 12-sep-2026, y es una CORRECCION de lo que entregue esta
+   tarde. Al pasar los rotulos a `--azul` medi y publique 4,04:1 para
+   «Contacto» sin marcarlo como defecto, en la misma tabla donde descartaba
+   `--azul-600` por 3,79. El piso de 4,5:1 vale para el enlace que la gente
+   lee, no solo para el token.
+
+   POR QUE NO SE ARREGLA CON UN FONDO. El encabezado es «SIN FONDO» por
+   diseno y la figura viva es la pieza: una barra opaca o un `backdrop-filter`
+   la tapan justo donde nace. El remedio tiene que ser LOCAL a la letra.
+
+   QUE ES ESTO. Cuatro capas del MISMO `--ink-900` (2, 5, 11 y 20 px de
+   desenfoque, opacidad decreciente): un halo que hunde en negro los tres o
+   cuatro pixeles alrededor del trazo, ahi donde una particula clara del
+   plexus arruinaba el contraste. No es un rectangulo, no tiene borde, no se
+   ve como pieza — y sobre un lienzo casi negro es invisible salvo por su
+   efecto. Cuesta cero marcado, cero script y no toca el video.
+
+   POR QUE NO ES «GLASS». No hay transparencia ni desenfoque del fondo: es
+   tinta propia de la letra. `prefers-reduced-transparency` no aplica porque
+   no hay nada translucido que degradar, y con `prefers-reduced-motion` o sin
+   JS el halo sigue puesto: es una propiedad quieta.
+
+   MEDIDO con el metodo del anillo —contraste de la tinta contra cada pixel
+   entre 2 y 8 px del trazo, leido sobre la pagina tal como se ve y barriendo
+   el video entero—, que es el unico que ve la sombra. Numeros en el log.
+   OJO AL MEDIR: el metodo que esconde la pieza para leer el lienzo esconde
+   TAMBIEN su sombra, asi que da el mismo numero antes y despues y declararia
+   inutil este arreglo. */
 .mnu-panel a{opacity:0; transform:translateY(9px);
-  font-family:var(--font-data); font-size:12.5px; font-weight:600;
-  letter-spacing:.16em; text-transform:uppercase; color:var(--crema-75);
-  text-decoration:none; text-shadow:var(--sombra-texto);
+  font-family:var(--font-data); font-size:15px; font-weight:600;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--azul);
+  text-decoration:none;
+  /* LA SOMBRA SE REFUERZA DONDE VIVE EL ANILLO — 12-sep-2026, y el motivo es
+     una medicion, no un gusto. Al llevar el menu del canal de 1240 al canto de
+     la ventana los cinco enlaces cambiaron el trozo de plexus que tienen
+     detras, y el peor p05 del metodo del anillo cayo de 4,90:1 a 3,89:1: bajo
+     el piso de 4,5. Los dos numeros son del MISMO video y el MISMO instrumento
+     —`contraste_menu.py`, con y sin `--viejo`—, o sea es el movimiento y no
+     otra cosa. El enlace que cae es siempre «Contacto», el ultimo del panel.
+     QUE SE CAMBIO Y QUE NO. No se toca el color —`--azul` #2E8FB5 se decidio
+     hoy— ni el tamano ni el video: en un panel SIN FONDO lo unico que el
+     encargo permite para despegarlo del plexus es su sombra propia.
+     POR QUE ESTOS RADIOS. El anillo que se mide va de 2 a 8 px de la tinta, y
+     ahi solo llegaban tres capas (2, 5 y 9). Las de 15 y 24 reparten su tinta
+     en un area cuatro veces mayor y a 8 px ya casi no pintan. Se anaden capas
+     CORTAS —4, 6 y 6 repetida, que multiplica en vez de sumar— y se sube la de
+     9. El coste son 96 bytes y cero pixeles de maqueta: la sombra no ocupa
+     sitio, no es un recuadro y no cambia el alto del panel. */
+  text-shadow:0 0 2px rgba(8,9,12,.97), 0 0 4px rgba(8,9,12,.96),
+              0 0 6px rgba(8,9,12,.95), 0 0 6px rgba(8,9,12,.95),
+              0 0 9px rgba(8,9,12,.94), 0 0 12px rgba(8,9,12,.9),
+              0 0 15px rgba(8,9,12,.86), 0 2px 24px rgba(8,9,12,.78);
   min-height:44px; display:inline-flex; align-items:center; white-space:nowrap;
   transition:opacity .24s var(--sale), transform .24s var(--sale), color .18s var(--micro)}
 .mnu-panel a::before{content:""; width:0; height:2px; border-radius:1px; margin-right:0;
   background:var(--azul); box-shadow:var(--glow-azul);
   transition:width .22s var(--micro), margin-right .22s var(--micro)}
-.mnu-panel a:hover, .mnu-panel a:focus-visible{color:var(--crema)}
+.mnu-panel a:hover, .mnu-panel a:focus-visible{color:var(--azul-300)}
 .mnu-panel a:hover::before, .mnu-panel a:focus-visible::before{width:16px; margin-right:var(--s2)}
 .mnu-panel a[aria-current="page"]{color:var(--crema)}
 
@@ -811,6 +1002,707 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   .e6 .fich{opacity:1; transform:none} .e6 .fC{opacity:.16}
   .e6 .reglas li{opacity:1; transform:none}
 }
+/* ============================ CARRUSEL · CSS INICIO ======================
+   CARRUSEL 3D DE SERVICIOS — CinemAI, 13-sep-2026.
+
+   LO QUE MANDA SOBRE EL DISENO, escrito porque no se ve en el codigo:
+
+   1) EL ANCLA NO SE MUEVE. Titulo, pestanas de linea, flechas, puntos y
+      contador estan fijos; lo unico que viaja son las tarjetas. Es la ley del
+      blueprint `fixed-anchor-cycle` de HyperFrames —«the stillness of the
+      anchor IS the claim»— y su regla de geometria: la region que cicla NUNCA
+      toca ni desplaza al ancla. Por eso la escena tiene alto propio y los
+      mandos viven fuera de ella.
+
+   2) EL VIAJE ES `inOut`, NO `.out`. CORRECCION a mi primer borrador. Mi
+      doctrina §3 asigna `--entra` (expo.out) a «algo aparece» y yo lo habia
+      puesto en las tarjetas. Pero una tarjeta del carrusel no aparece: se
+      MUEVE ENTRE DOS POSICIONES, y para eso la regla de direccion de
+      `hyperframes-creative/motion-principles` pide `inOut`. Con `.out` el
+      anillo arranca disparado y se lee como resorte. Lo que si usa `.out` es
+      el contenido que se revela en la tarjeta que llega: eso si sale del reposo.
+
+   3) CINCO CURVAS Y CINCO DURACIONES DISTINTAS. La misma fuente prohibe
+      repetir ease («no more than 2 independent tweens with the same ease») y
+      pide que la mas lenta sea 3x la mas rapida: viaje 640 ms contra hundido
+      del boton 150 ms = 4,3x.
+
+   4) NADA ARRANCA EN t=0. El realce de la tarjeta que llega entra a los
+      140-180 ms. Retardo cero se lee como corte, no como llegada.
+
+   5) LA PROFUNDIDAD ES REAL, NO ESCALA. `perspective` en un padre estable,
+      `preserve-3d` en la pista y en cada tarjeta, viaje en Z, giro en Y y
+      OCLUSION: la vecina se mete POR DEBAJO de la central y queda tapada en un
+      42 % de su ancho. `hyperframes-keyframes` §3D: «Scale alone is fake depth».
+
+   6) EL GIRO TIENE TECHO Y SE SATURA. `split-tilt-cards` mide el limite: sobre
+      18 grados la tarjeta «folds shut and copy blurs». El paso es --tilt por
+      vecino y JavaScript satura el factor en 1,2.
+
+   7) LA SOMBRA SIGUE AL GIRO. Misma fuente: «Shadow direction matches tilt —
+      wrong sign reads as broken 3D». Un solo `box-shadow` con desplazamiento
+      X = `calc(var(--dx) * -16px)`: cambia de lado solo.
+
+   8) JAVASCRIPT ESCRIBE CUATRO NUMEROS, EL CSS HACE LA COREOGRAFIA. Por
+      tarjeta: `--dx` (lateral con signo, saturado), `--dz` (hundimiento),
+      `--dr` (giro, saturado) y `--o` (opacidad, curva quebrada que llega a
+      cero). Ni un `transform` armado en JavaScript. Tres consecuencias que no
+      son de estilo: el modo grilla puede anular el `transform` desde la hoja
+      —contra un `style` en linea seria imposible—, el cambio a plano en
+      telefono es una media query de cinco numeros y no una rama de codigo, y
+      el paquete de JS baja a ~2,5 KB.
+
+   9) LO QUE NO SE VE NO SE PINTA. Pasada la ventana la tarjeta queda en
+      `visibility:hidden` y pierde `will-change`. Puesto en las nueve, agota
+      memoria y empeora lo que venia a arreglar (doctrina CinemAI §6).
+
+   10) LA TARJETA ES ANCHA Y NO ALTA, Y ESO LO DECIDIO EL TEXTO REAL. Con los
+      textos de GAIn hay servicios de 5 «incluye» y 4 «no incluye», con items
+      de hasta 103 caracteres. En una tarjeta de 372 px eso son ~880 px de
+      alto: no cabe en pantalla y obliga a cortar texto, que es justo lo que el
+      encargo prohibe. A 560 px de ancho las dos listas caben LADO A LADO —dos
+      columnas del mismo ancho— y la tarjeta baja a ~570. La composicion no es
+      un gusto: es la unica que deja entrar el contenido entero.
+   ========================================================================= */
+.cw{
+  position:relative; z-index:2; max-width:var(--shell); margin:0 auto;
+  --pad-x:var(--s5);   /* EL CANAL LATERAL VIVE EN UNA SOLA VARIABLE.
+        La escena lo descuenta con margen negativo para sangrar hasta el canto;
+        con dos numeros distintos -24 en la escena, 16 en la seccion- el
+        documento desbordaba 8 px a lo ancho en telefono. Medido, no supuesto. */
+  --pad-c:24px;        /* el padding interior de la tarjeta, que el bloque
+        «no incluye» necesita conocer para sangrar hasta el canto */
+  padding:var(--s6) var(--pad-x) var(--s6);
+  display:flex; flex-direction:column;
+  /* --- geometria --- */
+  --tar-w:560px; --tar-h:auto;
+  /* --- coreografia: los numeros que cambian por pantalla --- */
+  --paso:56%;      /* desplazamiento lateral por vecino, en anchos de tarjeta */
+  --zpaso:300px;   /* hundimiento en Z por vecino                              */
+  --tilt:26deg;    /* giro por vecino                                          */
+  --dec:.09;       /* caida de escala por vecino                               */
+  --dof:2.2px;     /* desenfoque de profundidad por vecino, sobre el CONTENIDO */
+  /* POR QUE 26 Y NO LOS 18 QUE PONE DE TECHO `split-tilt-cards`, y esta es una
+     desviacion consciente de la regla, no un descuido. Medi el render v3 por
+     CDP antes de tocar nada: el `matrix3d` estaba bien puesto -sin(17°)=0,2924
+     exacto, translateZ -300- y el escorzo REAL era de 454,3 px aparentes sobre
+     560, o sea la tarjeta si giraba. Lo que no hacia era LEERSE: entre el canto
+     cercano y el lejano la altura aparente cambiaba 50 px sobre 555, un 9 %, y
+     nueve por ciento no se ve. A 26 grados son 75 px, un 13,5 %, y ahi el
+     anillo aparece.
+     La regla de los 18 grados protege la LEGIBILIDAD DEL TEXTO de una tarjeta
+     que hay que leer: en `split-tilt-cards` las dos tarjetas tilteadas son el
+     contenido. Aqui la vecina NO es contenido, es senal de profundidad, y que
+     su texto se difumine es justamente lo que se busca. La tarjeta que hay que
+     leer esta a rotateY 0 exacto. La regla se respeta donde aplica. */
+  /* PERSPECTIVA CORTA A PROPOSITO. `split-tilt-cards` da 1000-2400 px y avisa
+     que «lower exaggerates the tilt; higher reads near-isometric». En el render
+     v2, con 1700 px sobre una tarjeta de 560 de ancho, las vecinas se leian
+     como tres tarjetas EN FILA y no como un anillo: el giro existia y no se
+     veia. A 1150 aparece el escorzo y la oclusion se lee. */
+  --persp:1150px;
+  /* --- tiempo: cinco curvas, cinco duraciones --- */
+  --viaje:cubic-bezier(.62,.02,.28,1);    /* inOut  · mover ENTRE posiciones     */
+  --entra:cubic-bezier(.16,1,.3,1);       /* out    · algo aparece desde reposo  */
+  --sale:cubic-bezier(.7,0,.84,0);        /* in     · algo se va                 */
+  --micro:cubic-bezier(.34,1.56,.64,1);   /* sobrepaso · micro-gesto             */
+  --asienta:cubic-bezier(.33,.72,.4,1);   /* llegada corta y firme               */
+  --t-viaje:640ms; --t-esc:560ms; --t-cont:500ms; --t-filo:420ms;
+  --t-apaga:260ms; --t-punto:220ms; --t-press:150ms;
+}
+
+/* ---------- ENCABEZADO (ancla: no se mueve nunca) ---------------------- */
+.cw-cab{display:flex; align-items:flex-end; justify-content:space-between;
+  gap:var(--s6); flex-wrap:wrap; margin-bottom:var(--s4)}
+.cw-ante{font-family:var(--font-data); font-size:9.5px; letter-spacing:.22em;
+  text-transform:uppercase; color:var(--azul-300); margin:0 0 9px}
+.cw-tit{font-family:var(--font-data); font-size:20px; line-height:1.3; font-weight:600;
+  letter-spacing:-.01em; margin:0 0 7px; color:var(--crema)}
+.cw-baja{margin:0; font-size:13.5px; line-height:1.6; color:var(--crema-75); max-width:56ch}
+.cw-baja strong{color:var(--crema); font-weight:600}
+/* la promesa de la linea elegida: cambia con las pestanas y es el unico texto
+   del ancla que se refresca. Alto fijo para que el ancla no salte (§1). */
+.cw-lprom{font-family:var(--font-data); font-size:11px; line-height:1.5;
+  color:var(--crema-60); margin:0; max-width:34ch; min-height:33px;
+  padding-left:13px; border-left:1px solid var(--azul-600)}
+.cw-lineas{display:flex; flex-wrap:wrap; gap:var(--s2); margin-bottom:var(--s4)}
+.cw-lin{appearance:none; cursor:pointer; font-family:var(--font-data);
+  font-size:10.5px; letter-spacing:.12em; text-transform:uppercase;
+  padding:9px 14px; border-radius:2px; color:var(--crema-60);
+  border:1px solid var(--crema-12); background:rgba(22,26,33,.5);
+  transition:color var(--t-punto) var(--asienta),
+             border-color var(--t-punto) var(--asienta),
+             transform var(--t-press) var(--micro)}
+.cw-lin:hover{color:var(--crema-75); border-color:var(--crema-28)}
+.cw-lin:active{transform:translateY(1px) scale(.985)}
+.cw-lin[aria-pressed="true"]{color:var(--azul-300); border-color:var(--azul-600);
+  background:rgba(19,116,154,.12)}
+.cw-lin:focus-visible,.cw-fl:focus-visible,.cw-punto:focus-visible,
+.cw-todo:focus-visible,.cw-cta:focus-visible,.cw-tar:focus-visible{
+  outline:2px solid var(--azul); outline-offset:3px}
+
+/* ---------- LA ESCENA: el unico sitio con perspectiva ------------------ */
+.cw-escena{position:relative; height:var(--tar-h); perspective:var(--persp);
+  perspective-origin:50% 44%;
+  /* recorta: la tarjeta que hace la vuelta del anillo viaja invisible y no
+     puede asomar por el canto */
+  overflow:hidden; margin:0 calc(var(--pad-x) * -1); padding:0 var(--pad-x)}
+.cw-pista{position:absolute; inset:0; transform-style:preserve-3d}
+
+/* ---------- LA TARJETA ------------------------------------------------- */
+.cw-tar{
+  position:absolute; top:50%; left:50%; width:var(--tar-w); height:var(--tar-h);
+  margin:0; --dx:0; --dz:0; --dr:0; --o:1;
+  transform-style:preserve-3d; backface-visibility:hidden;
+  transform:
+    translate(-50%,-50%)
+    translateX(calc(var(--dx) * var(--paso)))
+    translateZ(calc(var(--dz) * var(--zpaso) * -1))
+    rotateY(calc(var(--dr) * var(--tilt) * -1));
+  opacity:var(--o);
+  /* la que se va se apaga RAPIDO (`in`); la que llega se enciende con el
+     viaje. La asimetria es doctrina: las entradas duran mas que las salidas. */
+  transition:transform var(--t-viaje) var(--viaje),
+             opacity var(--t-apaga) var(--sale);
+  transition-delay:calc(var(--dz) * 48ms), 0ms;
+  cursor:pointer}
+.cw-tar.foco{cursor:default;
+  transition:transform var(--t-viaje) var(--viaje),
+             opacity var(--t-cont) var(--entra) 90ms}
+.cw-tar:not(.fuera){will-change:transform}
+.cw-tar.fuera{visibility:hidden; pointer-events:none}
+
+/* el cuerpo lleva la ESCALA en su propia curva y su propio tiempo: dos gestos
+   encadenados, no uno sincronizado (doctrina CinemAI §3) */
+.cw-cuerpo{position:absolute; inset:0; display:flex; flex-direction:column;
+  padding:20px var(--pad-c) 19px; border-radius:var(--radio-caja); overflow:hidden;
+  border:1px solid var(--crema-12);
+  background:linear-gradient(176deg, rgba(24,28,36,.97) 0%, rgba(12,14,19,.98) 58%, rgba(8,9,12,.99) 100%);
+  transform:scale(calc(1 - var(--dz) * var(--dec)));
+  /* la sombra cae DEL LADO AL QUE MIRA LA TARJETA: el signo sale de --dx */
+  box-shadow:calc(var(--dx) * -16px) 20px 48px rgba(4,5,7,calc(.32 + var(--dz) * .20));
+  transition:transform var(--t-esc) var(--micro) 60ms,
+             border-color var(--t-filo) var(--asienta)}
+.cw-tar.foco .cw-cuerpo{border-color:var(--crema-28)}
+
+/* =========================================================================
+   DESENFOQUE DE PROFUNDIDAD — regla `depth-of-field-blur` de HyperFrames: los
+   planos que no son el focal se desenfocan, y eso es lo que separa una camara
+   de un collage. Resuelve el defecto del render v3, donde el texto de la
+   vecina competia con el de la central y su chapa «Recomendado» brillaba mas
+   que nada en pantalla.
+
+   VA AL CONTENIDO Y NO A LA CAJA, Y ESA ES UNA CORRECCION DE LA VERSION
+   ANTERIOR, mirada renderizada: con el `filter` puesto en `.cw-cuerpo` se
+   difuminaba tambien el CANTO de la tarjeta, y con el canto borroso la
+   convergencia del `rotateY` deja de verse — o sea el desenfoque se comia
+   justo el 3D que yo acababa de subir a 26 grados. Aplicado a los hijos, la
+   FORMA queda nitida (se lee el escorzo) y el CONTENIDO se va (no compite).
+   El filete queda fuera a proposito: es canto, no contenido.
+
+   NO viola la doctrina §6, que prohibe `filter` EN BUCLE: esto es un estado,
+   no una animacion por cuadro, y solo se recalcula durante los 560 ms del
+   viaje. En telefono `--dof` va a 0: alli no hay profundidad que simular y el
+   coste no se paga con nada.
+   ========================================================================= */
+.cw-tar:not(.foco) .cw-cuerpo > *:not(.cw-filo){
+  filter:blur(calc(var(--dz) * var(--dof)));
+  transition:filter var(--t-esc) var(--viaje) 60ms}
+.cw-tar[data-dest="1"].foco .cw-cuerpo{border-color:rgba(200,121,65,.45)}
+
+/* el filete de canto: `motion-principles` — un componente iluminado por el
+   canto se lee mas disenado que un arco flotando. Crece desde el centro y
+   llega 180 ms DESPUES de que la tarjeta se poso: encadenar, no sincronizar */
+.cw-filo{position:absolute; left:0; right:0; top:0; height:2px; background:var(--azul);
+  transform:scaleX(0); transform-origin:50% 50%;
+  transition:transform var(--t-filo) var(--asienta)}
+.cw-tar.foco .cw-filo{transform:scaleX(1); transition-delay:180ms}
+.cw-tar[data-dest="1"] .cw-filo{height:3px;
+  background:linear-gradient(90deg,var(--azul) 0%,var(--terracota) 58%,var(--terracota-300) 100%)}
+
+.cw-tcab{display:flex; align-items:center; justify-content:space-between; gap:var(--s3);
+  font-family:var(--font-data); margin-bottom:11px; min-height:20px}
+/* SUBIO DE `--crema-28` A `--crema-60` POR MEDICION: daba 2,24:1 contra el
+   4,5 que pide WCAG AA. El resto del portafolio usa crema-28 para rotulos
+   DECORATIVOS; el codigo del servicio y su linea son informacion. */
+.cw-cod{font-size:9.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--crema-60)}
+.cw-marcas{display:flex; align-items:center; gap:10px}
+.cw-niv{display:flex; align-items:center; gap:5px; font-size:9px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--crema-60); font-style:normal}
+.cw-niv i{width:5px; height:5px; border-radius:1px; background:var(--crema-12)}
+.cw-niv[data-n="basico"] i:nth-child(1),
+.cw-niv[data-n="core"] i:nth-child(-n+2),
+.cw-niv[data-n="premium"] i{background:var(--azul-600)}
+/* la chapa del destacado: ambar NO, porque no es una transaccion — es el
+   consejo del estudio. Va en terracota, que en este sistema es el acento
+   editorial, y con el mismo grosor de trazo que el filete. */
+.cw-dest{font-size:9px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--terracota-300); border:1px solid rgba(200,121,65,.45);
+  padding:3px 8px; border-radius:2px; background:rgba(200,121,65,.10)}
+
+.cw-nom{font-family:var(--font-data); font-size:18px; line-height:1.3; font-weight:600;
+  letter-spacing:-.012em; margin:0 0 8px; color:var(--crema)}
+.cw-pro{margin:0 0 13px; font-size:13.5px; line-height:1.5; color:var(--crema-75)}
+
+/* =========================================================================
+   EL PRECIO — y aqui hay TRES decisiones que no son de composicion:
+
+   a) EL «VALOR DESDE» ES PROTECCION DE PRECIO, NO UN ROTULO. Un precio
+      publicado es el techo de lo que se le puede cobrar a quien lo vio, y
+      cinco de los nueve servicios tienen alcance que depende del sistema del
+      cliente. Si esa condicion se pierde —por gris, por chica o por caerse en
+      celular— se cae el techo de precio de cinco servicios. Por eso NO va en
+      `--crema-28` como los demas rotulos: va en una chapa con borde, en
+      ambar (contraste 7,4:1 medido contra el fondo de la tarjeta), pegada
+      ARRIBA del numero y en el mismo sitio en todos los anchos. Es el unico
+      rotulo de la tarjeta que no se achica en telefono.
+
+   b) EL BRUTO VA GRANDE Y EL NETO SIEMPRE DEBAJO. El bruto contesta «me
+      alcanza»; el neto es el que va en la orden de compra y decide si cabe en
+      Compra Agil. Los dos, no uno: el neto no es letra chica, lleva su propia
+      linea y dice para que sirve.
+
+   c) AMBAR PORQUE ES TRANSACCION. Regla de marca v2: azul = traza,
+      ambar = transaccion. El check del «incluye» es azul petroleo, no verde.
+   ========================================================================= */
+.cw-plata{padding:11px 0 12px; border-top:1px solid var(--crema-12);
+  border-bottom:1px solid var(--crema-12); margin-bottom:13px}
+.cw-alcance{display:flex; align-items:center; gap:9px; flex-wrap:wrap; margin-bottom:7px}
+.cw-uni{font-family:var(--font-data); font-size:9.5px; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--crema-60)}
+.cw-cond{font-family:var(--font-data); font-size:9.5px; letter-spacing:.15em;
+  text-transform:uppercase; color:var(--ambar); border:1px solid rgba(200,154,65,.5);
+  background:rgba(200,154,65,.10); padding:3px 8px; border-radius:2px; white-space:nowrap}
+.cw-bruto{display:flex; align-items:baseline; gap:9px; font-family:var(--font-data)}
+.cw-bruto b{font-size:27px; line-height:1.08; font-weight:600; letter-spacing:-.025em;
+  color:var(--ambar)}
+.cw-bruto span{font-size:10.5px; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--crema-60)}
+.cw-neto{margin:7px 0 0; font-family:var(--font-data); font-size:11.5px; line-height:1.5;
+  color:var(--crema-75)}
+.cw-neto b{color:var(--crema); font-weight:600}
+.cw-neto span{color:var(--crema-28)}
+
+/* =========================================================================
+   EL DETALLE — «que NO incluye» con el MISMO PESO, y eso es literal: la misma
+   columna, el mismo ancho, el mismo cuerpo de letra y el mismo interlineado
+   que «incluye», lado a lado. Lo unico que cambia es la tinta y la vineta:
+   doble visto azul para lo que entra, raya para lo que no. El bloque de la
+   derecha ademas lleva canto y fondo propios, que es lo que lo vuelve una
+   afirmacion y no una nota al pie.
+   ========================================================================= */
+/* EL AIRE SOBRANTE VA ABAJO DEL DETALLE, NO ARRIBA. Todas las tarjetas
+   comparten el alto de la mas alta, asi que en las cortas sobra espacio y hay
+   que decidir donde ponerlo. Estaba en `.cw-det{margin-top:auto}` y en la
+   captura de SP-02 se veia un hueco de 80 px entre el precio y las listas: el
+   contenido partido en dos islas. Ahora el bloque se apila compacto y es el
+   BOTON el que se ancla abajo -`margin-top:auto` en `.cw-cta`-, de modo que
+   «Pedir cotizacion» cae SIEMPRE en el mismo pixel al cambiar de tarjeta.
+   Esa es la ley del ancla (§1) aplicada al elemento que mas importa que no
+   se mueva. El `margin-bottom` del detalle es el piso de separacion para la
+   tarjeta mas alta, donde no sobra aire que repartir. */
+.cw-det{display:grid; grid-template-columns:1fr 1fr; gap:var(--s4); margin-bottom:14px}
+.cw-rot{font-family:var(--font-data); font-size:9px; letter-spacing:.2em;
+  text-transform:uppercase; margin:0 0 8px}
+.cw-inc .cw-rot{color:var(--azul-300)}
+.cw-exc .cw-rot{color:var(--alerta-300)}
+.cw-det ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:5px}
+.cw-det li{position:relative; padding-left:18px; font-size:11.5px; line-height:1.4;
+  color:var(--crema-75)}
+/* el doble visto de la marca dibujado en CSS: dos angulos girados 42 grados.
+   Cero bytes de SVG y el mismo gesto del logotipo. */
+.cw-inc li::before,.cw-inc li::after{content:""; position:absolute; top:3px;
+  width:4px; height:8px; border:1.6px solid var(--azul); border-top:0; border-left:0;
+  transform:rotate(42deg)}
+.cw-inc li::before{left:0} .cw-inc li::after{left:6px; opacity:.45}
+.cw-exc{padding:11px 13px 12px; margin:-11px calc(var(--pad-c) * -1) -19px 0;
+  border-left:2px solid rgba(214,84,84,.5);
+  background:rgba(214,84,84,.05); border-radius:0 2px 2px 0}
+.cw-exc li{color:var(--crema-60)}
+.cw-exc li::before{content:""; position:absolute; left:0; top:8px;
+  width:11px; height:1.5px; border-radius:1px; background:var(--alerta); opacity:.8}
+
+/* ---------- EL CTA: uno solo, el mismo en las nueve -------------------- */
+.cw-cta{display:inline-flex; align-items:center; gap:9px; align-self:flex-start;
+  margin-top:auto; padding:10px 16px; border-radius:2px; text-decoration:none;
+  font-family:var(--font-data); font-size:11px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--ink-900); background:var(--terracota-400);
+  transition:background var(--t-punto) var(--asienta),
+             transform var(--t-press) var(--micro)}
+.cw-cta:hover{background:var(--terracota-300)}
+.cw-cta:active{transform:translateY(1px) scale(.985)}
+.cw-cta svg{width:13px; height:13px; fill:none; stroke:currentColor; stroke-width:2;
+  stroke-linecap:round; stroke-linejoin:round}
+
+/* el realce del contenido de la tarjeta que llega: `.out`, escalonado 55 ms,
+   y NO todo desde la misma direccion (`motion-principles`). Cabecera desde
+   arriba, nombre y promesa desde abajo, precio por escala, listas por
+   opacidad, CTA con sobrepaso. Escalonado total 330 ms, bajo los 500 de la regla. */
+@media (prefers-reduced-motion:no-preference){
+  .cw-tar.foco .cw-tcab,.cw-tar.foco .cw-nom,.cw-tar.foco .cw-pro,
+  .cw-tar.foco .cw-plata,.cw-tar.foco .cw-inc,.cw-tar.foco .cw-exc,
+  .cw-tar.foco .cw-cta{animation:cwEntra var(--t-cont) var(--entra) both}
+  .cw-tar.foco .cw-tcab {animation-name:cwBaja;  animation-delay:140ms}
+  .cw-tar.foco .cw-nom  {animation-delay:195ms}
+  .cw-tar.foco .cw-pro  {animation-delay:250ms}
+  .cw-tar.foco .cw-plata{animation-name:cwCrece; animation-delay:305ms}
+  .cw-tar.foco .cw-inc  {animation-name:cwSolo;  animation-delay:360ms}
+  .cw-tar.foco .cw-exc  {animation-name:cwSolo;  animation-delay:415ms}
+  .cw-tar.foco .cw-cta  {animation-name:cwPone;  animation-delay:470ms;
+                         animation-timing-function:var(--micro)}
+}
+@keyframes cwEntra{from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none}}
+@keyframes cwBaja {from{opacity:0; transform:translateY(-9px)} to{opacity:1; transform:none}}
+@keyframes cwCrece{from{opacity:0; transform:scale(.94)}       to{opacity:1; transform:none}}
+@keyframes cwSolo {from{opacity:0}                             to{opacity:1}}
+@keyframes cwPone {from{opacity:0; transform:scale(.86)}       to{opacity:1; transform:none}}
+
+/* ---------- LOS MANDOS (tambien ancla: fuera de la escena) ------------- */
+.cw-mando{display:flex; align-items:center; justify-content:center; gap:var(--s5);
+  margin-top:var(--s4)}
+.cw-fl{appearance:none; cursor:pointer; width:44px; height:44px; flex:0 0 auto;
+  border-radius:50%; border:1px solid var(--crema-12); background:rgba(22,26,33,.6);
+  color:var(--crema-60); display:grid; place-items:center;
+  transition:color var(--t-punto) var(--asienta), border-color var(--t-punto) var(--asienta),
+             transform var(--t-press) var(--micro)}
+.cw-fl:hover{color:var(--crema); border-color:var(--crema-28)}
+.cw-fl:active{transform:scale(.9)}          /* el hundido: 150 ms, con sobrepaso */
+.cw-fl svg{width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:1.7;
+  stroke-linecap:round; stroke-linejoin:round}
+.cw-puntos{display:flex; align-items:center; gap:7px}
+.cw-punto{appearance:none; cursor:pointer; padding:0; border:0; background:var(--crema-12);
+  width:7px; height:7px; border-radius:4px;
+  transition:width var(--t-punto) var(--asienta), background var(--t-punto) var(--asienta)}
+.cw-punto[data-dest="1"]{background:var(--crema-28)}
+.cw-punto[aria-current="true"]{width:24px; background:var(--azul)}
+.cw-pie{display:flex; align-items:baseline; justify-content:space-between; gap:var(--s4);
+  margin-top:var(--s3); font-family:var(--font-data); font-size:10px; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--crema-60)}
+.cw-cuenta b{color:var(--crema); font-weight:600}
+.cw-todo{appearance:none; cursor:pointer; background:none; border:0; padding:0;
+  font-family:var(--font-data); font-size:10px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--azul-300); border-bottom:1px solid var(--azul-600);
+  transition:color var(--t-punto) var(--asienta)}
+.cw-todo:hover{color:var(--crema)}
+.cw-vivo{position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%);
+  white-space:nowrap}
+
+/* =========================================================================
+   MODO GRILLA — es UN solo modo con TRES entradas: el boton «Ver los nueve»,
+   `prefers-reduced-motion` y la ausencia de JavaScript. Que las tres caigan en
+   el mismo estado es la razon de que no haya tres degradaciones distintas.
+   Las tarjetas vuelven al flujo, sin perspectiva, sin giro y sin recorte.
+   ========================================================================= */
+.cw.grilla .cw-escena,.cw-sin-js .cw-escena{height:auto; perspective:none; overflow:visible;
+  margin:0; padding:0}
+.cw.grilla .cw-pista,.cw-sin-js .cw-pista{position:static; transform-style:flat;
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(400px,1fr)); gap:var(--s4)}
+.cw.grilla .cw-tar,.cw-sin-js .cw-tar{position:static; width:auto; height:auto;
+  transform:none; opacity:1; visibility:visible; will-change:auto; cursor:default}
+.cw.grilla .cw-cuerpo,.cw-sin-js .cw-cuerpo{position:static; transform:none;
+  box-shadow:0 14px 34px rgba(4,5,7,.30); min-height:100%}
+/* EL DESENFOQUE SE APAGA CON EL TOKEN, NO CON UN RESET — y esto es una
+   correccion de un defecto REAL que solo aparecio en la captura del modo
+   grilla: ocho de las nueve tarjetas salian desenfocadas. La causa es
+   especificidad: `.cw-tar:not(.foco) .cw-cuerpo > *:not(.cw-filo)` pesa
+   (0,4,0) y mi reset `.cw.grilla .cw-cuerpo > *` pesaba (0,2,0), asi que
+   perdia. Se podia ganar agregando clases al selector; no se hace, porque una
+   cadena que solo existe para ganar un empate se vuelve a romper al siguiente
+   cambio. Se apaga el INSUMO: `--dof:0` y el `calc` da blur(0px). Declarativo
+   y sin empate posible. Es la misma leccion del `animation-fill-mode` del
+   portafolio, y por eso se escribe otra vez. */
+.cw.grilla,.cw-sin-js,.cw.midiendo{--dof:0px}
+.cw.grilla .cw-filo,.cw-sin-js .cw-filo{transform:scaleX(1)}
+.cw.grilla .cw-mando,.cw-sin-js .cw-mando{display:none}
+.cw.grilla .cw-lprom,.cw-sin-js .cw-lprom{display:none}
+
+/* =========================================================================
+   LA CLASE CON LA QUE SE MIDE EL ALTO — y es distinta de `grilla` por una
+   razon medida. El alto se media poniendo la seccion en grilla, donde las
+   tarjetas estan en el flujo; pero en grilla la columna mide 588 px y en el
+   carrusel la tarjeta mide 560, asi que el texto envolvia menos y el alto
+   salia 10,4 px CORTO: el boton de cotizacion se salia de la tarjeta por
+   abajo. No se veia en la captura y si en la sonda. Aqui el ancho es
+   exactamente `--tar-w`, que es el unico ancho que importa.
+   ========================================================================= */
+.cw.midiendo .cw-escena{height:auto; perspective:none; overflow:visible; margin:0; padding:0}
+.cw.midiendo .cw-pista{position:static; transform-style:flat; display:block}
+.cw.midiendo .cw-tar{position:static; width:var(--tar-w); height:auto;
+  transform:none; opacity:1; visibility:visible}
+.cw.midiendo .cw-cuerpo{position:static; transform:none}
+
+/* =========================================================================
+   MOVIMIENTO REDUCIDO — quieto Y VISIBLE. `animation:none` congela el estado
+   INICIAL, no el final, asi que cada propiedad que el realce dejaba puesta se
+   restituye a mano. Es el defecto del 24-ago y no se repite.
+   ========================================================================= */
+@media (prefers-reduced-motion:reduce){
+  .cw *,.cw *::before,.cw *::after{animation:none !important; transition:none !important}
+  .cw .cw-filo{transform:scaleX(1)}
+  .cw{--dof:0px}
+  .cw .cw-tcab,.cw .cw-nom,.cw .cw-pro,.cw .cw-plata,.cw .cw-inc,.cw .cw-exc,
+  .cw .cw-cta{opacity:1; transform:none}
+}
+
+/* =========================================================================
+   RESPONSIVO — y aqui esta la trampa que el encargo nombra: un carrusel con
+   `perspective` en un telefono corta texto o lo desenfoca. No se arregla
+   achicando. A LOS 780 px SE APAGA LA TERCERA DIMENSION: `--zpaso` y `--tilt`
+   van a cero, `--paso` sube a 94 % y el carrusel pasa a ser un deslizador
+   plano de una tarjeta a la vez, con el filo de la siguiente asomando como
+   pista de que hay mas. La coreografia, el teclado, el arrastre y el modo
+   grilla son EXACTAMENTE los mismos: lo unico que cambia son cinco numeros.
+   Esa es toda la razon de que el transform se arme en CSS y no en JS.
+
+   Y LOS MANDOS SE VAN ARRIBA. En telefono la tarjeta mide mas que el visor,
+   asi que unas flechas puestas debajo quedan fuera de pantalla y el carrusel
+   parece no tener control. `order:-1` las sube bajo el titulo, donde se ven
+   sin scrollear. Lo mismo el contador.
+   ========================================================================= */
+@media (max-width:1240px){ .cw{--tar-w:min(560px,calc(100vw - 96px)); --paso:54%} }
+@media (max-width:980px){  .cw{--tar-w:min(520px,calc(100vw - 80px)); --zpaso:200px;
+                                 --tilt:22deg; --dof:1.7px} }
+@media (max-width:780px){
+  .cw{--tar-w:min(430px,90vw); --paso:94%; --zpaso:0px; --tilt:0deg; --dec:.02;
+      --dof:0px;
+      --persp:none; --pad-x:var(--s4); --pad-c:18px;
+      padding:var(--s6) var(--pad-x) var(--s5)}
+  /* EL ORDEN EN TELEFONO, y esto se corrigio mirando la captura: con
+     `order:-1` en los mandos y `-2` en el pie, el contador y las flechas
+     quedaban ARRIBA DEL TITULO — lo primero que se veia de la seccion era
+     «01 / 9». `order` es global al contenedor flex, asi que se declara el
+     orden ENTERO o no se declara ninguno. Queda: titulo, pestanas, mandos,
+     contador, tarjetas. Los mandos siguen subiendo -que era el objetivo, la
+     tarjeta mide mas que el visor y unas flechas al pie quedan fuera de
+     pantalla- pero debajo de su encabezado. */
+  .cw-cab{display:block; order:1}
+  .cw-lineas{order:2;
+    /* una sola fila que se arrastra: apiladas, los tres rotulos de linea
+       gastan 3 renglones y empujan la tarjeta 90 px fuera del visor */
+    flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none;
+    margin:0 calc(var(--pad-x) * -1) var(--s4); padding:0 var(--pad-x)}
+  .cw-lineas::-webkit-scrollbar{display:none}
+  .cw-lin{white-space:nowrap; flex:0 0 auto}
+  /* la promesa de la linea se va: en telefono el espacio vertical es el
+     recurso escaso y la tarjeta ya nombra su linea en la cabecera */
+  .cw-lprom{display:none}
+  .cw-mando{order:3; justify-content:space-between; margin:0 0 var(--s3)}
+  .cw-pie{order:4; margin:0 0 var(--s3)}
+  .cw-escena{order:5}
+  .cw-tit{font-size:18px}
+  .cw-baja{font-size:13px}
+  .cw-cuerpo{padding:18px var(--pad-c) 17px}
+  .cw-nom{font-size:16.5px}
+  .cw-pro{font-size:13px}
+  .cw-bruto b{font-size:26px}
+  /* las dos listas se apilan: a 430 px dos columnas dejarian 18 caracteres por
+     linea y eso no es «responsivo», es texto roto en dos pedazos */
+  .cw-det{grid-template-columns:1fr; gap:var(--s3)}
+  .cw-exc{margin:0 calc(var(--pad-c) * -1) -17px 0}
+  .cw.grilla .cw-pista{grid-template-columns:1fr}
+}
+@media (max-width:420px){
+  .cw{--tar-w:min(430px,92vw); --pad-c:15px}
+  .cw-cuerpo{padding:17px var(--pad-c) 15px}
+  .cw-nom{font-size:15.5px}
+  .cw-bruto b{font-size:24px}
+  /* EL «VALOR DESDE» NO SE ACHICA NI AQUI: es lo unico que sostiene el techo
+     de precio de cinco servicios. Todo lo demas puede encoger; esto no. */
+  .cw-cond{font-size:9.5px}
+}
+/* EL ALTO DE LA ESCENA LO MIDE EL CONTENIDO, NO UN NUMERO MIO. Con un alto
+   inventado, un servicio de cinco «incluye» de dos lineas se corta por abajo.
+   JS mide la tarjeta mas alta una vez por ancho y lo escribe en `--tar-h`:
+   todas comparten alto y ninguna se corta. */
+/* ============================= CARRUSEL · CSS FIN ======================= */
+
+/* =========================================================================
+   LA SEPTIMA PIEZA — EL CATALOGO. CinemAI, 13-sep-2026.
+
+   EL ENCARGO, de Sebastian: el carrusel de los nueve servicios es la pieza
+   FINAL del recorrido. Se ven las seis escenas del dolor y se aterriza en las
+   nueve tarjetas con precio. «Esto es lo que te pasa -> esto cuesta
+   arreglarlo». El orden no se invierte.
+
+   EL PROBLEMA QUE RESUELVE ESTE BLOQUE, con el numero que lo obliga: la
+   pagina mide un visor (`height:100dvh; overflow:hidden`) y la seccion de
+   servicios mide 894 px a 1440x900. A 900 px de visor, descontando el
+   encabezado de 78 y el pie de 16, quedan 806 px utiles. NO CABE, y no hay
+   forma de que quepa: la tarjeta mas alta lleva cinco «incluye» y cuatro «no
+   incluye» con items de hasta 103 caracteres, y ya esta comprimida al limite
+   legible. Recortar texto es justo lo que el encargo prohibe.
+
+   LA SALIDA: el scroll vive DENTRO de la septima pieza y solo ahi. El <body>
+   sigue sin correr —se mide, no se promete: `revisar_portafolio.py` reprueba
+   si `scrollHeight - clientHeight` del documento pasa de cero con cualquiera
+   de las siete elegida—. Las seis escenas de cine siguen sin scroll porque
+   una escena de cine se mira entera; un catalogo de precios se recorre, y el
+   comprador que compara nueve precios ya viene con ese gesto en la mano.
+
+   Y LOS MANDOS SUBEN. Con el orden natural, las flechas y el contador quedan
+   al pie de una seccion de 894 px dentro de una caja de 806: el visitante
+   llega a un carrusel sin controles a la vista. Es el mismo defecto que ya
+   corregi en telefono y con la misma solucion —`order`, que es global al
+   contenedor flex y por eso se declara ENTERO—: titulo, pestanas, mandos,
+   contador, tarjetas. Lo que queda bajo el corte es el pie de la tarjeta, no
+   el control.
+
+   NADA DE ESTO TOCA LAS SEIS ESCENAS: o va despues del ultimo `}` del CSS que
+   ya estaba, o vive dentro de una regla que empieza por `#p7:checked`.
+   ========================================================================= */
+#p7:checked ~ .sala .pieza[data-p="7"]{display:block}
+#p7:checked ~ .sala label[for="p7"] .tt{color:var(--crema)}
+#p7:checked ~ .sala label[for="p7"] .n{color:var(--azul)}
+#p7:checked ~ .sala label[for="p7"]::before{transform:scaleX(1)}
+/* con movimiento reducido la marca del carrete se restituye a mano, igual que
+   las seis: `animation:none` congela el estado INICIAL. La regla de arriba
+   pierde contra `.carrete label::before{transform:scaleX(0)}` de ese bloque
+   solo por orden, asi que se repite DESPUES y dentro del mismo media query. */
+@media (prefers-reduced-motion:reduce){
+  #p7:checked ~ .sala label[for="p7"]::before{transform:scaleX(1)}
+}
+
+/* EL SEGUNDO GRUPO DEL CARRETE. No se agrega un septimo renglon a la lista de
+   los seis: el rotulo dice «seis registros» y seguiran siendo seis. El
+   catalogo es OTRA COSA y se anuncia como tal, que ademas es el relato del
+   encargo puesto en el indice. */
+.carrete .tope.cat{margin-top:var(--s5)}
+.carrete .cat-lista{list-style:none; margin:0; padding:0}
+
+/* LA PIEZA 7 ES HIJA DIRECTA DE `.sala`, NO DEL `.escenario`, y eso es una
+   decision y no un descuido: el escenario es el foso de las seis escenas
+   —centrado, con su factor `--k` de escala y su marco de 660x392— y un
+   catalogo que se recorre no se compone con las reglas de una toma de cine.
+   Ocupa la MISMA celda de la rejilla que el escenario (columna 2, fila 1), que
+   con la pieza 7 elegida esta vacio. */
+.pieza[data-p="7"]{grid-column:2; grid-row:1; align-self:stretch;
+  min-width:0; min-height:0; max-height:100%;
+  overflow-y:auto; overscroll-behavior:contain}
+#p7:checked ~ .sala .escenario{display:none}
+.pieza[data-p="7"]:focus-visible{outline:2px solid var(--azul); outline-offset:2px}
+/* una barra que se vea: una region que se desplaza y no lo declara se lee como
+   contenido cortado. 6 px, del color de los filetes del portafolio. */
+.pieza[data-p="7"]{scrollbar-width:thin; scrollbar-color:var(--crema-28) transparent}
+.pieza[data-p="7"]::-webkit-scrollbar{width:6px}
+.pieza[data-p="7"]::-webkit-scrollbar-thumb{background:var(--crema-28); border-radius:3px}
+.pieza[data-p="7"]::-webkit-scrollbar-track{background:transparent}
+
+/* el componente dentro del portafolio: su canal lateral ya lo pone `.sala`, y
+   su aire superior lo pone el encabezado de 78 px. Se le quita el suyo para no
+   pagar dos veces el mismo margen — 56 px recuperados de los 88 que faltaban. */
+.pieza[data-p="7"] .cw{padding-top:0; padding-bottom:var(--s4); padding-left:0;
+  padding-right:0; --pad-x:0px;
+  /* y se centra en lo que sobra: la seccion mide 737 px en una caja de 806 y
+     con `flex-start` los 69 px de resto quedaban TODOS abajo, con la tarjeta
+     colgando del borde superior. Las seis escenas de esta pagina estan
+     centradas en su foso; la septima tambien. */
+  min-height:100%; justify-content:center}
+/* ...y con `--pad-x:0` la escena ya no necesita sangrar con margen negativo */
+.pieza[data-p="7"] .cw-escena{margin:0; padding:0}
+/* EL ORDEN ENTERO, por la razon escrita arriba. `order` es global al
+   contenedor flex: se declara completo o no se declara ninguno. */
+.pieza[data-p="7"] .cw-cab{order:1}
+.pieza[data-p="7"] .cw-lineas{order:2}
+.pieza[data-p="7"] .cw-mando{order:3; margin:0 0 var(--s3)}
+.pieza[data-p="7"] .cw-pie{order:4; margin:0 0 var(--s3)}
+.pieza[data-p="7"] .cw-escena{order:5}
+
+/* =========================================================================
+   DE DONDE SALEN LOS 77 PX QUE FALTABAN. Esto no se dedujo del CSS: se midio
+   el render. La primera captura integrada (`INT-p7-escritorio_1440x900.png`,
+   antes de este bloque) mostraba la seccion en 883 px dentro de una caja de
+   806, y lo que quedaba bajo el corte era el BOTON DE COTIZACION — o sea,
+   justo lo unico que esta seccion existe para que se apriete. Un catalogo que
+   esconde su CTA es un catalogo roto, por bonito que se vea el anillo.
+
+   Los tres renglones que se recuperan, y por que ninguno cuesta contenido:
+
+   a) LA BAJADA DE LA SECCION SE VA (-65 px). Decia lo mismo que la nota que el
+      carrete ya trae a la izquierda: en el portafolio el indice ES el
+      encabezado de la pieza, y decirlo dos veces en el mismo cuadro es ruido.
+      El texto sigue en el HTML —se audita igual con `probar_copy.py`— y sigue
+      a la vista en `carrusel.html`, donde no hay carrete que lo diga.
+   b) LAS TRES PESTANAS EN UNA FILA (-41 px). A 826 px de columna la tercera se
+      iba sola a un segundo renglon. Es la misma solucion que ya usa el
+      componente en telefono: una fila que se arrastra.
+   c) EL CONTADOR Y «VER LOS 9» SUBEN A LA FILA DE LAS FLECHAS (-42 px). Son
+      los dos extremos de una linea que las flechas solo ocupan por el centro;
+      gastaban un renglon entero para no tocarse.
+
+   Van dentro de `min-width:781px` a proposito: de 780 para abajo manda la
+   media query del propio componente, que ya resolvio esto de otra manera, y
+   dos soluciones al mismo problema son una que se va a romper.
+   ========================================================================= */
+@media (min-width:781px){
+  .pieza[data-p="7"] .cw-baja{display:none}
+  .pieza[data-p="7"] .cw-cab{margin-bottom:var(--s3)}
+  .pieza[data-p="7"] .cw-lineas{flex-wrap:nowrap; overflow-x:auto;
+    scrollbar-width:none; margin-bottom:var(--s3)}
+  .pieza[data-p="7"] .cw-lineas::-webkit-scrollbar{display:none}
+  /* 9,5 px y .08em NO es «achicar hasta que quepa»: es el numero que hace que
+     los tres rotulos midan 771 px en una columna de 826, medido. A 10,5 px y
+     .12em median 834 y el tercero se cortaba a media palabra contra el canto
+     —«PUESTA EN MARCHA, MIGRACION Y CONTINU»—, que es peor que cualquiera de
+     las dos alternativas: un rotulo truncado se lee como pagina rota. El alto
+     del blanco se sostiene subiendo el relleno vertical, no bajandolo. */
+  .pieza[data-p="7"] .cw-lin{white-space:nowrap; flex:0 0 auto;
+    font-size:9.5px; padding:9px 10px; letter-spacing:.08em}
+  /* -30 px centra un renglon de ~14 px sobre la fila de 44 de las flechas.
+     `pointer-events` se apaga en la caja y se devuelve a los hijos: la banda
+     vacia del medio queda superpuesta a las flechas y no puede robarles el
+     clic. Un solapamiento que se traga un mando es un defecto invisible. */
+  .pieza[data-p="7"] .cw-pie{margin:-30px 0 var(--s3); align-items:center;
+    pointer-events:none}
+  .pieza[data-p="7"] .cw-pie > *{pointer-events:auto}
+  /* ...Y EN MODO GRILLA EL RENGLON VUELVE, porque ahi no hay flechas sobre las
+     que montarse: `.cw.grilla .cw-mando{display:none}`, asi que los -30 px
+     subian el contador y «Ver como carrusel» ENCIMA de las pestanas de linea.
+     Defecto real, visto en `INT-p7-grilla_1440x900.png` y no en el codigo: un
+     margen negativo que depende de un elemento que otro modo apaga tiene que
+     apagarse con el. Las dos entradas de la grilla —el boton y la ausencia de
+     JavaScript— se nombran las dos: son un solo modo con tres puertas. */
+  .pieza[data-p="7"] .cw.grilla .cw-pie,
+  .pieza[data-p="7"] .cw.cw-sin-js .cw-pie{margin:0 0 var(--s3)}
+}
+
+/* TELEFONO. Y aqui hay que decir una cosa medida que no es mia y no la
+   arreglo: a 390 px esta pagina YA no muestra ninguna de las seis escenas
+   —la rejilla de `.sala` mantiene su primera columna de 318 px y el escenario
+   se va fuera del visor, que `overflow:hidden` recorta—. Esta en la captura
+   `_capturas/BASE-movil_390x844_0_0.png`, tomada ANTES de tocar el archivo.
+   Es un defecto anterior a esta integracion y corregirlo obliga a recomponer
+   las seis escenas, que es justo lo que el encargo prohibe: queda dicho.
+   Lo que SI esta en mi mano es que la septima pieza no herede el defecto, y
+   se resuelve sin tocar a las otras seis: la regla entera cuelga de
+   `#p7:checked`, asi que con cualquiera de las seis elegida el CSS de la
+   pagina es, literalmente, el de antes. */
+@media (max-width:780px){
+  #p7:checked ~ .sala{grid-template-columns:1fr; align-items:start;
+    overflow-y:auto; overscroll-behavior:contain}
+  #p7:checked ~ .sala .pieza[data-p="7"]{grid-column:1; grid-row:2;
+    max-height:none; overflow:visible}
+  /* en una sola columna el carrete es el indice de arriba, no una barra
+     lateral: su nota de cierre gasta cuatro renglones que ahi no sobran */
+  #p7:checked ~ .sala .carrete .nota{display:none}
+  /* EL VELO BAJO EL ENCABEZADO, y sale de mirar la captura, no del CSS: el
+     `.hdr` es fijo, transparente y sin fondo a proposito (decision de Visu,
+     `background:none`), y esta pagina nunca habia tenido nada que se
+     desplazara por debajo. Con la pieza 7 en telefono si lo hay, y la fila de
+     pestanas subia a chocar con el logotipo — se leian las dos encima.
+     NO se le pone fondo al encabezado: eso es de Visu y ademas cambiaria la
+     portada. El velo es de la REGION QUE SE DESPLAZA, que es mia, existe solo
+     con `#p7:checked` y solo bajo 780 px, y se apaga a transparente en los
+     mismos 78 px que la sala ya reservaba. z-index 50 va DEBAJO del 60 del
+     encabezado: vela lo que pasa, no lo que esta quieto. */
+  #p7:checked ~ .sala::before{content:""; position:fixed; top:0; left:0; right:0;
+    height:var(--hdr); z-index:50; pointer-events:none;
+    background:linear-gradient(180deg, var(--ink-900) 0%, var(--ink-900) 46%,
+      rgba(8,9,12,.72) 74%, rgba(8,9,12,0) 100%)}
+  /* el orden en telefono ya lo declara el componente en su propia media query
+     de 780; no se repite aqui para no tener dos versiones del mismo numero */
+  .pieza[data-p="7"] .cw{padding-bottom:var(--s6)}
+}
+
 </style>
 </head>
 <body>
@@ -849,9 +1741,22 @@ html.hdr-chico .brand .logo{transform:scale(.737);
         </g></svg>
       </button>
       <nav class="mnu-panel" id="mnuPanel" aria-label="Secciones">
+        <!-- EL MISMO MENU QUE LA PORTADA, 12-sep-2026 (segunda version del
+             mismo dia). Vuelve al espanol y cambia el orden por encargo literal
+             de Sebastian: Nucleo - Portafolio - Agente IA - Cotiza Run -
+             Contacto. El razonamiento entero —por que Nucleo va primero, por
+             que los `id` no se tocan y por que el azul es el de noche— esta
+             escrito UNA sola vez, en el <nav> de `index.html`, para no tener
+             dos versiones del mismo argumento.
+             «Cotiza Run» sigue estando aqui: esta pagina servia cuatro entradas
+             y la portada cinco, y el visitante que llegaba al portafolio perdia
+             la unica salida al formulario. `aria-current="page"` marca
+             Portafolio y por eso ese enlace NO va en azul: no es un destino
+             disponible, es donde estas parado. -->
+        <a href="index.html#empresa">N&uacute;cleo</a>
         <a href="portafolio.html" aria-current="page">Portafolio</a>
         <a href="index.html#agente-ia">Agente IA</a>
-        <a href="index.html#empresa">Empresa</a>
+        <a href="index.html#cotiza">Cotiza Run</a>
         <a href="index.html#contacto">Contacto</a>
       </nav>
     </div>
@@ -864,6 +1769,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 <input type="radio" name="pieza" id="p4" class="sel">
 <input type="radio" name="pieza" id="p5" class="sel">
 <input type="radio" name="pieza" id="p6" class="sel">
+<input type="radio" name="pieza" id="p7" class="sel">
 
 <main class="sala">
 
@@ -881,6 +1787,17 @@ html.hdr-chico .brand .logo{transform:scale(.737);
       </ul>
       <p class="nota">Seis dolores del comprador público, uno por línea publicada.
         Ninguna pieza pasa de doce segundos y ninguna se repite hasta que termina.</p>
+
+      <!-- EL SEPTIMO RENGLON VA APARTE, y el corte es el relato: los seis de
+           arriba son el dolor, este es lo que cuesta arreglarlo. Por eso no se
+           mete en la lista de «seis registros» — ese rotulo seguiria mintiendo
+           con siete. -->
+      <div class="tope cat">Y lo que cuesta arreglarlo</div>
+      <ul class="cat-lista">
+        <li><label for="p7"><span class="n">07</span><span class="tt">Nueve servicios, con precio</span></label></li>
+      </ul>
+      <p class="nota">El valor con IVA, el neto que va en la orden de compra y
+        lo que cada servicio no incluye, escrito del mismo tama&ntilde;o.</p>
     </div>
   </div>
 
@@ -1060,6 +1977,285 @@ html.hdr-chico .brand .logo{transform:scale(.737);
     </div>
 
   </div>
+
+    <!-- ---------- 07 · EL CATALOGO ---------- -->
+    <div class="pieza" data-p="7" tabindex="0" role="region"
+         aria-label="Servicios con precio">
+<!-- =========================================================================
+     CARRUSEL 3D DE SERVICIOS. GENERADO POR
+     `asistente-creativo/portafolio-carrusel/construir.py` desde
+     `asistente-comercial/portafolio/servicios.json`. NO SE EDITA A MANO:
+     se cambia el JSON de GAIn y se vuelve a construir.
+     ========================================================================= -->
+<section class="cw cw-sin-js" id="servicios" aria-roledescription="carrusel"
+         aria-label="Servicios y precios de CompAI">
+
+  <div class="cw-cab">
+    <div>
+      <p class="cw-ante">Servicios &middot; 9 en 3 l&iacute;neas</p>
+      <h2 class="cw-tit">Con precio, y con lo que no incluye</h2>
+      <p class="cw-baja">Cada tarjeta trae el valor con IVA, el neto que va en la orden de
+        compra y las dos listas completas. Lo que <strong>no</strong> entra est&aacute;
+        escrito del mismo tama&ntilde;o que lo que s&iacute;.</p>
+    </div>
+    <p class="cw-lprom"></p>
+  </div>
+
+  <div class="cw-lineas">
+        <button class="cw-lin" type="button" data-linea="L1" data-promesa="Lo que hoy se hace a mano, hecho solo y a la hora." aria-pressed="false">Automatización e integración de sistemas</button>
+        <button class="cw-lin" type="button" data-linea="L2" data-promesa="Saber qué pedir y cuánto debería costar, antes de publicar la compra." aria-pressed="false">Especificación y asesoría técnica</button>
+        <button class="cw-lin" type="button" data-linea="L3" data-promesa="Que lo que ya compró quede andando, y siga andando todo el año." aria-pressed="false">Puesta en marcha, migración y continuidad</button>
+  </div>
+
+  <div class="cw-escena">
+    <div class="cw-pista">
+      <article class="cw-tar" data-i="0" data-linea="L1" data-dest="0"
+               aria-roledescription="tarjeta de servicio" aria-label="SP-01: Avisos y recordatorios por WhatsApp conectados a su sistema">
+        <div class="cw-cuerpo">
+          <span class="cw-filo" aria-hidden="true"></span>
+          <div class="cw-tcab">
+            <span class="cw-cod">SP-01 &middot; Automatización e integración de sistemas</span>
+            <span class="cw-marcas"><i class="cw-niv" data-n="basico"><i></i><i></i><i></i>Básico</i></span>
+          </div>
+          <h3 class="cw-nom">Avisos y recordatorios por WhatsApp conectados a su sistema</h3>
+          <p class="cw-pro">La hora que se avisa sola: recordatorios que salen de su propia agenda.</p>
+          <div class="cw-plata">
+            <p class="cw-alcance"><span class="cw-uni">Proyecto</span><span class="cw-cond">valor desde</span></p>
+            <p class="cw-bruto"><b>$599.760</b><span>con IVA</span></p>
+            <p class="cw-neto">Neto <b>$504.000</b> <span>&middot; el que va en la orden de compra</span></p>
+          </div>
+          <div class="cw-det">
+            <div class="cw-inc"><p class="cw-rot">Incluye</p><ul><li>Cuenta y remitente registrados a nombre de su institución</li><li>Conexión con su base de citas o de contactos</li><li>Plantillas de mensaje aprobadas y envío programado</li><li>Reporte de entrega y acta de puesta en marcha</li><li>30 días de acompañamiento remoto</li></ul></div>
+            <div class="cw-exc"><p class="cw-rot">No incluye</p><ul><li>El consumo de mensajería: lo contrata y paga su institución directamente al operador</li><li>Operación telefónica humana ni call center</li><li>Horas adicionales: si el alcance cambia, se autorizan por escrito y se cotizan antes de ejecutarse</li></ul></div>
+          </div>
+          <a class="cw-cta" href="mailto:hola@compai.cl?subject=Cotizaci%C3%B3n%20SP-01%20%E2%80%94%20Avisos%20y%20recordatorios%20por%20WhatsApp%20conectados%20a%20su%20sistema">Pedir cotizaci&oacute;n
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </article>
+      <article class="cw-tar" data-i="1" data-linea="L1" data-dest="1"
+               aria-roledescription="tarjeta de servicio" aria-label="SP-02: Automatización de un proceso administrativo">
+        <div class="cw-cuerpo">
+          <span class="cw-filo" aria-hidden="true"></span>
+          <div class="cw-tcab">
+            <span class="cw-cod">SP-02 &middot; Automatización e integración de sistemas</span>
+            <span class="cw-marcas"><span class="cw-dest">Recomendado</span><i class="cw-niv" data-n="core"><i></i><i></i><i></i>Core</i></span>
+          </div>
+          <h3 class="cw-nom">Automatización de un proceso administrativo</h3>
+          <p class="cw-pro">Ese reporte que alguien arma a mano todos los meses, armado solo.</p>
+          <div class="cw-plata">
+            <p class="cw-alcance"><span class="cw-uni">Proyecto</span><span class="cw-cond">valor desde</span></p>
+            <p class="cw-bruto"><b>$1.071.000</b><span>con IVA</span></p>
+            <p class="cw-neto">Neto <b>$900.000</b> <span>&middot; el que va en la orden de compra</span></p>
+          </div>
+          <div class="cw-det">
+            <div class="cw-inc"><p class="cw-rot">Incluye</p><ul><li>Un proceso definido y acotado: extraer, transformar, cargar o reportar</li><li>Documentación de operación para su equipo</li><li>Acta de puesta en marcha</li><li>30 días de acompañamiento remoto</li></ul></div>
+            <div class="cw-exc"><p class="cw-rot">No incluye</p><ul><li>Rediseño del proceso interno de su institución</li><li>Migración de datos históricos</li><li>Licencias de terceros</li><li>Horas adicionales: si el alcance cambia, se autorizan por escrito y se cotizan antes de ejecutarse</li></ul></div>
+          </div>
+          <a class="cw-cta" href="mailto:hola@compai.cl?subject=Cotizaci%C3%B3n%20SP-02%20%E2%80%94%20Automatizaci%C3%B3n%20de%20un%20proceso%20administrativo">Pedir cotizaci&oacute;n
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </article>
+      <article class="cw-tar" data-i="2" data-linea="L1" data-dest="0"
+               aria-roledescription="tarjeta de servicio" aria-label="SP-03: Desarrollo a medida o integración entre sistemas, por hitos">
+        <div class="cw-cuerpo">
+          <span class="cw-filo" aria-hidden="true"></span>
+          <div class="cw-tcab">
+            <span class="cw-cod">SP-03 &middot; Automatización e integración de sistemas</span>
+            <span class="cw-marcas"><i class="cw-niv" data-n="premium"><i></i><i></i><i></i>Premium</i></span>
+          </div>
+          <h3 class="cw-nom">Desarrollo a medida o integración entre sistemas, por hitos</h3>
+          <p class="cw-pro">Dos sistemas que no se hablan, conectados y entregados por etapas.</p>
+          <div class="cw-plata">
+            <p class="cw-alcance"><span class="cw-uni">Proyecto por hitos</span><span class="cw-cond">valor desde</span></p>
+            <p class="cw-bruto"><b>$2.713.200</b><span>con IVA</span></p>
+            <p class="cw-neto">Neto <b>$2.280.000</b> <span>&middot; el que va en la orden de compra</span></p>
+          </div>
+          <div class="cw-det">
+            <div class="cw-inc"><p class="cw-rot">Incluye</p><ul><li>Levantamiento, construcción, pruebas y traspaso</li><li>Pago en tres hitos: 30 / 40 / 30</li><li>Código y documentación entregados a su institución</li><li>Acta de cierre</li></ul></div>
+            <div class="cw-exc"><p class="cw-rot">No incluye</p><ul><li>Hospedaje de la solución</li><li>Soporte posterior: va en el plan de mantención</li><li>Licencias de terceros</li><li>Horas adicionales: si el alcance cambia, se autorizan por escrito y se cotizan antes de ejecutarse</li></ul></div>
+          </div>
+          <a class="cw-cta" href="mailto:hola@compai.cl?subject=Cotizaci%C3%B3n%20SP-03%20%E2%80%94%20Desarrollo%20a%20medida%20o%20integraci%C3%B3n%20entre%20sistemas%2C%20por%20hitos">Pedir cotizaci&oacute;n
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </article>
+      <article class="cw-tar" data-i="3" data-linea="L2" data-dest="0"
+               aria-roledescription="tarjeta de servicio" aria-label="SP-04: Informe corto de especificación técnica">
+        <div class="cw-cuerpo">
+          <span class="cw-filo" aria-hidden="true"></span>
+          <div class="cw-tcab">
+            <span class="cw-cod">SP-04 &middot; Especificación y asesoría técnica</span>
+            <span class="cw-marcas"><i class="cw-niv" data-n="basico"><i></i><i></i><i></i>Básico</i></span>
+          </div>
+          <h3 class="cw-nom">Informe corto de especificación técnica</h3>
+          <p class="cw-pro">Qué pedir, cómo evaluarlo y cuánto vale hoy, en un informe corto.</p>
+          <div class="cw-plata">
+            <p class="cw-alcance"><span class="cw-uni">Un informe</span><span class="cw-cond">precio cerrado</span></p>
+            <p class="cw-bruto"><b>$571.200</b><span>con IVA</span></p>
+            <p class="cw-neto">Neto <b>$480.000</b> <span>&middot; el que va en la orden de compra</span></p>
+          </div>
+          <div class="cw-det">
+            <div class="cw-inc"><p class="cw-rot">Incluye</p><ul><li>Requerimientos mínimos escritos</li><li>Criterios de evaluación sugeridos</li><li>Rango de precio de mercado, con su fuente</li><li>Una reunión de presentación remota</li></ul></div>
+            <div class="cw-exc"><p class="cw-rot">No incluye</p><ul><li>Redacción de las bases administrativas</li><li>Acompañamiento del proceso de compra</li><li>Visita a terreno</li></ul></div>
+          </div>
+          <a class="cw-cta" href="mailto:hola@compai.cl?subject=Cotizaci%C3%B3n%20SP-04%20%E2%80%94%20Informe%20corto%20de%20especificaci%C3%B3n%20t%C3%A9cnica">Pedir cotizaci&oacute;n
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </article>
+      <article class="cw-tar" data-i="4" data-linea="L2" data-dest="0"
+               aria-roledescription="tarjeta de servicio" aria-label="SP-05: Especificación técnica para bases de licitación">
+        <div class="cw-cuerpo">
+          <span class="cw-filo" aria-hidden="true"></span>
+          <div class="cw-tcab">
+            <span class="cw-cod">SP-05 &middot; Especificación y asesoría técnica</span>
+            <span class="cw-marcas"><i class="cw-niv" data-n="premium"><i></i><i></i><i></i>Premium</i></span>
+          </div>
+          <h3 class="cw-nom">Especificación técnica para bases de licitación</h3>
+          <p class="cw-pro">El anexo técnico de su compra grande, escrito y con valor de referencia.</p>
+          <div class="cw-plata">
+            <p class="cw-alcance"><span class="cw-uni">Un informe</span><span class="cw-cond">precio cerrado</span></p>
+            <p class="cw-bruto"><b>$1.428.000</b><span>con IVA</span></p>
+            <p class="cw-neto">Neto <b>$1.200.000</b> <span>&middot; el que va en la orden de compra</span></p>
+          </div>
+          <div class="cw-det">
+            <div class="cw-inc"><p class="cw-rot">Incluye</p><ul><li>Requerimientos funcionales y técnicos redactados para anexo de bases</li><li>Matriz de evaluación</li><li>Presupuesto referencial con fuente pública</li><li>Hasta dos rondas de corrección</li></ul></div>
+            <div class="cw-exc"><p class="cw-rot">No incluye</p><ul><li>Bases administrativas: son de su institución</li><li>Asesoría jurídica ni representación ante ChileCompra</li><li>Ofertar después en la compra que especificamos: se elige una de las dos antes de cotizar</li></ul></div>
+          </div>
+          <a class="cw-cta" href="mailto:hola@compai.cl?subject=Cotizaci%C3%B3n%20SP-05%20%E2%80%94%20Especificaci%C3%B3n%20t%C3%A9cnica%20para%20bases%20de%20licitaci%C3%B3n">Pedir cotizaci&oacute;n
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </article>
+      <article class="cw-tar" data-i="5" data-linea="L2" data-dest="1"
+               aria-roledescription="tarjeta de servicio" aria-label="SP-06: Evaluación comparada de alternativas">
+        <div class="cw-cuerpo">
+          <span class="cw-filo" aria-hidden="true"></span>
+          <div class="cw-tcab">
+            <span class="cw-cod">SP-06 &middot; Especificación y asesoría técnica</span>
+            <span class="cw-marcas"><span class="cw-dest">Recomendado</span><i class="cw-niv" data-n="core"><i></i><i></i><i></i>Core</i></span>
+          </div>
+          <h3 class="cw-nom">Evaluación comparada de alternativas</h3>
+          <p class="cw-pro">Tres a cinco opciones comparadas, con lo que cuesta cada una a 3 años.</p>
+          <div class="cw-plata">
+            <p class="cw-alcance"><span class="cw-uni">Un informe</span><span class="cw-cond">precio cerrado</span></p>
+            <p class="cw-bruto"><b>$856.800</b><span>con IVA</span></p>
+            <p class="cw-neto">Neto <b>$720.000</b> <span>&middot; el que va en la orden de compra</span></p>
+          </div>
+          <div class="cw-det">
+            <div class="cw-inc"><p class="cw-rot">Incluye</p><ul><li>Comparación documentada de 3 a 5 alternativas</li><li>Matriz de criterios ponderados</li><li>Costo total a tres años, licencias y renovación incluidas</li><li>Recomendación fundada y una reunión de presentación remota</li></ul></div>
+            <div class="cw-exc"><p class="cw-rot">No incluye</p><ul><li>Pruebas de concepto</li><li>Instalación de las alternativas evaluadas</li><li>Negociación con los proveedores</li></ul></div>
+          </div>
+          <a class="cw-cta" href="mailto:hola@compai.cl?subject=Cotizaci%C3%B3n%20SP-06%20%E2%80%94%20Evaluaci%C3%B3n%20comparada%20de%20alternativas">Pedir cotizaci&oacute;n
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </article>
+      <article class="cw-tar" data-i="6" data-linea="L3" data-dest="0"
+               aria-roledescription="tarjeta de servicio" aria-label="SP-07: Puesta en marcha de licencias y equipos ya comprados">
+        <div class="cw-cuerpo">
+          <span class="cw-filo" aria-hidden="true"></span>
+          <div class="cw-tcab">
+            <span class="cw-cod">SP-07 &middot; Puesta en marcha, migración y continuidad</span>
+            <span class="cw-marcas"><i class="cw-niv" data-n="basico"><i></i><i></i><i></i>Básico</i></span>
+          </div>
+          <h3 class="cw-nom">Puesta en marcha de licencias y equipos ya comprados</h3>
+          <p class="cw-pro">Eso que ya compró y sigue en la caja, instalado y funcionando.</p>
+          <div class="cw-plata">
+            <p class="cw-alcance"><span class="cw-uni">Proyecto</span><span class="cw-cond">valor desde</span></p>
+            <p class="cw-bruto"><b>$428.400</b><span>con IVA</span></p>
+            <p class="cw-neto">Neto <b>$360.000</b> <span>&middot; el que va en la orden de compra</span></p>
+          </div>
+          <div class="cw-det">
+            <div class="cw-inc"><p class="cw-rot">Incluye</p><ul><li>Instalación, configuración y cuentas de usuario</li><li>Políticas base y pliego de configuración escrito</li><li>Inventario con números de serie</li><li>Acta de puesta en marcha</li><li>30 días de acompañamiento remoto</li></ul></div>
+            <div class="cw-exc"><p class="cw-rot">No incluye</p><ul><li>La compra de la licencia o del equipo</li><li>Reparación, servicio técnico, garantía o RMA</li><li>Traslado: si se requiere presencia física, se cotiza aparte</li></ul></div>
+          </div>
+          <a class="cw-cta" href="mailto:hola@compai.cl?subject=Cotizaci%C3%B3n%20SP-07%20%E2%80%94%20Puesta%20en%20marcha%20de%20licencias%20y%20equipos%20ya%20comprados">Pedir cotizaci&oacute;n
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </article>
+      <article class="cw-tar" data-i="7" data-linea="L3" data-dest="1"
+               aria-roledescription="tarjeta de servicio" aria-label="SP-08: Migración de sitio, correo, dominio y certificado">
+        <div class="cw-cuerpo">
+          <span class="cw-filo" aria-hidden="true"></span>
+          <div class="cw-tcab">
+            <span class="cw-cod">SP-08 &middot; Puesta en marcha, migración y continuidad</span>
+            <span class="cw-marcas"><span class="cw-dest">Recomendado</span><i class="cw-niv" data-n="core"><i></i><i></i><i></i>Core</i></span>
+          </div>
+          <h3 class="cw-nom">Migración de sitio, correo, dominio y certificado</h3>
+          <p class="cw-pro">Cambiar de proveedor sin que el correo se caiga ni el sitio desaparezca.</p>
+          <div class="cw-plata">
+            <p class="cw-alcance"><span class="cw-uni">Proyecto</span><span class="cw-cond">valor desde</span></p>
+            <p class="cw-bruto"><b>$856.800</b><span>con IVA</span></p>
+            <p class="cw-neto">Neto <b>$720.000</b> <span>&middot; el que va en la orden de compra</span></p>
+          </div>
+          <div class="cw-det">
+            <div class="cw-inc"><p class="cw-rot">Incluye</p><ul><li>Traslado del sitio y de hasta 20 buzones</li><li>Apuntamiento de DNS</li><li>Instalación y validación del certificado</li><li>Ventana de corte coordinada y plan de vuelta atrás</li></ul></div>
+            <div class="cw-exc"><p class="cw-rot">No incluye</p><ul><li>El costo del hospedaje de destino, del dominio y del certificado</li><li>Rediseño del sitio</li><li>Las claves del proveedor de origen: las entrega su institución</li><li>Horas adicionales: si el alcance cambia, se autorizan por escrito y se cotizan antes de ejecutarse</li></ul></div>
+          </div>
+          <a class="cw-cta" href="mailto:hola@compai.cl?subject=Cotizaci%C3%B3n%20SP-08%20%E2%80%94%20Migraci%C3%B3n%20de%20sitio%2C%20correo%2C%20dominio%20y%20certificado">Pedir cotizaci&oacute;n
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </article>
+      <article class="cw-tar" data-i="8" data-linea="L3" data-dest="0"
+               aria-roledescription="tarjeta de servicio" aria-label="SP-09: Plan de mantención de sistemas, 12 meses">
+        <div class="cw-cuerpo">
+          <span class="cw-filo" aria-hidden="true"></span>
+          <div class="cw-tcab">
+            <span class="cw-cod">SP-09 &middot; Puesta en marcha, migración y continuidad</span>
+            <span class="cw-marcas"><i class="cw-niv" data-n="premium"><i></i><i></i><i></i>Premium</i></span>
+          </div>
+          <h3 class="cw-nom">Plan de mantención de sistemas, 12 meses</h3>
+          <p class="cw-pro">Nadie mira los vencimientos hasta que uno vence. Acá se miran cada mes.</p>
+          <div class="cw-plata">
+            <p class="cw-alcance"><span class="cw-uni">Plan anual</span><span class="cw-cond">12 cuotas iguales</span></p>
+            <p class="cw-bruto"><b>$2.570.400</b><span>con IVA</span></p>
+            <p class="cw-neto">Neto <b>$2.160.000</b> <span>&middot; el que va en la orden de compra</span></p>
+          </div>
+          <div class="cw-det">
+            <div class="cw-inc"><p class="cw-rot">Incluye</p><ul><li>Cupo de 4 atenciones remotas al mes, en horario hábil</li><li>Parches y actualizaciones</li><li>Monitoreo y verificación de respaldos</li><li>Vigilancia de vencimientos de licencias y certificados</li><li>Reporte mensual</li></ul></div>
+            <div class="cw-exc"><p class="cw-rot">No incluye</p><ul><li>Atención en terreno</li><li>Hardware ni mantención de equipos: se mantienen sistemas</li><li>Atenciones sobre el cupo: se autorizan por escrito y se cotizan aparte</li></ul></div>
+          </div>
+          <a class="cw-cta" href="mailto:hola@compai.cl?subject=Cotizaci%C3%B3n%20SP-09%20%E2%80%94%20Plan%20de%20mantenci%C3%B3n%20de%20sistemas%2C%2012%20meses">Pedir cotizaci&oacute;n
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="cw-mando">
+    <button class="cw-fl" type="button" data-ir="-1" aria-label="Servicio anterior">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 L8 12 L15 19"/></svg>
+    </button>
+    <div class="cw-puntos">
+        <button class="cw-punto" type="button" data-a="0" data-dest="0" aria-current="true" aria-label="Ir a SP-01: Avisos y recordatorios por WhatsApp conectados a su sistema"></button>
+        <button class="cw-punto" type="button" data-a="1" data-dest="1" aria-current="false" aria-label="Ir a SP-02: Automatización de un proceso administrativo"></button>
+        <button class="cw-punto" type="button" data-a="2" data-dest="0" aria-current="false" aria-label="Ir a SP-03: Desarrollo a medida o integración entre sistemas, por hitos"></button>
+        <button class="cw-punto" type="button" data-a="3" data-dest="0" aria-current="false" aria-label="Ir a SP-04: Informe corto de especificación técnica"></button>
+        <button class="cw-punto" type="button" data-a="4" data-dest="0" aria-current="false" aria-label="Ir a SP-05: Especificación técnica para bases de licitación"></button>
+        <button class="cw-punto" type="button" data-a="5" data-dest="1" aria-current="false" aria-label="Ir a SP-06: Evaluación comparada de alternativas"></button>
+        <button class="cw-punto" type="button" data-a="6" data-dest="0" aria-current="false" aria-label="Ir a SP-07: Puesta en marcha de licencias y equipos ya comprados"></button>
+        <button class="cw-punto" type="button" data-a="7" data-dest="1" aria-current="false" aria-label="Ir a SP-08: Migración de sitio, correo, dominio y certificado"></button>
+        <button class="cw-punto" type="button" data-a="8" data-dest="0" aria-current="false" aria-label="Ir a SP-09: Plan de mantención de sistemas, 12 meses"></button>
+    </div>
+    <button class="cw-fl" type="button" data-ir="1" aria-label="Servicio siguiente">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5 L16 12 L9 19"/></svg>
+    </button>
+  </div>
+
+  <div class="cw-pie">
+    <span class="cw-cuenta"><b>01</b> / 9</span>
+    <button class="cw-todo" type="button" aria-pressed="false">Ver los 9 a la vez</button>
+  </div>
+
+  <p class="cw-vivo" aria-live="polite" role="status"></p>
+</section>
+    </div>
 </main>
 
 <script>
@@ -1123,6 +2319,199 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   if(!matchMedia('(prefers-reduced-motion:reduce)').matches) return;
   var v=document.querySelector('#bg video'); if(v){ try{ v.pause(); }catch(e){} }
 })();
+
+/* ============================ CARRUSEL · JS INICIO =======================
+   NO arma transforms: escribe CUATRO numeros por tarjeta y deja que el CSS
+   haga la coreografia. De ahi salen tres cosas que no son de estilo: (1) el
+   modo grilla puede anular el `transform` desde la hoja de estilo, cosa
+   imposible contra un `style` en linea; (2) el cambio a plano en telefono es
+   una media query de cinco numeros y no una rama de codigo; y (3) esto pesa
+   lo que pesa.
+
+   SIN ESTE ARCHIVO LA SECCION SIGUE COMPLETA: las nueve tarjetas estan en el
+   HTML con su texto y su precio, y `.cw-sin-js` las deja en grilla. Nada
+   esencial vive dentro del JavaScript.
+   ========================================================================= */
+(function(){
+  var cw = document.querySelector(".cw"); if(!cw) return;
+  var pista = cw.querySelector(".cw-pista");
+  var tars  = [].slice.call(pista.querySelectorAll(".cw-tar"));
+  var n = tars.length; if(!n) return;
+
+  cw.classList.remove("cw-sin-js");     /* sin JS la seccion ya era una grilla */
+
+  var VENT = 1.8;   /* ventana visible, en tarjetas: fuera de esto no se pinta */
+  var SATX = 1.55;  /* techo del desplazamiento lateral                        */
+  var SATR = 1.0;   /* techo del giro: un solo paso. Mas alla la tarjeta ya
+                       esta en opacidad 0 y girarla mas solo cuesta pintura.  */
+  var act = 0, arrastre = null;
+  var vivo   = cw.querySelector(".cw-vivo");
+  var cuenta = cw.querySelector(".cw-cuenta b");
+  var lprom  = cw.querySelector(".cw-lprom");
+  var puntos = [].slice.call(cw.querySelectorAll(".cw-punto"));
+  var lineas = [].slice.call(cw.querySelectorAll(".cw-lin"));
+
+  /* distancia circular mas corta: el anillo nunca da la vuelta larga */
+  function dist(i){ var d = ((i - act) % n + n) % n; if(d > n/2) d -= n; return d; }
+  function tope(v,m){ return Math.max(-m, Math.min(m, v)); }
+
+  function pintar(){
+    var grilla = cw.classList.contains("grilla");
+    tars.forEach(function(t,i){
+      var d = dist(i), ad = Math.abs(d), foco = (d === 0);
+      /* la opacidad es una curva QUEBRADA, no lineal: cae suave hasta la
+         primera vecina y se desploma despues, para llegar a cero DENTRO de la
+         ventana. Con una recta, la tarjeta que sale de cuadro todavia tenia
+         tinta y se veia el salto del anillo al dar la vuelta. */
+      var o = Math.max(0, 1 - ad * 0.50 - Math.max(0, ad - 1) * 0.36);
+      t.style.setProperty("--dx", tope(d, SATX));
+      t.style.setProperty("--dz", Math.min(ad, SATX));
+      t.style.setProperty("--dr", tope(d, SATR));
+      t.style.setProperty("--o",  o.toFixed(3));
+      t.style.zIndex = String(40 - Math.round(ad * 10));
+      t.classList.toggle("foco",  foco);
+      t.classList.toggle("fuera", ad > VENT);
+      t.setAttribute("aria-hidden", (foco || grilla) ? "false" : "true");
+      t.tabIndex = (foco || grilla) ? 0 : -1;
+      /* un enlace dentro de algo `aria-hidden` que siga siendo tabulable es un
+         defecto de accesibilidad, no un detalle: el foco entra en algo que el
+         lector de pantalla dice que no existe. */
+      var cta = t.querySelector(".cw-cta");
+      if(cta) cta.tabIndex = (foco || grilla) ? 0 : -1;
+    });
+    puntos.forEach(function(p,i){ p.setAttribute("aria-current", i === act ? "true" : "false"); });
+    var l = tars[act].getAttribute("data-linea");
+    lineas.forEach(function(b){
+      var on = b.getAttribute("data-linea") === l;
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+      if(on && lprom) lprom.textContent = b.getAttribute("data-promesa") || "";
+    });
+    if(cuenta) cuenta.textContent = ("0" + (act+1)).slice(-2);
+    if(vivo) vivo.textContent = (act+1) + " de " + n + ". " +
+      tars[act].querySelector(".cw-nom").textContent.trim();
+  }
+
+  function ir(i, foco){
+    act = ((i % n) + n) % n;
+    pintar();
+    if(foco) tars[act].focus({preventScroll:true});
+  }
+
+  /* --- EL ALTO LO MIDE EL CONTENIDO, una vez por ancho. Se mide en modo
+         grilla, que es donde las tarjetas estan en el flujo y tienen su alto
+         natural; despues se devuelve el modo que habia. */
+  var anchoMedido = 0;
+  function medir(){
+    if(innerWidth === anchoMedido) return;
+    cw.style.setProperty("--tar-h", "auto");
+    cw.classList.add("midiendo");
+    var alto = 0;
+    tars.forEach(function(t){ alto = Math.max(alto, t.offsetHeight); });
+    cw.classList.remove("midiendo");
+    /* MEDIR CON LA SECCION OCULTA DA CERO, Y ESO NO SE ESCRIBE. Defecto real
+       de la integracion en `portafolio.html`, 13-sep: alli el carrusel es la
+       septima pieza y nace en `display:none` —el visitante todavia no la
+       eligio—, asi que `offsetHeight` daba 0 y el alto de tarjeta quedaba en
+       1 px. El ancho tampoco se da por medido: se vuelve a intentar cuando la
+       seccion aparezca. Una medida imposible no se guarda, se descarta —y
+       `anchoMedido` se BORRA, que es el segundo medio paso: si se dejara el
+       ancho anterior, un cambio de tamano con la seccion oculta y vuelta al
+       mismo ancho dejaba `--tar-h` quitado y la guarda de arriba cortaba la
+       proxima medicion por «ya medido». Una medida descartada tiene que
+       descartar tambien la marca de que se midio. */
+    if(alto < 1){ anchoMedido = 0; cw.style.removeProperty("--tar-h"); return; }
+    anchoMedido = innerWidth;
+    /* 1 px de holgura: `offsetHeight` redondea a entero y el sub-pixel del
+       interlineado puede dejar la ultima linea rozando el canto. */
+    cw.style.setProperty("--tar-h", (Math.ceil(alto) + 1) + "px");
+  }
+  /* y el disparo: `ResizeObserver` avisa cuando la seccion pasa de oculta a
+     visible (de 0 a su tamano). No es un sondeo por cuadro: solo corre cuando
+     la caja cambia. Sin esto, la pieza 7 entra con las nueve tarjetas de 1 px.
+
+     NO SE DESCONECTA, y esa fue la correccion: desconectarlo al primer exito
+     deja la seccion sin instrumento para el resto de la sesion, y el visitante
+     de esta pagina entra y sale de la pieza 7 por el carrete tantas veces como
+     quiera. Un observador que se apaga despues de la primera vez solo sirve si
+     la primera vez es la unica. */
+  function visible(){ return cw.offsetParent !== null || cw.getClientRects().length > 0; }
+  if("ResizeObserver" in window){
+    /* LA MEDICION SE APLAZA UN CUADRO, Y NO ES UN ADORNO: medir escribe
+       `--tar-h`, o sea cambia el tamano de lo mismo que se esta observando.
+       Hacerlo DENTRO del callback dispara «ResizeObserver loop completed with
+       undelivered notifications», que es un error de ejecucion de verdad y la
+       sonda lo caza. Aplazado a `requestAnimationFrame`, el callback no
+       escribe nada y el ciclo se corta. El pestillo evita encolar dos. */
+    var pend = false;
+    new ResizeObserver(function(){
+      if(pend || !visible() || innerWidth === anchoMedido) return;
+      pend = true;
+      requestAnimationFrame(function(){ pend = false; medir(); pintar(); });
+    }).observe(cw);
+  }
+
+  /* --- mandos --- */
+  cw.addEventListener("click", function(e){
+    if(e.target.closest(".cw-cta")) return;          /* el CTA es un enlace */
+    var b = e.target.closest("[data-ir],[data-a],[data-linea],.cw-todo,.cw-tar");
+    if(!b) return;
+    if(b.classList.contains("cw-todo")){
+      var g = cw.classList.toggle("grilla");
+      b.textContent = g ? "Ver como carrusel" : "Ver los " + n + " a la vez";
+      b.setAttribute("aria-pressed", g ? "true" : "false");
+      pintar();
+      return;
+    }
+    if(cw.classList.contains("grilla")) return;
+    if(b.hasAttribute("data-ir"))  return ir(act + (+b.getAttribute("data-ir")));
+    if(b.hasAttribute("data-a"))   return ir(+b.getAttribute("data-a"));
+    if(b.hasAttribute("data-linea")){
+      for(var i=0;i<n;i++) if(tars[i].getAttribute("data-linea") === b.getAttribute("data-linea")) return ir(i);
+      return;
+    }
+    if(b.classList.contains("cw-tar")) return ir(tars.indexOf(b));
+  });
+
+  /* --- teclado: flechas, Inicio y Fin --- */
+  cw.addEventListener("keydown", function(e){
+    if(cw.classList.contains("grilla")) return;
+    if(e.target.closest(".cw-cta")) return;
+    var k = e.key, d = (k === "ArrowRight") ? 1 : (k === "ArrowLeft") ? -1 : 0;
+    if(d){ e.preventDefault(); return ir(act + d, true); }
+    if(k === "Home"){ e.preventDefault(); return ir(0, true); }
+    if(k === "End"){  e.preventDefault(); return ir(n-1, true); }
+  });
+
+  /* --- arrastre y deslizamiento tactil: 44 px de umbral, el mismo que el
+         blanco minimo de un boton. Bajo eso es un toque, no un gesto. */
+  pista.addEventListener("pointerdown", function(e){
+    if(cw.classList.contains("grilla") || e.button || e.target.closest(".cw-cta")) return;
+    arrastre = {x:e.clientX, id:e.pointerId, mov:false};
+  });
+  addEventListener("pointermove", function(e){
+    if(!arrastre || e.pointerId !== arrastre.id) return;
+    var dx = e.clientX - arrastre.x;
+    if(Math.abs(dx) > 44 && !arrastre.mov){ arrastre.mov = true; ir(act + (dx < 0 ? 1 : -1)); }
+  });
+  addEventListener("pointerup",     function(){ arrastre = null; });
+  addEventListener("pointercancel", function(){ arrastre = null; });
+
+  /* --- arranque. Con movimiento reducido entra DIRECTO en grilla: quien pidio
+         menos movimiento no recibe un carrusel apagado, recibe la lista
+         completa y legible. */
+  medir();
+  if(matchMedia("(prefers-reduced-motion:reduce)").matches){
+    cw.classList.add("grilla");
+    var t = cw.querySelector(".cw-todo");
+    if(t){ t.textContent = "Ver como carrusel"; t.setAttribute("aria-pressed","true"); }
+  }
+  pintar();
+
+  var tmr; addEventListener("resize", function(){
+    clearTimeout(tmr); tmr = setTimeout(function(){ medir(); pintar(); }, 160);
+  });
+})();
+/* ============================= CARRUSEL · JS FIN ======================== */
 </script>
 </body>
 </html>
