@@ -1006,8 +1006,27 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
 @media (max-width:700px){ .contacto .ct-frase .li{display:inline} }
 
 /* --- LAMINA 6 --- pie alargado --- */
+/* `--logo-pie-aire` SE DECLARA AQUI, EN EL ANCESTRO, Y NO JUNTO A LA ALTURA
+   DEL LOGOTIPO - 15-sep-2026. Se escribio primero sobre `.pie .fbrand .logo`,
+   copiando al pie de la letra la frase de la doctrina de la cabecera («se
+   declara junto a CADA altura del logotipo»). Esa frase describe DONDE SE
+   DECIDE el numero, no donde se declara: la cabecera lo pone en `:root`.
+   Una propiedad personalizada solo INHERITA HACIA ABAJO. Declarada en el
+   logotipo, `.pie .fila-baja` —que es su PADRE— no la ve; su
+   `calc(var(--borde) - var(--logo-pie-aire))` queda invalido al calcular y
+   `padding-left` cae a su valor inicial, 0.
+   Y NO DA NINGUN ERROR: la pagina renderiza igual, la consola calla, y la
+   tinta del logotipo se va a 14,1 px en vez de a 64. Lo caze MIDIENDO DESPUES
+   de aplicar, no releyendo el codigo — el lado derecho, que no usa el token,
+   habia quedado perfecto en 64, asi que medio cambio funcionando tapaba al
+   otro medio. Es el mismo instrumento silencioso que ya cuesta tres anotaciones
+   en esta bitacora.
+   42 x 0,3351 = 14,07, el resguardo que el archivo canonico trae dentro del
+   viewBox. No lleva media queries porque el logotipo del pie mide 42 px a
+   todo ancho; el de la cabecera si las lleva porque el suyo cambia. */
 .pie{position:relative; z-index:2; margin-top:var(--s9);
-  border-top:1px solid var(--crema-12); padding:var(--s9) 0 var(--s7)}
+  border-top:1px solid var(--crema-12); padding:var(--s9) 0 var(--s7);
+  --logo-pie-aire:14.1px}
 .pie .centro{max-width:var(--shell); margin:0 auto; padding:0 var(--s5); text-align:center}
 .rmcl{margin:0; font-family:var(--font-data); font-weight:700; letter-spacing:.05em;
   font-size:clamp(54px,12.4vw,150px); line-height:1; color:var(--crema)}
@@ -1015,7 +1034,54 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
   letter-spacing:.18em; text-transform:uppercase; color:var(--crema-60); line-height:1.9}
 /* (`.pie .correo` y `.ct-dominio` se retiraron con sus elementos el 6-sep.
    CSS que ya no viste nada confunde al siguiente que lea esto.) */
-.pie .fila-baja{max-width:var(--shell); margin:var(--s9) auto 0; padding:var(--s5) var(--s5) 0;
+/* =========================================================================
+   EL PIE SALE DEL CANAL Y SIGUE A LA CABECERA - 15-sep-2026, pendiente #63.
+
+   EL DIAGNOSTICO NO ES EL QUE DECIA LA FICHA. #63 decia «el pie sigue
+   encajonado en 1240, contenido a 124 px de cada canto a 1440», y eso es
+   cierto pero es la mitad. Medido por CDP a tres anchos ANTES de tocar nada
+   —y midiendo la TINTA del logotipo, no su caja, que es justo el error que
+   la cabecera ya corrigio el 12-sep—:
+
+       ancho    tinta del logotipo    tinta del logotipo    diferencia
+                  en la CABECERA           en el PIE
+       1440            64,0                 138,1            +74,1
+       1024            64,0                  38,1            -25,9
+        390            16,0                  30,1            +14,1
+
+   EL MISMO LOGOTIPO APARECE DOS VECES EN LA PAGINA Y NO SE ALINEA CONSIGO
+   MISMO EN NINGUN ANCHO. Y la diferencia CAMBIA DE SIGNO: a 1440 el pie va
+   mas adentro que la cabecera, a 1024 va mas AFUERA. Resolviendo las dos
+   rectas, coinciden en un solo ancho puntual, 1292 px, y en ningun otro.
+   Un canal mal elegido se ve raro; uno que se cruza no se puede ni describir.
+
+   SON DOS CAUSAS DISTINTAS Y SE ARREGLAN LAS DOS:
+   (1) El pie nunca descuenta `--logo-aire`. El archivo canonico trae su
+       resguardo DENTRO del viewBox (11,802 % de la caja): a 42 px de alto son
+       14,07 px de aire ya dibujados. Por eso a 390 la cabecera pone la tinta
+       en 16 y el pie en 30,1 — los 14,1 son exactamente ese aire. Esta causa
+       existe en los TRES anchos y es independiente de #61.
+   (2) A partir de 1024 el `max-width:--shell` encajona el bloque mientras la
+       cabecera ya se fue a `--borde`. Bajo 1240 el max-width no muerde y el
+       bloque queda en el canal del cuerpo, que a >=1024 ya no es el de la
+       cabecera. De ahi el cambio de signo.
+
+   POR QUE ESTO NO PREJUZGA EL PENDIENTE #61, que sigue sin decidir. El canal
+   se escribe con el TOKEN `--borde`, no con el numero 64. Si Sebastian mira
+   la maqueta de dos canales y manda revertirla, `--borde` vuelve a valer 24 a
+   todo ancho y EL PIE LO SIGUE SOLO: se revierte un token y se revierten los
+   dos bloques. Escribir 64 aqui habria creado la segunda copia que despues se
+   corrige a medias, que es el defecto que este repo ya tiene anotado con los
+   agentes y con las skills.
+
+   `.pie .centro` NO SE TOCA, y es a proposito. Lleva «SCL.» y «Santiago,
+   Chile», los dos con `text-align:center`: su canal no se ve, asi que moverlo
+   seria ruido en el diff sin un pixel de diferencia en pantalla.
+   ========================================================================= */
+.pie .fila-baja{max-width:none; width:100%; margin:var(--s9) 0 0;
+  padding-top:var(--s5); padding-bottom:0;
+  padding-right:var(--borde);
+  padding-left:max(0px, calc(var(--borde) - var(--logo-pie-aire)));
   border-top:1px solid var(--crema-12);
   display:flex; align-items:center; justify-content:space-between; gap:var(--s5); flex-wrap:wrap}
 .pie .fbrand{display:flex; align-items:center}
@@ -1041,8 +1107,12 @@ html.guia .fig-slot{outline:1px dashed var(--crema-28)}
   body{font-size:16px}
   .l1{padding:calc(var(--hdr) + var(--s3)) var(--borde) var(--s5)}
   .l2{padding-left:var(--s4); padding-right:var(--s4)}
-  /* el canal del pie lo llevan sus bloques, no el .pie: sumados daban 40 */
-  .pie .centro, .pie .fila-baja{padding-left:var(--s4); padding-right:var(--s4)}
+  /* el canal del pie lo llevan sus bloques, no el .pie: sumados daban 40.
+     `.fila-baja` SALE DE ESTA REGLA el 15-sep: ahora sigue a `--borde`, que
+     bajo 560 ya vale 16 — lo mismo que --s4 — pero ademas descuenta el aire
+     del logotipo. Dejarla aqui pisaba el descuento y devolvia la tinta a
+     30,1 px justo en el ancho donde el desalineamiento se ve mas. */
+  .pie .centro{padding-left:var(--s4); padding-right:var(--s4)}
   .wrap{padding:0 var(--s4)}
   .l3, .l4, .l5{padding:var(--s8) 0}
   .fila{grid-template-columns:1fr; gap:var(--s2); align-items:start}
@@ -2626,5 +2696,12 @@ f.addEventListener("submit", function(e){
 </script>
 
 <script src="motor.js"></script>
+<!-- CONTADOR GOATCOUNTER - lo instala sitio/poner-contador.py -->
+<!-- Sin cookies y sin identificar a nadie: cuenta visitas, no personas.
+     `async` para que no bloquee el render; si gc.zgo.at no responde, la
+     pagina se ve igual y solo se pierde esa cuenta. -->
+<script data-goatcounter="https://compai.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<!-- /CONTADOR -->
 </body>
 </html>
