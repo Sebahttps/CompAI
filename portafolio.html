@@ -561,8 +561,17 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   transform:scaleX(0); transform-origin:0 50%;
   transition:transform .26s var(--micro)}
 .carrete label{padding:11px 0}
-.carrete .nota{margin:var(--s5) 0 0; font-size:11.5px; line-height:1.65;
-  color:var(--crema-28); max-width:31ch}
+/* LA PROMESA — 17-sep-2026. Es la primera linea de la columna y la unica de la
+   pagina que dice QUE VENDEMOS: ClAI-nte paso mas de un minuto creyendo que
+   CompAI vende licencias (informe del 14-09). Por eso NO va en tipografia de
+   maquina ni en gris: sans a 15 px y crema plena, el tono mas claro que tiene
+   la pagina. No lleva filete ni color de acento — el azul es la traza y el
+   ambar la transaccion, y esta linea no es ninguna de las dos: se distingue
+   por ser lo unico NO monoespaciado de la columna.
+   Reemplaza a `.carrete .nota`, que quedo sin uso al borrarse los dos parrafos
+   grises del carrete (doctrina II.9: la pieza no habla de si misma). */
+.carrete .promesa{font-family:var(--font-body); font-size:15px; line-height:1.5;
+  color:var(--crema); margin:0 0 var(--s5)}
 .carrete input{position:absolute; width:1px; height:1px; opacity:0; pointer-events:none}
 /* LOS SEIS RADIOS SALEN DEL FLUJO. Estaban como hijos directos del <body> y
    sumaban 26 px: `scrollHeight` daba 926 contra un visor de 900 y la pagina
@@ -1563,7 +1572,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 }
 
 /* EL SEGUNDO GRUPO DEL CARRETE. No se agrega un septimo renglon a la lista de
-   los seis: el rotulo dice «seis registros» y seguiran siendo seis. El
+   los seis: el rotulo dice «seis cosas que pasan en una compra» y el
    catalogo es OTRA COSA y se anuncia como tal, que ademas es el relato del
    encargo puesto en el indice. */
 .carrete .tope.cat{margin-top:var(--s5)}
@@ -1681,9 +1690,6 @@ html.hdr-chico .brand .logo{transform:scale(.737);
     overflow-y:auto; overscroll-behavior:contain}
   #p7:checked ~ .sala .pieza[data-p="7"]{grid-column:1; grid-row:2;
     max-height:none; overflow:visible}
-  /* en una sola columna el carrete es el indice de arriba, no una barra
-     lateral: su nota de cierre gasta cuatro renglones que ahi no sobran */
-  #p7:checked ~ .sala .carrete .nota{display:none}
   /* EL VELO BAJO EL ENCABEZADO, y sale de mirar la captura, no del CSS: el
      `.hdr` es fijo, transparente y sin fondo a proposito (decision de Visu,
      `background:none`), y esta pagina nunca habia tenido nada que se
@@ -1776,7 +1782,8 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   <!-- ================= EL CARRETE ================= -->
   <div>
     <div class="carrete">
-      <div class="tope">Portafolio · seis registros</div>
+      <p class="promesa">Especificamos, instalamos y mantenemos la informática que su institución compra.</p>
+      <div class="tope">Seis cosas que pasan en una compra</div>
       <ul style="list-style:none;margin:0;padding:0">
         <li><label for="p1"><span class="n">01</span><span class="tt">La licencia venció el martes</span></label></li>
         <li><label for="p2"><span class="n">02</span><span class="tt">El respaldo no estaba en el precio</span></label></li>
@@ -1785,19 +1792,14 @@ html.hdr-chico .brand .logo{transform:scale(.737);
         <li><label for="p5"><span class="n">05</span><span class="tt">No estaba hábil y la compra se rehace</span></label></li>
         <li><label for="p6"><span class="n">06</span><span class="tt">Casero — producto propio, previo</span></label></li>
       </ul>
-      <p class="nota">Seis dolores del comprador público, uno por línea publicada.
-        Ninguna pieza pasa de doce segundos y ninguna se repite hasta que termina.</p>
-
       <!-- EL SEPTIMO RENGLON VA APARTE, y el corte es el relato: los seis de
            arriba son el dolor, este es lo que cuesta arreglarlo. Por eso no se
-           mete en la lista de «seis registros» — ese rotulo seguiria mintiendo
-           con siete. -->
+           mete en la lista de las seis escenas: el rotulo dice «seis cosas que
+           pasan en una compra» y el catalogo no es una de ellas. -->
       <div class="tope cat">Y lo que cuesta arreglarlo</div>
       <ul class="cat-lista">
         <li><label for="p7"><span class="n">07</span><span class="tt">Nueve servicios, con precio</span></label></li>
       </ul>
-      <p class="nota">El valor con IVA, el neto que va en la orden de compra y
-        lo que cada servicio no incluye, escrito del mismo tama&ntilde;o.</p>
     </div>
   </div>
 
@@ -1826,7 +1828,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
         <div class="oc">Orden de compra</div>
       </div></div>
       <div class="pieplaca">
-        <p class="linea">Línea 1 · Licencias de software</p>
+        <p class="linea">Dónde pasa · compra de licencias de software</p>
         <h1>«La licencia venció el martes»</h1>
         <p>El fabricante cobra con tarjeta y no emite factura chilena: no hay contra quién emitir la orden de compra. La licencia es la misma; lo que cambia es contra quién se paga.</p>
       </div>
@@ -1852,7 +1854,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
           El mismo valor. La diferencia es cuándo se lo dijeron.</div>
       </div></div>
       <div class="pieplaca">
-        <p class="linea">Línea 2 · Hospedaje y procesamiento de datos</p>
+        <p class="linea">Dónde pasa · compra de hospedaje y procesamiento de datos</p>
         <h1>«El respaldo no estaba en el precio»</h1>
         <p>Los respaldos automáticos vienen activados de fábrica y casi nunca están en el precio publicado. Aparecen después de emitida la orden de compra, cuando corregirla es otro trámite.</p>
       </div>
@@ -1873,7 +1875,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
         <div class="silencio">La compra está cerrada. El requerimiento, no.</div>
       </div></div>
       <div class="pieplaca">
-        <p class="linea">Línea 3 · Especificación, instalación y puesta en marcha</p>
+        <p class="linea">Dónde pasa · especificación, instalación y puesta en marcha</p>
         <h1>«Llegó, se recibió, y ahí quedó»</h1>
         <p>Que llegue la clave no es que quede funcionando. Entre la recepción conforme y el equipo andando hay un trabajo que nadie cotizó, y es el que decide si el presupuesto sirvió de algo.</p>
       </div>
@@ -1893,7 +1895,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
         <div class="motivo m4">Fuera de la Región Metropolitana</div>
       </div></div>
       <div class="pieplaca">
-        <p class="linea">Línea 4 · Equipamiento e insumos</p>
+        <p class="linea">Dónde pasa · compra de equipamiento e insumos</p>
         <h1>«La recepción abierta y el pago detrás»</h1>
         <p>Mientras la recepción conforme no se cierre, el pago no avanza — y quien responde por eso es el comprador. Por eso las líneas que no podemos cumplir se devuelven al cotizar, con el motivo escrito, y no en la recepción.</p>
       </div>
@@ -1971,8 +1973,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
       <div class="pieplaca">
         <p class="linea">Producto propio · no es un trabajo para el Estado</p>
         <h1>Casero — marketplace vecinal por edificio</h1>
-        <p>Comprar y vender entre vecinos de la misma torre: comida casera, oficios, servicios. Va en el portafolio como lo que es, un previo de algo en desarrollo, y no como una entrega.</p>
-        <p class="fuente">Nada de su economía —planes, comisiones ni precios— entra acá: ese material es reservado.</p>
+        <p>Comprar y vender entre vecinos de la misma torre: comida casera, oficios, servicios.</p>
       </div>
     </div>
 
