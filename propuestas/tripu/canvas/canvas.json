@@ -1,0 +1,127 @@
+{
+ "v": 3,
+ "createdOnFiles": {
+  "v": 1,
+  "at": "2026-09-19T21:51:55Z"
+ },
+ "launch": {
+  "view": "canvas"
+ },
+ "pages": [],
+ "designSystems": [],
+ "title": "Tripu · App de buenas prácticas LATAM",
+ "boards": {
+  "Acceso.dc.html": {
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "1 · Acceso con correo LATAM",
+   "is_interactive": true
+  },
+  "Inicio.dc.html": {
+   "x": 470,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "2 · Inicio",
+   "is_interactive": true
+  },
+  "Detalle.dc.html": {
+   "x": 940,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "3 · Práctica paso a paso",
+   "is_interactive": true
+  },
+  "Publicar.dc.html": {
+   "x": 1410,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "4 · Compartir buena práctica",
+   "is_interactive": true
+  },
+  "Notificaciones.dc.html": {
+   "x": 1880,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "5 · Notificaciones",
+   "is_interactive": true
+  },
+  "Momentos.dc.html": {
+   "x": 0,
+   "y": 1164,
+   "w": 390,
+   "h": 844,
+   "title": "6 · Momentos LATAM",
+   "is_interactive": true
+  },
+  "Reconocer.dc.html": {
+   "x": 470,
+   "y": 1164,
+   "w": 390,
+   "h": 844,
+   "title": "7 · Reconocer a un compañero",
+   "is_interactive": true
+  },
+  "Perfil.dc.html": {
+   "x": 940,
+   "y": 1164,
+   "w": 390,
+   "h": 844,
+   "title": "8 · Perfil e insignias",
+   "is_interactive": true
+  },
+  "Propuesta.dc.html": {
+   "x": 1410,
+   "y": 1164,
+   "w": 1440,
+   "h": 1360,
+   "title": "9 · Propuesta: nombre, categorías, cultura y mapa"
+  }
+ },
+ "order": [
+  "Acceso.dc.html",
+  "Inicio.dc.html",
+  "Detalle.dc.html",
+  "Publicar.dc.html",
+  "Notificaciones.dc.html",
+  "Momentos.dc.html",
+  "Reconocer.dc.html",
+  "Perfil.dc.html",
+  "Propuesta.dc.html"
+ ],
+ "notes": {
+  "fila1": {
+   "x": 0,
+   "y": -300,
+   "text": "App · Recorrido principal: entrar, explorar, ver un paso a paso, publicar, avisos",
+   "kind": "title1",
+   "maxW": 2270
+  },
+  "fila2": {
+   "x": 0,
+   "y": 864,
+   "text": "App · Cultura LATAM: momentos, reconocer, perfil · y la propuesta completa con el mapa",
+   "kind": "title1",
+   "maxW": 2850
+  },
+  "nota1": {
+   "x": 2390,
+   "y": 0,
+   "w": 360,
+   "text": "Cómo leer este canvas\n\n• Nombre propuesto: Tripu (alternativas en la lámina 9).\n• Es una app para el celular: todas las pantallas son de 390 px.\n• Con Play (▶) se navega entre pantallas: cada botón lleva a la siguiente.\n• Nombres, cifras y pasos son de ejemplo, no datos reales de LATAM.\n• Los bloques “Foto” son espacios para fotos reales de la tripulación.",
+   "color": "orange"
+  },
+  "nota2": {
+   "x": 2390,
+   "y": 1164,
+   "w": 360,
+   "text": "Decisiones de diseño\n\n• Índigo LATAM para navegación; coral solo para la acción principal y los “me sirve”.\n• Botón central “+” siempre a mano: publicar es lo más importante.\n• “Así lo hago yo”: mismo objetivo, distintas formas. Responde al caso del chequeo de 4 minutos.\n• Seguridad pasa por revisión antes de publicarse: protege el espacio informal sin quitarle libertad.",
+   "color": "purple"
+  }
+ }
+}
