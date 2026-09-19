@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>CompAI · Wireframe de plataforma</title>
+<meta name="description" content="Wireframe técnico de la plataforma CompAI: retícula, componentes, flujo de navegación y siete pantallas anotadas.">
+<meta name="theme-color" content="#080A09">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23080A09'/><path d='M14 34l7 7 13-15M30 34l7 7 13-15' fill='none' stroke='%234CC48B' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+
+  :root {
+    /* Paleta heredada de compai.cl: el wireframe no inventa marca. */
+    --fondo: #080A09;
+    --papel: #0D100E;
+    --papel-alto: #121714;
+    --crema: #F5F0E4;
+    --texto2: #A6AFA8;
+    --tenue: #78827B;
+    --verde: #4CC48B;
+    --ambar: #E0954F;
+    --borde: #1E2320;
+    --borde-vivo: #2A312C;
+
+    /* Trazo del wireframe: baja fidelidad, sin color de marca en los bloques. */
+    --trazo: #303832;
+    --trazo-vivo: #47524B;
+    --relleno: rgba(245,240,228,.028);
+    --barra: rgba(245,240,228,.13);
+    --barra-alta: rgba(245,240,228,.26);
+
+    --paso: 28px;
+    --radio: 3px;
+  }
+
+  html { background: var(--fondo); -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    color: var(--crema);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    background-image:
+      repeating-linear-gradient(90deg, rgba(245,240,228,.030) 0 1px, transparent 1px var(--paso)),
+      repeating-linear-gradient(180deg, rgba(245,240,228,.030) 0 1px, transparent 1px var(--paso));
+  }
+
+  .doc { width: min(100% - 40px, 1180px); margin-inline: auto; }
+
+  a { color: var(--verde); text-underline-offset: 3px; }
+  a:hover { color: var(--crema); }
+  :focus-visible { outline: 2px solid var(--ambar); outline-offset: 3px; }
+
+  .mono, .cod {
+    font-family: 'Courier New', Courier, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── Portada del documento ─────────────────────────────────────────── */
+  .portada { padding: 64px 0 40px; border-bottom: 1px solid var(--borde); }
+  .marca-fila { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; }
+  .marca-txt { font-size: 30px; font-weight: 700; letter-spacing: -.02em; line-height: 1; }
+  .marca-txt i { font-style: normal; color: var(--ambar); }
+  .ticks { color: var(--verde); flex: none; }
+
+  h1 {
+    margin: 0 0 18px;
+    font-size: clamp(28px, 4.4vw, 46px);
+    line-height: 1.1;
+    letter-spacing: -.022em;
+    font-weight: 700;
+    max-width: 20ch;
+  }
+  .bajada { margin: 0 0 30px; color: var(--texto2); font-size: 18px; max-width: 64ch; }
+
+  .meta {
+    display: grid; gap: 1px;
+    grid-template-columns: repeat(auto-fit, minmax(196px, 1fr));
+    background: var(--borde);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    overflow: hidden;
+  }
+  .meta div { background: var(--papel); padding: 13px 16px; }
+  .meta dt { font-family: 'Courier New', Courier, monospace; font-size: 10.5px;
+             letter-spacing: .13em; text-transform: uppercase; color: var(--tenue); margin: 0 0 4px; }
+  .meta dd { margin: 0; font-size: 14px; color: var(--crema); }
+
+  /* ── Secciones ─────────────────────────────────────────────────────── */
+  section { padding: 56px 0 8px; }
+  .rot {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--tenue); margin: 0 0 10px;
+  }
+  h2 { margin: 0 0 12px; font-size: clamp(22px, 2.6vw, 30px); letter-spacing: -.015em; line-height: 1.2; }
+  h3 { margin: 0 0 10px; font-size: 17px; letter-spacing: -.005em; }
+  .intro { color: var(--texto2); max-width: 72ch; margin: 0 0 28px; }
+
+  .tarjetas { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .tarjeta {
+    border: 1px solid var(--borde); border-radius: var(--radio);
+    background: var(--papel); padding: 18px 18px 20px;
+  }
+  .tarjeta p { margin: 0; color: var(--texto2); font-size: 14.5px; }
+  .tarjeta ul { margin: 0; padding-left: 18px; color: var(--texto2); font-size: 14.5px; }
+  .tarjeta li + li { margin-top: 5px; }
+
+  /* ── Fichas de sistema (tokens, retícula) ──────────────────────────── */
+  .tokens { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(168px, 1fr)); }
+  .token { border: 1px solid var(--borde); border-radius: var(--radio); background: var(--papel); padding: 12px 14px; }
+  .muestra { height: 34px; border-radius: 2px; border: 1px solid var(--borde-vivo); margin-bottom: 10px; }
+  .token b { display: block; font-family: 'Courier New', Courier, monospace; font-size: 12px; color: var(--crema); }
+  .token span { display: block; font-size: 12px; color: var(--tenue); }
+
+  .reticula {
+    display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px;
+    border: 1px solid var(--borde); border-radius: var(--radio);
+    background: var(--papel); padding: 14px;
+  }
+  .reticula i {
+    display: block; height: 64px; border-radius: 2px;
+    background: rgba(76,196,139,.10); border: 1px solid rgba(76,196,139,.28);
+  }
+
+  /* ── Primitivas de wireframe ───────────────────────────────────────── */
+  .caja { border: 1px solid var(--trazo); border-radius: 2px; background: var(--relleno); }
+  .caja.viva { border-color: var(--trazo-vivo); }
+  .caja.punteada { border-style: dashed; }
+
+  .ln { height: 8px; border-radius: 2px; background: var(--barra); }
+  .ln + .ln { margin-top: 7px; }
+  .ln.xl { height: 20px; background: var(--barra-alta); }
+  .ln.l  { height: 13px; background: var(--barra-alta); }
+  .ln.w90 { width: 90%; } .ln.w75 { width: 75%; } .ln.w60 { width: 60%; }
+  .ln.w45 { width: 45%; } .ln.w30 { width: 30%; } .ln.w20 { width: 20%; }
+
+  /* Placeholder de imagen: aspa técnica, sin fotografía. */
+  .img {
+    border: 1px solid var(--trazo); border-radius: 2px;
+    background-color: rgba(245,240,228,.022);
+    background-image:
+      linear-gradient(45deg, transparent calc(50% - .5px), var(--trazo) 50%, transparent calc(50% + .5px)),
+      linear-gradient(-45deg, transparent calc(50% - .5px), var(--trazo) 50%, transparent calc(50% + .5px));
+    position: relative;
+  }
+  .img::after {
+    content: attr(data-r);
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    font-family: 'Courier New', Courier, monospace; font-size: 10px; letter-spacing: .1em;
+    color: var(--tenue); background: var(--papel); padding: 2px 6px; border-radius: 2px;
+  }
+
+  .btn, .btn2 {
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 34px; padding: 0 14px; border-radius: 3px;
+    font-family: 'Courier New', Courier, monospace; font-size: 11px;
+    letter-spacing: .09em; text-transform: uppercase; white-space: nowrap;
+  }
+  .btn { border: 1px solid var(--verde); color: var(--verde); background: rgba(76,196,139,.07); }
+  .btn2 { border: 1px solid var(--trazo-vivo); color: var(--texto2); }
+  .btn.sm, .btn2.sm { height: 27px; padding: 0 10px; font-size: 10px; }
+
+  .campo {
+    height: 34px; border: 1px solid var(--trazo); border-radius: 2px;
+    background: rgba(0,0,0,.24); display: flex; align-items: center; padding: 0 10px;
+    font-family: 'Courier New', Courier, monospace; font-size: 11px; color: var(--tenue);
+  }
+  .chip {
+    display: inline-flex; align-items: center; height: 24px; padding: 0 10px;
+    border: 1px solid var(--trazo); border-radius: 999px;
+    font-family: 'Courier New', Courier, monospace; font-size: 10px;
+    letter-spacing: .08em; color: var(--texto2); background: rgba(0,0,0,.2);
+  }
+  .et {
+    font-family: 'Courier New', Courier, monospace; font-size: 10px;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--tenue);
+  }
+
+  /* Globo de anotación numerado. */
+  .cal {
+    position: absolute; z-index: 3; top: -10px; left: -10px;
+    width: 21px; height: 21px; border-radius: 50%;
+    display: grid; place-items: center;
+    background: var(--ambar); color: #14100B;
+    font-family: 'Courier New', Courier, monospace; font-size: 11px; font-weight: 700;
+    box-shadow: 0 0 0 3px var(--papel);
+  }
+  .anc { position: relative; }
+  /* Variante para anotar bloques que empiezan con texto: el globo sube al aire
+     superior en vez de montarse sobre la primera línea. */
+  .cal.arr { top: -25px; left: -2px; }
+
+  /* ── Marco de pantalla ─────────────────────────────────────────────── */
+  .pantalla { margin: 0 0 14px; border: 1px solid var(--borde); border-radius: 6px;
+              background: var(--papel); overflow: hidden; }
+  .chrome {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px; border-bottom: 1px solid var(--borde); background: rgba(0,0,0,.3);
+  }
+  .puntos { display: flex; gap: 6px; flex: none; }
+  .puntos i { width: 9px; height: 9px; border-radius: 50%; background: var(--borde-vivo); display: block; }
+  .url {
+    flex: 1; min-width: 0; height: 24px; border-radius: 999px;
+    border: 1px solid var(--borde); background: rgba(0,0,0,.35);
+    display: flex; align-items: center; padding: 0 12px;
+    font-family: 'Courier New', Courier, monospace; font-size: 11px; color: var(--tenue);
+    overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  }
+  .vp { flex: none; font-family: 'Courier New', Courier, monospace; font-size: 10px;
+        letter-spacing: .1em; color: var(--tenue); }
+
+  .scroll { overflow-x: auto; padding: 26px 22px 30px; }
+  .lienzo { min-width: 760px; display: grid; gap: 18px; }
+  .lienzo.movil { min-width: 0; max-width: 390px; margin-inline: auto; }
+
+  .cab-pantalla {
+    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+    margin: 40px 0 14px; padding-top: 14px; border-top: 1px solid var(--borde);
+  }
+  .cod {
+    color: var(--ambar); font-size: 12px; letter-spacing: .13em;
+    border: 1px solid rgba(224,149,79,.34); border-radius: 3px; padding: 3px 8px;
+  }
+  .cab-pantalla h3 { margin: 0; font-size: 19px; }
+  .cab-pantalla p { margin: 0; color: var(--tenue); font-size: 13px; }
+
+  .specs { list-style: none; margin: 0 0 8px; padding: 0;
+           display: grid; gap: 8px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  .specs li { display: flex; gap: 10px; font-size: 14px; color: var(--texto2); }
+  .specs b {
+    flex: none; width: 20px; height: 20px; border-radius: 50%; margin-top: 2px;
+    background: rgba(224,149,79,.14); border: 1px solid rgba(224,149,79,.42); color: var(--ambar);
+    font-family: 'Courier New', Courier, monospace; font-size: 11px; font-weight: 700;
+    display: grid; place-items: center;
+  }
+  .specs span strong { color: var(--crema); font-weight: 600; }
+
+  /* ── Mapa de flujo ─────────────────────────────────────────────────── */
+  .flujo { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(184px, 1fr)); }
+  .nodo {
+    border: 1px solid var(--borde-vivo); border-radius: var(--radio);
+    background: var(--papel); padding: 14px 15px; position: relative;
+  }
+  .nodo .et { display: block; margin-bottom: 6px; }
+  .nodo b { display: block; font-size: 15px; margin-bottom: 4px; }
+  .nodo p { margin: 0; font-size: 13px; color: var(--tenue); }
+  .nodo::after {
+    content: "→"; position: absolute; right: -14px; top: 50%; transform: translateY(-50%);
+    color: var(--trazo-vivo); font-size: 15px;
+  }
+  .nodo:last-child::after { content: none; }
+  @media (max-width: 760px) { .nodo::after { content: none; } }
+
+  /* ── Tabla ─────────────────────────────────────────────────────────── */
+  .tabla { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .tabla th, .tabla td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--borde); vertical-align: top; }
+  .tabla th { font-family: 'Courier New', Courier, monospace; font-size: 10.5px; letter-spacing: .12em;
+              text-transform: uppercase; color: var(--tenue); font-weight: 400; }
+  .tabla td { color: var(--texto2); }
+  .tabla td:first-child { color: var(--crema); white-space: nowrap; }
+  .caja-tabla { border: 1px solid var(--borde); border-radius: var(--radio); background: var(--papel); overflow-x: auto; }
+
+  .pie { margin-top: 64px; padding: 26px 0 60px; border-top: 1px solid var(--borde);
+         color: var(--tenue); font-size: 13px; }
+  .pie p { margin: 0 0 5px; }
+
+  @media (max-width: 620px) {
+    .reticula { grid-template-columns: repeat(4, 1fr); }
+    .reticula i:nth-child(n+5) { display: none; }
+  }
+  @media print {
+    body { background: #fff; color: #111; }
+    .pantalla, .tarjeta, .token, .nodo, .caja-tabla { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<main class="doc">
+
+<header class="portada">
+  <div class="marca-fila">
+    <span class="marca-txt">comp<i>AI</i></span>
+    <svg class="ticks" width="34" height="16" viewBox="0 0 64 32" fill="none" aria-hidden="true">
+      <path d="M2 18l7 7 13-15M22 18l7 7 13-15" stroke="currentColor" stroke-width="5"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <h1>Wireframe técnico de la plataforma CompAI</h1>
+  <p class="bajada">
+    Traducción de la dirección de arte del afiche —paneles de cómic, retrato noir,
+    acento verde brasa— a una estructura de interfaz utilizable: retícula, componentes,
+    flujo de navegación y siete pantallas anotadas. Baja fidelidad a propósito: acá se
+    decide qué va dónde y por qué, no de qué color va.
+  </p>
+  <dl class="meta">
+    <div><dt>Documento</dt><dd>WF-CompAI v1.0</dd></div>
+    <div><dt>Alcance</dt><dd>7 pantallas · escritorio y móvil</dd></div>
+    <div><dt>Fidelidad</dt><dd>Baja (estructura y jerarquía)</dd></div>
+    <div><dt>Empresa</dt><dd>COMPAI GLOBAL SOLUTIONS SpA</dd></div>
+    <div><dt>Sitio de referencia</dt><dd>compai.cl</dd></div>
+    <div><dt>Estado</dt><dd>Propuesta para revisión</dd></div>
+  </dl>
+</header>
+
+<!-- ══ 01 · Criterio ═════════════════════════════════════════════════ -->
+<section id="criterio">
+  <p class="rot">01 · Criterio</p>
+  <h2>Qué resuelve este wireframe</h2>
+  <p class="intro">
+    El material de origen es un afiche: una imagen con mucha personalidad y ninguna
+    estructura. Un afiche vende una idea; una plataforma tiene que dejar cotizar, comparar,
+    aprender y contactar. Estas son las cuatro reglas con las que se ordenó todo lo demás.
+  </p>
+  <div class="tarjetas">
+    <article class="tarjeta">
+      <h3>El dato duro va arriba</h3>
+      <p>Quien compra tecnología —sobre todo un organismo público— busca RUT, habilidad
+      en el Registro de Proveedores y plazo. Eso se resuelve en el primer pantallazo,
+      antes de cualquier pieza gráfica.</p>
+    </article>
+    <article class="tarjeta">
+      <h3>Un panel, una tarea</h3>
+      <p>Los recuadros del afiche se convierten en tarjetas de una sola acción:
+      capacidad, agente, producto o curso. Nunca dos llamados a la acción compitiendo
+      dentro del mismo panel.</p>
+    </article>
+    <article class="tarjeta">
+      <h3>El agente es un atajo, no un peaje</h3>
+      <p>La selección de agente acelera al que no sabe por dónde partir. El catálogo,
+      la ficha y el contacto quedan siempre accesibles desde la barra superior sin
+      pasar por él.</p>
+    </article>
+    <article class="tarjeta">
+      <h3>Sin dependencias externas</h3>
+      <p>La misma regla del sitio actual: HTML y CSS propios, tipografía del sistema,
+      sin CDN ni fuentes remotas. Tiene que abrir igual de rápido en la red de un
+      municipio que en fibra.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ══ 02 · Sistema ══════════════════════════════════════════════════ -->
+<section id="sistema">
+  <p class="rot">02 · Sistema</p>
+  <h2>Retícula, escala y tokens</h2>
+  <p class="intro">
+    Doce columnas con canal de 24&nbsp;px y contenedor máximo de 1160&nbsp;px. Todo
+    espaciado es múltiplo de 4; los bloques mayores caen en la retícula de 28&nbsp;px
+    que ya usa compai.cl como textura de fondo.
+  </p>
+
+  <div class="reticula" aria-hidden="true">
+    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+  </div>
+
+  <div class="caja-tabla" style="margin-top:16px">
+    <table class="tabla">
+      <thead><tr><th>Punto de quiebre</th><th>Columnas</th><th>Margen</th><th>Comportamiento</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">≥ 1280 px</td><td>12</td><td>auto (máx. 1160)</td><td>Retícula completa. Tarjetas de capacidad 4-4-4, catálogo 3 por fila.</td></tr>
+        <tr><td class="mono">768 – 1279 px</td><td>8</td><td>32 px</td><td>Agentes 2×2, catálogo 2 por fila, filtros colapsan a barra desplegable.</td></tr>
+        <tr><td class="mono">&lt; 768 px</td><td>4</td><td>20 px</td><td>Todo en una columna, navegación en menú, acción principal fija abajo.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="margin-top:34px">Tokens de color</h3>
+  <div class="tokens">
+    <div class="token"><div class="muestra" style="background:#080A09"></div><b>--fondo</b><span>#080A09 · lienzo</span></div>
+    <div class="token"><div class="muestra" style="background:#0D100E"></div><b>--papel</b><span>#0D100E · superficie</span></div>
+    <div class="token"><div class="muestra" style="background:#F5F0E4"></div><b>--crema</b><span>#F5F0E4 · texto principal</span></div>
+    <div class="token"><div class="muestra" style="background:#4CC48B"></div><b>--verde</b><span>#4CC48B · acción y estado</span></div>
+    <div class="token"><div class="muestra" style="background:#E0954F"></div><b>--ambar</b><span>#E0954F · foco y anotación</span></div>
+    <div class="token"><div class="muestra" style="background:#2A312C"></div><b>--borde</b><span>#2A312C · división</span></div>
+  </div>
+
+  <h3 style="margin-top:34px">Componentes base</h3>
+  <div class="tarjetas">
+    <article class="tarjeta">
+      <p class="et" style="margin-bottom:10px">Botones · alto 44 px en producción</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <span class="btn">Acción principal</span>
+        <span class="btn2">Secundaria</span>
+        <span class="btn2 sm">Terciaria</span>
+      </div>
+      <p style="margin-top:12px">Una sola acción principal por vista. El verde nunca se usa
+      para texto corrido: identifica lo que se puede accionar.</p>
+    </article>
+    <article class="tarjeta">
+      <p class="et" style="margin-bottom:10px">Campos y filtros</p>
+      <div class="campo">Buscar producto, marca o SKU</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+        <span class="chip">Categoría</span><span class="chip">Marca</span><span class="chip">En stock</span>
+      </div>
+      <p style="margin-top:12px">Filtros como fichas removibles: siempre se ve qué está
+      aplicado y se quita con un toque.</p>
+    </article>
+    <article class="tarjeta">
+      <p class="et" style="margin-bottom:10px">Tarjeta-panel</p>
+      <div class="caja" style="padding:12px">
+        <div class="img" style="aspect-ratio:3/2" data-r="3:2"></div>
+        <div class="ln l w75" style="margin-top:11px"></div>
+        <div class="ln w90"></div>
+        <div class="ln w45"></div>
+      </div>
+      <p style="margin-top:12px">El panel de cómic del afiche: imagen 3:2, título, dos
+      líneas de texto y un destino. Sin más.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ══ 03 · Flujo ════════════════════════════════════════════════════ -->
+<section id="flujo">
+  <p class="rot">03 · Flujo</p>
+  <h2>Mapa de navegación</h2>
+  <p class="intro">
+    El afiche propone un recorrido lineal —inicio, agente, servicios, cierre—. Acá se
+    conserva como ruta sugerida, pero cada nodo es alcanzable desde la barra superior:
+    nadie queda obligado a pasar por el agente para llegar al catálogo.
+  </p>
+  <div class="flujo">
+    <div class="nodo"><span class="et">W-01</span><b>Inicio</b><p>Qué hace CompAI y por qué es confiable.</p></div>
+    <div class="nodo"><span class="et">W-02</span><b>Elegir agente</b><p>Cuatro rutas según lo que se necesita.</p></div>
+    <div class="nodo"><span class="et">W-03 · W-04</span><b>Catálogo y ficha</b><p>Buscar, comparar, armar cotización.</p></div>
+    <div class="nodo"><span class="et">W-05</span><b>Capacitación y asesoría</b><p>Curso o reunión agendada.</p></div>
+    <div class="nodo"><span class="et">W-06</span><b>Cobertura y contacto</b><p>Cierre con persona responsable.</p></div>
+  </div>
+  <p class="intro" style="margin-top:20px">
+    Ruta secundaria: desde cualquier ficha de producto se puede saltar directo a
+    <strong>solicitar cotización</strong> sin crear cuenta. La cuenta se pide recién al
+    guardar una cotización o inscribirse en un curso.
+  </p>
+</section>
+
+<!-- ══ 04 · Dirección de arte ════════════════════════════════════════ -->
+<section id="arte">
+  <p class="rot">04 · Dirección de arte</p>
+  <h2>Del afiche a la interfaz</h2>
+  <p class="intro">
+    La estética retro-noir no se descarta: se le asigna un lugar acotado donde suma
+    carácter sin estorbar la lectura. Esta tabla es el contrato entre el afiche y el wireframe.
+  </p>
+  <div class="caja-tabla">
+    <table class="tabla">
+      <thead><tr><th>Elemento del afiche</th><th>Dónde vive en la interfaz</th><th>Límite</th></tr></thead>
+      <tbody>
+        <tr><td>Retrato protagonista</td><td>Bloque visual del hero, alineado a la derecha</td><td>Solo en W-01 y en el encabezado de W-02. Nunca detrás de texto.</td></tr>
+        <tr><td>Paneles de cómic</td><td>Tarjetas de capacidad, agente y curso</td><td>Ilustración 3:2 arriba, texto siempre fuera de la imagen.</td></tr>
+        <tr><td>Trama de semitono</td><td>Textura de fondo de secciones alternas</td><td>Opacidad máxima 6 %; se apaga bajo tablas y formularios.</td></tr>
+        <tr><td>Copa verde luminosa</td><td>Ícono de marca y estados de éxito</td><td>Un solo foco de luz por pantalla, arriba a la izquierda.</td></tr>
+        <tr><td>Rótulos de cartel («sólo en cines», «clasificada»)</td><td>Etiquetas mono de sección y códigos de pantalla</td><td>Texto funcional únicamente: SKU, plazo, estado. Sin frases de afiche en la interfaz.</td></tr>
+        <tr><td>Papel envejecido</td><td>Descartado</td><td>Reduce contraste bajo el mínimo de accesibilidad.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══ 05 · Pantallas ════════════════════════════════════════════════ -->
+<section id="pantallas">
+  <p class="rot">05 · Pantallas</p>
+  <h2>Siete vistas anotadas</h2>
+  <p class="intro">
+    Cada pantalla va con sus notas numeradas. Los rectángulos con aspa son imágenes por
+    definir; las barras grises son texto real por escribir. Las medidas anotadas son de
+    producción, no del dibujo.
+  </p>
+
+  <!-- ── W-01 ── -->
+  <div class="cab-pantalla">
+    <span class="cod">W-01</span><h3>Inicio</h3><p>Escritorio · 1440 × 900</p>
+  </div>
+  <div class="pantalla">
+    <div class="chrome">
+      <div class="puntos" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="url">https://compai.cl/</div><span class="vp">1440 × 900</span>
+    </div>
+    <div class="scroll"><div class="lienzo">
+
+      <div class="anc caja viva" style="padding:12px 16px;display:flex;align-items:center;gap:26px">
+        <b class="cal">1</b>
+        <span class="mono" style="font-size:15px;font-weight:700">comp<span style="color:var(--ambar)">AI</span></span>
+        <svg class="ticks" width="20" height="10" viewBox="0 0 64 32" fill="none" aria-hidden="true"><path d="M2 18l7 7 13-15M22 18l7 7 13-15" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="et">Productos</span><span class="et">Servicios</span>
+        <span class="et">Capacitación</span><span class="et">Quiénes somos</span>
+        <span style="flex:1"></span>
+        <span class="campo" style="width:190px;height:28px">Buscar…</span>
+        <span class="btn2 sm">Cuenta</span><span class="btn sm">Cotizar</span>
+      </div>
+
+      <div class="anc" style="display:grid;grid-template-columns:7fr 5fr;gap:22px;align-items:center">
+        <b class="cal">2</b>
+        <div class="caja" style="padding:26px">
+          <span class="chip">Proveedor del Estado · Mercado Público</span>
+          <div class="ln xl w90" style="margin-top:16px"></div>
+          <div class="ln xl w75"></div>
+          <div class="ln w90" style="margin-top:16px"></div>
+          <div class="ln w60"></div>
+          <div class="anc" style="display:flex;gap:12px;margin-top:22px">
+            <b class="cal arr">3</b>
+            <span class="btn">Ver catálogo</span><span class="btn2">Hablar con un agente</span>
+          </div>
+        </div>
+        <div class="anc"><b class="cal">4</b>
+          <div class="img" style="aspect-ratio:4/3" data-r="ILUSTRACIÓN 4:3"></div>
+        </div>
+      </div>
+
+      <div class="anc caja" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--trazo);padding:1px">
+        <b class="cal">5</b>
+        <div style="background:var(--papel);padding:13px 16px"><span class="et">RUT</span><div class="ln w75" style="margin-top:7px"></div></div>
+        <div style="background:var(--papel);padding:13px 16px"><span class="et">Registro de Proveedores</span><div class="ln w60" style="margin-top:7px"></div></div>
+        <div style="background:var(--papel);padding:13px 16px"><span class="et">Entrega</span><div class="ln w75" style="margin-top:7px"></div></div>
+        <div style="background:var(--papel);padding:13px 16px"><span class="et">Facturación</span><div class="ln w45" style="margin-top:7px"></div></div>
+      </div>
+
+      <div class="anc" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+        <b class="cal">6</b>
+        <div class="caja" style="padding:14px"><div class="img" style="aspect-ratio:3/2" data-r="3:2"></div><div class="ln l w60" style="margin-top:12px"></div><div class="ln w90"></div><div class="ln w75"></div><div class="btn2 sm" style="margin-top:12px">Ver equipamiento</div></div>
+        <div class="caja" style="padding:14px"><div class="img" style="aspect-ratio:3/2" data-r="3:2"></div><div class="ln l w60" style="margin-top:12px"></div><div class="ln w90"></div><div class="ln w75"></div><div class="btn2 sm" style="margin-top:12px">Ver servicios TI</div></div>
+        <div class="caja" style="padding:14px"><div class="img" style="aspect-ratio:3/2" data-r="3:2"></div><div class="ln l w60" style="margin-top:12px"></div><div class="ln w90"></div><div class="ln w75"></div><div class="btn2 sm" style="margin-top:12px">Ver datos e IA</div></div>
+      </div>
+
+      <div class="anc caja punteada" style="padding:20px 22px;display:flex;align-items:center;gap:20px">
+        <b class="cal">7</b>
+        <div style="flex:1"><div class="ln l w45"></div><div class="ln w75" style="margin-top:9px"></div></div>
+        <span class="btn">Solicitar cotización</span>
+      </div>
+
+      <div class="anc caja" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:22px;padding:20px 22px">
+        <b class="cal">8</b>
+        <div><div class="ln l w45"></div><div class="ln w90" style="margin-top:10px"></div><div class="ln w60"></div></div>
+        <div><span class="et">Productos</span><div class="ln w75" style="margin-top:9px"></div><div class="ln w60"></div><div class="ln w75"></div></div>
+        <div><span class="et">Servicios</span><div class="ln w75" style="margin-top:9px"></div><div class="ln w60"></div><div class="ln w45"></div></div>
+        <div><span class="et">Legal</span><div class="ln w60" style="margin-top:9px"></div><div class="ln w75"></div><div class="ln w45"></div></div>
+      </div>
+
+    </div></div>
+  </div>
+  <ul class="specs">
+    <li><b>1</b><span><strong>Barra superior fija</strong> de 64 px. Logo, cuatro destinos, buscador, cuenta y una sola acción principal. Se contrae a 52 px al bajar.</span></li>
+    <li><b>2</b><span><strong>Hero 7/5.</strong> Título de dos líneas máximo, bajada de 2 líneas. El texto nunca se monta sobre la ilustración.</span></li>
+    <li><b>3</b><span><strong>Par de acciones.</strong> Catálogo (principal) y agente (secundaria). Ambas visibles sin desplazar en 900 px de alto.</span></li>
+    <li><b>4</b><span><strong>Bloque visual 4:3</strong>, recorte seguro superior del 15 % para que el retrato no se corte en tablet.</span></li>
+    <li><b>5</b><span><strong>Franja de confianza.</strong> Cuatro datos verificables en monoespaciada, con enlace a la ficha de Mercado Público.</span></li>
+    <li><b>6</b><span><strong>Tres capacidades</strong> —equipamiento, servicios TI, datos e IA— cada una con un destino único.</span></li>
+    <li><b>7</b><span><strong>Cierre de conversión</strong> en banda punteada: no compite con el hero porque aparece después del contenido.</span></li>
+    <li><b>8</b><span><strong>Pie de cuatro columnas</strong> con razón social, RUT y persona de contacto. Repite el correo del encabezado.</span></li>
+  </ul>
+
+  <!-- ── W-02 ── -->
+  <div class="cab-pantalla">
+    <span class="cod">W-02</span><h3>Selección de agente</h3><p>Escritorio · 1440</p>
+  </div>
+  <div class="pantalla">
+    <div class="chrome">
+      <div class="puntos" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="url">https://compai.cl/agentes</div><span class="vp">1440</span>
+    </div>
+    <div class="scroll"><div class="lienzo">
+
+      <div class="caja viva" style="padding:12px 16px;display:flex;align-items:center;gap:22px">
+        <span class="mono" style="font-size:15px;font-weight:700">comp<span style="color:var(--ambar)">AI</span></span>
+        <span class="et">Productos</span><span class="et">Servicios</span><span class="et">Capacitación</span>
+        <span style="flex:1"></span><span class="btn2 sm">Cuenta</span>
+      </div>
+
+      <div class="anc" style="text-align:center;padding:6px 0">
+        <b class="cal" style="left:0">1</b>
+        <div class="ln xl w45" style="margin-inline:auto"></div>
+        <div class="ln w60" style="margin:12px auto 0"></div>
+      </div>
+
+      <div class="anc" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <b class="cal">2</b>
+        <div class="caja" style="padding:16px;display:grid;grid-template-columns:96px 1fr;gap:16px">
+          <div class="img" style="aspect-ratio:1" data-r="1:1"></div>
+          <div><span class="et">Software y sistemas</span><div class="ln l w60" style="margin-top:8px"></div><div class="ln w90" style="margin-top:10px"></div><div class="ln w75"></div><div class="btn sm" style="margin-top:12px">Elegir</div></div>
+        </div>
+        <div class="caja" style="padding:16px;display:grid;grid-template-columns:96px 1fr;gap:16px">
+          <div class="img" style="aspect-ratio:1" data-r="1:1"></div>
+          <div><span class="et">Asesoría y estrategia</span><div class="ln l w60" style="margin-top:8px"></div><div class="ln w90" style="margin-top:10px"></div><div class="ln w75"></div><div class="btn sm" style="margin-top:12px">Elegir</div></div>
+        </div>
+        <div class="caja" style="padding:16px;display:grid;grid-template-columns:96px 1fr;gap:16px">
+          <div class="img" style="aspect-ratio:1" data-r="1:1"></div>
+          <div><span class="et">Equipamiento y salud</span><div class="ln l w60" style="margin-top:8px"></div><div class="ln w90" style="margin-top:10px"></div><div class="ln w75"></div><div class="btn sm" style="margin-top:12px">Elegir</div></div>
+        </div>
+        <div class="caja" style="padding:16px;display:grid;grid-template-columns:96px 1fr;gap:16px">
+          <div class="img" style="aspect-ratio:1" data-r="1:1"></div>
+          <div><span class="et">Compras y logística</span><div class="ln l w60" style="margin-top:8px"></div><div class="ln w90" style="margin-top:10px"></div><div class="ln w75"></div><div class="btn sm" style="margin-top:12px">Elegir</div></div>
+        </div>
+      </div>
+
+      <div class="anc caja punteada" style="padding:14px 18px;display:flex;align-items:center;gap:16px">
+        <b class="cal">3</b>
+        <div style="flex:1"><div class="ln w45"></div></div>
+        <span class="btn2 sm">Ir directo al catálogo</span>
+      </div>
+
+    </div></div>
+  </div>
+  <ul class="specs">
+    <li><b>1</b><span><strong>Pregunta única</strong> centrada: «¿Qué necesitas resolver?». Una línea de apoyo explica que la elección solo cambia el orden del contenido, no el acceso.</span></li>
+    <li><b>2</b><span><strong>Cuatro agentes en 2×2</strong>: avatar 1:1, especialidad en rótulo mono, nombre, dos líneas de alcance y un botón. Estado seleccionado = borde verde + marca de verificación.</span></li>
+    <li><b>3</b><span><strong>Salida siempre visible.</strong> Quien ya sabe qué quiere se salta el paso; el agente nunca es obligatorio.</span></li>
+  </ul>
+
+  <!-- ── W-03 ── -->
+  <div class="cab-pantalla">
+    <span class="cod">W-03</span><h3>Catálogo</h3><p>Escritorio · 1440</p>
+  </div>
+  <div class="pantalla">
+    <div class="chrome">
+      <div class="puntos" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="url">https://compai.cl/productos?categoria=computadores</div><span class="vp">1440</span>
+    </div>
+    <div class="scroll"><div class="lienzo">
+
+      <div class="caja viva" style="padding:12px 16px;display:flex;align-items:center;gap:22px">
+        <span class="mono" style="font-size:15px;font-weight:700">comp<span style="color:var(--ambar)">AI</span></span>
+        <span class="campo" style="flex:1;height:30px">Buscar producto, marca o SKU</span>
+        <span class="btn2 sm">Cuenta</span><span class="btn sm">Cotización · 3</span>
+      </div>
+
+      <div class="anc" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <b class="cal arr">1</b>
+        <span class="et">Inicio / Productos / Computadores</span>
+        <span style="flex:1"></span>
+        <span class="chip">En stock</span><span class="chip">Marca: 2</span><span class="chip">Limpiar</span>
+        <span class="campo" style="width:170px;height:28px">Ordenar: relevancia</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:240px 1fr;gap:18px">
+        <div class="anc caja" style="padding:16px;align-self:start">
+          <b class="cal">2</b>
+          <span class="et">Categoría</span>
+          <div class="ln w75" style="margin-top:9px"></div><div class="ln w60"></div><div class="ln w75"></div><div class="ln w45"></div>
+          <span class="et" style="display:block;margin-top:18px">Marca</span>
+          <div class="ln w60" style="margin-top:9px"></div><div class="ln w75"></div><div class="ln w45"></div>
+          <span class="et" style="display:block;margin-top:18px">Disponibilidad</span>
+          <div class="ln w75" style="margin-top:9px"></div><div class="ln w60"></div>
+          <span class="et" style="display:block;margin-top:18px">Precio</span>
+          <div class="caja" style="height:26px;margin-top:9px"></div>
+        </div>
+
+        <div>
+          <div class="anc" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+            <b class="cal">3</b>
+            <div class="caja" style="padding:12px"><div class="img" style="aspect-ratio:1" data-r="1:1"></div><span class="et" style="display:block;margin-top:10px">SKU-000000</span><div class="ln w90" style="margin-top:7px"></div><div class="ln w60"></div><div class="ln l w45" style="margin-top:10px"></div><div style="display:flex;gap:8px;margin-top:10px"><span class="btn sm">Agregar</span><span class="btn2 sm">Ficha</span></div></div>
+            <div class="caja" style="padding:12px"><div class="img" style="aspect-ratio:1" data-r="1:1"></div><span class="et" style="display:block;margin-top:10px">SKU-000000</span><div class="ln w90" style="margin-top:7px"></div><div class="ln w60"></div><div class="ln l w45" style="margin-top:10px"></div><div style="display:flex;gap:8px;margin-top:10px"><span class="btn sm">Agregar</span><span class="btn2 sm">Ficha</span></div></div>
+            <div class="caja" style="padding:12px"><div class="img" style="aspect-ratio:1" data-r="1:1"></div><span class="et" style="display:block;margin-top:10px">SKU-000000</span><div class="ln w90" style="margin-top:7px"></div><div class="ln w60"></div><div class="ln l w45" style="margin-top:10px"></div><div style="display:flex;gap:8px;margin-top:10px"><span class="btn2 sm">Sin stock</span><span class="btn2 sm">Avisarme</span></div></div>
+            <div class="caja" style="padding:12px"><div class="img" style="aspect-ratio:1" data-r="1:1"></div><span class="et" style="display:block;margin-top:10px">SKU-000000</span><div class="ln w90" style="margin-top:7px"></div><div class="ln w60"></div><div class="ln l w45" style="margin-top:10px"></div><div style="display:flex;gap:8px;margin-top:10px"><span class="btn sm">Agregar</span><span class="btn2 sm">Ficha</span></div></div>
+            <div class="caja" style="padding:12px"><div class="img" style="aspect-ratio:1" data-r="1:1"></div><span class="et" style="display:block;margin-top:10px">SKU-000000</span><div class="ln w90" style="margin-top:7px"></div><div class="ln w60"></div><div class="ln l w45" style="margin-top:10px"></div><div style="display:flex;gap:8px;margin-top:10px"><span class="btn sm">Agregar</span><span class="btn2 sm">Ficha</span></div></div>
+            <div class="caja" style="padding:12px"><div class="img" style="aspect-ratio:1" data-r="1:1"></div><span class="et" style="display:block;margin-top:10px">SKU-000000</span><div class="ln w90" style="margin-top:7px"></div><div class="ln w60"></div><div class="ln l w45" style="margin-top:10px"></div><div style="display:flex;gap:8px;margin-top:10px"><span class="btn sm">Agregar</span><span class="btn2 sm">Ficha</span></div></div>
+          </div>
+          <div class="anc" style="display:flex;justify-content:center;gap:8px;margin-top:16px">
+            <b class="cal" style="left:calc(50% - 62px);top:-24px">4</b>
+            <span class="btn2 sm">Cargar 12 más</span>
+          </div>
+        </div>
+      </div>
+
+    </div></div>
+  </div>
+  <ul class="specs">
+    <li><b>1</b><span><strong>Migas y filtros aplicados</strong> en la misma línea. Lo que está filtrando se ve sin abrir nada, incluso con la barra lateral colapsada.</span></li>
+    <li><b>2</b><span><strong>Filtros a la izquierda</strong>, 240 px, pegados al desplazar. Bajo 1280 px se convierten en un panel desplegable.</span></li>
+    <li><b>3</b><span><strong>Tarjeta de producto:</strong> imagen 1:1, SKU en mono, nombre en dos líneas, precio y dos acciones. Sin stock cambia el par de botones por «Avisarme», nunca se oculta el producto.</span></li>
+    <li><b>4</b><span><strong>Carga incremental</strong> con botón explícito y URL paginada, para que un resultado se pueda compartir por correo tal cual.</span></li>
+  </ul>
+
+  <!-- ── W-04 ── -->
+  <div class="cab-pantalla">
+    <span class="cod">W-04</span><h3>Ficha de producto y cotización</h3><p>Escritorio · 1440</p>
+  </div>
+  <div class="pantalla">
+    <div class="chrome">
+      <div class="puntos" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="url">https://compai.cl/productos/sku-000000</div><span class="vp">1440</span>
+    </div>
+    <div class="scroll"><div class="lienzo">
+
+      <div class="caja viva" style="padding:12px 16px;display:flex;align-items:center;gap:22px">
+        <span class="mono" style="font-size:15px;font-weight:700">comp<span style="color:var(--ambar)">AI</span></span>
+        <span style="flex:1"></span><span class="et">Volver al catálogo</span><span class="btn2 sm">Cotización · 3</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:5fr 4fr 3fr;gap:18px;align-items:start">
+        <div class="anc"><b class="cal">1</b>
+          <div class="img" style="aspect-ratio:1" data-r="1:1"></div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px">
+            <div class="img" style="aspect-ratio:1" data-r=""></div><div class="img" style="aspect-ratio:1" data-r=""></div>
+            <div class="img" style="aspect-ratio:1" data-r=""></div><div class="img" style="aspect-ratio:1" data-r=""></div>
+          </div>
+        </div>
+
+        <div class="anc"><b class="cal">2</b>
+          <span class="et">SKU-000000 · Marca</span>
+          <div class="ln xl w90" style="margin-top:10px"></div>
+          <div class="ln xl w60"></div>
+          <div class="ln w90" style="margin-top:14px"></div><div class="ln w75"></div><div class="ln w60"></div>
+          <div class="caja" style="margin-top:16px;padding:12px 14px">
+            <span class="et">Ficha técnica</span>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;margin-top:10px">
+              <div class="ln w75"></div><div class="ln w60"></div>
+              <div class="ln w60"></div><div class="ln w75"></div>
+              <div class="ln w75"></div><div class="ln w45"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="anc caja viva" style="padding:16px;align-self:start">
+          <b class="cal">3</b>
+          <div class="ln l w60"></div>
+          <span class="et" style="display:block;margin-top:12px">Cantidad</span>
+          <div class="campo" style="margin-top:7px">1</div>
+          <span class="et" style="display:block;margin-top:14px">Plazo confirmado con distribuidor</span>
+          <div class="ln w75" style="margin-top:8px"></div>
+          <div class="btn" style="width:100%;margin-top:16px">Agregar a cotización</div>
+          <div class="btn2" style="width:100%;margin-top:8px">Consultar por WhatsApp</div>
+          <div class="anc caja punteada" style="padding:10px 12px;margin-top:14px">
+            <b class="cal">4</b>
+            <span class="et">Entrega directa del distribuidor</span>
+            <div class="ln w90" style="margin-top:8px"></div><div class="ln w60"></div>
+          </div>
+        </div>
+      </div>
+
+    </div></div>
+  </div>
+  <ul class="specs">
+    <li><b>1</b><span><strong>Galería 1:1</strong> con cuatro miniaturas. Sin zoom modal: en compras técnicas pesa más la ficha que la foto.</span></li>
+    <li><b>2</b><span><strong>Identidad del producto</strong> arriba: SKU y marca antes del nombre, porque así se busca en una licitación. Ficha técnica en dos columnas, siempre visible, sin acordeón.</span></li>
+    <li><b>3</b><span><strong>Panel de cotización pegado</strong> (sticky, 300 px). Precio, cantidad, plazo y acción. Comprar no exige cuenta.</span></li>
+    <li><b>4</b><span><strong>Nota de logística:</strong> el plazo se muestra solo si está confirmado por escrito con el distribuidor; si no, dice «a confirmar». Nunca una fecha sin respaldo.</span></li>
+  </ul>
+
+  <!-- ── W-05 ── -->
+  <div class="cab-pantalla">
+    <span class="cod">W-05</span><h3>Capacitación y asesoría</h3><p>Escritorio · 1440</p>
+  </div>
+  <div class="pantalla">
+    <div class="chrome">
+      <div class="puntos" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="url">https://compai.cl/capacitacion</div><span class="vp">1440</span>
+    </div>
+    <div class="scroll"><div class="lienzo">
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start">
+
+        <div class="anc caja" style="padding:16px">
+          <b class="cal">1</b>
+          <span class="et">Plataforma de capacitación</span>
+          <div class="img" style="aspect-ratio:16/9;margin-top:10px" data-r="VIDEO 16:9"></div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:10px">
+            <span class="btn2 sm">▶</span><div class="ln w75" style="flex:1"></div><span class="et">12:40</span>
+          </div>
+          <div class="anc" style="margin-top:16px">
+            <b class="cal arr">2</b>
+            <span class="et">Progreso del módulo</span>
+            <div class="caja" style="height:10px;margin-top:8px;padding:0;overflow:hidden">
+              <div style="width:42%;height:100%;background:rgba(76,196,139,.45)"></div>
+            </div>
+            <div class="ln w30" style="margin-top:9px"></div>
+          </div>
+          <div class="anc" style="margin-top:16px">
+            <b class="cal arr">3</b>
+            <span class="et">Módulos</span>
+            <div class="caja" style="padding:10px 12px;margin-top:8px"><div class="ln w75"></div></div>
+            <div class="caja" style="padding:10px 12px;margin-top:6px"><div class="ln w60"></div></div>
+            <div class="caja" style="padding:10px 12px;margin-top:6px"><div class="ln w90"></div></div>
+          </div>
+        </div>
+
+        <div class="anc caja" style="padding:16px">
+          <b class="cal">4</b>
+          <span class="et">Asesoría · agendar reunión</span>
+          <div class="ln l w75" style="margin-top:10px"></div>
+          <div class="ln w90" style="margin-top:10px"></div><div class="ln w60"></div>
+
+          <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:16px">
+            <span class="et" style="text-align:center">L</span><span class="et" style="text-align:center">M</span><span class="et" style="text-align:center">M</span><span class="et" style="text-align:center">J</span><span class="et" style="text-align:center">V</span><span class="et" style="text-align:center">S</span><span class="et" style="text-align:center">D</span>
+            <div class="caja" style="aspect-ratio:1"></div><div class="caja" style="aspect-ratio:1"></div><div class="caja" style="aspect-ratio:1"></div><div class="caja" style="aspect-ratio:1"></div><div class="caja" style="aspect-ratio:1"></div><div class="caja" style="aspect-ratio:1;opacity:.4"></div><div class="caja" style="aspect-ratio:1;opacity:.4"></div>
+            <div class="caja" style="aspect-ratio:1"></div><div class="caja viva" style="aspect-ratio:1;border-color:var(--verde);background:rgba(76,196,139,.12)"></div><div class="caja" style="aspect-ratio:1"></div><div class="caja" style="aspect-ratio:1"></div><div class="caja" style="aspect-ratio:1"></div><div class="caja" style="aspect-ratio:1;opacity:.4"></div><div class="caja" style="aspect-ratio:1;opacity:.4"></div>
+            <div class="caja" style="aspect-ratio:1"></div><div class="caja" style="aspect-ratio:1"></div><div class="caja" style="aspect-ratio:1"></div><div class="caja" style="aspect-ratio:1"></div><div class="caja" style="aspect-ratio:1"></div><div class="caja" style="aspect-ratio:1;opacity:.4"></div><div class="caja" style="aspect-ratio:1;opacity:.4"></div>
+          </div>
+
+          <div class="anc" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px">
+            <b class="cal arr">5</b>
+            <span class="chip">09:00</span><span class="chip">11:30</span><span class="chip">15:00</span><span class="chip">16:30</span>
+          </div>
+          <div class="campo" style="margin-top:14px">Correo institucional</div>
+          <div class="campo" style="margin-top:8px">Organismo o empresa</div>
+          <div class="btn" style="width:100%;margin-top:12px">Confirmar reunión</div>
+        </div>
+
+      </div>
+    </div></div>
+  </div>
+  <ul class="specs">
+    <li><b>1</b><span><strong>Reproductor 16:9</strong> con controles propios y transcripción descargable. El video no arranca solo.</span></li>
+    <li><b>2</b><span><strong>Progreso persistente</strong>: porcentaje y minutos restantes. Se guarda por usuario; sin cuenta, en el navegador.</span></li>
+    <li><b>3</b><span><strong>Lista de módulos</strong> con estado (visto, en curso, bloqueado) siempre a la vista del reproductor.</span></li>
+    <li><b>4</b><span><strong>Agenda de asesoría</strong> en la misma pantalla: quien no quiere curso, agenda; quien no quiere agenda, ve el curso.</span></li>
+    <li><b>5</b><span><strong>Horarios en zona local declarada</strong> (America/Santiago) y solo dos campos obligatorios. La confirmación llega por correo con archivo .ics.</span></li>
+  </ul>
+
+  <!-- ── W-06 ── -->
+  <div class="cab-pantalla">
+    <span class="cod">W-06</span><h3>Cobertura, equipo y contacto</h3><p>Escritorio · 1440</p>
+  </div>
+  <div class="pantalla">
+    <div class="chrome">
+      <div class="puntos" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="url">https://compai.cl/quienes-somos</div><span class="vp">1440</span>
+    </div>
+    <div class="scroll"><div class="lienzo">
+
+      <div class="anc" style="position:relative">
+        <b class="cal">1</b>
+        <div class="img" style="aspect-ratio:21/9" data-r="MAPA DE COBERTURA"></div>
+        <div style="position:absolute;left:14px;bottom:14px;display:flex;gap:8px;flex-wrap:wrap">
+          <span class="chip">Santiago · casa matriz</span>
+          <span class="chip">Despacho nacional</span>
+          <span class="chip">Distribuidores</span>
+        </div>
+      </div>
+
+      <div class="anc" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--trazo);padding:1px">
+        <b class="cal">2</b>
+        <div style="background:var(--papel);padding:14px 16px"><span class="et">Regiones con despacho</span><div class="ln l w30" style="margin-top:8px"></div></div>
+        <div style="background:var(--papel);padding:14px 16px"><span class="et">Plazo promedio comprometido</span><div class="ln l w45" style="margin-top:8px"></div></div>
+        <div style="background:var(--papel);padding:14px 16px"><span class="et">Órdenes con observación</span><div class="ln l w30" style="margin-top:8px"></div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:7fr 5fr;gap:20px;align-items:start">
+        <div class="anc caja" style="padding:16px">
+          <b class="cal">3</b>
+          <span class="et">Equipo</span>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px">
+            <div><div class="img" style="aspect-ratio:1" data-r="1:1"></div><div class="ln w90" style="margin-top:8px"></div><div class="ln w60"></div></div>
+            <div><div class="img" style="aspect-ratio:1" data-r="1:1"></div><div class="ln w90" style="margin-top:8px"></div><div class="ln w60"></div></div>
+            <div><div class="img" style="aspect-ratio:1" data-r="1:1"></div><div class="ln w90" style="margin-top:8px"></div><div class="ln w60"></div></div>
+            <div><div class="img" style="aspect-ratio:1" data-r="1:1"></div><div class="ln w90" style="margin-top:8px"></div><div class="ln w60"></div></div>
+          </div>
+        </div>
+
+        <div class="anc caja viva" style="padding:16px">
+          <b class="cal">4</b>
+          <span class="et">Ficha de la empresa</span>
+          <div style="display:grid;grid-template-columns:auto 1fr;gap:8px 14px;margin-top:12px;align-items:center">
+            <span class="et">Razón social</span><div class="ln w90"></div>
+            <span class="et">RUT</span><div class="ln w45"></div>
+            <span class="et">Registro</span><div class="ln w75"></div>
+            <span class="et">Domicilio</span><div class="ln w60"></div>
+          </div>
+          <div class="btn2 sm" style="margin-top:14px">Ver ficha en Mercado Público</div>
+          <div class="anc" style="margin-top:18px">
+            <b class="cal arr">5</b>
+            <span class="et">Contacto directo</span>
+            <div class="ln l w75" style="margin-top:8px"></div>
+            <div class="ln w60" style="margin-top:8px"></div>
+            <div style="display:flex;gap:8px;margin-top:12px"><span class="btn">Escribir correo</span><span class="btn2">Llamar</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div></div>
+  </div>
+  <ul class="specs">
+    <li><b>1</b><span><strong>Mapa de cobertura</strong> 21:9 como imagen estática con texto alternativo; nada de mapa interactivo de terceros. Los rótulos son HTML sobre la imagen, no parte del archivo.</span></li>
+    <li><b>2</b><span><strong>Tres cifras verificables.</strong> Si un dato no se puede respaldar, la celda no se publica: mejor tres cifras ciertas que seis inventadas.</span></li>
+    <li><b>3</b><span><strong>Equipo con nombre y cargo real.</strong> Retratos 1:1 tratados con la trama del afiche, que acá es lo único que conserva la estética de cómic.</span></li>
+    <li><b>4</b><span><strong>Ficha legal</strong> en pares dato-valor, con enlace saliente a la ficha oficial. Es la sección que más se consulta antes de adjudicar.</span></li>
+    <li><b>5</b><span><strong>Persona responsable</strong>, no un formulario anónimo: nombre, cargo, correo y teléfono directos.</span></li>
+  </ul>
+
+  <!-- ── W-07 ── -->
+  <div class="cab-pantalla">
+    <span class="cod">W-07</span><h3>Inicio en móvil</h3><p>390 × 844</p>
+  </div>
+  <div class="pantalla">
+    <div class="chrome">
+      <div class="puntos" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="url">https://compai.cl/</div><span class="vp">390 × 844</span>
+    </div>
+    <div class="scroll"><div class="lienzo movil">
+
+      <div class="anc caja viva" style="padding:10px 12px;display:flex;align-items:center;gap:10px">
+        <b class="cal">1</b>
+        <span class="mono" style="font-size:14px;font-weight:700">comp<span style="color:var(--ambar)">AI</span></span>
+        <span style="flex:1"></span><span class="btn2 sm">☰</span>
+      </div>
+
+      <div class="anc caja" style="padding:16px">
+        <b class="cal">2</b>
+        <span class="chip">Proveedor del Estado</span>
+        <div class="ln xl w90" style="margin-top:12px"></div><div class="ln xl w60"></div>
+        <div class="ln w90" style="margin-top:12px"></div><div class="ln w75"></div>
+        <div class="img" style="aspect-ratio:4/3;margin-top:14px" data-r="4:3"></div>
+      </div>
+
+      <div class="anc caja" style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--trazo);padding:1px">
+        <b class="cal">3</b>
+        <div style="background:var(--papel);padding:11px 13px"><span class="et">RUT</span><div class="ln w75" style="margin-top:6px"></div></div>
+        <div style="background:var(--papel);padding:11px 13px"><span class="et">Registro</span><div class="ln w60" style="margin-top:6px"></div></div>
+        <div style="background:var(--papel);padding:11px 13px"><span class="et">Entrega</span><div class="ln w75" style="margin-top:6px"></div></div>
+        <div style="background:var(--papel);padding:11px 13px"><span class="et">Facturación</span><div class="ln w45" style="margin-top:6px"></div></div>
+      </div>
+
+      <div class="caja" style="padding:12px"><div class="img" style="aspect-ratio:3/2" data-r="3:2"></div><div class="ln l w60" style="margin-top:10px"></div><div class="ln w90"></div></div>
+      <div class="caja" style="padding:12px"><div class="img" style="aspect-ratio:3/2" data-r="3:2"></div><div class="ln l w60" style="margin-top:10px"></div><div class="ln w90"></div></div>
+
+      <div class="anc caja viva" style="padding:10px;display:flex;gap:8px;position:sticky;bottom:0;background:var(--papel-alto)">
+        <b class="cal">4</b>
+        <span class="btn" style="flex:1">Cotizar</span><span class="btn2" style="flex:1">Llamar</span>
+      </div>
+
+    </div></div>
+  </div>
+  <ul class="specs">
+    <li><b>1</b><span><strong>Encabezado de 52 px</strong> con menú desplegable a pantalla completa. El buscador se abre desde el menú, no ocupa la barra.</span></li>
+    <li><b>2</b><span><strong>Hero apilado:</strong> texto primero, imagen después. En una conexión lenta se lee la propuesta antes de que cargue la ilustración.</span></li>
+    <li><b>3</b><span><strong>Franja de confianza en 2×2</strong>, sin desplazamiento horizontal.</span></li>
+    <li><b>4</b><span><strong>Barra fija inferior</strong> con las dos acciones que importan en terreno: cotizar y llamar. Alto de toque 48 px.</span></li>
+  </ul>
+</section>
+
+<!-- ══ 06 · Estados ══════════════════════════════════════════════════ -->
+<section id="estados">
+  <p class="rot">06 · Estados</p>
+  <h2>Vacío, carga, error y sin stock</h2>
+  <p class="intro">
+    Un wireframe que solo dibuja el caso feliz deja la mitad del trabajo al desarrollo.
+    Estos cuatro estados son parte del diseño, no un detalle de implementación.
+  </p>
+  <div class="tarjetas">
+    <article class="tarjeta">
+      <h3>Sin resultados</h3>
+      <div class="caja punteada" style="padding:16px;margin-bottom:12px">
+        <div class="ln w60"></div><div class="ln w90" style="margin-top:9px"></div>
+        <span class="btn2 sm" style="margin-top:12px">Quitar filtros</span>
+      </div>
+      <p>Explica qué filtro dejó la lista vacía y ofrece quitarlo. Nunca una pantalla en blanco.</p>
+    </article>
+    <article class="tarjeta">
+      <h3>Cargando</h3>
+      <div class="caja" style="padding:16px;margin-bottom:12px">
+        <div class="ln w90"></div><div class="ln w75"></div><div class="ln w45"></div>
+      </div>
+      <p>Esqueleto con la forma final del contenido. Sin ruedas girando ni saltos de maquetación.</p>
+    </article>
+    <article class="tarjeta">
+      <h3>Error</h3>
+      <div class="caja punteada" style="padding:16px;margin-bottom:12px;border-color:rgba(224,149,79,.45)">
+        <span class="et" style="color:var(--ambar)">No se pudo cargar</span>
+        <div class="ln w75" style="margin-top:9px"></div>
+        <span class="btn2 sm" style="margin-top:12px">Reintentar</span>
+      </div>
+      <p>Qué falló, qué se puede hacer y una vía humana: correo y teléfono de contacto.</p>
+    </article>
+    <article class="tarjeta">
+      <h3>Sin stock</h3>
+      <div class="caja" style="padding:16px;margin-bottom:12px">
+        <div class="ln w75"></div>
+        <div style="display:flex;gap:8px;margin-top:12px"><span class="btn2 sm">Avisarme</span><span class="btn2 sm">Ver similares</span></div>
+      </div>
+      <p>El producto sigue visible con su ficha completa. Se cambia la acción, no se esconde la información.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ══ 07 · Reglas ═══════════════════════════════════════════════════ -->
+<section id="reglas">
+  <p class="rot">07 · Reglas</p>
+  <h2>Accesibilidad y rendimiento</h2>
+  <div class="caja-tabla">
+    <table class="tabla">
+      <thead><tr><th>Regla</th><th>Umbral</th><th>Cómo se verifica</th></tr></thead>
+      <tbody>
+        <tr><td>Contraste de texto</td><td>4.5:1 mínimo · 3:1 en títulos ≥ 24 px</td><td>Revisión por token antes de aprobar la paleta.</td></tr>
+        <tr><td>Área de toque</td><td>44 × 44 px</td><td>Auditoría en 390 px de ancho.</td></tr>
+        <tr><td>Foco visible</td><td>Contorno ámbar de 2 px con separación</td><td>Recorrido completo con teclado en cada pantalla.</td></tr>
+        <tr><td>Texto alternativo</td><td>Toda imagen informativa</td><td>Las decorativas van con <span class="mono">alt=""</span>.</td></tr>
+        <tr><td>Movimiento</td><td>Se respeta <span class="mono">prefers-reduced-motion</span></td><td>Sin animación automática ni video con autoplay.</td></tr>
+        <tr><td>Peso de página</td><td>&lt; 250 KB en la primera vista</td><td>Sin CDN, sin fuentes remotas, imágenes servidas en AVIF/WebP.</td></tr>
+        <tr><td>Sin conexión a terceros</td><td>Cero solicitudes externas</td><td>Igual que el sitio actual: todo el CSS va en el documento.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══ 08 · Pendientes ═══════════════════════════════════════════════ -->
+<section id="pendientes">
+  <p class="rot">08 · Pendientes</p>
+  <h2>Qué falta decidir</h2>
+  <p class="intro">Preguntas abiertas que este wireframe no resuelve solo y conviene cerrar antes de maquetar.</p>
+  <div class="tarjetas">
+    <article class="tarjeta"><h3>Alcance del comercio</h3><p>¿Carro con pago en línea o cotización enviada por correo? El wireframe asume cotización; el pago cambia W-03 y W-04.</p></article>
+    <article class="tarjeta"><h3>Cuentas de usuario</h3><p>Definir si el acceso es abierto o restringido a compradores institucionales verificados.</p></article>
+    <article class="tarjeta"><h3>Agentes de IA</h3><p>Confirmar si los cuatro agentes son un recorrido guiado o conversación real, y qué datos pueden consultar.</p></article>
+    <article class="tarjeta"><h3>Ilustración</h3><p>Encargar las piezas 4:3, 3:2 y 1:1 en la línea del afiche, con recorte seguro definido para no cortar los retratos.</p></article>
+  </div>
+</section>
+
+<footer class="pie">
+  <p>WF-CompAI v1.0 · Wireframe de baja fidelidad · documento interno, sin indexar.</p>
+  <p>COMPAI GLOBAL SOLUTIONS SpA · RUT 78.491.451-8 · Santiago, Chile</p>
+  <p>Archivo autónomo: se abre con doble clic, sin servidor ni dependencias.</p>
+</footer>
+
+</main>
+</body>
+</html>
