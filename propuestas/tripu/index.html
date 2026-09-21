@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tripu · Propuesta de app para la tripulación LATAM</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--indigo:#1B0088;--night:#0B0038;--coral:#D6103F;--ink:#16123A;--muted:#5B5780;--ground:#F3F2F9;--line:#E3E1EE;--lav:#ECE9F8}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Nunito Sans',system-ui,sans-serif;color:var(--ink);background:var(--ground)}
+h1,h2,h3{font-family:'Plus Jakarta Sans',sans-serif;margin:0;letter-spacing:-.01em}
+a{color:var(--indigo)}
+header{background:linear-gradient(120deg,var(--indigo),var(--night));color:#fff;padding:40px 24px 36px}
+.wrap{max-width:1180px;margin:0 auto}
+.kicker{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#FFB3C4}
+header h1{font-size:clamp(34px,6vw,56px);line-height:1;margin:8px 0 10px}
+header p{margin:0;max-width:640px;font-size:17px;line-height:1.5;color:#E7E3FF}
+.acciones{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.btn{display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 18px;border-radius:12px;font-weight:800;text-decoration:none;font-size:15px}
+.btn.p{background:var(--coral);color:#fff}.btn.s{background:rgba(255,255,255,.14);color:#fff}
+section{padding:36px 24px}
+section h2{font-size:22px;margin-bottom:6px}
+section .sub{margin:0 0 20px;color:var(--muted);font-size:15px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:24px}
+.tel{margin:0;display:flex;flex-direction:column;gap:10px}
+.tel a{display:block}
+.marco{display:block;width:100%;aspect-ratio:390/844;border-radius:26px;border:8px solid #1a1633;background:#fff;overflow:hidden;box-shadow:0 20px 40px rgba(22,18,58,.18);position:relative}
+.marco iframe{border:0;width:390px;height:844px;transform-origin:0 0;position:absolute;left:0;top:0;pointer-events:none}
+.tel figcaption{font-weight:800;font-size:14px;line-height:1.3}
+.lamina{display:block;border-radius:18px;border:1px solid var(--line);background:#fff;overflow:hidden;box-shadow:0 12px 30px rgba(22,18,58,.12);aspect-ratio:1440/1360;position:relative}
+.lamina iframe{border:0;width:1440px;height:1360px;transform-origin:0 0;position:absolute;left:0;top:0;pointer-events:none}
+table{border-collapse:collapse;width:100%;background:#fff;border-radius:14px;overflow:hidden;font-size:14px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--lav);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px}
+.dos{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+footer{padding:28px 24px 48px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="kicker">Propuesta de app · Buenas prácticas de la tripulación LATAM</div>
+  <h1>Tripu</h1>
+  <p>Lo que nos hace volar más alto. Un espacio en el celular donde los tripulantes comparten cómo hacen su trabajo, se reconocen entre ellos y viven la cultura LATAM sin formalidades.</p>
+  <div class="acciones"><a class="btn p" href="pantallas/Inicio.html" target="_blank" rel="noopener">Abrir la app (Inicio)</a><a class="btn s" href="pantallas/Propuesta.html" target="_blank" rel="noopener">Ver la lámina de propuesta</a><a class="btn s" href="https://claude.ai/artifact/5EE7sUe3hPyKaojunKWTuA" target="_blank" rel="noopener">Canvas editable</a></div>
+</div></header>
+
+<section><div class="wrap">
+  <h2>Las 8 pantallas</h2>
+  <p class="sub">Toca una para abrirla a tamaño real. Los botones de cada pantalla llevan a la siguiente.</p>
+  <div class="grid">
+      <figure class="tel">
+        <a href="pantallas/Acceso.html" target="_blank" rel="noopener" aria-label="Abrir 1 · Acceso con correo LATAM a tamaño real"><span class="marco"><iframe src="pantallas/Acceso.html" title="1 · Acceso con correo LATAM" loading="lazy" tabindex="-1"></iframe></span></a>
+        <figcaption>1 · Acceso con correo LATAM</figcaption>
+      </figure>
+      <figure class="tel">
+        <a href="pantallas/Inicio.html" target="_blank" rel="noopener" aria-label="Abrir 2 · Inicio: historias, reto, pulso, mensaje de la semana a tamaño real"><span class="marco"><iframe src="pantallas/Inicio.html" title="2 · Inicio: historias, reto, pulso, mensaje de la semana" loading="lazy" tabindex="-1"></iframe></span></a>
+        <figcaption>2 · Inicio: historias, reto, pulso, mensaje de la semana</figcaption>
+      </figure>
+      <figure class="tel">
+        <a href="pantallas/Detalle.html" target="_blank" rel="noopener" aria-label="Abrir 3 · Práctica paso a paso y “Así lo hago yo” a tamaño real"><span class="marco"><iframe src="pantallas/Detalle.html" title="3 · Práctica paso a paso y “Así lo hago yo”" loading="lazy" tabindex="-1"></iframe></span></a>
+        <figcaption>3 · Práctica paso a paso y “Así lo hago yo”</figcaption>
+      </figure>
+      <figure class="tel">
+        <a href="pantallas/Publicar.html" target="_blank" rel="noopener" aria-label="Abrir 4 · Compartir buena práctica a tamaño real"><span class="marco"><iframe src="pantallas/Publicar.html" title="4 · Compartir buena práctica" loading="lazy" tabindex="-1"></iframe></span></a>
+        <figcaption>4 · Compartir buena práctica</figcaption>
+      </figure>
+      <figure class="tel">
+        <a href="pantallas/Notificaciones.html" target="_blank" rel="noopener" aria-label="Abrir 5 · Notificaciones a tamaño real"><span class="marco"><iframe src="pantallas/Notificaciones.html" title="5 · Notificaciones" loading="lazy" tabindex="-1"></iframe></span></a>
+        <figcaption>5 · Notificaciones</figcaption>
+      </figure>
+      <figure class="tel">
+        <a href="pantallas/Momentos.html" target="_blank" rel="noopener" aria-label="Abrir 6 · Momentos LATAM y ranking de bases a tamaño real"><span class="marco"><iframe src="pantallas/Momentos.html" title="6 · Momentos LATAM y ranking de bases" loading="lazy" tabindex="-1"></iframe></span></a>
+        <figcaption>6 · Momentos LATAM y ranking de bases</figcaption>
+      </figure>
+      <figure class="tel">
+        <a href="pantallas/Reconocer.html" target="_blank" rel="noopener" aria-label="Abrir 7 · Reconocer a un compañero a tamaño real"><span class="marco"><iframe src="pantallas/Reconocer.html" title="7 · Reconocer a un compañero" loading="lazy" tabindex="-1"></iframe></span></a>
+        <figcaption>7 · Reconocer a un compañero</figcaption>
+      </figure>
+      <figure class="tel">
+        <a href="pantallas/Perfil.html" target="_blank" rel="noopener" aria-label="Abrir 8 · Perfil, racha e insignias a tamaño real"><span class="marco"><iframe src="pantallas/Perfil.html" title="8 · Perfil, racha e insignias" loading="lazy" tabindex="-1"></iframe></span></a>
+        <figcaption>8 · Perfil, racha e insignias</figcaption>
+      </figure>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>La propuesta en una lámina</h2>
+  <p class="sub">Nombre, mecanismos de cultura, módulos, diez categorías, recorrido, cómo se construye, fases e indicadores.</p>
+  <a class="lamina" href="pantallas/Propuesta.html" target="_blank" rel="noopener" aria-label="Abrir la lámina de propuesta"><iframe src="pantallas/Propuesta.html" title="Lámina de propuesta" loading="lazy" tabindex="-1"></iframe></a>
+</div></section>
+
+<section><div class="wrap dos">
+  <div>
+    <h2>Nombre</h2>
+    <p class="sub">Tres opciones. La primera es la recomendada y va aplicada en las pantallas.</p>
+    <table><tr><th>Opción</th><th>Por qué</th></tr>
+    <tr><td><b>Tripu</b></td><td>Así se dicen entre ellos. Corto y cercano. Tagline: “Lo que nos hace volar más alto”.</td></tr>
+    <tr><td>Cabina Abierta</td><td>Dice lo que es: hablar de la cabina sin formalidad.</td></tr>
+    <tr><td>Volamos Juntos</td><td>Más institucional; suena a campaña.</td></tr></table>
+  </div>
+  <div>
+    <h2>Diez categorías</h2>
+    <p class="sub">Las seis del mockup original, dos ampliadas y cuatro nuevas.</p>
+    <table><tr><th>Categoría</th><th>Origen</th></tr>
+    <tr><td>Seguridad</td><td>Original</td></tr><tr><td>Puntualidad (OTP)</td><td>Original</td></tr><tr><td>Hospitalidad (HBC)</td><td>Original</td></tr><tr><td>Preparación de vuelo</td><td>Original</td></tr>
+    <tr><td>Bienestar y pernocte</td><td>Ampliada</td></tr><tr><td>Imagen y uniforme</td><td>Ampliada</td></tr>
+    <tr><td>Situaciones especiales</td><td>Nueva</td></tr><tr><td>Equipo y liderazgo</td><td>Nueva</td></tr><tr><td>Comunicación y anuncios</td><td>Nueva</td></tr><tr><td>Sostenibilidad a bordo</td><td>Nueva</td></tr></table>
+  </div>
+</div></section>
+
+<footer><div class="wrap">Nombres, cifras y pasos son de ejemplo, no datos reales de LATAM. Los bloques “Foto” son espacios para fotos reales de la tripulación. Propuesta preparada para Rigo M., Jefe de Cabina · Cultura Organizacional.</div></footer>
+<script>
+(function(){
+  function ajustar(){
+    document.querySelectorAll('.marco').forEach(function(m){var f=m.querySelector('iframe');f.style.transform='scale('+(m.clientWidth-16)/390+')';});
+    document.querySelectorAll('.lamina').forEach(function(m){var f=m.querySelector('iframe');f.style.transform='scale('+m.clientWidth/1440+')';});
+  }
+  window.addEventListener('resize',ajustar);window.addEventListener('load',ajustar);ajustar();
+})();
+</script>
+</body>
+</html>
