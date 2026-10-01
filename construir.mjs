@@ -218,7 +218,7 @@ const contacto = `
       <p class="lugar">${esc(S.contacto.lugar)}</p>
       <div class="contactos">
         <a class="cbtn" href="mailto:${esc(S.contacto.correo)}">${esc(S.contacto.correo)}</a>
-        <a class="cbtn" href="${esc(S.contacto.whatsapp)}" target="_blank" rel="noopener">WhatsApp ${esc(S.contacto.whatsapp_texto)}</a>
+        ${S.contacto.whatsapp ? `<a class="cbtn" href="${esc(S.contacto.whatsapp)}" target="_blank" rel="noopener">WhatsApp ${esc(S.contacto.whatsapp_texto)}</a>` : ''}
       </div>
       <a class="compuerta" href="${esc(S.contacto.intranet)}" target="_blank" rel="noopener"
          aria-label="${esc(S.contacto_seccion.intranet_texto)} — acceso del equipo">

@@ -18,8 +18,9 @@
 
   "contacto": {
     "correo": "hola@compai.cl",
-    "whatsapp": "https://wa.me/56962469977",
+    "whatsapp": "",
     "whatsapp_texto": "+56 9 6246 9977",
+    "_whatsapp": "VACIO A PROPOSITO. El manual de marca (10 Correo > Firma) deja el movil solo en la firma de Director o Gerente General y en la tarjeta: nunca en papeleria general, correos automaticos ni el sitio. Poner la URL wa.me aqui vuelve a mostrar el boton en / 06.",
     "intranet": "https://claude.ai/artifact/MqfeH8WXnVQN1A6WgAEx9g",
     "ficha": "https://proveedor.mercadopublico.cl/ficha/78.491.451-8",
     "ciudad": "SCL.",
