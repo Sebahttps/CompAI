@@ -219,8 +219,14 @@ const contacto = `
       <div class="contactos">
         <a class="cbtn" href="mailto:${esc(S.contacto.correo)}">${esc(S.contacto.correo)}</a>
         <a class="cbtn" href="${esc(S.contacto.whatsapp)}" target="_blank" rel="noopener">WhatsApp ${esc(S.contacto.whatsapp_texto)}</a>
-        <a class="cbtn intranet" href="${esc(S.contacto.intranet)}" target="_blank" rel="noopener">${esc(S.contacto_seccion.intranet_texto)}</a>
       </div>
+      <a class="compuerta" href="${esc(S.contacto.intranet)}" target="_blank" rel="noopener"
+         aria-label="${esc(S.contacto_seccion.intranet_texto)} — acceso del equipo">
+        <img src="media/compuerta.webp" alt="" width="760" height="836" loading="lazy" decoding="async">
+        <span class="luz" aria-hidden="true"></span>
+        <span class="et mono">${esc(S.contacto_seccion.intranet_texto)}</span>
+      </a>
+
       <div class="pie">
         <span>${esc(S.contacto.razon_social)} · RUT ${esc(S.contacto.rut)}</span>
         <span><a href="${esc(S.contacto.ficha)}" target="_blank" rel="noopener">Ficha proveedores del Estado</a> · <a href="/portafolio.html">Portafolio</a></span>
