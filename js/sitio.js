@@ -7,13 +7,24 @@
   const quieto = matchMedia('(prefers-reduced-motion: reduce)');
   const DATOS = window.COMPAI || {};
 
+  /* Nada decorativo arranca antes de que la pagina termine de cargar.
+     Medido el 01-10-2026 en compai.cl: con el nodo 3D girando desde el primer
+     frame, Lighthouse movil daba 45 de rendimiento y 2.070 ms de bloqueo del
+     hilo principal. Lo que cuesta no es dibujar: es dibujar MIENTRAS el
+     navegador todavia esta armando la pagina. */
+  const alCalmarse = fn => {
+    const lanzar = () => (window.requestIdleCallback || (f => setTimeout(f, 220)))(fn, { timeout: 1800 });
+    if (document.readyState === 'complete') lanzar();
+    else addEventListener('load', lanzar, { once: true });
+  };
+
   /* ── hero: reproducir solo cuando se puede y está a la vista ───────── */
   (() => {
     const v = $('#heroVideo');
     if (!v) return;
     const arranca = () => { if (quieto.matches) return; const p = v.play(); if (p && p.catch) p.catch(() => {}); };
     if (quieto.matches) { v.removeAttribute('autoplay'); v.pause(); }
-    else { v.addEventListener('canplay', arranca, { once: true }); arranca(); }
+    else alCalmarse(arranca);   // el poster ya esta a la vista; el video entra despues
     // si el hero sale de pantalla, el video se detiene: no gasta batería ni CPU
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(es => es.forEach(e => {
@@ -61,11 +72,17 @@
     const on = () => sobre = true, off = () => sobre = false;
     btn.addEventListener('pointerenter', on); btn.addEventListener('pointerleave', off);
     btn.addEventListener('focus', on); btn.addEventListener('blur', off);
-    (function dibuja() {
+    let ultimo = 0;
+    function dibuja(t) {
+      requestAnimationFrame(dibuja);
+      if (document.hidden) return;          // pestana en segundo plano: no se dibuja
+      if (t - ultimo < 32) return;          // 30 fps bastan para una pieza de 64 px
+      const dt = ultimo ? Math.min((t - ultimo) / 16.7, 4) : 1;
+      ultimo = t;
       obj = abierto ? .02 : sobre ? .045 : .008;
       objEsc = abierto ? 1.08 : sobre ? 1.18 : 1;
-      vel += (obj - vel) * .08; esc += (objEsc - esc) * .12;
-      if (!quieto.matches) { ay += vel; ax += vel * .35; }
+      vel += (obj - vel) * .08 * dt; esc += (objEsc - esc) * .12 * dt;
+      if (!quieto.matches) { ay += vel * dt; ax += vel * .35 * dt; }
       const W = cv.width, H = cv.height, R = W * .3 * esc, cx = W / 2, cy = H / 2;
       ctx.clearRect(0, 0, W, H);
       const cA = Math.cos(ax), sA = Math.sin(ax), cB = Math.cos(ay), sB = Math.sin(ay);
@@ -87,8 +104,8 @@
         ctx.fillStyle = `rgba(${abierto ? '242,180,90' : '120,197,227'},${.45 + .55 * z})`;
         ctx.beginPath(); ctx.arc(p[0], p[1], W * (.028 + .03 * z) * esc, 0, 7); ctx.fill();
       });
-      requestAnimationFrame(dibuja);
-    })();
+    }
+    alCalmarse(() => dibuja(0));
   })();
 
   /* ── / 01 · máquina de escribir corta ──────────────────────────────── */

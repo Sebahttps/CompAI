@@ -18,7 +18,18 @@
 
     const im = new Image();
     im.decoding = 'async';
-    im.src = src;
+    // La imagen no se pide hasta que el canvas se acerca a la pantalla. Con las
+    // tres pedidas de entrada, Lighthouse movil daba 45: tres descargas y tres
+    // muestreos de pixeles compitiendo con el primer pintado de la pagina.
+    function pedirImagen() {
+      if (im.src) return;
+      im.src = src;
+    }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((es, o) => es.forEach(e => {
+        if (e.isIntersecting) { pedirImagen(); o.disconnect(); }
+      }), { rootMargin: '400px 0px' }).observe(cv);
+    } else pedirImagen();
 
     function mide() {
       const r = cv.getBoundingClientRect();
