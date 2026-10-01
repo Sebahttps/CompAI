@@ -1,0 +1,55 @@
+# Este archivo NO corre en kri-eit: se copia al repo que publica compai.cl
+# (Sebahttps/CompAI) como .github/workflows/sitio.yml. Lo copia publicar.py.
+#
+# Qué resuelve: que cambiar un texto sea editar el JSON y hacer push, sin
+# acordarse de correr el armador. El workflow lo corre por ti y comitea el
+# index.html resultante; ese commit dispara la publicación de GitHub Pages,
+# que en este repo es la clásica («deploy from a branch»), no Actions. Por eso
+# aquí no hay upload-pages-artifact ni deploy-pages: cambiar el origen de
+# Pages a Actions exige tocar la configuración del repo desde la cuenta, y no
+# hace falta para nada.
+
+name: Armar el sitio desde los JSON
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'contenido/**'
+      - 'construir.mjs'
+      - 'media/logo-compai.svg'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: armar-sitio
+  cancel-in-progress: false
+
+jobs:
+  armar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Armar index.html, 404.html, sitemap.xml y robots.txt
+        run: FECHA_SITIO="$(git log -1 --format=%cI)" node construir.mjs
+
+      - name: Revisar
+        run: node revisar.mjs
+
+      - name: Comitear si cambió
+        run: |
+          if git diff --quiet; then
+            echo "Sin cambios: el sitio armado ya era el publicado."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html 404.html sitemap.xml robots.txt
+          git commit -m "Sitio: rearmado desde contenido/*.json"
+          git push

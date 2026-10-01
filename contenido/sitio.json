@@ -1,0 +1,115 @@
+{
+  "_leeme": "Única fuente de los textos del sitio. Cambiar un texto = editar este archivo y hacer push. El workflow .github/workflows/sitio-compai.yml vuelve a armar index.html solo.",
+
+  "meta": {
+    "lang": "es-CL",
+    "title": "compAI — Tecnología para Chile, ejecutada por IA",
+    "description": "Automatización, agentes de IA, desarrollo web y dirección creativa. Proveedor del Estado en Mercado Público. Santiago, Chile.",
+    "url": "https://compai.cl/",
+    "og_image": "https://compai.cl/media/og.jpg",
+    "og_image_alt": "compAI — Tecnología para Chile, ejecutada por IA"
+  },
+
+  "hero": "franjas",
+  "_hero_opciones": "franjas = video de 5 franjas con el logo al centro como sello · nucleo = video del sol con el logo arriba a la izquierda",
+
+  "formEndpoint": "",
+  "_formEndpoint": "URL del web app de Google Apps Script (apps-script/Code.gs). Mientras esté vacía, el formulario envía por mailto:hola@compai.cl.",
+
+  "contacto": {
+    "correo": "hola@compai.cl",
+    "whatsapp": "https://wa.me/56962469977",
+    "whatsapp_texto": "+56 9 6246 9977",
+    "intranet": "https://claude.ai/artifact/MqfeH8WXnVQN1A6WgAEx9g",
+    "ficha": "https://proveedor.mercadopublico.cl/ficha/78.491.451-8",
+    "ciudad": "SCL.",
+    "lugar": "Santiago, Chile",
+    "razon_social": "COMPAI GLOBAL SOLUTIONS SpA",
+    "rut": "78.491.451-8"
+  },
+
+  "menu": [
+    { "codigo": "/ 01", "nombre": "Offenbar",      "titulo": "Inicio",     "ancla": "#offenbar" },
+    { "codigo": "/ 02", "nombre": "Il Cuore",      "titulo": "Manifiesto", "ancla": "#il-cuore" },
+    { "codigo": "/ 03", "nombre": "L'Intelligence","titulo": "Grace",      "ancla": "#grace" },
+    { "codigo": "/ 04", "nombre": "Creative",      "titulo": "Servicios",  "ancla": "#creative" },
+    { "codigo": "/ 05", "nombre": "Inbox",         "titulo": "Cotizar",    "ancla": "#inbox" },
+    { "codigo": "/ 06", "nombre": "Contacto",      "titulo": "Contacto",   "ancla": "#contacto" }
+  ],
+
+  "menu_aside": {
+    "kicker": "¿Necesitas ayuda con un proyecto?",
+    "enlaces": [
+      { "texto": "Portafolio de trabajos", "url": "/portafolio.html" },
+      { "texto": "Ficha proveedores del Estado →", "url": "https://proveedor.mercadopublico.cl/ficha/78.491.451-8" }
+    ]
+  },
+
+  "offenbar": {
+    "codigo": "/ 01",
+    "nombre": "Offenbar",
+    "titulo_1": "TECNOLOGÍA PARA CHILE",
+    "titulo_2": "ejecutada por IA.",
+    "enlace_texto": "Ficha proveedores del Estado →"
+  },
+
+  "il_cuore": {
+    "codigo": "/ 02",
+    "nombre": "Il Cuore",
+    "manifiesto": [
+      "Hablamos humano",
+      "en un mundo digital."
+    ],
+    "parrafo": "El Estado no necesita más pantallas: necesita que el trámite termine. Trabajamos para equipos públicos que tienen el presupuesto y no tienen las horas — y entregamos cosas que funcionan el lunes, no un plan a tres años.",
+    "accesos": [
+      { "texto": "Creative", "ancla": "#creative" },
+      { "texto": "Contacto", "ancla": "#contacto" }
+    ]
+  },
+
+  "grace": {
+    "codigo": "/ 03",
+    "nombre": "L'Intelligence",
+    "titulo": "Grace System",
+    "linea": "Grace lee las compras públicas todos los días, descarta lo que no calza y deja sobre la mesa solo lo que CompAI puede entregar a tiempo.",
+    "pie": "Materialización por código",
+    "imagenes": [
+      { "src": "media/grace-retrato.webp", "alt": "Grace, retrato con circuitos de cobre", "leyenda": "Retrato · Materialización por código" },
+      { "src": "media/grace-perfil.webp",  "alt": "Grace sentada de perfil",               "leyenda": "Perfil · Materialización por código" },
+      { "src": "media/grace-lavanda.webp", "alt": "Grace en un campo de lavanda al atardecer", "leyenda": "Campo de lavanda · Materialización por código" }
+    ]
+  },
+
+  "creative": {
+    "codigo": "/ 04",
+    "nombre": "Creative",
+    "titulo": "Servicios",
+    "bajada": "Cuatro frentes. Uno basta para empezar.",
+    "etiquetas": ["/pista", "/nodo", "/nucleo"]
+  },
+
+  "inbox": {
+    "codigo": "/ 05",
+    "nombre": "Inbox",
+    "titulo": "Gestiona una Compra Ágil",
+    "bajada": "Cuéntanos qué necesitas. Respondemos con una propuesta, no con un acuse de recibo.",
+    "campos": {
+      "nombre": "Nombre y apellido",
+      "correo": "Correo",
+      "telefono": "Teléfono",
+      "organismo": "Organismo o empresa (opcional)",
+      "mensaje": "¿Qué necesitas? (opcional)"
+    },
+    "boton": "Enviar",
+    "nota": "Recibes la respuesta, no un acuse de recibo.",
+    "exito": "Listo. Tu mensaje llegó a hola@compai.cl — te respondemos hoy mismo.",
+    "error": "No se pudo enviar. Escríbenos directo a hola@compai.cl."
+  },
+
+  "contacto_seccion": {
+    "codigo": "/ 06",
+    "nombre": "Contacto",
+    "pregunta": "¿Necesitas ayuda con un proyecto?",
+    "intranet_texto": "Intranet"
+  }
+}

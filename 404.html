@@ -1,234 +1,36 @@
 <!doctype html>
-<html lang="es">
+<!-- compai.cl · armado por sitio/compai/construir.mjs. fuente-del-sitio: sitio/compai -->
+<html lang="es-CL">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Esta página no existe · compAI</title>
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#08090C">
-<title>Esa dirección no existe · compAI</title>
-<meta name="description" content="La dirección correcta de COMPAI GLOBAL SOLUTIONS SPA es compai.cl.">
-<!-- GENERADO POR _v15-cinemai/404.py A PARTIR DE index.html. No editar a mano:
-     el `:root` y el `<defs>` de abajo son copia literal del index y se
-     regeneran corriendo el script. Sin motor de particulas y sin video. -->
+<meta name="theme-color" content="#0B0806">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/sitio.css">
 <style>
-:root{
-  --ink-900:#08090C; --ink-850:#0B0D12; --ink-800:#0E1015;
-  --ink-700:#161A21; --ink-600:#1F242D; --ink-500:#2C333F;
-  --crema:#F5F0E4; --crema-75:#BAB6AE; --crema-60:#96948E;
-  --crema-28:#4A4A48; /* RETICULA Y BORDES, NUNCA TEXTO: 2,24:1 sobre --ink-900 */
-  --crema-12:#242526; --crema-06:#161719;
-  --terracota:#C87941; --terracota-700:#8A4F27; --terracota-600:#A66234;
-  --terracota-400:#D88A52; --terracota-300:#E09A63; --terracota-200:#EFB98C;
-  --azul:#2E8FB5; --azul-600:#13749A; --azul-300:#78C5E3;
-  --alerta:#D65454; --alerta-300:#F0A0A0;
-  --glow-terracota:0 0 34px rgba(200,121,65,.38);
-  --glow-azul:0 0 30px rgba(46,143,181,.34);
-  --sombra-texto:0 2px 10px rgba(8,9,12,.85);
-  --font-data:ui-monospace,"SF Mono","Cascadia Mono","Segoe UI Mono",Menlo,Consolas,"Courier New",monospace;
-  --font-display:var(--font-data);
-  --font-body:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px;
-  --s6:32px; --s7:48px; --s8:64px; --s9:96px;
-  --measure:66ch; --shell:1240px; --hdr:78px;
-  --mascara-opaca:#000; /* NO es color de marca: es el tope opaco de una mascara */
-  --radio:3px;        /* ACCIONES: botones, chips, rotulos */
-  --radio-caja:4px;   /* SUPERFICIES: tarjetas, formulario */
-}
-*{box-sizing:border-box}
-body{margin:0; background:var(--ink-900); color:var(--crema);
-  font-family:var(--font-body); font-size:17px; line-height:1.65;
-  -webkit-font-smoothing:antialiased; min-height:100svh;
-  display:flex; flex-direction:column}
-
-/* FONDO: EL MUNDO DEL INDEX CON LAS LUCES BAJAS. Es el poster del video del
-   plexus (49 KB, ya publicado), con el mismo filtro de color que el index
-   aplica sobre su elemento de video y el mismo velo radial encima.
-   La opacidad es .45 y no el .8 del index, y la razon no es de gusto: en el
-   index el plexus ES el espectaculo y el titular se apoya en un suelo local
-   enmascarado (.hero-left::before, rgba(0,0,0,.50) medido). Aqui el plexus es
-   atmosfera detras de un aviso que hay que LEER, asi que se baja el lienzo
-   entero en vez de poner una caja oscura encima de un campo brillante: una
-   construccion menos y contraste parejo en toda la pagina, no solo bajo el
-   texto. Medido con `medir/tinta2.py` sobre el fotograma fijo — que aqui si
-   prueba algo, porque no hay video que cambie de cuadro. */
-#bg{position:fixed; inset:0; z-index:0; pointer-events:none;
-  /* RUTA ABSOLUTA, Y NO ES ESTILO. El index se sirve SIEMPRE en `/`, asi que
-     ahi `media/...` relativo funciona. Esta pagina la sirve GitHub Pages para
-     CUALQUIER ruta que no exista, incluida una anidada: pedido
-     /docs/ficha/x, un `media/plexus-poster.jpg` relativo resuelve a
-     /docs/ficha/media/... y el fondo simplemente no carga. La barra inicial
-     es lo unico que lo hace funcionar a cualquier profundidad. */
-  background:var(--ink-900) url(/media/plexus-poster.jpg) center/cover no-repeat;
-  opacity:.45; filter:brightness(.85) sepia(.24) saturate(1.5) hue-rotate(-12deg)}
-#velo{position:fixed; inset:0; z-index:0; pointer-events:none;
-  background:radial-gradient(150% 105% at 26% 44%, rgba(0,0,0,.52) 0%, rgba(0,0,0,.30) 48%, rgba(0,0,0,.58) 100%)}
-#page{position:relative; z-index:1; display:flex; flex-direction:column; flex:1}
-
-/* ENCABEZADO. La barra del v15 con UNA sola accion: el menu de anclas del
-   index apunta a secciones que aqui no existen y se elimino. */
-.site-hdr{min-height:var(--hdr); display:flex; align-items:center;
-  backdrop-filter:blur(16px); background:rgba(8,9,12,.62);
-  border-bottom:1px solid var(--crema-12)}
-.site-hdr .inner{max-width:var(--shell); margin:0 auto; padding:0 var(--s5);
-  width:100%; display:flex; align-items:center; justify-content:space-between; gap:var(--s5)}
-.brand{display:flex; align-items:center; flex:0 0 auto}
-.brand .logo{height:40px; width:auto; display:block; overflow:visible}
-@media (max-width:420px){.brand .logo{height:34px}}
-.site-hdr .ficha{font-family:var(--font-data); font-size:10.5px; font-weight:600;
-  letter-spacing:.09em; color:var(--menta-300); text-decoration:none;
-  border-bottom:1px solid rgba(76,196,139,.42); padding-bottom:1px;
-  display:inline-flex; align-items:center; min-height:44px;
-  transition:color .18s ease, border-bottom-color .18s ease}
-.site-hdr .ficha:hover{color:var(--menta); border-bottom-color:var(--menta)}
-
-/* CUERPO */
-main{flex:1; display:flex; align-items:center;
-  max-width:var(--shell); width:100%; margin:0 auto; padding:var(--s8) var(--s5)}
-/* `width:100%` ANTES del tope, y no solo el tope. `.caja` es hijo de un flex
-   y sin ancho declarado se dimensiona por su contenido mas ancho, que es el
-   parrafo con su medida de 52ch (571 px): el titular heredaba esos 571 px y
-   partia «Esa direccion no / existe», que es el peor corte posible de esa
-   frase — separa la negacion del verbo que niega. Con 660 px cabe entero. */
-.caja{width:100%; max-width:min(660px,100%)}
-.kicker{font-family:var(--font-data); font-size:12px; letter-spacing:.16em;
-  text-transform:uppercase; color:var(--crema-75); margin:0 0 var(--s4)}
-h1{font-family:var(--font-display); font-weight:600; line-height:1.12;
-  font-size:clamp(30px,5.2vw,46px); letter-spacing:-.01em;
-  color:var(--crema); margin:0 0 var(--s5)}
-.bajada{color:var(--crema-75); margin:0 0 var(--s6); max-width:52ch}
-.bajada b{color:var(--crema); font-weight:600}
-
-/* ELEMENTO FIRMA: la direccion corregida, con la forma de una barra de
-   direcciones. Dice en un vistazo lo que el parrafo dice en treinta palabras,
-   y muestra la ruta real que el visitante pidio (`location.pathname`), no un
-   ejemplo inventado. El estado NO depende solo del color: cada fila lleva su
-   rotulo en texto. */
-.urls{background:rgba(18,21,27,.88); border:1px solid rgba(150,148,142,.30);
-  border-radius:var(--radio-caja); backdrop-filter:blur(10px);
-  margin:0 0 var(--s6); overflow:hidden}
-.urls .fila{display:flex; align-items:center; gap:var(--s4);
-  justify-content:space-between; padding:var(--s3) var(--s4);
-  border-left:2px solid transparent; font-family:var(--font-data)}
-.urls .fila + .fila{border-top:1px solid var(--crema-12)}
-.urls .u{font-size:13.5px; overflow-wrap:anywhere; min-width:0}
-.urls .rot{font-size:9.5px; letter-spacing:.14em; text-transform:uppercase;
-  white-space:nowrap; flex:0 0 auto}
-.urls .mala{border-left-color:var(--alerta)}
-.urls .mala .u{color:var(--crema-60)}
-.urls .mala .rot{color:var(--alerta-300)}
-.urls .buena{border-left-color:var(--menta)}
-.urls .buena .u{color:var(--crema); font-weight:600}
-.urls .buena .rot{color:var(--menta-300)}
-
-/* UNA sola accion con peso visual. El correo va abajo como texto, no como
-   segundo boton: dos botones son cero botones. */
-.btn{font-family:var(--font-data); font-size:13px; font-weight:600;
-  letter-spacing:.06em; border-radius:var(--radio); padding:12px 24px;
-  min-height:44px; border:1px solid transparent; cursor:pointer;
-  text-decoration:none; display:inline-flex; align-items:center;
-  background:var(--terracota); color:var(--ink-900);
-  transition:transform .18s ease, box-shadow .18s ease, background .18s ease}
-.btn:hover{background:var(--terracota-400); box-shadow:var(--glow-terracota);
-  transform:translateY(-1px)}
-.correo{font-size:14px; color:var(--crema-75); margin:var(--s5) 0 0}
-.correo a{color:var(--terracota-300); text-decoration:none;
-  border-bottom:1px solid rgba(224,154,99,.4)}
-.correo a:hover{color:var(--terracota-200); border-bottom-color:var(--terracota-200)}
-
-/* PIE. Una linea. La ficha tributaria completa en una pantalla de error es
-   ruido: aqui solo va lo que identifica a la empresa sin ambiguedad. */
-.site-foot{border-top:1px solid var(--crema-12); padding:var(--s5) 0;
-  font-family:var(--font-data); font-size:11px; color:var(--crema-60)}
-.site-foot .inner{max-width:var(--shell); margin:0 auto; padding:0 var(--s5);
-  display:flex; flex-wrap:wrap; gap:var(--s2) var(--s5); justify-content:space-between}
-
-@media (max-width:560px){
-  main{padding:var(--s7) var(--s5)}
-  .urls .fila{flex-direction:column; align-items:flex-start; gap:var(--s1)}
-  /* EL VELO SE RE-CENTRA, PORQUE LA COMPOSICION SE MUEVE. En escritorio el
-     bloque vive arriba a la izquierda y el radial esta centrado ahi (26 % 44 %).
-     A 390 px la columna ocupa TODO el ancho y baja hasta el 78 % del alto: con
-     el centro de escritorio, la linea del correo caia fuera del lavado y medi
-     3,89:1 en el peor 3x3. Es el mismo error que ya documento CinemAI en el
-     index — una cobertura pensada para un ancho no vale en el otro. */
-  #velo{background:radial-gradient(132% 80% at 44% 52%, rgba(0,0,0,.58) 0%, rgba(0,0,0,.46) 58%, rgba(0,0,0,.64) 100%)}
-}
-@media (prefers-reduced-motion:reduce){
-  .btn{transition:none} .btn:hover{transform:none}
-}
+body{display:grid;place-items:center;min-height:100svh;padding:clamp(24px,6vw,64px);text-align:center}
+.e404 .cod{font-family:var(--mono);font-size:clamp(72px,20vw,180px);line-height:.9;color:var(--brasa);margin:0}
+.e404 h1{font-family:var(--display);font-variation-settings:"wdth" 110;font-weight:700;
+  font-size:clamp(24px,4.4vw,44px);margin:18px 0 0;letter-spacing:-.02em}
+.e404 p{color:var(--crema2);margin:14px auto 0;max-width:46ch}
+.e404 .vol{margin-top:34px}
+.e404 .lg{width:min(220px,60vw);margin:0 auto 26px;display:block}
 </style>
 </head>
 <body>
-
-<div id="bg" aria-hidden="true"></div>
-<div id="velo" aria-hidden="true"></div>
-
-<div id="page">
-
-<header class="site-hdr">
-  <div class="inner">
-    <a class="brand" href="/" rel="noopener"><svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="-16 4 328 87" role="img" aria-label="compAI">
-<defs>
-    <filter id="brasa" x="-150%" y="-150%" width="400%" height="400%">
-      <feGaussianBlur stdDeviation="5" result="b1">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="b2">
-      <feMerge><feMergeNode in="b2"><feMergeNode in="b1"></feMerge>
-    </filter>
-    <g id="brillo"><g fill="none"><path transform="translate(4.000 58.000) scale(0.056000 -0.056000)" d="M522.00 187.00H388.00C370.00 131.00 342.00 104.00 288.00 104.00C217.00 104.00 174.00 161.00 174.00 266.00C174.00 365.00 200.00 436.00 288.00 436.00C345.00 436.00 372.00 409.00 388.00 338.00H522.00C512.00 470.00 424.00 549.00 289.00 549.00C128.00 549.00 34.00 450.00 34.00 266.00C34.00 88.00 127.00 -9.00 287.00 -9.00C418.00 -9.00 509.00 72.00 522.00 187.00Z"/><path transform="translate(33.936 58.000) scale(0.056000 -0.056000)" d="M569.00 266.00C569.00 449.00 470.00 549.00 301.00 549.00C136.00 549.00 35.00 447.00 35.00 270.00C35.00 92.00 136.00 -9.00 302.00 -9.00C466.00 -9.00 569.00 93.00 569.00 266.00ZM429.00 268.00C429.00 167.00 377.00 104.00 302.00 104.00C226.00 104.00 175.00 167.00 175.00 270.00C175.00 373.00 226.00 436.00 302.00 436.00C379.00 436.00 429.00 374.00 429.00 268.00Z"/><path transform="translate(66.952 58.000) scale(0.056000 -0.056000)" d="M824.00 0.00V382.00C824.00 487.00 760.00 549.00 652.00 549.00C584.00 549.00 536.00 525.00 494.00 469.00C468.00 520.00 414.00 549.00 347.00 549.00C285.00 549.00 245.00 528.00 199.00 473.00V540.00H60.00V0.00H200.00V324.00C200.00 390.00 236.00 430.00 296.00 430.00C343.00 430.00 372.00 403.00 372.00 360.00V0.00H512.00V324.00C512.00 390.00 548.00 430.00 608.00 430.00C655.00 430.00 684.00 403.00 684.00 360.00V0.00Z"/><path transform="translate(115.536 58.000) scale(0.056000 -0.056000)" d="M574.00 270.00C574.00 430.00 489.00 549.00 348.00 549.00C280.00 549.00 232.00 520.00 198.00 460.00V540.00H58.00V-218.00H198.00V72.00C232.00 12.00 280.00 -9.00 348.00 -9.00C478.00 -9.00 574.00 106.00 574.00 270.00ZM434.00 268.00C434.00 170.00 385.00 108.00 316.00 108.00C246.00 108.00 198.00 169.00 198.00 270.00C198.00 371.00 246.00 432.00 316.00 432.00C387.00 432.00 434.00 371.00 434.00 268.00Z"/></g><g fill="#C87941"><path transform="translate(148.552 58.000) scale(0.025879 -0.025879)" d="M798.00 1122.00 1088.00 205.00H1175.00Q1199.00 205.00 1212.00 197.00Q1225.00 189.00 1231.50 167.00Q1238.00 145.00 1238.00 103.00Q1238.00 61.00 1231.50 39.00Q1225.00 17.00 1212.00 8.50Q1199.00 0.00 1175.00 0.00H751.00Q727.00 0.00 714.00 8.50Q701.00 17.00 694.50 39.00Q688.00 61.00 688.00 103.00Q688.00 145.00 694.50 167.00Q701.00 189.00 714.00 197.00Q727.00 205.00 751.00 205.00H837.00L792.00 350.00H428.00L383.00 205.00H457.00Q481.00 205.00 494.00 197.00Q507.00 189.00 513.50 167.00Q520.00 145.00 520.00 103.00Q520.00 61.00 513.50 39.00Q507.00 17.00 494.00 8.50Q481.00 0.00 457.00 0.00H53.00Q29.00 0.00 16.00 8.50Q3.00 17.00 -3.50 39.00Q-10.00 61.00 -10.00 103.00Q-10.00 145.00 -3.50 167.00Q3.00 189.00 16.00 197.00Q29.00 205.00 53.00 205.00H137.00L390.00 982.00H223.00Q199.00 982.00 186.00 990.50Q173.00 999.00 166.50 1021.00Q160.00 1043.00 160.00 1085.00Q160.00 1127.00 166.50 1149.00Q173.00 1171.00 186.00 1179.00Q199.00 1187.00 223.00 1187.00H697.00Q737.00 1187.00 762.00 1171.50Q787.00 1156.00 798.00 1122.00ZM609.00 982.00 486.00 555.00H735.00L615.00 982.00Z"/><path transform="translate(181.931 58.000) scale(0.025879 -0.025879)" d="M1038.00 1084.00Q1038.00 1042.00 1031.50 1020.00Q1025.00 998.00 1012.00 990.00Q999.00 982.00 975.00 982.00H739.00V205.00H995.00Q1019.00 205.00 1032.00 196.50Q1045.00 188.00 1051.50 166.00Q1058.00 144.00 1058.00 102.00Q1058.00 60.00 1051.50 38.00Q1045.00 16.00 1032.00 8.00Q1019.00 0.00 995.00 0.00H233.00Q209.00 0.00 196.00 8.00Q183.00 16.00 176.50 38.00Q170.00 60.00 170.00 102.00Q170.00 144.00 176.50 166.00Q183.00 188.00 196.00 196.50Q209.00 205.00 233.00 205.00H489.00V982.00H253.00Q229.00 982.00 216.00 990.00Q203.00 998.00 196.50 1020.00Q190.00 1042.00 190.00 1084.00Q190.00 1126.00 196.50 1148.00Q203.00 1170.00 216.00 1178.50Q229.00 1187.00 253.00 1187.00H975.00Q999.00 1187.00 1012.00 1178.50Q1025.00 1170.00 1031.50 1148.00Q1038.00 1126.00 1038.00 1084.00Z"/></g><g transform="translate(259 20) scale(1.5)"><g fill="none" stroke="#2E8FB5" stroke-linecap="round" stroke-linejoin="round" style="stroke-width:var(--chk-trazo,2.8)"><path d="M1 8.5 L5 12.5 L12 4"/><path d="M10 8.5 L14 12.5 L21 4"/></g><g fill="none" stroke="#2E8FB5" stroke-width="0.58" stroke-linecap="round" stroke-linejoin="round" style="display:var(--chk-crestas,none)"><path d="M2.56 7.37L4.86 9.68L9.83 3.64"/><path d="M0.22 10.41L5.14 15.32L12.26 6.67"/><path d="M11.56 7.37L13.86 9.68L18.83 3.64"/><path d="M9.22 10.41L14.14 15.32L21.26 6.67"/></g></g></g>
-    <g id="marca"><g fill="#F5F0E4"><path transform="translate(4.000 58.000) scale(0.056000 -0.056000)" d="M522.00 187.00H388.00C370.00 131.00 342.00 104.00 288.00 104.00C217.00 104.00 174.00 161.00 174.00 266.00C174.00 365.00 200.00 436.00 288.00 436.00C345.00 436.00 372.00 409.00 388.00 338.00H522.00C512.00 470.00 424.00 549.00 289.00 549.00C128.00 549.00 34.00 450.00 34.00 266.00C34.00 88.00 127.00 -9.00 287.00 -9.00C418.00 -9.00 509.00 72.00 522.00 187.00Z"/><path transform="translate(33.936 58.000) scale(0.056000 -0.056000)" d="M569.00 266.00C569.00 449.00 470.00 549.00 301.00 549.00C136.00 549.00 35.00 447.00 35.00 270.00C35.00 92.00 136.00 -9.00 302.00 -9.00C466.00 -9.00 569.00 93.00 569.00 266.00ZM429.00 268.00C429.00 167.00 377.00 104.00 302.00 104.00C226.00 104.00 175.00 167.00 175.00 270.00C175.00 373.00 226.00 436.00 302.00 436.00C379.00 436.00 429.00 374.00 429.00 268.00Z"/><path transform="translate(66.952 58.000) scale(0.056000 -0.056000)" d="M824.00 0.00V382.00C824.00 487.00 760.00 549.00 652.00 549.00C584.00 549.00 536.00 525.00 494.00 469.00C468.00 520.00 414.00 549.00 347.00 549.00C285.00 549.00 245.00 528.00 199.00 473.00V540.00H60.00V0.00H200.00V324.00C200.00 390.00 236.00 430.00 296.00 430.00C343.00 430.00 372.00 403.00 372.00 360.00V0.00H512.00V324.00C512.00 390.00 548.00 430.00 608.00 430.00C655.00 430.00 684.00 403.00 684.00 360.00V0.00Z"/><path transform="translate(115.536 58.000) scale(0.056000 -0.056000)" d="M574.00 270.00C574.00 430.00 489.00 549.00 348.00 549.00C280.00 549.00 232.00 520.00 198.00 460.00V540.00H58.00V-218.00H198.00V72.00C232.00 12.00 280.00 -9.00 348.00 -9.00C478.00 -9.00 574.00 106.00 574.00 270.00ZM434.00 268.00C434.00 170.00 385.00 108.00 316.00 108.00C246.00 108.00 198.00 169.00 198.00 270.00C198.00 371.00 246.00 432.00 316.00 432.00C387.00 432.00 434.00 371.00 434.00 268.00Z"/></g><g fill="#C87941"><path transform="translate(148.552 58.000) scale(0.025879 -0.025879)" d="M798.00 1122.00 1088.00 205.00H1175.00Q1199.00 205.00 1212.00 197.00Q1225.00 189.00 1231.50 167.00Q1238.00 145.00 1238.00 103.00Q1238.00 61.00 1231.50 39.00Q1225.00 17.00 1212.00 8.50Q1199.00 0.00 1175.00 0.00H751.00Q727.00 0.00 714.00 8.50Q701.00 17.00 694.50 39.00Q688.00 61.00 688.00 103.00Q688.00 145.00 694.50 167.00Q701.00 189.00 714.00 197.00Q727.00 205.00 751.00 205.00H837.00L792.00 350.00H428.00L383.00 205.00H457.00Q481.00 205.00 494.00 197.00Q507.00 189.00 513.50 167.00Q520.00 145.00 520.00 103.00Q520.00 61.00 513.50 39.00Q507.00 17.00 494.00 8.50Q481.00 0.00 457.00 0.00H53.00Q29.00 0.00 16.00 8.50Q3.00 17.00 -3.50 39.00Q-10.00 61.00 -10.00 103.00Q-10.00 145.00 -3.50 167.00Q3.00 189.00 16.00 197.00Q29.00 205.00 53.00 205.00H137.00L390.00 982.00H223.00Q199.00 982.00 186.00 990.50Q173.00 999.00 166.50 1021.00Q160.00 1043.00 160.00 1085.00Q160.00 1127.00 166.50 1149.00Q173.00 1171.00 186.00 1179.00Q199.00 1187.00 223.00 1187.00H697.00Q737.00 1187.00 762.00 1171.50Q787.00 1156.00 798.00 1122.00ZM609.00 982.00 486.00 555.00H735.00L615.00 982.00Z"/><path transform="translate(181.931 58.000) scale(0.025879 -0.025879)" d="M1038.00 1084.00Q1038.00 1042.00 1031.50 1020.00Q1025.00 998.00 1012.00 990.00Q999.00 982.00 975.00 982.00H739.00V205.00H995.00Q1019.00 205.00 1032.00 196.50Q1045.00 188.00 1051.50 166.00Q1058.00 144.00 1058.00 102.00Q1058.00 60.00 1051.50 38.00Q1045.00 16.00 1032.00 8.00Q1019.00 0.00 995.00 0.00H233.00Q209.00 0.00 196.00 8.00Q183.00 16.00 176.50 38.00Q170.00 60.00 170.00 102.00Q170.00 144.00 176.50 166.00Q183.00 188.00 196.00 196.50Q209.00 205.00 233.00 205.00H489.00V982.00H253.00Q229.00 982.00 216.00 990.00Q203.00 998.00 196.50 1020.00Q190.00 1042.00 190.00 1084.00Q190.00 1126.00 196.50 1148.00Q203.00 1170.00 216.00 1178.50Q229.00 1187.00 253.00 1187.00H975.00Q999.00 1187.00 1012.00 1178.50Q1025.00 1170.00 1031.50 1148.00Q1038.00 1126.00 1038.00 1084.00Z"/></g><g transform="translate(259 20) scale(1.5)"><g fill="none" stroke="#2E8FB5" stroke-linecap="round" stroke-linejoin="round" style="stroke-width:var(--chk-trazo,2.8)"><path d="M1 8.5 L5 12.5 L12 4"/><path d="M10 8.5 L14 12.5 L21 4"/></g><g fill="none" stroke="#2E8FB5" stroke-width="0.58" stroke-linecap="round" stroke-linejoin="round" style="display:var(--chk-crestas,none)"><path d="M2.56 7.37L4.86 9.68L9.83 3.64"/><path d="M0.22 10.41L5.14 15.32L12.26 6.67"/><path d="M11.56 7.37L13.86 9.68L18.83 3.64"/><path d="M9.22 10.41L14.14 15.32L21.26 6.67"/></g></g></g>
-  </defs>
-  <use href="#brillo" filter="url(#brasa)" opacity="0.9"/>
-  <use href="#marca"/>
-</svg></a>
-    <a class="ficha" href="https://proveedor.mercadopublico.cl/ficha/certificado/78.491.451-8" target="_blank" rel="noopener">Ver ficha proveedor →</a>
-  </div>
-</header>
-
-<main>
-  <div class="caja">
-    <p class="kicker">Error 404</p>
-    <h1>Esa dirección no existe</h1>
-    <p class="bajada">Si llegaste desde una cotización de <b>COMPAI GLOBAL SOLUTIONS SPA</b>, el
-      enlace correcto es compai.cl, sin nada después.</p>
-
-    <div class="urls">
-      <div class="fila mala">
-        <span class="u" id="pedida">compai.cl/…</span>
-        <span class="rot">No existe</span>
-      </div>
-      <div class="fila buena">
-        <span class="u">compai.cl</span>
-        <span class="rot">Aquí</span>
-      </div>
-    </div>
-
-    <a class="btn" href="/">Ir a compai.cl</a>
-    <p class="correo">¿Buscabas algo puntual? Escribe a
-      <a href="mailto:hola@compai.cl?subject=Enlace%20roto%20en%20compai.cl">hola@compai.cl</a></p>
+<main class="e404">
+  <span class="lg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-38 -18 372 131" class="logo-svg" style="height:auto;width:100%;margin:0" role="img" aria-label="compAI"><defs><filter id="brasa" x="-150%" y="-150%" width="400%" height="400%"><feGaussianBlur stdDeviation="5" result="b1"></feGaussianBlur><feGaussianBlur in="SourceGraphic" stdDeviation="12" result="b2"></feGaussianBlur><feMerge><feMergeNode in="b2"></feMergeNode><feMergeNode in="b1"></feMergeNode></feMerge></filter><g id="brillo"><g fill="none"><path transform="translate(4.000 58.000) scale(0.056000 -0.056000)" d="M522.00 187.00H388.00C370.00 131.00 342.00 104.00 288.00 104.00C217.00 104.00 174.00 161.00 174.00 266.00C174.00 365.00 200.00 436.00 288.00 436.00C345.00 436.00 372.00 409.00 388.00 338.00H522.00C512.00 470.00 424.00 549.00 289.00 549.00C128.00 549.00 34.00 450.00 34.00 266.00C34.00 88.00 127.00 -9.00 287.00 -9.00C418.00 -9.00 509.00 72.00 522.00 187.00Z"/><path transform="translate(33.936 58.000) scale(0.056000 -0.056000)" d="M569.00 266.00C569.00 449.00 470.00 549.00 301.00 549.00C136.00 549.00 35.00 447.00 35.00 270.00C35.00 92.00 136.00 -9.00 302.00 -9.00C466.00 -9.00 569.00 93.00 569.00 266.00ZM429.00 268.00C429.00 167.00 377.00 104.00 302.00 104.00C226.00 104.00 175.00 167.00 175.00 270.00C175.00 373.00 226.00 436.00 302.00 436.00C379.00 436.00 429.00 374.00 429.00 268.00Z"/><path transform="translate(66.952 58.000) scale(0.056000 -0.056000)" d="M824.00 0.00V382.00C824.00 487.00 760.00 549.00 652.00 549.00C584.00 549.00 536.00 525.00 494.00 469.00C468.00 520.00 414.00 549.00 347.00 549.00C285.00 549.00 245.00 528.00 199.00 473.00V540.00H60.00V0.00H200.00V324.00C200.00 390.00 236.00 430.00 296.00 430.00C343.00 430.00 372.00 403.00 372.00 360.00V0.00H512.00V324.00C512.00 390.00 548.00 430.00 608.00 430.00C655.00 430.00 684.00 403.00 684.00 360.00V0.00Z"/><path transform="translate(115.536 58.000) scale(0.056000 -0.056000)" d="M574.00 270.00C574.00 430.00 489.00 549.00 348.00 549.00C280.00 549.00 232.00 520.00 198.00 460.00V540.00H58.00V-218.00H198.00V72.00C232.00 12.00 280.00 -9.00 348.00 -9.00C478.00 -9.00 574.00 106.00 574.00 270.00ZM434.00 268.00C434.00 170.00 385.00 108.00 316.00 108.00C246.00 108.00 198.00 169.00 198.00 270.00C198.00 371.00 246.00 432.00 316.00 432.00C387.00 432.00 434.00 371.00 434.00 268.00Z"/></g><g fill="#C87941"><path transform="translate(148.552 58.000) scale(0.025879 -0.025879)" d="M798.00 1122.00 1088.00 205.00H1175.00Q1199.00 205.00 1212.00 197.00Q1225.00 189.00 1231.50 167.00Q1238.00 145.00 1238.00 103.00Q1238.00 61.00 1231.50 39.00Q1225.00 17.00 1212.00 8.50Q1199.00 0.00 1175.00 0.00H751.00Q727.00 0.00 714.00 8.50Q701.00 17.00 694.50 39.00Q688.00 61.00 688.00 103.00Q688.00 145.00 694.50 167.00Q701.00 189.00 714.00 197.00Q727.00 205.00 751.00 205.00H837.00L792.00 350.00H428.00L383.00 205.00H457.00Q481.00 205.00 494.00 197.00Q507.00 189.00 513.50 167.00Q520.00 145.00 520.00 103.00Q520.00 61.00 513.50 39.00Q507.00 17.00 494.00 8.50Q481.00 0.00 457.00 0.00H53.00Q29.00 0.00 16.00 8.50Q3.00 17.00 -3.50 39.00Q-10.00 61.00 -10.00 103.00Q-10.00 145.00 -3.50 167.00Q3.00 189.00 16.00 197.00Q29.00 205.00 53.00 205.00H137.00L390.00 982.00H223.00Q199.00 982.00 186.00 990.50Q173.00 999.00 166.50 1021.00Q160.00 1043.00 160.00 1085.00Q160.00 1127.00 166.50 1149.00Q173.00 1171.00 186.00 1179.00Q199.00 1187.00 223.00 1187.00H697.00Q737.00 1187.00 762.00 1171.50Q787.00 1156.00 798.00 1122.00ZM609.00 982.00 486.00 555.00H735.00L615.00 982.00Z"/><path transform="translate(181.931 58.000) scale(0.025879 -0.025879)" d="M1038.00 1084.00Q1038.00 1042.00 1031.50 1020.00Q1025.00 998.00 1012.00 990.00Q999.00 982.00 975.00 982.00H739.00V205.00H995.00Q1019.00 205.00 1032.00 196.50Q1045.00 188.00 1051.50 166.00Q1058.00 144.00 1058.00 102.00Q1058.00 60.00 1051.50 38.00Q1045.00 16.00 1032.00 8.00Q1019.00 0.00 995.00 0.00H233.00Q209.00 0.00 196.00 8.00Q183.00 16.00 176.50 38.00Q170.00 60.00 170.00 102.00Q170.00 144.00 176.50 166.00Q183.00 188.00 196.00 196.50Q209.00 205.00 233.00 205.00H489.00V982.00H253.00Q229.00 982.00 216.00 990.00Q203.00 998.00 196.50 1020.00Q190.00 1042.00 190.00 1084.00Q190.00 1126.00 196.50 1148.00Q203.00 1170.00 216.00 1178.50Q229.00 1187.00 253.00 1187.00H975.00Q999.00 1187.00 1012.00 1178.50Q1025.00 1170.00 1031.50 1148.00Q1038.00 1126.00 1038.00 1084.00Z"/></g><g transform="translate(259 20) scale(1.5)"><g fill="none" stroke="#2E8FB5" stroke-width="0.58" stroke-linecap="round" stroke-linejoin="round"><path d="M2.56 7.37L4.86 9.68L9.83 3.64"></path><path d="M1.00 8.50L5.00 12.50L12.00 4.00"></path><path d="M0.22 10.41L5.14 15.32L12.26 6.67"></path><path d="M11.56 7.37L13.86 9.68L18.83 3.64"></path><path d="M10.00 8.50L14.00 12.50L21.00 4.00"></path><path d="M9.22 10.41L14.14 15.32L21.26 6.67"></path></g></g></g><g id="marca"><g fill="#F5F0E4"><path transform="translate(4.000 58.000) scale(0.056000 -0.056000)" d="M522.00 187.00H388.00C370.00 131.00 342.00 104.00 288.00 104.00C217.00 104.00 174.00 161.00 174.00 266.00C174.00 365.00 200.00 436.00 288.00 436.00C345.00 436.00 372.00 409.00 388.00 338.00H522.00C512.00 470.00 424.00 549.00 289.00 549.00C128.00 549.00 34.00 450.00 34.00 266.00C34.00 88.00 127.00 -9.00 287.00 -9.00C418.00 -9.00 509.00 72.00 522.00 187.00Z"/><path transform="translate(33.936 58.000) scale(0.056000 -0.056000)" d="M569.00 266.00C569.00 449.00 470.00 549.00 301.00 549.00C136.00 549.00 35.00 447.00 35.00 270.00C35.00 92.00 136.00 -9.00 302.00 -9.00C466.00 -9.00 569.00 93.00 569.00 266.00ZM429.00 268.00C429.00 167.00 377.00 104.00 302.00 104.00C226.00 104.00 175.00 167.00 175.00 270.00C175.00 373.00 226.00 436.00 302.00 436.00C379.00 436.00 429.00 374.00 429.00 268.00Z"/><path transform="translate(66.952 58.000) scale(0.056000 -0.056000)" d="M824.00 0.00V382.00C824.00 487.00 760.00 549.00 652.00 549.00C584.00 549.00 536.00 525.00 494.00 469.00C468.00 520.00 414.00 549.00 347.00 549.00C285.00 549.00 245.00 528.00 199.00 473.00V540.00H60.00V0.00H200.00V324.00C200.00 390.00 236.00 430.00 296.00 430.00C343.00 430.00 372.00 403.00 372.00 360.00V0.00H512.00V324.00C512.00 390.00 548.00 430.00 608.00 430.00C655.00 430.00 684.00 403.00 684.00 360.00V0.00Z"/><path transform="translate(115.536 58.000) scale(0.056000 -0.056000)" d="M574.00 270.00C574.00 430.00 489.00 549.00 348.00 549.00C280.00 549.00 232.00 520.00 198.00 460.00V540.00H58.00V-218.00H198.00V72.00C232.00 12.00 280.00 -9.00 348.00 -9.00C478.00 -9.00 574.00 106.00 574.00 270.00ZM434.00 268.00C434.00 170.00 385.00 108.00 316.00 108.00C246.00 108.00 198.00 169.00 198.00 270.00C198.00 371.00 246.00 432.00 316.00 432.00C387.00 432.00 434.00 371.00 434.00 268.00Z"/></g><g fill="#C87941"><path transform="translate(148.552 58.000) scale(0.025879 -0.025879)" d="M798.00 1122.00 1088.00 205.00H1175.00Q1199.00 205.00 1212.00 197.00Q1225.00 189.00 1231.50 167.00Q1238.00 145.00 1238.00 103.00Q1238.00 61.00 1231.50 39.00Q1225.00 17.00 1212.00 8.50Q1199.00 0.00 1175.00 0.00H751.00Q727.00 0.00 714.00 8.50Q701.00 17.00 694.50 39.00Q688.00 61.00 688.00 103.00Q688.00 145.00 694.50 167.00Q701.00 189.00 714.00 197.00Q727.00 205.00 751.00 205.00H837.00L792.00 350.00H428.00L383.00 205.00H457.00Q481.00 205.00 494.00 197.00Q507.00 189.00 513.50 167.00Q520.00 145.00 520.00 103.00Q520.00 61.00 513.50 39.00Q507.00 17.00 494.00 8.50Q481.00 0.00 457.00 0.00H53.00Q29.00 0.00 16.00 8.50Q3.00 17.00 -3.50 39.00Q-10.00 61.00 -10.00 103.00Q-10.00 145.00 -3.50 167.00Q3.00 189.00 16.00 197.00Q29.00 205.00 53.00 205.00H137.00L390.00 982.00H223.00Q199.00 982.00 186.00 990.50Q173.00 999.00 166.50 1021.00Q160.00 1043.00 160.00 1085.00Q160.00 1127.00 166.50 1149.00Q173.00 1171.00 186.00 1179.00Q199.00 1187.00 223.00 1187.00H697.00Q737.00 1187.00 762.00 1171.50Q787.00 1156.00 798.00 1122.00ZM609.00 982.00 486.00 555.00H735.00L615.00 982.00Z"/><path transform="translate(181.931 58.000) scale(0.025879 -0.025879)" d="M1038.00 1084.00Q1038.00 1042.00 1031.50 1020.00Q1025.00 998.00 1012.00 990.00Q999.00 982.00 975.00 982.00H739.00V205.00H995.00Q1019.00 205.00 1032.00 196.50Q1045.00 188.00 1051.50 166.00Q1058.00 144.00 1058.00 102.00Q1058.00 60.00 1051.50 38.00Q1045.00 16.00 1032.00 8.00Q1019.00 0.00 995.00 0.00H233.00Q209.00 0.00 196.00 8.00Q183.00 16.00 176.50 38.00Q170.00 60.00 170.00 102.00Q170.00 144.00 176.50 166.00Q183.00 188.00 196.00 196.50Q209.00 205.00 233.00 205.00H489.00V982.00H253.00Q229.00 982.00 216.00 990.00Q203.00 998.00 196.50 1020.00Q190.00 1042.00 190.00 1084.00Q190.00 1126.00 196.50 1148.00Q203.00 1170.00 216.00 1178.50Q229.00 1187.00 253.00 1187.00H975.00Q999.00 1187.00 1012.00 1178.50Q1025.00 1170.00 1031.50 1148.00Q1038.00 1126.00 1038.00 1084.00Z"/></g><g transform="translate(259 20) scale(1.5)"><g fill="none" stroke="#2E8FB5" stroke-width="0.58" stroke-linecap="round" stroke-linejoin="round"><path d="M2.56 7.37L4.86 9.68L9.83 3.64"></path><path d="M1.00 8.50L5.00 12.50L12.00 4.00"></path><path d="M0.22 10.41L5.14 15.32L12.26 6.67"></path><path d="M11.56 7.37L13.86 9.68L18.83 3.64"></path><path d="M10.00 8.50L14.00 12.50L21.00 4.00"></path><path d="M9.22 10.41L14.14 15.32L21.26 6.67"></path></g></g></g></defs><use href="#brillo" filter="url(#brasa)" opacity="0.9"></use><use href="#marca"></use></svg></span>
+  <p class="cod">404</p>
+  <h1>Esta página no existe.</h1>
+  <p>Puede que el enlace esté viejo. Lo que sí está: el sitio, el portafolio y una casilla que alguien lee.</p>
+  <div class="contactos vol">
+    <a class="cbtn" href="/">Volver al inicio</a>
+    <a class="cbtn" href="/portafolio.html">Portafolio</a>
+    <a class="cbtn" href="mailto:hola@compai.cl">hola@compai.cl</a>
   </div>
 </main>
-
-<footer class="site-foot">
-  <div class="inner">
-    <span>COMPAI GLOBAL SOLUTIONS SPA · RUT 78.491.451-8</span>
-    <span>Proveedor inscrito en el Registro de Proveedores del Estado</span>
-  </div>
-</footer>
-
-</div>
-
-<script>
-/* Lo unico que corre en esta pagina: escribir la ruta que el visitante pidio
-   de verdad. `textContent`, nunca innerHTML — la ruta viene de la barra de
-   direcciones y es entrada de terceros. Si no hay ruta util (alguien abrio
-   /404.html a mano, o la raiz) se deja el marcador de posicion. */
-(function(){
-  var p = location.pathname + location.search;
-  if (!p || p === "/" || p === "/404.html" || p.length > 64) return;
-  var n = document.getElementById("pedida");
-  if (n) n.textContent = "compai.cl" + p;
-})();
-</script>
-
 </body>
 </html>

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /estado/
+
+Sitemap: https://compai.cl/sitemap.xml

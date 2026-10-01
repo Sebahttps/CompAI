@@ -1,0 +1,98 @@
+[
+  {
+    "slug": "ia-aplicada",
+    "codigo": "01",
+    "titulo": "Agentes de IA que leen lo que nadie tiene tiempo de leer",
+    "bajada": "Clasifican correos, revisan documentos y contestan en minutos. Tu equipo deja de transcribir planillas y vuelve a decidir.",
+    "vinetas": [
+      "Agentes y asistentes de IA",
+      "Lectura y resumen de documentos",
+      "Clasificación de requerimientos",
+      "Atención que contesta a toda hora",
+      "Se conecta a lo que ya tienes"
+    ],
+    "lamina": [
+      "Tu bandeja tiene trescientos correos y tres son urgentes. La planilla de licencias la mantiene una persona que está de vacaciones. El inventario de equipos se actualizó por última vez en marzo. Nada de eso está roto: está disperso, y ordenarlo a mano cuesta horas que ya no tienes para dar.",
+      "Un agente de IA es un trabajador que no se cansa de lo repetitivo. Lee los correos y los ordena por urgencia. Revisa cien documentos y te dice cuáles tienen el dato que buscas. Compara el inventario con las facturas y marca qué licencia vence antes de que termine el año.",
+      "No cambiamos tus sistemas: nos conectamos a ellos. Si trabajas en planillas, el agente escribe en tus planillas. Si la información vive en correos y carpetas compartidas, ahí trabaja. Nadie tiene que aprender un programa nuevo para que el lunes el resumen esté listo antes de la reunión.",
+      "Lo medimos en tiempo. Una revisión que tomaba dos días pasa a tomar veinte minutos, y el equipo vuelve a lo que solo una persona puede hacer: decidir. Si tienes presupuesto por ejecutar y un problema que se repite todos los meses, esto se implementa en semanas y no en años.",
+      "Casi nunca llega solo. El agente necesita un flujo que lo alimente, una pantalla donde el equipo lo use y un mensaje que explique el cambio a quien va a usarlo. Eso son tres cosas, no una, y las tres se trabajan acá mismo: automatización, desarrollo y dirección creativa."
+    ],
+    "etiqueta": "/nucleo",
+    "cta": "Cotizar un agente de IA",
+    "imagen": "media/grace-retrato.webp",
+    "imagen_alt": "Grace, el sistema de agentes de compAI"
+  },
+  {
+    "slug": "automatizacion",
+    "codigo": "02",
+    "titulo": "Procesos que se ejecutan solos",
+    "bajada": "Conectamos planillas, correos y aprobaciones en un flujo que no se detiene. Y cotizamos rápido cuando el plazo es corto.",
+    "vinetas": [
+      "Automatización de procesos",
+      "Google Workspace y Apps Script",
+      "Tableros de control en vivo",
+      "Flujos de aprobación con firma",
+      "Cotizaciones en plazos cortos"
+    ],
+    "lamina": [
+      "La planilla de aprobaciones va y vuelve por correo con catorce versiones. Alguien copia a mano los mismos datos en tres lugares distintos. La orden de compra rebota por la glosa y hay que empezar de nuevo. Nada de eso aparece en un informe de gestión, pero se come la semana completa.",
+      "Automatizar es sacar a la persona del medio. El dato entra una vez y viaja solo: de la solicitud al visto bueno, del visto bueno al registro, del registro al tablero. Cuando algo se atrasa, el flujo avisa antes de que el atraso se convierta en el problema de alguien.",
+      "Lo hacemos con lo que ya tienes. Planillas, formularios, correo y Google Workspace alcanzan para montar un flujo serio; cuando hace falta más, lo programamos. No te vendemos una plataforma con licencia anual: dejamos funcionando algo tuyo, que sigue andando cuando nosotros ya no estamos.",
+      "El tablero es la parte que más se usa. Una pantalla con lo que importa hoy: qué está pendiente, qué vence esta semana, cuánto queda por ejecutar. Cuando llega el momento de la rendición los números ya están ahí, y nadie pasa el fin de semana armándolos a mano.",
+      "Trabajamos con plazos cortos porque sabemos cómo son: el presupuesto se ejecuta en diciembre y la necesidad apareció en noviembre. Estamos inscritos en el mismo canal de compra que usas, pedimos tres datos y mandamos la cotización el mismo día. Si también hace falta una pantalla, se arma junto."
+    ],
+    "etiqueta": "/nodo",
+    "cta": "Pedir cotización del flujo",
+    "imagen": "media/circuitos.webp",
+    "imagen_alt": "Trazas de cobre de un circuito"
+  },
+  {
+    "slug": "desarrollo-web",
+    "codigo": "03",
+    "titulo": "Sitios y plataformas que la gente logra usar",
+    "bajada": "Webs, portales y aplicaciones claras, rápidas y fáciles de mantener. Terminadas y funcionando en semanas, no en un año.",
+    "vinetas": [
+      "Sitios y landing pages",
+      "Aplicaciones web a medida",
+      "Portales y trámites en línea",
+      "Formularios que sí se completan",
+      "Experiencia de usuario (UX)"
+    ],
+    "lamina": [
+      "El sitio lo hizo alguien que ya no trabaja ahí. Se actualiza pidiéndole el favor a un conocido. El formulario de contacto manda los mensajes a una casilla que nadie abre, y la gente igual llama por teléfono porque en la pantalla no encuentra lo que vino a buscar.",
+      "Partimos por lo que el visitante viene a hacer. Si viene a pedir un certificado, el botón que lo pide va primero y el resto espera su turno. Un portal se mide en una sola cosa: cuántas personas terminan lo que empezaron. Todo lo demás es decoración con buena intención.",
+      "Lo entregamos para que lo manejes tú. Texto, imágenes y documentos se cambian sin tocar código y sin pedirle permiso a nadie. Te dejamos el soporte escrito y no una reunión que hay que recordar: qué se cambia dónde, y a quién se le escribe cuando algo se rompe.",
+      "Las semanas importan. Una landing con formulario andando queda en días; un portal con trámites, en algunas semanas. Lo decimos con fecha antes de empezar, y si el plazo no se puede cumplir lo decimos antes de firmar y no después. El vencimiento de tu presupuesto no espera a nadie.",
+      "Un sitio nuevo deja a la vista las otras dos piezas: lo que llega por el formulario hay que resolverlo con un flujo, y las consultas que se repiten las puede contestar un asistente. Lo mismo pasa con la marca. Por eso casi nadie se lleva una sola cosa de acá."
+    ],
+    "etiqueta": "/pista",
+    "cta": "Cotizar mi sitio o portal",
+    "imagen": "media/captura-portafolio.webp",
+    "imagen_alt": "Portafolio de compai.cl en pantalla"
+  },
+  {
+    "slug": "direccion-creativa",
+    "codigo": "04",
+    "titulo": "Que se entienda, y que se recuerde",
+    "bajada": "Identidad, campañas y textos en lenguaje claro, para que lo que haces bien no se pierda en un comunicado que nadie lee.",
+    "vinetas": [
+      "Dirección creativa",
+      "Copywriting y lenguaje claro",
+      "Diseño de campañas",
+      "Posicionamiento de marca",
+      "Contenido generado con IA"
+    ],
+    "lamina": [
+      "El servicio funciona bien y nadie lo sabe. El afiche lo armó quien tenía el programa abierto. El texto lo escribió quien redacta los informes, y se lee como un informe. La gente llega al mesón a preguntar algo que estaba explicado en la pared, con palabras que no usa nadie.",
+      "Nuestro trabajo es traducir. Tomamos lo que ya haces y lo decimos en el idioma de quien lo necesita: una frase que se entiende de pie, en treinta segundos y sin segunda lectura. No simplificamos el contenido; sacamos las palabras que estaban ahí para quedar bien ante otra oficina.",
+      "La identidad es lo que te hace reconocible cuando no estás presente. Colores, tipografía, tono y plantillas que cualquiera del equipo pueda usar sin romper nada. Una vez armado, hacer la pieza siguiente cuesta una hora en vez de una semana, y todas se parecen entre sí a propósito.",
+      "Usamos IA para producir en volumen sin bajar el nivel: variantes de un aviso, piezas para cada canal, contenido de seis meses en una sola sesión. La decisión creativa sigue siendo humana. La máquina acelera la mano, no reemplaza el criterio de qué vale la pena decir y qué no.",
+      "Esta es la pieza que más se olvida y la que hace que las otras dos se noten. Un flujo impecable que nadie entiende no se usa, y un sitio bonito sin un mensaje claro no convierte nada. Dinos qué tienes que comunicar y la cotización sale con su fecha de entrega."
+    ],
+    "etiqueta": "/nucleo",
+    "cta": "Pedir cotización creativa",
+    "imagen": "media/grace-lavanda.webp",
+    "imagen_alt": "Grace en un campo de lavanda"
+  }
+]
