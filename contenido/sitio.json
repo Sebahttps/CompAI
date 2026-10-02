@@ -86,9 +86,30 @@
     "fondo_poster": "media/campo-codigo.webp",
     "fondo_velocidad": 0.5,
     "imagenes": [
-      { "src": "media/grace-retrato.webp", "alt": "Grace retrato con efecto materialización por código", "leyenda": "Grace retrato con efecto materialización por código", "anclaje": "derecha", "pie": "abajo-derecha" },
-      { "src": "media/grace-perfil.webp",  "alt": "Grace de perfil con efecto materialización por código", "leyenda": "Grace de perfil con efecto materialización por código", "anclaje": "izquierda", "pie": "centro" },
-      { "src": "media/grace-lavanda.webp", "alt": "Grace en campo de lavanda con efecto materialización por código", "leyenda": "Grace en campo de lavanda con efecto materialización por código", "anclaje": "cubrir", "pie": "arriba-derecha", "revelado": 1 }
+      { "src": "media/grace-retrato.webp", "alt": "Grace, retrato", "anclaje": "derecha" },
+      { "src": "media/grace-perfil.webp",  "alt": "Grace de perfil", "anclaje": "izquierda", "alto": "grande", "envivo": true },
+      { "src": "media/grace-lavanda.webp", "alt": "Grace en un campo de lavanda al atardecer", "anclaje": "cubrir", "revelado": 1 }
+    ],
+    "_leyendas": "Los pies «Grace ___ con efecto materialización por código» se quitaron el 02-10-2026: eran la instrucción del encargo, no información para el visitante.",
+
+    "envivo": {
+      "titulo": "GRACE",
+      "estado": "EN VIVO",
+      "barrido": "Barrido del 4 de septiembre de 2026 · 547 licitaciones revisadas, 11 pertinentes",
+      "_barrido": "Se refresca a mano cuando RAIdar corre un barrido nuevo. Si la fecha envejece, se nota: no dejarla vieja.",
+      "filas": [
+        { "marca": "PERTINENTE", "id": "1796-51-LE24",    "titulo": "Adquisición de Activos Fijos No Financieros SNCD", "cierre": "cierra en 5 días" },
+        { "marca": "PERTINENTE", "id": "2469-294-LE26",   "titulo": "Adquisición de Equipos Computacionales, Universidad de Talca", "cierre": "cierra en 5 días" },
+        { "marca": "PERTINENTE", "id": "3486-33-LE26",    "titulo": "Adquisición de pendrives para Servel", "cierre": "cierra en 6 días" },
+        { "marca": "PERTINENTE", "id": "1174385-46-LE26", "titulo": "Adquisición de equipos computacionales", "cierre": "cierra en 30 días" },
+        { "marca": "PERTINENTE", "id": "1796-51-LE24",    "titulo": "Adquisición de Activos Fijos No Financieros SNCD", "cierre": "cierra en 5 días" }
+      ]
+    },
+
+    "franja": [
+      { "cifra": "24/7",  "glosa": "Operación continua" },
+      { "cifra": "<60m",  "glosa": "Respuesta a cotización" },
+      { "cifra": "100%",  "glosa": "Trazabilidad" }
     ]
   },
 

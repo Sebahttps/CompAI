@@ -22,10 +22,13 @@ if (/Copyrighting/i.test(html)) mal('«Copyrighting» sigue en la pagina: es Cop
 if (/lavando/i.test(html)) mal('«campo de lavando»: es lavanda.');
 if (/Materializacion|materializacion/.test(html.normalize('NFC')))
   mal('«Materializacion» sin tildes: es «Materialización por código».');
-// La leyenda puede ir al principio de la frase o dentro de ella («Grace retrato
-// con efecto materialización por código»), asi que la mayuscula no importa.
-// Lo que SI importa, y era la correccion 5 del informe, son las tildes.
-if (!/materialización por código/i.test(html)) mal('falta la leyenda «materialización por código».');
+// Los pies «Grace ___ con efecto materializacion por codigo» SE QUITARON el
+// 02-10-2026. Sebastian: «son instruccion, no informacion para publicar». La
+// correccion 5 del informe era de ORTOGRAFIA —que llevaran tildes si estaban—,
+// no una orden de que estuvieran; asi que esto deja de exigirse y queda la
+// regla que sigue viva: si la frase aparece, va con tildes.
+if (/materializacion por codigo/i.test(html.normalize('NFC')))
+  mal('«materializacion por codigo» sin tildes.');
 
 // Numeracion /01–/06. El error del informe era «dos / 05 y un / 06»: un mismo
 // codigo puesto sobre DOS secciones distintas. Cada codigo aparece dos veces a

@@ -174,12 +174,32 @@ const grace = `
       <p class="kick mono">${esc(S.grace.codigo)} — <b>${esc(S.grace.nombre)}</b></p>
       <h2 class="t">${esc(S.grace.titulo)}</h2>
       <p class="sub">${esc(S.grace.linea)}</p>
-      <div class="gracelist">
-        ${S.grace.imagenes.map(g => `<figure class="gfig pie-${esc(g.pie)}">
-          <canvas class="gcanvas" data-src="${esc(g.src)}" data-anclaje="${esc(g.anclaje)}"${g.revelado ? ` data-revelado="${g.revelado}"` : ''} role="img" aria-label="${esc(g.alt)}"></canvas>
-          <noscript><img src="${esc(g.src)}" alt="${esc(g.alt)}" class="gcanvas" loading="lazy" decoding="async"></noscript>
-          <figcaption>${esc(g.leyenda)}</figcaption>
-        </figure>`).join('\n        ')}
+      ${(() => {
+        const banda = g => {
+          const panel = g.envivo ? `
+            <div class="envivo">
+              <p class="ev-tit"><b>${esc(S.grace.envivo.titulo)}</b> <span class="ev-estado">(( ${esc(S.grace.envivo.estado)} ))</span></p>
+              <ul class="ev-lista">
+                ${S.grace.envivo.filas.map(f => `<li>
+                  <span class="ev-marca">${esc(f.marca)}</span>
+                  <span class="ev-dato"><b>${esc(f.id)}</b><em>${esc(f.titulo)}</em></span>
+                  <span class="ev-cierre">${esc(f.cierre)}</span>
+                </li>`).join('')}
+              </ul>
+              <p class="ev-pie">${esc(S.grace.envivo.barrido)}</p>
+            </div>` : '';
+          return `<figure class="gfig${g.alto === 'grande' ? ' alta' : ''}">
+            <canvas class="gcanvas" data-src="${esc(g.src)}" data-anclaje="${esc(g.anclaje)}"${g.revelado ? ` data-revelado="${g.revelado}"` : ''} role="img" aria-label="${esc(g.alt)}"></canvas>
+            <noscript><img src="${esc(g.src)}" alt="${esc(g.alt)}" class="gcanvas" loading="lazy" decoding="async"></noscript>${panel}
+          </figure>`;
+        };
+        const im = S.grace.imagenes;
+        // El orden lo fijo Sebastian el 02-10: retrato, perfil con el panel en
+        // vivo, LA FRANJA, y recien ahi el campo de lavanda.
+        return `<div class="gracelist">${im.slice(0, 2).map(banda).join('')}</div>
+      <div class="franja">${S.grace.franja.map(f => `<div><b>${esc(f.cifra)}</b><span>${esc(f.glosa)}</span></div>`).join('')}</div>
+      <div class="gracelist">${im.slice(2).map(banda).join('')}</div>`;
+      })()}
       </div>
     </div>
   </section>`;
