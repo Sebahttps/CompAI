@@ -203,13 +203,26 @@ h2.t{font-family:var(--display);font-variation-settings:"wdth" 112;font-weight:7
   -webkit-mask-image:linear-gradient(transparent,#000 14%,#000 86%,transparent);
   mask-image:linear-gradient(transparent,#000 14%,#000 86%,transparent)}
 .grace-fondo video{width:100%;height:100%;object-fit:cover;opacity:.3}
-.gracelist{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2.4vw,30px);margin-top:48px}
-.gfig{margin:0;position:relative}
-.gcanvas{display:block;width:100%;aspect-ratio:3/4;background:#07090C;border:1px solid var(--linea);border-radius:10px}
-.gfig:nth-child(3) .gcanvas{aspect-ratio:3/4}
-.gfig figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;
-  color:var(--crema2);margin-top:10px;line-height:1.5}
-@media (max-width:760px){.gracelist{grid-template-columns:1fr;gap:28px}}
+/* Tres BANDAS horizontales, una bajo otra y a todo el ancho — no tres columnas
+   verticales. Asi esta en el mockup de Sebastian (pag. 5 del PDF de
+   correcciones) y asi se lee: la figura ocupa un tercio y el campo de codigo
+   de la seccion respira en el resto. */
+.gracelist{display:grid;gap:clamp(10px,1.6vw,20px);margin-top:clamp(28px,5vh,56px)}
+.gfig{margin:0;position:relative;border-radius:10px;overflow:hidden;
+  border:1px solid rgba(46,143,181,.14)}
+.gcanvas{display:block;width:100%;aspect-ratio:21/9;background:transparent}
+.gfig figcaption{position:absolute;z-index:2;max-width:min(42ch,62%);
+  font-family:var(--mono);font-weight:500;font-size:clamp(9px,.78vw,11px);
+  letter-spacing:.1em;text-transform:uppercase;line-height:1.45;color:var(--crema);
+  text-shadow:0 1px 10px rgba(0,0,0,.95),0 0 26px rgba(0,0,0,.8)}
+.pie-abajo-derecha figcaption{right:clamp(14px,3vw,38px);bottom:clamp(12px,2.4vw,28px);text-align:right}
+.pie-centro        figcaption{left:50%;top:50%;transform:translate(-50%,-50%);text-align:center}
+.pie-arriba-derecha figcaption{right:clamp(14px,3vw,38px);top:clamp(12px,2.4vw,28px);text-align:right}
+@media (max-width:760px){
+  .gcanvas{aspect-ratio:16/10}
+  .gfig figcaption{max-width:72%;font-size:9px;letter-spacing:.08em}
+  .pie-centro figcaption{left:auto;right:12px;top:auto;bottom:12px;transform:none;text-align:right}
+}
 
 /* ───────── / 04 Creative · servicios ───────── */
 .servs{display:grid;gap:0;margin-top:46px;border-top:1px solid var(--linea)}

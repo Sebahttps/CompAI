@@ -175,8 +175,8 @@ const grace = `
       <h2 class="t">${esc(S.grace.titulo)}</h2>
       <p class="sub">${esc(S.grace.linea)}</p>
       <div class="gracelist">
-        ${S.grace.imagenes.map(g => `<figure class="gfig">
-          <canvas class="gcanvas" data-src="${esc(g.src)}"${g.revelado ? ` data-revelado="${g.revelado}"` : ''} role="img" aria-label="${esc(g.alt)}"></canvas>
+        ${S.grace.imagenes.map(g => `<figure class="gfig pie-${esc(g.pie)}">
+          <canvas class="gcanvas" data-src="${esc(g.src)}" data-anclaje="${esc(g.anclaje)}"${g.revelado ? ` data-revelado="${g.revelado}"` : ''} role="img" aria-label="${esc(g.alt)}"></canvas>
           <noscript><img src="${esc(g.src)}" alt="${esc(g.alt)}" class="gcanvas" loading="lazy" decoding="async"></noscript>
           <figcaption>${esc(g.leyenda)}</figcaption>
         </figure>`).join('\n        ')}

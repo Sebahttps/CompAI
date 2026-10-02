@@ -49,12 +49,19 @@
   }
 
   const AZULES = ['#2f6db0', '#5aa6e8', '#cfe9ff'];   // profundo · medio · brillante
-  const FONDO = '#07090C';
 
   function monta(cv) {
-    const ctx = cv.getContext('2d', { alpha: false });
+    const ctx = cv.getContext('2d', { alpha: true });
     const src = cv.dataset.src;
     const revelado = Math.max(0, Math.min(1, parseFloat(cv.dataset.revelado) || 0.82));
+    // Donde se planta la figura dentro de la banda. El resto queda transparente
+    // y deja ver el campo de codigo de la seccion.
+    const ANCLAJES = {
+      derecha:   { x0: .54, x1: 1 },
+      izquierda: { x0: 0,   x1: .46 },
+      cubrir:    { x0: 0,   x1: 1 }
+    };
+    const ancla = ANCLAJES[cv.dataset.anclaje] || ANCLAJES.cubrir;
     const dpr = Math.min(devicePixelRatio || 1, 2);
 
     let W = 0, H = 0, cel = 0, cols = 0, filas = 0;
@@ -78,27 +85,37 @@
 
     let rec = null;   // recorte de la foto que calza con el canvas
 
+    function franja() {                      // en columnas
+      return { desde: Math.floor(ancla.x0 * cols), hasta: Math.ceil(ancla.x1 * cols) };
+    }
+
     function encuadre() {
-      const ri = im.naturalWidth / im.naturalHeight, rc = W / H;
+      const anchoFranja = Math.max(1, (ancla.x1 - ancla.x0) * W);
+      const ri = im.naturalWidth / im.naturalHeight, rc = anchoFranja / H;
       let sw = im.naturalWidth, sh = im.naturalHeight, sx = 0, sy = 0;
       if (ri > rc) { sw = sh * rc; sx = (im.naturalWidth - sw) / 2; }
       else { sh = sw / rc; sy = (im.naturalHeight - sh) / 2.3; }   // encuadre a la cara
       return { sx, sy, sw, sh };
     }
 
+    let fr = null;    // columnas que ocupa la figura dentro de la banda
+
     function muestrea() {
+      fr = franja();
+      const anchoCols = Math.max(1, fr.hasta - fr.desde);
       rec = encuadre();
-      // una miniatura del tamaño de la retícula: solo para saber de qué color y
-      // con cuánta luz va cada cifra. La foto de verdad se dibuja aparte, a
-      // resolución completa, porque celda a celda quedaba un mosaico.
+      // miniatura del tamaño de la retícula de la FRANJA: solo para saber el
+      // color y la luz de cada cifra. La foto se dibuja aparte, a resolución
+      // completa, porque celda a celda quedaba un mosaico.
       const off = document.createElement('canvas');
-      off.width = cols; off.height = filas;
+      off.width = anchoCols; off.height = filas;
       const o = off.getContext('2d', { willReadFrequently: true });
-      o.drawImage(im, rec.sx, rec.sy, rec.sw, rec.sh, 0, 0, cols, filas);
-      pix = o.getImageData(0, 0, cols, filas).data;
+      o.drawImage(im, rec.sx, rec.sy, rec.sw, rec.sh, 0, 0, anchoCols, filas);
+      pix = o.getImageData(0, 0, anchoCols, filas).data;
+      fr.ancho = anchoCols;
 
       col = new Array(cols);
-      for (let x = 0; x < cols; x++) {
+      for (let x = fr.desde; x < fr.hasta; x++) {
         col[x] = {
           caida: -Math.random() * 1.1,          // cuándo empieza a caer el código
           foto: 1.1 + Math.random() * 0.9,      // cuándo empieza a entrar la foto
@@ -111,15 +128,18 @@
     }
 
     function pinta(t) {
-      ctx.fillStyle = FONDO;
-      ctx.fillRect(0, 0, W, H);
+      // transparente, no negro: detrás hay un video de campo de código que
+      // tiene que verse en la parte que la figura no ocupa
+      ctx.clearRect(0, 0, W, H);
       const alto = cel * 1.18;
       const px = puntero ? puntero.x : -1e9;
       const paso = (t * 7) | 0;
-      const escX = rec.sw / W, escY = rec.sh / H;
+      const anchoPx = fr.ancho * cel;
+      const escX = rec.sw / anchoPx, escY = rec.sh / H;
 
-      for (let x = 0; x < cols; x++) {
-        const c = col[x];
+      for (let x = fr.desde; x < fr.hasta; x++) {
+        const c = col[x]; if (!c) continue;
+        const i = x - fr.desde;                  // columna dentro de la franja
         const empuje = puntero ? Math.max(0, 1 - Math.abs(x * cel - px) / (90 * dpr)) : 0;
         c.emp += (empuje - c.emp) * 0.16;
         const dx = c.emp * 16 * dpr * (x % 2 ? 1 : -1);
@@ -132,7 +152,7 @@
           const hFoto = Math.min(H, hastaFoto * alto);
           ctx.globalAlpha = revelado;
           ctx.drawImage(im,
-            rec.sx + x * cel * escX, rec.sy, cel * escX, hFoto * escY,
+            rec.sx + i * cel * escX, rec.sy, cel * escX, hFoto * escY,
             x * cel + dx, 0, cel + .8, hFoto);
           ctx.globalAlpha = 1;
         }
@@ -140,7 +160,7 @@
         // 2 · las cifras, de donde llegó la foto hasta donde llegó el código
         const desde = Math.max(0, Math.floor(hastaFoto) - (revelado > .95 ? 0 : 2));
         for (let y = desde; y <= Math.min(filas - 1, hastaCod); y++) {
-          const k = (y * cols + x) * 4;
+          const k = (y * fr.ancho + i) * 4;
           const luz = (pix[k] * .299 + pix[k + 1] * .587 + pix[k + 2] * .114) / 255;
           const borde = Math.min(1, (hastaCod - y) / 2.5);
           const tapada = y < hastaFoto ? revelado : 0;
@@ -171,10 +191,11 @@
     }
 
     function plana() {
-      const r = cv.getBoundingClientRect();
-      W = cv.width = Math.round(r.width * dpr); H = cv.height = Math.round(r.height * dpr);
+      if (!mide()) return;
       const e = encuadre();
-      ctx.drawImage(im, e.sx, e.sy, e.sw, e.sh, 0, 0, W, H);
+      ctx.clearRect(0, 0, W, H);
+      ctx.drawImage(im, e.sx, e.sy, e.sw, e.sh,
+        ancla.x0 * W, 0, (ancla.x1 - ancla.x0) * W, H);
     }
 
     /* ── la imagen no se pide hasta que el canvas se acerca ──────────── */

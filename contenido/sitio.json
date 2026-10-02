@@ -86,9 +86,9 @@
     "fondo_poster": "media/campo-codigo.webp",
     "fondo_velocidad": 0.5,
     "imagenes": [
-      { "src": "media/grace-retrato.webp", "alt": "Grace retrato con efecto materialización por código", "leyenda": "Grace retrato con efecto materialización por código" },
-      { "src": "media/grace-perfil.webp",  "alt": "Grace de perfil con efecto materialización por código", "leyenda": "Grace de perfil con efecto materialización por código" },
-      { "src": "media/grace-lavanda.webp", "alt": "Grace en campo de lavanda con efecto materialización por código", "leyenda": "Grace en campo de lavanda con efecto materialización por código", "revelado": 1 }
+      { "src": "media/grace-retrato.webp", "alt": "Grace retrato con efecto materialización por código", "leyenda": "Grace retrato con efecto materialización por código", "anclaje": "derecha", "pie": "abajo-derecha" },
+      { "src": "media/grace-perfil.webp",  "alt": "Grace de perfil con efecto materialización por código", "leyenda": "Grace de perfil con efecto materialización por código", "anclaje": "izquierda", "pie": "centro" },
+      { "src": "media/grace-lavanda.webp", "alt": "Grace en campo de lavanda con efecto materialización por código", "leyenda": "Grace en campo de lavanda con efecto materialización por código", "anclaje": "cubrir", "pie": "arriba-derecha", "revelado": 1 }
     ]
   },
 
