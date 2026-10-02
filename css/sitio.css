@@ -104,9 +104,10 @@ body.hero-sello:not(.menu-abierto) .bar .logo-link{opacity:0;pointer-events:none
   width:min(620px,96vw);aspect-ratio:2/1;border-radius:50% 50% 0 0 / 100% 100% 0 0;
   background:radial-gradient(ellipse at 50% 100%,rgba(8,6,5,.94) 38%,rgba(8,6,5,.72) 62%,transparent 78%);
   display:grid;place-items:center;align-content:center;pointer-events:none}
-.arco .sello-img{width:clamp(120px,17vw,210px);height:auto;margin-bottom:6%;
+.arco .sello-img{width:clamp(140px,20vw,260px);height:auto;margin-bottom:6%;
   filter:drop-shadow(0 6px 26px rgba(0,0,0,.75))}
 @media (max-width:640px){.arco{width:118vw;aspect-ratio:2.1/1}.arco .sello-img{width:min(168px,44vw)}}
+
 
 .hero-nucleo{display:grid;place-items:center}
 .nucleo{width:min(78vh,86vw);aspect-ratio:1;position:relative}
@@ -132,6 +133,11 @@ body.hero-sello:not(.menu-abierto) .bar .logo-link{opacity:0;pointer-events:none
 h2.t{font-family:var(--display);font-variation-settings:"wdth" 112;font-weight:700;
   font-size:clamp(30px,5.2vw,64px);line-height:1.02;letter-spacing:-.015em;margin:18px 0 0;text-wrap:balance}
 .sub{color:var(--crema2);max-width:62ch;margin:14px 0 0}
+/* A SANGRE. En el Canva las piezas grandes van de borde a borde; metidas en
+   la caja de 1180 con esquinas redondeadas parecian tarjetas y la seccion
+   perdia escala. Comparado lado a lado el 02-10. */
+.sangre{width:100vw;margin-left:calc(50% - 50vw);max-width:none;border-radius:0}
+
 .circuitos{position:absolute;inset:0;z-index:-1;background:url(../media/circuitos.webp) center/cover no-repeat;opacity:.5;
   mask-image:linear-gradient(transparent,#000 18%,#000 82%,transparent)}
 
@@ -168,8 +174,7 @@ h2.t{font-family:var(--display);font-variation-settings:"wdth" 112;font-weight:7
 
 /* ───────── / 02 Il Cuore ───────── */
 #il-cuore{overflow:hidden}
-.cuore-video{width:min(820px,100%);margin:0 auto;border-radius:16px;overflow:hidden;background:#000;
-  box-shadow:0 30px 90px -50px rgba(46,143,181,.55)}
+.cuore-video{width:100vw;margin-left:calc(50% - 50vw);overflow:hidden;background:#000}
 .cuore-video video{display:block;width:100%;height:auto}
 
 /* Titulo y parrafo a la IZQUIERDA; los ticks al costado. En telefono el video
@@ -207,16 +212,17 @@ h2.t{font-family:var(--display);font-variation-settings:"wdth" 112;font-weight:7
    verticales. Asi esta en el mockup de Sebastian (pag. 5 del PDF de
    correcciones) y asi se lee: la figura ocupa un tercio y el campo de codigo
    de la seccion respira en el resto. */
-.gracelist{display:grid;gap:clamp(10px,1.6vw,20px);margin-top:clamp(28px,5vh,56px)}
-.gfig{margin:0;position:relative;border-radius:10px;overflow:hidden;
-  border:1px solid rgba(46,143,181,.14)}
+.gracelist{display:grid;gap:clamp(6px,1vw,14px);margin-top:clamp(28px,5vh,56px)}
+.gfig{margin:0;position:relative;overflow:hidden;
+  width:100vw;margin-left:calc(50% - 50vw)}
 .gcanvas{display:block;width:100%;aspect-ratio:21/9;background:transparent}
 /* La banda del perfil es mas alta: lleva el panel «Grace en vivo» al costado. */
 .gfig.alta .gcanvas{aspect-ratio:16/10}
 
 /* Grace en vivo: lo que Grace esta mirando ahora mismo en Mercado Publico. */
-.envivo{position:absolute;right:0;top:50%;transform:translateY(-50%);z-index:2;
-  width:min(62%,720px);padding:clamp(12px,2vw,24px) clamp(14px,2.4vw,30px);
+.envivo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;
+  width:min(1180px,92vw);padding-left:clamp(120px,32vw,460px);
+  padding-block:clamp(12px,2vw,24px);
   display:grid;gap:clamp(8px,1.4vh,14px)}
 .ev-tit{font-family:var(--mono);font-weight:700;font-size:clamp(15px,1.7vw,22px);
   letter-spacing:.06em;color:var(--petroleo2);margin:0;
@@ -336,7 +342,7 @@ h2.t{font-family:var(--display);font-variation-settings:"wdth" 112;font-weight:7
 
 /* ───────── / 06 Contacto ───────── */
 #contacto{padding-bottom:clamp(40px,7vh,80px);overflow:hidden;position:relative}
-.scl{font-family:var(--display);font-variation-settings:"wdth" 96;font-weight:800;
+.scl{font-family:var(--display);font-variation-settings:"wdth" 96;font-weight:800;position:relative;z-index:1;
   font-size:clamp(96px,27vw,300px);line-height:.82;letter-spacing:-.045em;margin:0;text-align:center;
   text-shadow:0 0 60px rgba(245,240,228,.14)}
 .lugar{font-family:var(--mono);font-size:13px;letter-spacing:.26em;text-transform:uppercase;
@@ -355,7 +361,8 @@ h2.t{font-family:var(--display);font-variation-settings:"wdth" 112;font-weight:7
    ClAI-nte lo vetó cuando era un boton de texto entre el correo y el WhatsApp
    —«es lo unico que me hizo dudar del proveedor»— y Sebastian hizo notar que
    su diseño ya lo resolvia: abajo, con la puerta que genero con IA. */
-.compuerta{position:relative;display:block;width:min(228px,52vw);margin:clamp(54px,9vh,96px) auto 0;
+.compuerta{position:absolute;right:clamp(16px,4vw,60px);bottom:clamp(96px,14vh,150px);
+  display:block;width:min(190px,40vw);
   border-radius:10px;overflow:hidden;text-decoration:none;isolation:isolate;
   transition:transform .5s cubic-bezier(.2,.7,.2,1),box-shadow .5s}
 .compuerta img{display:block;width:100%;height:auto;opacity:.5;
@@ -371,6 +378,13 @@ h2.t{font-family:var(--display);font-variation-settings:"wdth" 112;font-weight:7
 .compuerta:hover img,.compuerta:focus-visible img{opacity:1;filter:saturate(1) brightness(.95) contrast(1);transform:scale(1.04)}
 .compuerta:hover .luz,.compuerta:focus-visible .luz{opacity:1}
 .compuerta:hover .et,.compuerta:focus-visible .et{color:var(--sol)}
+/* En telefono la esquina inferior derecha no existe: la compuerta se montaba
+   sobre el pie. Medido a 390 px el 02-10. Vuelve al flujo, centrada. */
+@media (max-width:760px){
+  .compuerta{position:relative;right:auto;bottom:auto;width:min(190px,48vw);
+    margin:clamp(34px,6vh,60px) auto 0}
+}
+
 
 .pie{margin-top:clamp(50px,9vh,100px);padding-top:24px;border-top:1px solid var(--linea);
   display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--mono);
