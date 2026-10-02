@@ -94,20 +94,20 @@ body.hero-sello:not(.menu-abierto) .bar .logo-link{opacity:0;pointer-events:none
 .hero{position:relative;height:min(100svh,940px);min-height:520px;overflow:hidden;background:#000}
 .muro{position:absolute;inset:0}
 .muro video,.muro img{width:100%;height:100%;object-fit:cover;display:block}
-.sello{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;justify-items:center;gap:6px;
-  pointer-events:none;filter:drop-shadow(0 0 22px rgba(0,0,0,.85)) drop-shadow(0 0 6px rgba(0,0,0,.9))}
 /* El video pasa por cuadros claros —el hombre de Vitruvio sobre papel crema— y
    ahi la palabra `comp`, que tambien es crema, desaparece. El velo no se ve
    sobre los cuadros oscuros y salva la marca en los claros. */
-.sello::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  width:clamp(300px,42vw,620px);aspect-ratio:1.55;border-radius:50%;z-index:-1;
-  background:radial-gradient(closest-side,rgba(8,6,5,.72),rgba(8,6,5,.46) 52%,transparent 78%)}
-.sello svg{width:clamp(90px,11vw,150px);height:auto;overflow:visible}
-.sello svg path{fill:none;stroke:var(--petroleo);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;
-  filter:drop-shadow(0 0 8px rgba(46,143,181,.8))}
-.sello .w{font-family:"Courier New",Courier,monospace;font-weight:700;font-size:clamp(40px,6vw,84px);
-  line-height:1;letter-spacing:-.02em;color:var(--crema)}
-.sello .w b{color:var(--brasa);text-shadow:0 0 18px rgba(200,121,65,.6)}
+/* El semicirculo de abajo equilibra la viñeta que traen 4 de los 5 videos:
+   sin el, el borde inferior queda mas oscuro que el superior y el hero se ve
+   torcido. El sello va centrado adentro. */
+.arco{position:absolute;left:50%;bottom:0;transform:translateX(-50%);z-index:2;
+  width:min(620px,96vw);aspect-ratio:2/1;border-radius:50% 50% 0 0 / 100% 100% 0 0;
+  background:radial-gradient(ellipse at 50% 100%,rgba(8,6,5,.94) 38%,rgba(8,6,5,.72) 62%,transparent 78%);
+  display:grid;place-items:center;align-content:center;pointer-events:none}
+.arco .sello-img{width:clamp(120px,17vw,210px);height:auto;margin-bottom:6%;
+  filter:drop-shadow(0 6px 26px rgba(0,0,0,.75))}
+@media (max-width:640px){.arco{width:118vw;aspect-ratio:2.1/1}.arco .sello-img{width:min(168px,44vw)}}
+
 .hero-nucleo{display:grid;place-items:center}
 .nucleo{width:min(78vh,86vw);aspect-ratio:1;position:relative}
 .nucleo video,.nucleo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:screen;
@@ -121,9 +121,14 @@ body.hero-sello:not(.menu-abierto) .bar .logo-link{opacity:0;pointer-events:none
 
 /* ───────── armazón de secciones ───────── */
 .sec{position:relative;padding:clamp(72px,11vh,140px) clamp(18px,5vw,72px);scroll-margin-top:var(--barra)}
-.ancho{max-width:1180px;margin:0 auto}
-.kick{color:var(--crema2);display:flex;gap:10px;align-items:center}
+.ancho{width:100%;max-width:1180px;margin-inline:auto}
+/* Rotulo de seccion: SIEMPRE arriba a la izquierda, mono 18 px. Antes dos de
+   ellos iban centrados y la pagina parecia dos sitios pegados. */
+.kick{color:var(--crema2);display:flex;gap:10px;align-items:center;
+  font-family:var(--mono);font-size:18px;letter-spacing:.06em;text-transform:uppercase;
+  margin:0 0 clamp(18px,4vh,42px);width:100%;max-width:1180px;margin-inline:auto}
 .kick b{color:var(--petroleo2);font-weight:500}
+@media (max-width:640px){.kick{font-size:14px}}
 h2.t{font-family:var(--display);font-variation-settings:"wdth" 112;font-weight:700;
   font-size:clamp(30px,5.2vw,64px);line-height:1.02;letter-spacing:-.015em;margin:18px 0 0;text-wrap:balance}
 .sub{color:var(--crema2);max-width:62ch;margin:14px 0 0}
@@ -132,32 +137,56 @@ h2.t{font-family:var(--display);font-variation-settings:"wdth" 112;font-weight:7
 
 /* ───────── / 01 Offenbar ───────── */
 #offenbar{display:grid;align-content:center;min-height:min(88svh,820px)}
-.offen{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.42fr);gap:clamp(20px,4vw,60px);align-items:center}
+.offen{position:relative;display:grid;place-items:center}
+.offen-centro{position:relative;z-index:2;text-align:center;display:grid;justify-items:center}
 .ofit{font-family:var(--mono);font-weight:500;font-size:clamp(26px,5.1vw,62px);line-height:1.12;
-  letter-spacing:-.02em;margin:18px 0 0;min-height:2.3em}
+  letter-spacing:-.02em;margin:0;min-height:2.3em;text-align:center}
 .ofit .l2{color:var(--brasa)}
 .ofit .cur{display:inline-block;width:.56em;height:1em;vertical-align:-.12em;background:var(--sol);animation:parpadeo 1s steps(1) infinite}
 @keyframes parpadeo{50%{opacity:0}}
-.enl{display:inline-flex;align-items:center;gap:10px;margin-top:30px;text-decoration:none;color:var(--sol);
-  border-bottom:1px solid rgba(255,178,92,.35);padding-bottom:4px;transition:border-color .2s,gap .2s}
+.enl{display:inline-flex;align-items:center;gap:10px;margin-top:clamp(28px,5vh,52px);text-decoration:none;
+  color:var(--sol);border-bottom:1px solid rgba(255,178,92,.35);padding-bottom:4px;
+  transition:border-color .2s,gap .2s}
 .enl:hover{border-color:var(--sol);gap:16px}
-#lluvia{width:100%;height:clamp(260px,46vh,500px);display:block;opacity:.5;
+/* Barrido de bloque: una placa ambar cruza el texto y lo deja revelado detras.
+   Arranca cuando la seccion entra en pantalla, no al cargar. */
+.enl.bloque{position:relative;overflow:hidden;border-bottom-color:transparent}
+.enl.bloque>span{display:inline-block}
+.enl.bloque::after{content:"";position:absolute;inset:0;background:var(--sol);transform:scaleX(0);
+  transform-origin:left center;pointer-events:none}
+.enl.bloque.corre::after{animation:barre .86s cubic-bezier(.76,0,.24,1) forwards}
+.enl.bloque.corre{border-bottom-color:rgba(255,178,92,.35);transition:border-color .3s .8s}
+@keyframes barre{0%{transform:scaleX(0);transform-origin:left center}
+  48%{transform:scaleX(1);transform-origin:left center}
+  52%{transform:scaleX(1);transform-origin:right center}
+  100%{transform:scaleX(0);transform-origin:right center}}
+
+#lluvia{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:.34;z-index:1;
   -webkit-mask-image:radial-gradient(ellipse at center,#000 42%,transparent 78%);
   mask-image:radial-gradient(ellipse at center,#000 42%,transparent 78%)}
-@media (max-width:860px){.offen{grid-template-columns:1fr;gap:10px}#lluvia{height:150px;opacity:.32;order:-1}}
+@media (max-width:860px){#lluvia{opacity:.26}}
 
 /* ───────── / 02 Il Cuore ───────── */
-#il-cuore{text-align:center;overflow:hidden}
-.mariposa{width:min(380px,62vw);margin:14px auto 0;display:block;overflow:visible;
-  filter:drop-shadow(0 0 26px rgba(46,143,181,.42))}
-.mariposa .ala{transform-box:fill-box;transform-origin:right center;animation:aletea 4.2s ease-in-out infinite}
-.mariposa .ala.d{transform-origin:left center;animation-delay:-.001s}
-@keyframes aletea{0%,100%{transform:rotateY(0) }50%{transform:rotateY(42deg)}}
-.manif{font-family:var(--display);font-variation-settings:"wdth" 108;font-weight:700;
-  font-size:clamp(30px,6.4vw,76px);line-height:1.04;letter-spacing:-.02em;margin:34px 0 0;text-wrap:balance}
-.manif span{display:block}
-.manif span:last-child{color:var(--petroleo2)}
-#il-cuore .sub{margin:22px auto 0;text-align:center}
+#il-cuore{overflow:hidden}
+.cuore-video{width:min(820px,100%);margin:0 auto;border-radius:16px;overflow:hidden;background:#000;
+  box-shadow:0 30px 90px -50px rgba(46,143,181,.55)}
+.cuore-video video{display:block;width:100%;height:auto}
+
+/* Titulo y parrafo a la IZQUIERDA; los ticks al costado. En telefono el video
+   de los ticks baja, no se encoge: a 60 px no se entiende que son. */
+.ia{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(22px,4vw,60px);
+  align-items:center;margin-top:clamp(40px,7vh,84px);text-align:left}
+.ia-tit{font-family:var(--mono);font-weight:700;font-size:clamp(19px,2.3vw,30px);line-height:1.22;
+  letter-spacing:-.01em;margin:0;color:var(--crema)}
+.ia-tit span{display:block}
+.ia-par{margin:clamp(16px,2.4vh,26px) 0 0;font-size:18px;line-height:1.62;color:var(--crema2);max-width:62ch}
+.ia-ticks{width:clamp(120px,14vw,190px);flex:0 0 auto}
+.ia-ticks video{display:block;width:100%;height:auto;mix-blend-mode:screen}
+@media (max-width:760px){
+  .ia{grid-template-columns:1fr;gap:18px}
+  .ia-ticks{width:min(150px,40vw);justify-self:start}
+  .ia-par{font-size:16.5px}
+}
 .accesos{display:flex;gap:clamp(18px,5vw,56px);justify-content:center;flex-wrap:wrap;margin-top:40px}
 .accesos a{display:inline-flex;align-items:center;gap:12px;text-decoration:none;color:var(--crema)}
 .accesos a .ic{width:34px;height:26px;border:1px solid var(--petroleo);border-radius:4px;display:grid;place-items:center;
@@ -169,15 +198,17 @@ h2.t{font-family:var(--display);font-variation-settings:"wdth" 112;font-weight:7
 .isotipo path{fill:none;stroke:var(--petroleo2);stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round}
 
 /* ───────── / 03 Grace ───────── */
-#grace{position:relative}
-#numeros{position:absolute;inset:0;width:100%;height:100%;z-index:-1;opacity:.5}
+#grace{position:relative;isolation:isolate}
+.grace-fondo{position:absolute;inset:0;z-index:-1;overflow:hidden;
+  -webkit-mask-image:linear-gradient(transparent,#000 14%,#000 86%,transparent);
+  mask-image:linear-gradient(transparent,#000 14%,#000 86%,transparent)}
+.grace-fondo video{width:100%;height:100%;object-fit:cover;opacity:.3}
 .gracelist{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2.4vw,30px);margin-top:48px}
 .gfig{margin:0;position:relative}
 .gcanvas{display:block;width:100%;aspect-ratio:3/4;background:#07090C;border:1px solid var(--linea);border-radius:10px}
 .gfig:nth-child(3) .gcanvas{aspect-ratio:3/4}
-.gfig figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;
-  color:var(--crema2);margin-top:10px}
-.gfig figcaption b{color:var(--brasa);font-weight:500}
+.gfig figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--crema2);margin-top:10px;line-height:1.5}
 @media (max-width:760px){.gracelist{grid-template-columns:1fr;gap:28px}}
 
 /* ───────── / 04 Creative · servicios ───────── */

@@ -33,7 +33,7 @@
     }
     // el sello del centro y el logo de la barra no conviven: mientras el hero
     // esta a la vista manda el sello
-    const sello = document.querySelector('.hero .sello');
+    const sello = document.querySelector('.hero .arco');
     if (sello && 'IntersectionObserver' in window) {
       new IntersectionObserver(es => es.forEach(e =>
         document.body.classList.toggle('hero-sello', e.intersectionRatio > .35)
@@ -194,6 +194,41 @@
     new IntersectionObserver(es => es.forEach(e => {
       if (e.isIntersecting && !vivo) { vivo = true; cuadro(); } else if (!e.isIntersecting) vivo = false;
     }), { threshold: .02 }).observe(cv);
+  })();
+
+  /* ── los videos de adorno: a media velocidad el de Grace, y todos
+        empiezan al acercarse, nunca al cargar ─────────────────────────── */
+  (() => {
+    const vids = $$('#graceFondo, .cuore-video video, .ia-ticks video');
+    if (!vids.length) return;
+    // la velocidad se fija AHORA y otra vez al cargar los datos: si solo se
+    // fijara al reproducir, el video del fondo de Grace arranca a 1x el primer
+    // cuadro y se nota el tiron
+    const fijaVel = v => {
+      const vel = parseFloat(v.dataset.velocidad);
+      if (vel > 0) { try { v.playbackRate = vel; } catch (_) {} }
+    };
+    vids.forEach(v => { fijaVel(v); v.addEventListener('loadeddata', () => fijaVel(v)); });
+    const arranca = v => {
+      fijaVel(v);
+      if (quieto.matches) { v.removeAttribute('autoplay'); v.pause(); return; }
+      const p = v.play(); if (p && p.catch) p.catch(() => {});
+    };
+    if (quieto.matches) { vids.forEach(arranca); return; }
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { e.target.preload = 'auto'; alCalmarse(() => arranca(e.target)); }
+      else e.target.pause();
+    }), { rootMargin: '200px 0px', threshold: .05 });
+    vids.forEach(v => io.observe(v));
+  })();
+
+  /* ── / 01 · el enlace de la ficha: el bloque barre al entrar en pantalla ── */
+  (() => {
+    const e = $('.enl.bloque'); if (!e) return;
+    if (quieto.matches) { e.classList.add('corre'); return; }
+    new IntersectionObserver((es, o) => es.forEach(x => {
+      if (x.isIntersecting) { setTimeout(() => e.classList.add('corre'), 520); o.disconnect(); }
+    }), { threshold: .6 }).observe(e);
   })();
 
   /* ── apariciones al hacer scroll ───────────────────────────────────── */

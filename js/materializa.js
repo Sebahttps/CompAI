@@ -1,190 +1,230 @@
-/* compai.cl · «Materialización por código».
-   La imagen de Grace no se muestra: se arma. Cada píxel baja como un dígito
-   cobre o petróleo y, al llegar a su sitio, toma su color real.
-   El cursor la desordena; en teléfono el que la dispara es el scroll.
-   Cuando todo se asienta el bucle se detiene: no quema batería. */
+/* compai.cl · «Materialización por código» — v2.
+ *
+ * QUÉ PASA EN PANTALLA, EN ORDEN
+ *   1. El código CAE: columnas de cifras azules de siete segmentos bajan y se
+ *      apilan de arriba hacia abajo, cada columna a su ritmo.
+ *   2. La foto entra COLUMNA A COLUMNA, de izquierda a derecha, tomando el
+ *      color real de cada píxel bajo el código.
+ *   3. Queda «casi materializada»: el código no desaparece del todo. Cuánto se
+ *      deja ver la foto lo decide `data-revelado` (0 = nada · 1 = completa).
+ *
+ * Se engancha solo a cada <canvas class="gcanvas" data-src="…"> y no necesita
+ * ninguna llamada desde fuera.
+ *
+ * Fuente del efecto: `grace-sitio2.html` de la carpeta de medios —la cifra de
+ * siete segmentos, la paleta azul y la idea de «revelado» salen de ahí tal
+ * cual—. Lo que cambia es el enganche: allá era una pantalla completa, acá son
+ * tres recuadros que conviven con el resto de la página.
+ *
+ * RENDIMIENTO, Y NO ES UN DETALLE
+ * El 01-10-2026 este sitio dio 45 de rendimiento en vivo por animar antes de
+ * tiempo. Así que: nada arranca hasta que el canvas se acerca, el bucle se
+ * duerme cuando la imagen queda quieta, y con `prefers-reduced-motion` se
+ * dibuja la foto y se acabó.
+ */
 (() => {
   'use strict';
   const quieto = matchMedia('(prefers-reduced-motion: reduce)');
-  const COBRE = [200, 121, 65], PETROLEO = [46, 143, 181];
-  const DIGITOS = '0123456789';
+
+  /* ── cifra de siete segmentos, dibujada a mano ─────────────────────────
+     Sin fuentes externas a propósito: una cifra de reloj digital no existe en
+     ninguna tipografía de sistema, y cargar una web font para esto costaría
+     más que dibujarla. */
+  const SEGS = { 0: 'abcdef', 1: 'bc', 2: 'abged', 3: 'abgcd', 4: 'fgbc',
+                 5: 'afgcd', 6: 'afgedc', 7: 'abc', 8: 'abcdefg', 9: 'abcdfg' };
+
+  function cifra(g, d, x, yb, h) {
+    const sg = SEGS[d]; if (!sg) return;
+    const w = h * .52, lw = Math.max(.75, h * .11), gp = lw * .7;
+    const t = yb - h, m = yb - h / 2;
+    const L = {
+      a: [x + gp, t, x + w - gp, t], b: [x + w, t + gp, x + w, m - gp],
+      c: [x + w, m + gp, x + w, yb - gp], d: [x + gp, yb, x + w - gp, yb],
+      e: [x, m + gp, x, yb - gp], f: [x, t + gp, x, m - gp],
+      g: [x + gp, m, x + w - gp, m]
+    };
+    g.lineWidth = lw; g.lineCap = 'butt'; g.beginPath();
+    for (const k of sg) { const q = L[k]; g.moveTo(q[0], q[1]); g.lineTo(q[2], q[3]); }
+    g.stroke();
+  }
+
+  const AZULES = ['#2f6db0', '#5aa6e8', '#cfe9ff'];   // profundo · medio · brillante
+  const FONDO = '#07090C';
 
   function monta(cv) {
     const ctx = cv.getContext('2d', { alpha: false });
     const src = cv.dataset.src;
+    const revelado = Math.max(0, Math.min(1, parseFloat(cv.dataset.revelado) || 0.82));
     const dpr = Math.min(devicePixelRatio || 1, 2);
-    let W = 0, H = 0, celda = 0, cols = 0, filas = 0, P = null, img = null;
-    let corriendo = false, listo = false, avance = 0, puntero = null, asentado = 0;
 
-    const im = new Image();
-    im.decoding = 'async';
-    // La imagen no se pide hasta que el canvas se acerca a la pantalla. Con las
-    // tres pedidas de entrada, Lighthouse movil daba 45: tres descargas y tres
-    // muestreos de pixeles compitiendo con el primer pintado de la pagina.
-    function pedirImagen() {
-      if (im.src) return;
-      im.src = src;
-    }
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver((es, o) => es.forEach(e => {
-        if (e.isIntersecting) { pedirImagen(); o.disconnect(); }
-      }), { rootMargin: '400px 0px' }).observe(cv);
-    } else pedirImagen();
+    let W = 0, H = 0, cel = 0, cols = 0, filas = 0;
+    let pix = null;        // color real de cada celda
+    let col = null;        // estado de cada columna
+    let im = null, listo = false, corriendo = false, dormido = 0;
+    let t0 = 0, puntero = null;
 
     function mide() {
       const r = cv.getBoundingClientRect();
       if (!r.width) return false;
       W = cv.width = Math.round(r.width * dpr);
       H = cv.height = Math.round(r.height * dpr);
-      // tope de partículas según el área: nunca más de 5.000 en escritorio
-      const tope = r.width < 520 ? 2600 : 5000;
-      celda = Math.max(3 * dpr, Math.ceil(Math.sqrt(W * H / tope)));
-      cols = Math.ceil(W / celda); filas = Math.ceil(H / celda);
+      // el alto de la cifra manda: ni tan chica que sea ruido, ni tan grande
+      // que se cuenten los dígitos
+      cel = Math.max(7 * dpr, Math.round((r.width < 420 ? 9 : 11) * dpr));
+      cols = Math.ceil(W / cel);
+      filas = Math.ceil(H / (cel * 1.18));
       return true;
     }
 
+    let rec = null;   // recorte de la foto que calza con el canvas
+
+    function encuadre() {
+      const ri = im.naturalWidth / im.naturalHeight, rc = W / H;
+      let sw = im.naturalWidth, sh = im.naturalHeight, sx = 0, sy = 0;
+      if (ri > rc) { sw = sh * rc; sx = (im.naturalWidth - sw) / 2; }
+      else { sh = sw / rc; sy = (im.naturalHeight - sh) / 2.3; }   // encuadre a la cara
+      return { sx, sy, sw, sh };
+    }
+
     function muestrea() {
-      // se dibuja la imagen recortada a la caja y se leen sus píxeles una sola vez
+      rec = encuadre();
+      // una miniatura del tamaño de la retícula: solo para saber de qué color y
+      // con cuánta luz va cada cifra. La foto de verdad se dibuja aparte, a
+      // resolución completa, porque celda a celda quedaba un mosaico.
       const off = document.createElement('canvas');
       off.width = cols; off.height = filas;
       const o = off.getContext('2d', { willReadFrequently: true });
-      const ri = im.naturalWidth / im.naturalHeight, rc = cols / filas;
-      let sw = im.naturalWidth, sh = im.naturalHeight, sx = 0, sy = 0;
-      if (ri > rc) { sw = sh * rc; sx = (im.naturalWidth - sw) / 2; }
-      else { sh = sw / rc; sy = (im.naturalHeight - sh) / 2.3; }   // encuadre un poco más alto: la cara
-      o.drawImage(im, sx, sy, sw, sh, 0, 0, cols, filas);
-      const d = o.getImageData(0, 0, cols, filas).data;
+      o.drawImage(im, rec.sx, rec.sy, rec.sw, rec.sh, 0, 0, cols, filas);
+      pix = o.getImageData(0, 0, cols, filas).data;
 
-      P = new Array(cols * filas);
-      for (let y = 0, k = 0; y < filas; y++) for (let x = 0; x < cols; x++, k++) {
-        const i = k * 4, r = d[i], g = d[i + 1], b = d[i + 2];
-        const luz = (r * .299 + g * .587 + b * .114) / 255;
-        P[k] = {
-          tx: x * celda, ty: y * celda,
-          x: x * celda + (Math.random() - .5) * celda * 7,
-          y: y * celda - H * (.55 + Math.random() * 1.25),
-          r, g, b,
-          mar: luz > .46 ? COBRE : PETROLEO,                 // claro = cobre · oscuro = petróleo
-          d: Math.random() * .42 + (y / filas) * .3,          // cae de arriba hacia abajo
-          dig: Math.random() < .035 ? DIGITOS[(Math.random() * 10) | 0] : null,
-          ox: 0, oy: 0
+      col = new Array(cols);
+      for (let x = 0; x < cols; x++) {
+        col[x] = {
+          caida: -Math.random() * 1.1,          // cuándo empieza a caer el código
+          foto: 1.1 + Math.random() * 0.9,      // cuándo empieza a entrar la foto
+          vel: 0.75 + Math.random() * 0.7,
+          semilla: (Math.random() * 1e6) | 0,
+          emp: 0                                 // empuje del cursor
         };
       }
       listo = true;
     }
 
-    function pinta() {
-      ctx.fillStyle = '#07090C';
+    function pinta(t) {
+      ctx.fillStyle = FONDO;
       ctx.fillRect(0, 0, W, H);
-      const px = puntero ? puntero.x : -1e9, py = puntero ? puntero.y : -1e9;
-      const radio = 72 * dpr, radio2 = radio * radio;
-      let digitos = '';
-      ctx.font = `${Math.max(9, celda * 1.05)}px 'IBM Plex Mono',monospace`;
-      ctx.textBaseline = 'top';
+      const alto = cel * 1.18;
+      const px = puntero ? puntero.x : -1e9;
+      const paso = (t * 7) | 0;
+      const escX = rec.sw / W, escY = rec.sh / H;
 
-      for (let k = 0; k < P.length; k++) {
-        const p = P[k];
-        const t = Math.max(0, Math.min(1, (avance - p.d) / (1 - p.d)));
-        const e = t * t * (3 - 2 * t);                        // suavizado
-        let x = p.x + (p.tx - p.x) * e, y = p.y + (p.ty - p.y) * e;
+      for (let x = 0; x < cols; x++) {
+        const c = col[x];
+        const empuje = puntero ? Math.max(0, 1 - Math.abs(x * cel - px) / (90 * dpr)) : 0;
+        c.emp += (empuje - c.emp) * 0.16;
+        const dx = c.emp * 16 * dpr * (x % 2 ? 1 : -1);
 
-        if (puntero) {                                        // el cursor empuja
-          const dx = x - px, dy = y - py, d2 = dx * dx + dy * dy;
-          if (d2 < radio2 && d2 > .01) {
-            const f = (1 - Math.sqrt(d2) / radio) * 34 * dpr, inv = 1 / Math.sqrt(d2);
-            p.ox += dx * inv * f * .18; p.oy += dy * inv * f * .18;
-          }
+        const hastaCod = Math.max(0, Math.min(1, (t - c.caida) * c.vel * 0.55)) * filas;
+        const hastaFoto = Math.max(0, Math.min(1, (t - c.foto) * c.vel * 0.42)) * filas;
+
+        // 1 · la foto, a resolución completa, recortada a esta columna
+        if (hastaFoto > 0) {
+          const hFoto = Math.min(H, hastaFoto * alto);
+          ctx.globalAlpha = revelado;
+          ctx.drawImage(im,
+            rec.sx + x * cel * escX, rec.sy, cel * escX, hFoto * escY,
+            x * cel + dx, 0, cel + .8, hFoto);
+          ctx.globalAlpha = 1;
         }
-        p.ox *= .88; p.oy *= .88;
-        x += p.ox; y += p.oy;
 
-        if (e < .82) {
-          const m = p.mar, a = .18 + e * .72;
-          ctx.fillStyle = `rgba(${m[0]},${m[1]},${m[2]},${a})`;
-          if (p.dig && e < .7) digitos += '1';                // marca: se dibuja aparte
-        } else {
-          const a = (e - .82) / .18;
-          const m = p.mar;
-          ctx.fillStyle = `rgb(${Math.round(m[0] + (p.r - m[0]) * a)},${Math.round(m[1] + (p.g - m[1]) * a)},${Math.round(m[2] + (p.b - m[2]) * a)})`;
-        }
-        ctx.fillRect(x, y, celda + .6, celda + .6);
-      }
-
-      if (avance < 1 && digitos) {                            // los dígitos, solo mientras cae
-        ctx.fillStyle = 'rgba(255,178,92,.85)';
-        for (let k = 0; k < P.length; k++) {
-          const p = P[k]; if (!p.dig) continue;
-          const t = Math.max(0, Math.min(1, (avance - p.d) / (1 - p.d)));
-          if (t > .72) continue;
-          const e = t * t * (3 - 2 * t);
-          ctx.fillText(p.dig, p.x + (p.tx - p.x) * e + p.ox, p.y + (p.ty - p.y) * e + p.oy);
+        // 2 · las cifras, de donde llegó la foto hasta donde llegó el código
+        const desde = Math.max(0, Math.floor(hastaFoto) - (revelado > .95 ? 0 : 2));
+        for (let y = desde; y <= Math.min(filas - 1, hastaCod); y++) {
+          const k = (y * cols + x) * 4;
+          const luz = (pix[k] * .299 + pix[k + 1] * .587 + pix[k + 2] * .114) / 255;
+          const borde = Math.min(1, (hastaCod - y) / 2.5);
+          const tapada = y < hastaFoto ? revelado : 0;
+          const a = (0.22 + luz * 0.72) * borde * (1 - tapada);
+          if (a <= 0.02) continue;
+          ctx.globalAlpha = a;
+          ctx.strokeStyle = AZULES[luz > .62 ? 2 : luz > .3 ? 1 : 0];
+          // la cifra de la punta titila: es la que está cayendo
+          const d = (c.semilla + x * 31 + y * 17 + (y === (hastaCod | 0) ? paso * 3 : 0)) % 10;
+          cifra(ctx, d, x * cel + dx, (y + 1) * alto - alto * .12, cel * .76);
+          ctx.globalAlpha = 1;
         }
       }
     }
 
-    function cuadro() {
+    function cuadro(ms) {
       if (!corriendo) return;
-      if (avance < 1) avance = Math.min(1, avance + .011);
-      pinta();
-      // ya puesta en su sitio y sin cursor encima: se dan unas vueltas para que
-      // el empuje residual se apague y el bucle se duerme
-      if (avance >= 1 && !puntero) {
-        if (++asentado > 36) { dibujaPlano(); corriendo = false; return; }  // ya asentada: la foto nitida
-      } else asentado = 0;
+      if (!t0) t0 = ms;
+      pinta((ms - t0) / 1000);
+      if ((ms - t0) / 1000 > 4.2 && !puntero) { if (++dormido > 20) { corriendo = false; return; } }
+      else dormido = 0;
       requestAnimationFrame(cuadro);
     }
+
     function despierta() {
-      asentado = 0;
+      dormido = 0;
       if (!corriendo && listo) { corriendo = true; requestAnimationFrame(cuadro); }
     }
 
-    function dibujaPlano() {                                  // sin movimiento: la imagen, y ya
+    function plana() {
       const r = cv.getBoundingClientRect();
       W = cv.width = Math.round(r.width * dpr); H = cv.height = Math.round(r.height * dpr);
-      const ri = im.naturalWidth / im.naturalHeight, rc = W / H;
-      let sw = im.naturalWidth, sh = im.naturalHeight, sx = 0, sy = 0;
-      if (ri > rc) { sw = sh * rc; sx = (im.naturalWidth - sw) / 2; }
-      else { sh = sw / rc; sy = (im.naturalHeight - sh) / 2.3; }
-      ctx.drawImage(im, sx, sy, sw, sh, 0, 0, W, H);
+      const e = encuadre();
+      ctx.drawImage(im, e.sx, e.sy, e.sw, e.sh, 0, 0, W, H);
     }
 
-    im.addEventListener('load', () => {
-      if (quieto.matches) { dibujaPlano(); return; }
-      if (!mide()) return;
-      muestrea();
-      pinta();
-      const esTactil = matchMedia('(hover: none)').matches;
-      if (esTactil) {
-        // en teléfono manda el scroll: la posición de la sección decide el avance
-        const alScroll = () => {
+    /* ── la imagen no se pide hasta que el canvas se acerca ──────────── */
+    function pedir() {
+      if (im) return;
+      im = new Image();
+      im.decoding = 'async';
+      im.addEventListener('load', () => {
+        if (quieto.matches) { plana(); return; }
+        if (!mide()) return;
+        muestrea();
+        pinta(0);
+        if (matchMedia('(hover: none)').matches) {
+          const alScroll = () => {
+            const r = cv.getBoundingClientRect();
+            if (r.top < innerHeight * .85 && r.bottom > 0) despierta();
+          };
+          addEventListener('scroll', alScroll, { passive: true });
+          alScroll();
+        } else {
+          new IntersectionObserver((es, o) => es.forEach(e => {
+            if (e.isIntersecting) { despierta(); o.disconnect(); }
+          }), { threshold: .2 }).observe(cv);
+        }
+        cv.addEventListener('pointermove', e => {
           const r = cv.getBoundingClientRect();
-          const p = 1 - (r.top - innerHeight * .15) / (innerHeight * .72);
-          const antes = avance;
-          avance = Math.max(0, Math.min(1, p));
-          // una vez armada se deja quieta: despertarla al seguir bajando
-          // volvia a dibujar los cuadritos sobre la foto ya nitida
-          if (avance > 0 && (avance < 1 || antes < 1)) despierta();
-        };
-        addEventListener('scroll', alScroll, { passive: true });
-        alScroll();
-      } else {
-        new IntersectionObserver((es, o) => es.forEach(e => {
-          if (e.isIntersecting) { despierta(); o.disconnect(); }
-        }), { threshold: .22 }).observe(cv);
-      }
-      cv.addEventListener('pointermove', e => {
-        const r = cv.getBoundingClientRect();
-        puntero = { x: (e.clientX - r.left) * dpr, y: (e.clientY - r.top) * dpr };
-        despierta();
+          puntero = { x: (e.clientX - r.left) * dpr };
+          despierta();
+        });
+        cv.addEventListener('pointerleave', () => { puntero = null; despierta(); });
+        addEventListener('resize', () => {
+          if (mide()) { muestrea(); t0 = 0; despierta(); }
+        }, { passive: true });
       });
-      cv.addEventListener('pointerleave', () => { puntero = null; despierta(); });
-      addEventListener('resize', () => {
-        if (!mide()) return; muestrea(); despierta();
-      }, { passive: true });
-    });
-    im.addEventListener('error', () => {
-      cv.outerHTML = `<img src="${src}" alt="${cv.getAttribute('aria-label') || ''}" class="gcanvas" loading="lazy" decoding="async">`;
-    });
+      im.addEventListener('error', () => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = cv.getAttribute('aria-label') || '';
+        img.className = cv.className;
+        img.loading = 'lazy'; img.decoding = 'async';
+        cv.replaceWith(img);
+      });
+      im.src = src;
+    }
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((es, o) => es.forEach(e => {
+        if (e.isIntersecting) { pedir(); o.disconnect(); }
+      }), { rootMargin: '400px 0px' }).observe(cv);
+    } else pedir();
   }
 
   document.querySelectorAll('canvas.gcanvas[data-src]').forEach(monta);

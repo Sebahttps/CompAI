@@ -87,9 +87,8 @@ const heroFranjas = `
              muted loop playsinline autoplay preload="metadata"
              disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
     </div>
-    <div class="sello" role="img" aria-label="compAI">
-      <svg viewBox="1 3 22 15" aria-hidden="true"><path d="M2.5 12.5l4 4 7-9"/><path d="M11 14.5l2 2 8.5-10"/></svg>
-      <span class="w">comp<b>AI</b></span>
+    <div class="arco">
+      <img class="sello-img" src="${esc(S.hero_sello)}" alt="compAI" width="512" height="512">
     </div>
     <a class="baja mono" href="#offenbar"><span>Bajar</span><i aria-hidden="true"></i></a>
   </section>`;
@@ -122,27 +121,42 @@ const menu = `
 const offenbar = `
   <section class="sec" id="offenbar">
     <div class="circuitos" aria-hidden="true"></div>
+    <p class="kick mono">${esc(S.offenbar.codigo)} — <b>${esc(S.offenbar.nombre)}</b></p>
     <div class="ancho offen">
-      <div>
-        <p class="kick mono">${esc(S.offenbar.codigo)} — <b>${esc(S.offenbar.nombre)}</b></p>
-        <h1 class="ofit" id="ofit" data-l1="${esc(S.offenbar.titulo_1)}" data-l2="${esc(S.offenbar.titulo_2)}"><span>${esc(S.offenbar.titulo_1)}</span><br><span class="l2">${esc(S.offenbar.titulo_2)}</span></h1>
-        <a class="enl" href="${esc(S.contacto.ficha)}" target="_blank" rel="noopener">${esc(S.offenbar.enlace_texto)}</a>
-      </div>
       <canvas id="lluvia" aria-hidden="true"></canvas>
+      <div class="offen-centro">
+        <h1 class="ofit" id="ofit" data-l1="${esc(S.offenbar.titulo_1)}" data-l2="${esc(S.offenbar.titulo_2)}"><span>${esc(S.offenbar.titulo_1)}</span><br><span class="l2">${esc(S.offenbar.titulo_2)}</span></h1>
+        <a class="enl bloque" href="${esc(S.contacto.ficha)}" target="_blank" rel="noopener"><span>${esc(S.offenbar.enlace_texto)}</span></a>
+      </div>
     </div>
   </section>`;
 
 const ilCuore = `
   <section class="sec ap" id="il-cuore">
+    <p class="kick mono">${esc(S.il_cuore.codigo)} — <b>${esc(S.il_cuore.nombre)}</b></p>
     <div class="ancho">
-      <p class="kick mono" style="justify-content:center">${esc(S.il_cuore.codigo)} — <b>${esc(S.il_cuore.nombre)}</b></p>
-      ${MARIPOSA}
-      <h2 class="manif">${S.il_cuore.manifiesto.map(l => `<span>${esc(l)}</span>`).join('')}</h2>
-      <p class="sub">${esc(S.il_cuore.parrafo)}</p>
+      <div class="cuore-video">
+        <video src="${esc(S.il_cuore.video)}" poster="${esc(S.il_cuore.video_poster)}"
+               muted loop playsinline autoplay preload="none"
+               disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
+      </div>
+
+      <div class="ia">
+        <div class="ia-texto">
+          <h2 class="ia-tit">${S.il_cuore.ia.titulo.map(l => `<span>${esc(l)}</span>`).join('')}</h2>
+          <p class="ia-par">${esc(S.il_cuore.ia.parrafo)}</p>
+        </div>
+        <div class="ia-ticks">
+          <video src="${esc(S.il_cuore.ia.ticks)}" poster="${esc(S.il_cuore.ia.ticks_poster)}"
+                 muted loop playsinline autoplay preload="none"
+                 disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
+        </div>
+      </div>
+
       <div class="accesos">
         ${S.il_cuore.accesos.map((a, i) => `<a href="${esc(a.ancla)}"><span class="ic" aria-hidden="true">${i === 0
           ? '<svg width="16" height="13" viewBox="0 0 16 13" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 3.2V11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4.4a1 1 0 0 0-1-1H8L6.4 1.4A1 1 0 0 0 5.7 1H2a1 1 0 0 0-1 1z"/></svg>'
-          : '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5.6" r="2.7"/><path d="M2.6 14c.5-3 2.7-4.6 5.4-4.6S12.9 11 13.4 14"/></svg>'}</span><span>${esc(a.texto)}</span></a>`).join('\n        ')}
+          : '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5.6" r="2.7"/><path d="M2.6 14c.5-3 2.7-4.6 5.4-4.6S12.9 11 13.4 14"/></svg>'}</span><span>${esc(a.texto)}</span></a>`).join('')}
       </div>
       ${TICKS('isotipo', 'compAI')}
     </div>
@@ -150,16 +164,21 @@ const ilCuore = `
 
 const grace = `
   <section class="sec ap" id="grace">
-    <canvas id="numeros" aria-hidden="true"></canvas>
+    <div class="grace-fondo" aria-hidden="true">
+      <video id="graceFondo" src="${esc(S.grace.fondo)}" poster="${esc(S.grace.fondo_poster)}"
+             data-velocidad="${S.grace.fondo_velocidad}"
+             muted loop playsinline autoplay preload="none"
+             disablepictureinpicture controlslist="nodownload noplaybackrate"></video>
+    </div>
     <div class="ancho">
       <p class="kick mono">${esc(S.grace.codigo)} — <b>${esc(S.grace.nombre)}</b></p>
       <h2 class="t">${esc(S.grace.titulo)}</h2>
       <p class="sub">${esc(S.grace.linea)}</p>
       <div class="gracelist">
         ${S.grace.imagenes.map(g => `<figure class="gfig">
-          <canvas class="gcanvas" data-src="${esc(g.src)}" role="img" aria-label="${esc(g.alt)}"></canvas>
+          <canvas class="gcanvas" data-src="${esc(g.src)}"${g.revelado ? ` data-revelado="${g.revelado}"` : ''} role="img" aria-label="${esc(g.alt)}"></canvas>
           <noscript><img src="${esc(g.src)}" alt="${esc(g.alt)}" class="gcanvas" loading="lazy" decoding="async"></noscript>
-          <figcaption>${esc(g.leyenda.split(' · ')[0])} · <b>${esc(S.grace.pie)}</b></figcaption>
+          <figcaption>${esc(g.leyenda)}</figcaption>
         </figure>`).join('\n        ')}
       </div>
     </div>
@@ -213,7 +232,7 @@ const contacto = `
   <section class="sec ap" id="contacto">
     <img class="colibries" src="media/picaflor.webp" alt="" width="900" height="900" loading="lazy" decoding="async">
     <div class="ancho">
-      <p class="kick mono" style="justify-content:center">${esc(S.contacto_seccion.codigo)} — <b>${esc(S.contacto_seccion.nombre)}</b></p>
+      <p class="kick mono">${esc(S.contacto_seccion.codigo)} — <b>${esc(S.contacto_seccion.nombre)}</b></p>
       <p class="scl">${esc(S.contacto.ciudad)}</p>
       <p class="lugar">${esc(S.contacto.lugar)}</p>
       <div class="contactos">
@@ -315,7 +334,9 @@ ${contacto}
       <div id="lamTexto"></div>
       <ul class="lam-vin" id="lamVin"></ul>
     </div>
-    <figure class="lam-img" hidden><img id="lamImg" src="" alt="" loading="lazy" decoding="async"></figure>
+    <!-- sin atributo src: vacio resuelve a la propia pagina y dispara un error de
+       recurso en la consola. La ruta la pone el JS al abrir cada lamina. -->
+    <figure class="lam-img" hidden><img id="lamImg" alt="" loading="lazy" decoding="async"></figure>
     <a class="lam-cta" id="lamCta" href="#inbox" onclick="document.getElementById('lamX').click()">Cotizar</a>
     <p class="lam-pie">${S.creative.etiquetas.map(e => esc(e)).join(' &nbsp;·&nbsp; ')}</p>
   </div>

@@ -9,6 +9,9 @@ import { fileURLToPath } from 'node:url';
 const raiz = dirname(fileURLToPath(import.meta.url));
 const leer = f => readFileSync(join(raiz, f), 'utf8');
 const html = leer('index.html');
+// Sin los comentarios: una etiqueta citada dentro de un comentario no es una
+// etiqueta de la pagina, y hacerla fallar manda a corregir lo que no esta roto.
+const htmlSinComentarios = html.replace(/<!--[\s\S]*?-->/g, '');
 const serv = JSON.parse(leer('contenido/servicios.json'));
 const sitio = JSON.parse(leer('contenido/sitio.json'));
 const fallos = [];
@@ -19,7 +22,10 @@ if (/Copyrighting/i.test(html)) mal('«Copyrighting» sigue en la pagina: es Cop
 if (/lavando/i.test(html)) mal('«campo de lavando»: es lavanda.');
 if (/Materializacion|materializacion/.test(html.normalize('NFC')))
   mal('«Materializacion» sin tildes: es «Materialización por código».');
-if (!/Materialización por código/.test(html)) mal('falta la leyenda «Materialización por código».');
+// La leyenda puede ir al principio de la frase o dentro de ella («Grace retrato
+// con efecto materialización por código»), asi que la mayuscula no importa.
+// Lo que SI importa, y era la correccion 5 del informe, son las tildes.
+if (!/materialización por código/i.test(html)) mal('falta la leyenda «materialización por código».');
 
 // Numeracion /01–/06. El error del informe era «dos / 05 y un / 06»: un mismo
 // codigo puesto sobre DOS secciones distintas. Cada codigo aparece dos veces a

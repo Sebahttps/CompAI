@@ -11,6 +11,7 @@
   },
 
   "hero": "franjas",
+  "hero_sello": "media/compai-sello.svg",
   "_hero_opciones": "franjas = video de 5 franjas con el logo al centro como sello · nucleo = video del sol con el logo arriba a la izquierda",
 
   "formEndpoint": "https://script.google.com/macros/s/AKfycbxiRLWaLHDVNm99KXKboz7DxslZeUtbl8Rq36MJ3FFuiRfNqpACklvcp7pfX-y5F-M8/exec",
@@ -57,11 +58,18 @@
   "il_cuore": {
     "codigo": "/ 02",
     "nombre": "Il Cuore",
-    "manifiesto": [
-      "Hablamos humano",
-      "en un mundo digital."
-    ],
-    "parrafo": "El Estado no necesita más pantallas: necesita que el trámite termine. Trabajamos para equipos públicos que tienen el presupuesto y no tienen las horas — y entregamos cosas que funcionan el lunes, no un plan a tres años.",
+    "video": "media/il-cuore.mp4",
+    "video_poster": "media/il-cuore.webp",
+    "ia": {
+      "titulo": [
+        "INTELIGENCIA ARTIFICIAL APLICADA",
+        "SOLUCIONES TECNOLÓGICAS",
+        "& ALMA CREATIVA"
+      ],
+      "parrafo": "Hablamos humano en un mundo digital. Somos una empresa tecnológica con alma creativa & inteligencia artificial aplicada. Ayudamos al Estado a gestionar requerimientos de manera ágil, combatir la burocracia paralizante y crear experiencias digitales que simplifiquen la vida de quien está del otro lado del mesón.",
+      "ticks": "media/ticks.mp4",
+      "ticks_poster": "media/ticks.webp"
+    },
     "accesos": [
       { "texto": "Creative", "ancla": "#creative" },
       { "texto": "Contacto", "ancla": "#contacto" }
@@ -74,10 +82,13 @@
     "titulo": "Grace System",
     "linea": "Grace lee las compras públicas todos los días, descarta lo que no calza y deja sobre la mesa solo lo que CompAI puede entregar a tiempo.",
     "pie": "Materialización por código",
+    "fondo": "media/campo-codigo.mp4",
+    "fondo_poster": "media/campo-codigo.webp",
+    "fondo_velocidad": 0.5,
     "imagenes": [
-      { "src": "media/grace-retrato.webp", "alt": "Grace, retrato con circuitos de cobre", "leyenda": "Retrato · Materialización por código" },
-      { "src": "media/grace-perfil.webp",  "alt": "Grace sentada de perfil",               "leyenda": "Perfil · Materialización por código" },
-      { "src": "media/grace-lavanda.webp", "alt": "Grace en un campo de lavanda al atardecer", "leyenda": "Campo de lavanda · Materialización por código" }
+      { "src": "media/grace-retrato.webp", "alt": "Grace retrato con efecto materialización por código", "leyenda": "Grace retrato con efecto materialización por código" },
+      { "src": "media/grace-perfil.webp",  "alt": "Grace de perfil con efecto materialización por código", "leyenda": "Grace de perfil con efecto materialización por código" },
+      { "src": "media/grace-lavanda.webp", "alt": "Grace en campo de lavanda con efecto materialización por código", "leyenda": "Grace en campo de lavanda con efecto materialización por código", "revelado": 1 }
     ]
   },
 
