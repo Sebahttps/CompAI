@@ -39,6 +39,13 @@
 .cv .t{font-size:calc(var(--fs,16)*var(--u));line-height:var(--lh,1.21);
   letter-spacing:calc(var(--tr,0)*1em)}
 .cv video,.cv img,.cv canvas{display:block;width:100%;height:100%;object-fit:cover}
+/* Capa de contraste sobre los fondos de video: oscurece parejo y cierra los
+   bordes, que es lo que disimula la baja definicion del archivo. El filtro
+   del video acompaña. Receta de Sebastian, 03-10-2026. */
+.velo-vid{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(rgba(0,0,0,.4),rgba(0,0,0,.4)),
+             radial-gradient(rgba(0,0,0,0) 15%,rgba(0,0,0,.5) 80%)}
+.ofondo video,.ccirc video{filter:contrast(1.2) brightness(.85) saturate(1.1)}
 .cv .b>video,.cv .b>img{width:100%;height:100%}
 .cv p,.cv h1,.cv h2{margin:0}
 
@@ -88,8 +95,13 @@
 .cuvelo{background:rgba(0,0,0,.96)}
 /* La mariposa se achica dentro de su lamina: el fondo del video ya es negro,
    asi que lo que sobra no se ve y la figura respira. Sebastian, 03-10-2026. */
-.cuore{background:#000}
-.cuore video{transform:scale(.86);transform-origin:center}
+/* La lamina negra se extiende hasta el borde de la seccion: el corte entre
+   el video de fondo de / 01 y el de / 02 dejaba una costura horizontal,
+   porque son el mismo video en dos momentos distintos. El negro la tapa y
+   de paso le da aire a la figura. Sebastian, 03-10-2026. */
+.cuore-fondo{background:linear-gradient(transparent,#000 9%,#000 91%,transparent)}
+.cuore{background:transparent}
+.cuore video{transform:scale(.8);transform-origin:center}
 .cpar{font-family:var(--clear);font-weight:300;text-align:center;color:#fff}
 .cacc{display:flex;align-items:center;gap:calc(14*var(--u));text-decoration:none;color:#fff;
   font-family:var(--plex);font-weight:400;text-transform:uppercase;white-space:nowrap}
