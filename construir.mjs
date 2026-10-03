@@ -134,9 +134,7 @@ const rot = (o, x, y) => `<p class="b rot" style="--x:${x};--y:${y};--w:420">${e
 const offenbar = `
   <section class="sec cv" id="offenbar">
     <div class="pg" style="--h:1114">
-      <div class="b fh ofondo" style="--x:0;--y:146;--w:1366;--hh:968" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
-      <div class="b fh obanda" style="--x:0;--y:0;--w:1366;--hh:146" aria-hidden="true"></div>
-      <div class="b fh opanel" style="--x:188;--y:146;--w:1023;--hh:968" aria-hidden="true"></div>
+      <div class="b fh ofondo" style="--x:0;--y:0;--w:1366;--hh:1114" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
       <img class="b fh ocod" style="--x:829;--y:-4;--w:816;--hh:164" src="media/codigo-detalle.webp" alt="" width="1366" height="274" loading="lazy" decoding="async">
       <img class="b fh ocod" style="--x:805;--y:159;--w:816;--hh:164" src="media/codigo-detalle.webp" alt="" width="1366" height="274" loading="lazy" decoding="async">
       ${rot(S.offenbar, 48, 38)}
@@ -150,8 +148,7 @@ const offenbar = `
 const ilCuore = `
   <section class="sec cv ap" id="il-cuore">
     <div class="pg" style="--h:2112">
-      <div class="b fh ccirc" style="--x:0;--y:767;--w:1366;--hh:1345" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
-      <div class="b fh cuvelo" style="--x:178;--y:0;--w:1034;--hh:2112" aria-hidden="true"></div>
+      <div class="b fh ccirc" style="--x:0;--y:0;--w:1366;--hh:2112" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
       <div class="b fh" style="--x:0;--y:180;--w:1366;--hh:578">
         <video src="${esc(S.il_cuore.video)}" poster="${esc(S.il_cuore.video_poster)}"
                muted loop playsinline autoplay preload="none"
@@ -236,7 +233,6 @@ const creative = `
   <section class="sec cv ap" id="creative">
     <div class="pg cvfondo" style="--h:2380">
       <div class="b fh ccirc" style="--x:704;--y:0;--w:662;--hh:2380" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
-      <div class="b fh cvelo" style="--x:774;--y:0;--w:544;--hh:2380" aria-hidden="true"></div>
       <div class="b fh cline" style="--x:657;--y:0;--w:7;--hh:2380" aria-hidden="true"></div>
       ${rot(S.creative, 62, 38)}
       ${servTexto(SERV[0], 79, 192)}
@@ -249,7 +245,6 @@ const creative = `
 
     <div class="pg cvfondo" style="--h:2110">
       <div class="b fh ccirc" style="--x:704;--y:0;--w:662;--hh:896" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
-      <div class="b fh cvelo" style="--x:774;--y:0;--w:544;--hh:896" aria-hidden="true"></div>
       <div class="b fh cline" style="--x:659;--y:0;--w:9;--hh:902" aria-hidden="true"></div>
       ${servTexto(SERV[3], 79, 203)}
       ${mkTel(902, 104)}

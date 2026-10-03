@@ -58,6 +58,9 @@
 
 /* ── / 01 Offenbar ─────────────────────────────────────────────────────── */
 #offenbar.cv{display:block;min-height:0}
+/* El video v3 ya trae su capa oscura: cubre la seccion entera y por eso
+   salieron la banda negra de arriba y el panel oscuro del centro, que
+   antes hacian ese trabajo a mano. (03-10-2026) */
 .ofondo{overflow:hidden}
 .ofondo video{width:100%;height:100%;object-fit:cover}
 /* Banda negra superior: shape 596,-624 173x1366 girado -90 => y 0..146. */
@@ -132,7 +135,7 @@
 
 /* ── / 04 Creative ─────────────────────────────────────────────────────── */
 .cvfondo{background:var(--grafito)}
-.ccirc{opacity:.55}
+.ccirc{opacity:1}
 .cvelo{background:rgba(10,13,17,.96)}
 .cline{background:linear-gradient(#5b3a22,#c87941 35%,#c87941 65%,#5b3a22)}
 .serv-tit{display:block;font-family:Archivo,sans-serif;font-weight:700;font-size:calc(26*var(--u));
@@ -328,3 +331,37 @@
 @media (max-width:700px){
   .cv .b>img.gcanvas{width:100%;height:auto;object-fit:contain}
 }
+
+/* ── los textos entran y salen con el scroll ────────────────────────────
+   Bidireccional a proposito: al subir, el texto se retira igual que al
+   bajar. Si solo entrara, el segundo recorrido de la pagina seria plano.
+   Sebastian, 03-10-2026. */
+.cv .anim{opacity:0;transform:translateY(calc(26*var(--u)));
+  transition:opacity .62s cubic-bezier(.2,.7,.2,1) var(--d,0ms),
+             transform .62s cubic-bezier(.2,.7,.2,1) var(--d,0ms)}
+.cv .anim.vis{opacity:1;transform:none}
+/* los que ya traen opacidad propia del Canva no deben saltar a 1 */
+.cv .otit.anim.vis{opacity:.56}
+.cv .osub.anim.vis,.cv .oenl.anim.vis{opacity:.61}
+.cv .banda-tx.anim.vis{opacity:.92}
+.cv .kintranet.anim.vis{opacity:.4}
+
+/* ── la barra: el logo se retira de / 02 en adelante ─────────────────── */
+body.lejos .bar .logo-link{opacity:0;pointer-events:none}
+
+/* El correo del menu, en azul petroleo de marca. */
+.menu aside .big a{color:var(--petroleo);text-decoration:none}
+.menu aside .big a:hover{color:var(--sol)}
+
+@media (prefers-reduced-motion:reduce){
+  .cv .anim{opacity:1!important;transform:none!important}
+}
+
+/* Compuerta de medicion: `html.foto` la pone kit-canva/herramientas/compara.mjs
+   para que la foto retrate el estado LEIDO de la pagina y no un instante a
+   medio camino de la entrada. No la usa nadie mas. */
+html.foto .cv .anim{opacity:1;transform:none;transition:none}
+html.foto .cv .otit.anim{opacity:.56}
+html.foto .cv .osub.anim,html.foto .cv .oenl.anim{opacity:.61}
+html.foto .cv .banda-tx.anim{opacity:.92}
+html.foto .cv .kintranet.anim{opacity:.4}

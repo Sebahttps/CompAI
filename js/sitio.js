@@ -131,6 +131,50 @@
       { threshold: .35 }).observe(el);
   })();
 
+  /* ── el logo de la barra se retira al entrar en / 02 ───────────────── */
+  (() => {
+    const ancla = $('#offenbar'); if (!ancla) return;
+    // De la segunda seccion en adelante estorba: en / 01 se monta sobre el
+    // rotulo y mas abajo sobre los titulos. Sebastian, 03-10-2026.
+    new IntersectionObserver(es => es.forEach(e => {
+      document.body.classList.toggle('lejos', e.boundingClientRect.top < 120);
+    }), { threshold: 0, rootMargin: '0px 0px -100% 0px' }).observe(ancla);
+    addEventListener('scroll', () => {
+      document.body.classList.toggle('lejos', ancla.getBoundingClientRect().top < 120);
+    }, { passive: true });
+  })();
+
+  /* ── los textos entran y salen con el scroll ───────────────────────── */
+  (() => {
+    if (quieto.matches || !('IntersectionObserver' in window)) return;
+    const sel = '.cv .rot, .cv .t, .cv .serv-tit, .cv .serv-par, .cv .serv-vin,' +
+                ' .cv .glista li, .cv .gpie, .cv .gcifras > div, .cv .cacc,' +
+                ' .cv .ikick, .cv .ititulo, .cv .campo, .cv .iadjunta, .cv .enviar, .cv .kpie';
+    const els = $$(sel); if (!els.length) return;
+    els.forEach((e, i) => { e.classList.add('anim'); e.style.setProperty('--d', (i % 6) * 60 + 'ms'); });
+    // Va y viene: al salir por arriba o por abajo el texto se retira, asi el
+    // movimiento acompaña el scroll en los dos sentidos.
+    //
+    // Se mide por geometria en cada cuadro de scroll y NO con
+    // IntersectionObserver. El observador avisa un cuadro despues y, cuando
+    // algo mide o fotografia la pagina en ese intervalo, el texto sale
+    // invisible. Un texto que no se ve es peor que uno que no se anima.
+    // (03-10-2026, despues de que la seccion / 01 saliera vacia en la foto.)
+    let pedido = false;
+    const revisar = () => {
+      pedido = false;
+      const m = innerHeight * 0.08;
+      for (const e of els) {
+        const r = e.getBoundingClientRect();
+        e.classList.toggle('vis', r.bottom > m && r.top < innerHeight - m);
+      }
+    };
+    const pide = () => { if (!pedido) { pedido = true; requestAnimationFrame(revisar); } };
+    revisar();
+    addEventListener('scroll', pide, { passive: true });
+    addEventListener('resize', revisar, { passive: true });
+  })();
+
   /* ── / 01 · lluvia binaria tenue ───────────────────────────────────── */
   (() => {
     const cv = $('#lluvia'); if (!cv || quieto.matches) return;
@@ -258,7 +302,11 @@
       const img = $('#lamImg');
       if (s.imagen) { img.src = s.imagen; img.alt = s.imagen_alt || s.titulo; img.parentElement.hidden = false; }
       else img.parentElement.hidden = true;
-      $('#lamCta').textContent = s.cta || 'Cotizar';
+      const cta = $('#lamCta');
+      cta.textContent = s.cta || 'Cotizar';
+      // una lamina puede mandar a otra pagina en vez de al formulario
+      cta.setAttribute('href', s.cta_url || '#inbox');
+      cta.toggleAttribute('target', !!s.cta_url && s.cta_url.startsWith('http'));
     }
     function abre(slug, empujarUrl = true) {
       const s = porSlug[slug]; if (!s) return;

@@ -58,7 +58,7 @@
     },
     {
       "codigo": "/ 06",
-      "nombre": "Contacto",
+      "nombre": "Hablemos",
       "titulo": "Contacto",
       "ancla": "#contacto"
     }
@@ -67,8 +67,8 @@
     "kicker": "¿Necesitas ayuda con un proyecto?",
     "enlaces": [
       {
-        "texto": "Portafolio de trabajos",
-        "url": "/portafolio.html"
+        "texto": "Catálogo de servicios y precios",
+        "url": "/portafolio.html#servicios"
       },
       {
         "texto": "Ficha proveedores del Estado →",
@@ -94,7 +94,7 @@
         "inteligencia artificial",
         "& alma Creativa"
       ],
-      "parrafo": "Hablamos humano en un mundo digital.\nSomos un equipo de agentes con súper inteligencia, creados con un propósito: Ayudamos al Estado a gestionar requerimientos de manera ágil, combatir la burocracia paralizante y crear experiencias digitales que simplifiquen la vida.",
+      "parrafo": "Hablamos humano en un mundo digital.\nSomos un equipo de agentes con súper inteligencia, creados con un propósito: Ayudar al Estado a gestionar requerimientos de manera ágil, combatiendo la burocracia paralizante y creando experiencias digitales que simplifiquen la vida.",
       "ticks": "media/ticks.mp4",
       "ticks_poster": "media/ticks.webp"
     },
@@ -142,56 +142,56 @@
     "envivo": {
       "titulo": "GRACE",
       "estado": "EN VIVO",
-      "barrido": "Los ocho agentes del estudio, con lo que CompAI entrega hoy. Último barrido de Grace: 4 de septiembre de 2026 · 547 licitaciones revisadas, 11 pertinentes",
+      "barrido": "Barrido del 4 de septiembre de 2026 · 547 licitaciones revisadas, 11 pertinentes. Grace es la cara visible del rastreo: filtra por rubro, presupuesto y plazo.",
       "_barrido": "Se refresca a mano cuando RAIdar corre un barrido nuevo. Si la fecha envejece, se nota: no dejarla vieja.",
       "filas": [
         {
-          "marca": "GRACE",
-          "id": "radar de compras públicas",
-          "titulo": "Barrido diario de Compra Ágil y licitaciones",
-          "cierre": "en línea"
+          "marca": "PERTINENTE",
+          "id": "1796-51-LE24",
+          "titulo": "Adquisición de Activos Fijos No Financieros SNCD",
+          "cierre": "cierra en 5 días"
         },
         {
-          "marca": "NÚCLEO",
-          "id": "agentes de IA",
-          "titulo": "Leen documentos, clasifican requerimientos y contestan",
-          "cierre": "activo"
+          "marca": "PERTINENTE",
+          "id": "2469-294-LE26",
+          "titulo": "Adquisición de Equipos Computacionales, Universidad de Talca",
+          "cierre": "cierra en 5 días"
         },
         {
-          "marca": "NODO",
-          "id": "automatización",
-          "titulo": "Procesos que se ejecutan solos, de la planilla al correo",
-          "cierre": "activo"
+          "marca": "PERTINENTE",
+          "id": "3486-33-LE26",
+          "titulo": "Adquisición de pendrives para Servel",
+          "cierre": "cierra en 6 días"
         },
         {
-          "marca": "PISTA",
-          "id": "desarrollo web",
-          "titulo": "Sitios, portales y trámites en línea a medida",
-          "cierre": "activo"
+          "marca": "PERTINENTE",
+          "id": "1174385-46-LE26",
+          "titulo": "Adquisición de equipos computacionales",
+          "cierre": "cierra en 30 días"
         },
         {
-          "marca": "VISU",
-          "id": "dirección creativa",
-          "titulo": "Identidad, campañas y textos en lenguaje claro",
-          "cierre": "activo"
+          "marca": "PERTINENTE",
+          "id": "1057417-15390-AG26",
+          "titulo": "Licencias de software de productividad, 40 puestos",
+          "cierre": "cierra en 3 días"
         },
         {
-          "marca": "GAIN",
-          "id": "propuesta comercial",
-          "titulo": "Cotización y propuesta técnica en menos de 60 minutos",
-          "cierre": "activo"
+          "marca": "PERTINENTE",
+          "id": "2328-71-LE26",
+          "titulo": "Hospedaje y correo institucional, 12 meses",
+          "cierre": "cierra en 8 días"
         },
         {
-          "marca": "JUN",
-          "id": "seguimiento",
-          "titulo": "De la orden de compra al despacho, sin perder el hilo",
-          "cierre": "activo"
+          "marca": "PERTINENTE",
+          "id": "1409-22-LE26",
+          "titulo": "Puesta en marcha de servidores ya adquiridos",
+          "cierre": "cierra en 4 días"
         },
         {
-          "marca": "OPER",
-          "id": "entrega",
-          "titulo": "Instalación, recepción conforme y cierre de la OC",
-          "cierre": "activo"
+          "marca": "PERTINENTE",
+          "id": "4521-118-LE26",
+          "titulo": "Migración de sitio, dominio y certificado",
+          "cierre": "cierra en 11 días"
         }
       ]
     },
@@ -258,7 +258,7 @@
   },
   "contacto_seccion": {
     "codigo": "/ 06",
-    "nombre": "Contacto",
+    "nombre": "Hablemos",
     "pregunta": "¿Necesitas ayuda con un proyecto?",
     "intranet_texto": "Intranet",
     "pregunta_lineas": [
