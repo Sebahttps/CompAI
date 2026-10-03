@@ -149,12 +149,12 @@ const ilCuore = `
   <section class="sec cv ap" id="il-cuore">
     <div class="pg" style="--h:2112">
       <div class="b fh ccirc" style="--x:0;--y:0;--w:1366;--hh:2112" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
-      <div class="b fh" style="--x:0;--y:180;--w:1366;--hh:578">
+      <div class="b fh cuore" style="--x:0;--y:180;--w:1366;--hh:578">
         <video src="${esc(S.il_cuore.video)}" poster="${esc(S.il_cuore.video_poster)}"
                muted loop playsinline autoplay preload="none"
                disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
       </div>
-      ${rot(S.il_cuore, 48, 84)}
+      ${rot(S.il_cuore, 48, 222)}
       <h2 class="b t ctit" style="--x:178;--y:930;--w:1034;--fs:41;--lh:1.32;--tr:0.158"><span>${esc(S.il_cuore.ia.titulo[0])}</span><span>${esc(S.il_cuore.ia.titulo[1])}</span><span><i class="amp">&amp;</i> ${esc(S.il_cuore.ia.titulo[2].replace(/^&\s*/, ''))}</span></h2>
       <p class="b t cpar" style="--x:248;--y:1120;--w:914;--fs:24.1;--lh:1.3">${esc(S.il_cuore.ia.parrafo).replace(/\n/g, '<br>')}</p>
       <div class="b ciso" style="--x:970;--y:1330;--w:150">${TICKS('iso-svg', 'compAI')}</div>
@@ -190,16 +190,16 @@ const grace = (() => {
         <img class="gcampo" src="${esc(S.grace.fondo_poster)}" alt="" loading="lazy" decoding="async">
       </div>
       <div class="b fh gvelo" style="--x:178;--y:0;--w:1033;--hh:932" aria-hidden="true"></div>
-      <div class="b fh gpanel" style="--x:415;--y:270;--w:786;--hh:432" aria-hidden="true"></div>
+      <div class="b fh gpanel" style="--x:415;--y:264;--w:786;--hh:444" aria-hidden="true"></div>
       <h2 class="b t gtit" style="--x:44;--y:20;--w:800;--fs:38;--lh:1.45">${S.grace.titulo_lineas.map(l => `<span>${esc(l)}</span>`).join('')}</h2>
       <p class="b t gsub" style="--x:44;--y:150;--w:760;--fs:17;--lh:1.7">${esc(S.grace.linea).replace(/\n/g, '<br>')}</p>
-      <figure class="b fh" style="--x:60;--y:170;--w:500;--hh:762;margin:0">
-        <canvas class="gcanvas" data-src="${esc(im[1].src)}" data-anclaje="cubrir" data-revelado="1" role="img" aria-label="${esc(im[1].alt)}"></canvas>
+      <figure class="b fh" style="--x:40;--y:190;--w:470;--hh:742;margin:0">
+        <canvas class="gcanvas" data-src="${esc(im[1].src)}" data-anclaje="cubrir" data-revelado="0.68" role="img" aria-label="${esc(im[1].alt)}"></canvas>
       </figure>
       <img class="b fh gemblema" style="--x:405;--y:234;--w:40;--hh:40" src="media/grace-logo.webp" alt="" width="512" height="512" loading="lazy" decoding="async">
       <p class="b t gmarca" style="--x:455;--y:238;--w:200;--fs:27.8;--lh:1.1">${esc(S.grace.envivo.titulo)}</p>
       <p class="b t gvivo fh" style="--x:580;--y:242;--w:110;--hh:30;--fs:12">(( ${esc(S.grace.envivo.estado)} ))</p>
-      <ul class="b glista" style="--x:415;--y:286;--w:786">
+      <ul class="b glista" style="--x:415;--y:292;--w:786">
         ${S.grace.envivo.filas.map(fila).join('\n        ')}
       </ul>
       <p class="b gpie" style="--x:415;--y:690;--w:786">${esc(S.grace.envivo.barrido)}</p>
@@ -210,7 +210,7 @@ const grace = (() => {
         ${S.grace.franja.map(f => `<div><b>${esc(f.cifra)}</b><span>${esc(f.glosa)}</span></div>`).join('')}
       </div>
       <figure class="b fh" style="--x:0;--y:258;--w:1366;--hh:772;margin:0">
-        <canvas class="gcanvas" data-src="${esc(im[2].src)}" data-anclaje="cubrir" data-revelado="1" role="img" aria-label="${esc(im[2].alt)}"></canvas>
+        <canvas class="gcanvas" data-src="${esc(im[2].src)}" data-anclaje="cubrir" data-revelado="0.74" role="img" aria-label="${esc(im[2].alt)}"></canvas>
       </figure>
     </div>
   </section>`;
@@ -225,9 +225,9 @@ const servTexto = (s, x, y) => `<button class="b servblock" type="button" data-s
         <ul class="serv-vin${(s.codigo === '02' || s.codigo === '03') ? ' ambar' : ''}">${s.vinetas.map(v => `<li>${esc(v)}</li>`).join('')}</ul>
       </button>`;
 
-const mkTel = (x, y) => `<div class="mk tel" style="--x:${x};--y:${y};--w:289;--hh:572" aria-hidden="true"><span class="muesca"></span><span class="pantalla"></span></div>`;
-const mkMon = (x, y) => `<div class="mk mon" style="--x:${x};--y:${y};--w:458;--hh:368;--mh:300" aria-hidden="true"><span class="marco"><span class="pantalla"></span></span><span class="cuello"></span><span class="base"></span></div>`;
-const mkLap = (x, y) => `<div class="mk lap" style="--x:${x};--y:${y};--w:463;--hh:265;--mh:248" aria-hidden="true"><span class="marco"><span class="pantalla"></span></span><span class="base"></span></div>`;
+const mkTel = (x, y, n) => `<div class="mk tel p${n}" style="--x:${x};--y:${y};--w:289;--hh:572" aria-hidden="true"><span class="muesca"></span><span class="pantalla"></span></div>`;
+const mkMon = (x, y, n) => `<div class="mk mon p${n}" style="--x:${x};--y:${y};--w:458;--hh:368;--mh:300" aria-hidden="true"><span class="marco"><span class="pantalla"></span></span><span class="cuello"></span><span class="base"></span></div>`;
+const mkLap = (x, y, n) => `<div class="mk lap p${n}" style="--x:${x};--y:${y};--w:463;--hh:265;--mh:248" aria-hidden="true"><span class="marco"><span class="pantalla"></span></span><span class="base"></span></div>`;
 
 const creative = `
   <section class="sec cv ap" id="creative">
@@ -236,18 +236,18 @@ const creative = `
       <div class="b fh cline" style="--x:657;--y:0;--w:7;--hh:2380" aria-hidden="true"></div>
       ${rot(S.creative, 62, 38)}
       ${servTexto(SERV[0], 79, 192)}
-      ${mkTel(902, 104)}
+      ${mkTel(902, 104, 1)}
       ${servTexto(SERV[1], 75, 1000)}
-      ${mkMon(817, 912)}
+      ${mkMon(817, 912, 2)}
       ${servTexto(SERV[2], 75, 1790)}
-      ${mkLap(804, 1690)}
+      ${mkLap(804, 1690, 3)}
     </div>
 
     <div class="pg cvfondo" style="--h:2110">
       <div class="b fh ccirc" style="--x:704;--y:0;--w:662;--hh:896" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
       <div class="b fh cline" style="--x:659;--y:0;--w:9;--hh:902" aria-hidden="true"></div>
       ${servTexto(SERV[3], 79, 203)}
-      ${mkTel(902, 104)}
+      ${mkTel(902, 104, 4)}
       ${['pista', 'nodo', 'nucleo'].map((n, i) => {
         const y = [896, 1278, 1704][i], h = [382, 426, 406][i], ty = [1040, 1420, 1850][i];
         return `<div class="b fh ccirc" style="--x:0;--y:${y};--w:1366;--hh:${h}" aria-hidden="true">${fondoVid(`media/banda-${n}.mp4`, `media/banda-${n}.webp`)}</div>

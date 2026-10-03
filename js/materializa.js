@@ -161,7 +161,10 @@
         }
 
         // 2 · las cifras, de donde llegó la foto hasta donde llegó el código
-        const desde = Math.max(0, Math.floor(hastaFoto) - (revelado > .95 ? 0 : 2));
+        // Toda la columna, no solo la punta: con `revelado` bajo 0,95 la trama
+        // de cifras tiene que QUEDAR sobre la foto cuando la animacion
+        // termina. Antes se dibujaban dos filas y el efecto desaparecia.
+        const desde = revelado > .95 ? Math.floor(hastaFoto) : 0;
         for (let y = desde; y <= Math.min(filas - 1, hastaCod); y++) {
           const k = (y * fr.ancho + i) * 4;
           const luz = (pix[k] * .299 + pix[k + 1] * .587 + pix[k + 2] * .114) / 255;

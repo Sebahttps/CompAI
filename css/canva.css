@@ -71,21 +71,25 @@
    la esquina superior derecha. Antes era un canvas animado; el Canva lo
    resuelve con una imagen y asi se ve igual sin gastar un bucle. */
 .ocod{object-fit:fill;opacity:.9}
-.otit{font-family:var(--plex);font-weight:700;text-align:center;color:#fffefe;opacity:.56;
+.otit{font-family:var(--plex);font-weight:700;text-align:center;color:#fffefe;opacity:1;
   text-transform:uppercase}
-.osub{font-family:var(--plex);font-weight:400;text-align:center;color:#fff;opacity:.61}
+.osub{font-family:var(--plex);font-weight:400;text-align:center;color:#fff;opacity:1}
 .osub b{font-weight:700}
-.oenl{font-family:var(--plex);font-weight:700;color:var(--azul);opacity:.61;
+.oenl{font-family:var(--plex);font-weight:700;color:var(--petroleo2);opacity:1;
   text-decoration:underline;text-underline-offset:calc(5*var(--u));display:block;
   text-align:left;white-space:nowrap}
 
 /* ── / 02 Il Cuore ─────────────────────────────────────────────────────── */
 .ctit{font-family:var(--plex);font-weight:700;text-align:center;color:#fff;text-transform:uppercase}
 .ctit span{display:block}
-.ctit .amp{color:var(--azul);font-style:normal}
+.ctit .amp{color:var(--petroleo2);font-style:normal}
 /* shape -361,543 2112x1034 girado -90 => x 178..1212: apaga los circuitos
    del fondo en el centro y los deja asomar solo por los bordes. */
 .cuvelo{background:rgba(0,0,0,.96)}
+/* La mariposa se achica dentro de su lamina: el fondo del video ya es negro,
+   asi que lo que sobra no se ve y la figura respira. Sebastian, 03-10-2026. */
+.cuore{background:#000}
+.cuore video{transform:scale(.86);transform-origin:center}
 .cpar{font-family:var(--clear);font-weight:300;text-align:center;color:#fff}
 .cacc{display:flex;align-items:center;gap:calc(14*var(--u));text-decoration:none;color:#fff;
   font-family:var(--plex);font-weight:400;text-transform:uppercase;white-space:nowrap}
@@ -102,7 +106,9 @@
 .gcampo{filter:saturate(.9)}
 /* shape 229,-50 932x1033 girado -90 => x 178..1211: apaga el campo de
    codigo en el centro para que se lean el titulo y la lista. */
-.gvelo{background:rgba(0,0,0,.9)}
+.gvelo{background:rgba(0,0,0,.9);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
 /* los dos rect 415,276 786x229 y 415,473 786x226: el fondo de la lista. */
 .gpanel{background:rgba(2,6,10,.8)}
 .gtit{font-family:var(--plex);font-weight:700;color:#fff;text-transform:uppercase}
@@ -152,10 +158,13 @@
 /* Los mockups del Canva: carcasa neutra + un fondo de cielo y pasto. */
 .mk{position:absolute;left:calc(var(--x)*var(--u));top:calc(var(--y)*var(--u));
   width:calc(var(--w)*var(--u));height:calc(var(--hh)*var(--u))}
-.mk .pantalla{position:absolute;inset:0;overflow:hidden;
-  background:linear-gradient(#bfe3f5 0%,#dff0fa 46%,#eaf6fb 54%,#9ccb3f 55%,#6aa828 100%)}
-.mk .pantalla::after{content:"";position:absolute;left:14%;top:14%;width:46%;aspect-ratio:2.1/1;
-  background:#fff;border-radius:999px;box-shadow:calc(14*var(--u)) calc(5*var(--u)) 0 calc(-3*var(--u)) #fff}
+.mk .pantalla{position:absolute;inset:0;overflow:hidden;background:#05070a center/cover no-repeat}
+/* Las pantallas llevan obra propia: recortes del video del hero, que es el
+   muestrario de creaciones de la casa. Sebastian, 03-10-2026. */
+.mk.p1 .pantalla{background-image:url(../media/pantalla-1.webp)}
+.mk.p2 .pantalla{background-image:url(../media/pantalla-2.webp)}
+.mk.p3 .pantalla{background-image:url(../media/pantalla-3.webp)}
+.mk.p4 .pantalla{background-image:url(../media/pantalla-4.webp)}
 .mk.tel{border:calc(9*var(--u)) solid #0d0f12;border-radius:calc(34*var(--u));
   background:#0d0f12;box-shadow:0 0 0 calc(2*var(--u)) #33383e}
 .mk.tel .pantalla{border-radius:calc(25*var(--u))}
@@ -215,7 +224,7 @@
 /* ── / 06 Contacto ─────────────────────────────────────────────────────── */
 .kpreg{font-family:Archivo,sans-serif;font-weight:700;text-align:center;color:#fff;
   text-transform:uppercase;letter-spacing:.122em;line-height:1.21}
-.kcorreo{font-family:var(--plex);font-weight:400;text-align:center;color:var(--azul);
+.kcorreo{font-family:var(--plex);font-weight:400;text-align:center;color:var(--petroleo2);
   text-decoration:none;display:block;letter-spacing:.122em}
 /* El orbe de la esquina: en el Canva es un video. Aca se arma con gradientes. */
 .korbe{border-radius:50%;opacity:.75;overflow:hidden;
@@ -341,8 +350,6 @@
              transform .62s cubic-bezier(.2,.7,.2,1) var(--d,0ms)}
 .cv .anim.vis{opacity:1;transform:none}
 /* los que ya traen opacidad propia del Canva no deben saltar a 1 */
-.cv .otit.anim.vis{opacity:.56}
-.cv .osub.anim.vis,.cv .oenl.anim.vis{opacity:.61}
 .cv .banda-tx.anim.vis{opacity:.92}
 .cv .kintranet.anim.vis{opacity:.4}
 
@@ -361,7 +368,5 @@ body.lejos .bar .logo-link{opacity:0;pointer-events:none}
    para que la foto retrate el estado LEIDO de la pagina y no un instante a
    medio camino de la entrada. No la usa nadie mas. */
 html.foto .cv .anim{opacity:1;transform:none;transition:none}
-html.foto .cv .otit.anim{opacity:.56}
-html.foto .cv .osub.anim,html.foto .cv .oenl.anim{opacity:.61}
 html.foto .cv .banda-tx.anim{opacity:.92}
 html.foto .cv .kintranet.anim{opacity:.4}
