@@ -203,27 +203,37 @@
     }
 
     /* ── la imagen no se pide hasta que el canvas se acerca ──────────── */
+    // la foto, sin canvas: respaldo de error y camino unico en telefono
+    function porImagen() {
+      if (!cv.isConnected) return;
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = cv.getAttribute('aria-label') || '';
+      img.className = cv.className;
+      img.decoding = 'async';   // nunca lazy: la foto ya se descargo
+      cv.replaceWith(img);
+    }
+
     function pedir() {
       if (im) return;
       im = new Image();
       im.decoding = 'async';
       im.addEventListener('load', () => {
-        if (quieto.matches) { plana(); return; }
+        // En telefono no hay canvas: va la foto y punto. La materializacion
+        // cuesta bateria, se ve a un tercio del tamano y el canvas se quedaba
+        // en negro cada vez que algo redimensionaba la ventana. Con un <img>
+        // no hay nada que repintar. La animacion es de escritorio.
+        if (quieto.matches || innerWidth < 700) { porImagen(); return; }
         if (!mide()) return;
         muestrea();
         pinta(0);
-        if (matchMedia('(hover: none)').matches) {
-          const alScroll = () => {
-            const r = cv.getBoundingClientRect();
-            if (r.top < innerHeight * .85 && r.bottom > 0) despierta();
-          };
-          addEventListener('scroll', alScroll, { passive: true });
-          alScroll();
-        } else {
-          new IntersectionObserver((es, o) => es.forEach(e => {
-            if (e.isIntersecting) { despierta(); o.disconnect(); }
-          }), { threshold: .2 }).observe(cv);
-        }
+        // Arranca aqui mismo: el observador que pidio la imagen ya usa un
+        // margen de 400 px, asi que llegar hasta aca significa que el canvas
+        // esta a punto de verse. Antes habia un SEGUNDO observador sobre el
+        // canvas y, cuando no llegaba a dispararse —una captura de pagina
+        // completa, un salto por ancla—, la lamina se quedaba en negro para
+        // siempre. Un solo disparador, y el bucle igual se duerme a los 4,2 s.
+        despierta();
         cv.addEventListener('pointermove', e => {
           const r = cv.getBoundingClientRect();
           puntero = { x: (e.clientX - r.left) * dpr };
@@ -231,17 +241,13 @@
         });
         cv.addEventListener('pointerleave', () => { puntero = null; despierta(); });
         addEventListener('resize', () => {
-          if (mide()) { muestrea(); desfase = tAhora; t0 = 0; despierta(); }
+          // `mide()` cambia cv.width, y eso BORRA el canvas. Hay que volver a
+          // pintar en el acto: si se deja para el siguiente cuadro, cualquier
+          // captura hecha en ese instante encuentra la lamina en negro.
+          if (mide()) { muestrea(); desfase = tAhora; t0 = 0; pinta(tAhora); despierta(); }
         }, { passive: true });
       });
-      im.addEventListener('error', () => {
-        const img = document.createElement('img');
-        img.src = src;
-        img.alt = cv.getAttribute('aria-label') || '';
-        img.className = cv.className;
-        img.loading = 'lazy'; img.decoding = 'async';
-        cv.replaceWith(img);
-      });
+      im.addEventListener('error', porImagen);
       im.src = src;
     }
 

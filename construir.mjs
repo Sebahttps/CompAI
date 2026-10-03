@@ -124,16 +124,21 @@ const menu = `
     </aside>
   </nav>`;
 
+const fondoVid = (src, poster) => `<video src="${src}" poster="${poster}"
+               muted loop playsinline autoplay preload="none"
+               disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>`;
+
 /* rótulo de sección: «/ 0X — NOMBRE», IBM Plex Mono 24 extralight */
 const rot = (o, x, y) => `<p class="b rot" style="--x:${x};--y:${y};--w:420">${esc(o.codigo)} — ${esc(o.nombre)}</p>`;
 
 const offenbar = `
   <section class="sec cv" id="offenbar">
     <div class="pg" style="--h:1114">
-      <div class="b fh ofondo" style="--x:0;--y:146;--w:1366;--hh:968" aria-hidden="true"></div>
+      <div class="b fh ofondo" style="--x:0;--y:146;--w:1366;--hh:968" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
       <div class="b fh obanda" style="--x:0;--y:0;--w:1366;--hh:146" aria-hidden="true"></div>
       <div class="b fh opanel" style="--x:188;--y:146;--w:1023;--hh:968" aria-hidden="true"></div>
-      <canvas id="lluvia" class="b fh" style="--x:1096;--y:0;--w:270;--hh:322" aria-hidden="true"></canvas>
+      <img class="b fh ocod" style="--x:829;--y:-4;--w:816;--hh:164" src="media/codigo-detalle.webp" alt="" width="1366" height="274" loading="lazy" decoding="async">
+      <img class="b fh ocod" style="--x:805;--y:159;--w:816;--hh:164" src="media/codigo-detalle.webp" alt="" width="1366" height="274" loading="lazy" decoding="async">
       ${rot(S.offenbar, 48, 38)}
       <h1 class="b t otit" style="--x:279;--y:174;--w:816;--fs:57.3;--lh:1.19;--tr:0.038">${esc(S.offenbar.titulo_1)}</h1>
       <p class="b t osub" style="--x:346;--y:256;--w:683;--fs:49.3;--lh:1.19;--tr:0.021">ejecutada por <b>IA</b>.</p>
@@ -145,9 +150,7 @@ const offenbar = `
 const ilCuore = `
   <section class="sec cv ap" id="il-cuore">
     <div class="pg" style="--h:2112">
-      <div class="b fh ccirc" style="--x:0;--y:767;--w:1366;--hh:1345" aria-hidden="true">
-        <img src="media/circuitos.webp" alt="" loading="lazy" decoding="async">
-      </div>
+      <div class="b fh ccirc" style="--x:0;--y:767;--w:1366;--hh:1345" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
       <div class="b fh cuvelo" style="--x:178;--y:0;--w:1034;--hh:2112" aria-hidden="true"></div>
       <div class="b fh" style="--x:0;--y:180;--w:1366;--hh:578">
         <video src="${esc(S.il_cuore.video)}" poster="${esc(S.il_cuore.video_poster)}"
@@ -193,9 +196,10 @@ const grace = (() => {
       <div class="b fh gpanel" style="--x:415;--y:270;--w:786;--hh:432" aria-hidden="true"></div>
       <h2 class="b t gtit" style="--x:44;--y:20;--w:800;--fs:38;--lh:1.45">${S.grace.titulo_lineas.map(l => `<span>${esc(l)}</span>`).join('')}</h2>
       <p class="b t gsub" style="--x:44;--y:150;--w:760;--fs:17;--lh:1.7">${esc(S.grace.linea).replace(/\n/g, '<br>')}</p>
-      <figure class="b fh" style="--x:40;--y:160;--w:520;--hh:772;margin:0">
-        <canvas class="gcanvas" data-src="${esc(im[1].src)}" data-anclaje="izquierda" role="img" aria-label="${esc(im[1].alt)}"></canvas>
+      <figure class="b fh" style="--x:60;--y:170;--w:500;--hh:762;margin:0">
+        <canvas class="gcanvas" data-src="${esc(im[1].src)}" data-anclaje="cubrir" data-revelado="1" role="img" aria-label="${esc(im[1].alt)}"></canvas>
       </figure>
+      <img class="b fh gemblema" style="--x:405;--y:234;--w:40;--hh:40" src="media/grace-logo.webp" alt="" width="512" height="512" loading="lazy" decoding="async">
       <p class="b t gmarca" style="--x:455;--y:238;--w:200;--fs:27.8;--lh:1.1">${esc(S.grace.envivo.titulo)}</p>
       <p class="b t gvivo fh" style="--x:580;--y:242;--w:110;--hh:30;--fs:12">(( ${esc(S.grace.envivo.estado)} ))</p>
       <ul class="b glista" style="--x:415;--y:286;--w:786">
@@ -231,9 +235,7 @@ const mkLap = (x, y) => `<div class="mk lap" style="--x:${x};--y:${y};--w:463;--
 const creative = `
   <section class="sec cv ap" id="creative">
     <div class="pg cvfondo" style="--h:2380">
-      <div class="b fh ccirc" style="--x:704;--y:0;--w:662;--hh:2380" aria-hidden="true">
-        <img src="media/circuitos.webp" alt="" loading="lazy" decoding="async">
-      </div>
+      <div class="b fh ccirc" style="--x:704;--y:0;--w:662;--hh:2380" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
       <div class="b fh cvelo" style="--x:774;--y:0;--w:544;--hh:2380" aria-hidden="true"></div>
       <div class="b fh cline" style="--x:657;--y:0;--w:7;--hh:2380" aria-hidden="true"></div>
       ${rot(S.creative, 62, 38)}
@@ -246,18 +248,14 @@ const creative = `
     </div>
 
     <div class="pg cvfondo" style="--h:2110">
-      <div class="b fh ccirc" style="--x:704;--y:0;--w:662;--hh:896" aria-hidden="true">
-        <img src="media/circuitos.webp" alt="" loading="lazy" decoding="async">
-      </div>
+      <div class="b fh ccirc" style="--x:704;--y:0;--w:662;--hh:896" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
       <div class="b fh cvelo" style="--x:774;--y:0;--w:544;--hh:896" aria-hidden="true"></div>
       <div class="b fh cline" style="--x:659;--y:0;--w:9;--hh:902" aria-hidden="true"></div>
       ${servTexto(SERV[3], 79, 203)}
       ${mkTel(902, 104)}
       ${['pista', 'nodo', 'nucleo'].map((n, i) => {
         const y = [896, 1278, 1704][i], h = [382, 426, 406][i], ty = [1040, 1420, 1850][i];
-        return `<div class="b fh ccirc" style="--x:0;--y:${y};--w:1366;--hh:${h}" aria-hidden="true">
-        <img src="media/circuitos.webp" alt="" loading="lazy" decoding="async">
-      </div>
+        return `<div class="b fh ccirc" style="--x:0;--y:${y};--w:1366;--hh:${h}" aria-hidden="true">${fondoVid(`media/banda-${n}.mp4`, `media/banda-${n}.webp`)}</div>
       <div class="b fh banda-velo" style="--x:0;--y:${y};--w:1366;--hh:${h}" aria-hidden="true"></div>
       <p class="b t banda-tx" style="--x:137;--y:${ty};--w:500;--fs:81.1;--lh:1.1;--tr:0.054">/${n}</p>`;
       }).join('\n      ')}

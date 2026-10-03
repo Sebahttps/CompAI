@@ -58,18 +58,16 @@
 
 /* ── / 01 Offenbar ─────────────────────────────────────────────────────── */
 #offenbar.cv{display:block;min-height:0}
-.ofondo{background:url(../media/circuitos.webp) center/cover no-repeat}
+.ofondo{overflow:hidden}
+.ofondo video{width:100%;height:100%;object-fit:cover}
 /* Banda negra superior: shape 596,-624 173x1366 girado -90 => y 0..146. */
 .obanda{background:#000}
 /* Panel central oscuro: shape 130,31 1141x1024 girado -90 => x 188..1211. */
 .opanel{background:rgba(0,0,0,.94)}
-/* sitio.css lo deja a pantalla completa con un selector de id; aqui se le
-   devuelven las medidas del Canva (dos rect de 816x163 arriba a la derecha). */
-#lluvia{position:absolute;inset:auto;display:block;opacity:.9;z-index:2;
-  left:calc(var(--x)*var(--u));top:calc(var(--y)*var(--u));
-  width:calc(var(--w)*var(--u));height:calc(var(--hh)*var(--u));
-  -webkit-mask-image:linear-gradient(to left,#000 62%,transparent);
-  mask-image:linear-gradient(to left,#000 62%,transparent)}
+/* Los dos rect 829,-4 y 805,159 de 816x163: el detalle de codigo binario de
+   la esquina superior derecha. Antes era un canvas animado; el Canva lo
+   resuelve con una imagen y asi se ve igual sin gastar un bucle. */
+.ocod{object-fit:fill;opacity:.9}
 .otit{font-family:var(--plex);font-weight:700;text-align:center;color:#fffefe;opacity:.56;
   text-transform:uppercase}
 .osub{font-family:var(--plex);font-weight:400;text-align:center;color:#fff;opacity:.61}
@@ -109,6 +107,7 @@
 .gsub{font-family:var(--clear);font-weight:300;color:#cfd6dc}
 .gperfil{object-fit:contain;object-position:left bottom}
 .gcanvas{display:block;width:100%;height:100%;background:transparent}
+.gemblema{object-fit:contain;filter:drop-shadow(0 0 calc(8*var(--u)) rgba(5,248,249,.5))}
 .gmarca{font-family:var(--plex);font-weight:700;color:var(--cian);letter-spacing:.054em;
   text-transform:uppercase;white-space:nowrap}
 .gvivo{font-family:var(--plex);font-weight:400;color:#fff;border:calc(1.4*var(--u)) solid rgba(5,248,249,.6);
@@ -259,7 +258,7 @@
   .cv .b>video,.cv .b>img{width:100%;height:auto;object-fit:contain}
   .cv .b>canvas.gcanvas{width:100%;height:auto;aspect-ratio:calc(var(--w) / var(--hh))}
   .cv .rot{order:-1}
-  .harco,.obanda,.opanel,.cvelo,.cuvelo,.gvelo,.gpanel,.banda-velo,.ccirc,.cline,#lluvia{display:none}
+  .harco,.obanda,.opanel,.cvelo,.cuvelo,.gvelo,.gpanel,.banda-velo,.ccirc,.cline,.ocod{display:none}
 
   #hero .pg{padding:0;gap:0}
   #hero .hfranjas{height:calc(430*var(--u))}
@@ -268,19 +267,20 @@
 
   #offenbar .pg{position:relative}
   .ofondo{display:block;position:absolute;inset:0;width:100%;height:100%;opacity:.45}
+  .cv .gemblema{width:calc(70*var(--u));align-self:flex-start}
   .otit{font-size:calc(46*var(--u))}
   .osub{font-size:calc(38*var(--u))}
   .oenl{text-align:center;white-space:normal;font-size:calc(24*var(--u))}
 
   .ctit{font-size:calc(34*var(--u))}
   .cpar{font-size:calc(22*var(--u))}
-  .ciso{width:min(160px,42%);margin-inline:auto;order:4}
+  .cv .ciso{width:min(160px,42%);margin-inline:auto;order:4}
   .cacc{justify-content:center;font-size:calc(20*var(--u))}
 
   .gtit{font-size:calc(34*var(--u))}
   .gsub{font-size:calc(20*var(--u))}
   .gmarca{font-size:calc(26*var(--u))}
-  .gvivo{font-size:calc(13*var(--u));padding:calc(6*var(--u)) calc(16*var(--u));
+  .cv .gvivo{font-size:calc(13*var(--u));padding:calc(6*var(--u)) calc(16*var(--u));
     width:auto;align-self:flex-start}
   .glista li{grid-template-columns:1fr;gap:calc(4*var(--u));font-size:calc(14*var(--u))}
   .glista .mkr,.glista .dt b,.glista .ci{font-size:calc(12*var(--u))}
@@ -295,7 +295,7 @@
   .serv-par{font-size:calc(17*var(--u));text-align:left}
   .serv-vin{margin-top:calc(26*var(--u));font-size:calc(16*var(--u))}
   .mk{aspect-ratio:calc(var(--w) / var(--hh));height:auto;margin-inline:auto}
-  .mk.tel{width:min(210px,56%)}
+  .cv .mk.tel{width:min(210px,56%)}
   .banda-tx{font-size:calc(64*var(--u));text-align:center}
 
   .icaja{padding:calc(44*var(--u)) calc(34*var(--u))}
@@ -313,14 +313,18 @@
 
   .kpreg{font-size:calc(26*var(--u))}
   .kcorreo{font-size:calc(32*var(--u))}
-  .korbe{width:min(190px,48%);aspect-ratio:1;margin-inline:auto;order:4}
+  .cv .korbe{width:min(190px,48%);aspect-ratio:1;margin-inline:auto;order:4}
   .kscl{font-size:calc(170*var(--u))}
   .klugar{font-size:calc(24*var(--u))}
-  .kpicaflor{order:3;width:min(260px,70%);margin-inline:auto}
-  .kcomp{order:5;width:min(190px,52%);aspect-ratio:205/115;margin-inline:auto}
+  .cv .kpicaflor{order:3;width:min(260px,70%);margin-inline:auto}
+  .cv .kcomp{order:5;width:min(190px,52%);aspect-ratio:205/115;margin-inline:auto}
   .kintranet{order:6;font-size:calc(22*var(--u))}
   .kpie{order:7;flex-direction:column;gap:calc(10*var(--u));font-size:calc(14*var(--u));text-align:center}
 }
 
 #contacto.cv{padding:0}
 #inbox.cv,#creative.cv,#grace.cv,#il-cuore.cv{padding:0}
+
+@media (max-width:700px){
+  .cv .b>img.gcanvas{width:100%;height:auto;object-fit:contain}
+}
