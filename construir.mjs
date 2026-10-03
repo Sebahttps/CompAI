@@ -149,9 +149,9 @@ const offenbar = `
 const ilCuore = `
   <section class="sec cv ap" id="il-cuore">
     <div class="pg" style="--h:2112">
-      <div class="b fh ccirc" style="--x:0;--y:0;--w:1366;--hh:2112" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
+      <div class="b fh ccirc" style="--x:0;--y:1000;--w:1366;--hh:1112" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
       <div class="b fh cuore-fondo" style="--x:0;--y:0;--w:1366;--hh:960" aria-hidden="true"></div>
-      <div class="b fh cuore" style="--x:0;--y:180;--w:1366;--hh:578">
+      <div class="b fh cuore" style="--x:0;--y:96;--w:1366;--hh:768">
         <video src="${esc(S.il_cuore.video)}" poster="${esc(S.il_cuore.video_poster)}"
                muted loop playsinline autoplay preload="none"
                disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
