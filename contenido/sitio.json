@@ -1,6 +1,5 @@
 {
   "_leeme": "Única fuente de los textos del sitio. Cambiar un texto = editar este archivo y hacer push. El workflow .github/workflows/sitio-compai.yml vuelve a armar index.html solo.",
-
   "meta": {
     "lang": "es-CL",
     "title": "compAI — Tecnología para Chile, ejecutada por IA",
@@ -9,14 +8,11 @@
     "og_image": "https://compai.cl/media/og.jpg",
     "og_image_alt": "compAI — Tecnología para Chile, ejecutada por IA"
   },
-
   "hero": "franjas",
   "hero_sello": "media/compai-sello.svg",
   "_hero_opciones": "franjas = video de 5 franjas con el logo al centro como sello · nucleo = video del sol con el logo arriba a la izquierda",
-
   "formEndpoint": "https://script.google.com/macros/s/AKfycbxiRLWaLHDVNm99KXKboz7DxslZeUtbl8Rq36MJ3FFuiRfNqpACklvcp7pfX-y5F-M8/exec",
   "_formEndpoint": "URL del web app de Google Apps Script (apps-script/Code.gs). Mientras esté vacía, el formulario envía por mailto:hola@compai.cl.",
-
   "contacto": {
     "correo": "hola@compai.cl",
     "whatsapp": "",
@@ -29,24 +25,57 @@
     "razon_social": "COMPAI GLOBAL SOLUTIONS SpA",
     "rut": "78.491.451-8"
   },
-
   "menu": [
-    { "codigo": "/ 01", "nombre": "Offenbar",      "titulo": "Inicio",     "ancla": "#offenbar" },
-    { "codigo": "/ 02", "nombre": "Il Cuore",      "titulo": "Manifiesto", "ancla": "#il-cuore" },
-    { "codigo": "/ 03", "nombre": "L'Intelligence","titulo": "Grace",      "ancla": "#grace" },
-    { "codigo": "/ 04", "nombre": "Creative",      "titulo": "Servicios",  "ancla": "#creative" },
-    { "codigo": "/ 05", "nombre": "Inbox",         "titulo": "Cotizar",    "ancla": "#inbox" },
-    { "codigo": "/ 06", "nombre": "Contacto",      "titulo": "Contacto",   "ancla": "#contacto" }
+    {
+      "codigo": "/ 01",
+      "nombre": "Offenbar",
+      "titulo": "Inicio",
+      "ancla": "#offenbar"
+    },
+    {
+      "codigo": "/ 02",
+      "nombre": "Il Cuore",
+      "titulo": "Manifiesto",
+      "ancla": "#il-cuore"
+    },
+    {
+      "codigo": "/ 03",
+      "nombre": "L'Intelligence",
+      "titulo": "Grace",
+      "ancla": "#grace"
+    },
+    {
+      "codigo": "/ 04",
+      "nombre": "Creative",
+      "titulo": "Servicios",
+      "ancla": "#creative"
+    },
+    {
+      "codigo": "/ 05",
+      "nombre": "Inbox",
+      "titulo": "Cotizar",
+      "ancla": "#inbox"
+    },
+    {
+      "codigo": "/ 06",
+      "nombre": "Contacto",
+      "titulo": "Contacto",
+      "ancla": "#contacto"
+    }
   ],
-
   "menu_aside": {
     "kicker": "¿Necesitas ayuda con un proyecto?",
     "enlaces": [
-      { "texto": "Portafolio de trabajos", "url": "/portafolio.html" },
-      { "texto": "Ficha proveedores del Estado →", "url": "https://proveedor.mercadopublico.cl/ficha/78.491.451-8" }
+      {
+        "texto": "Portafolio de trabajos",
+        "url": "/portafolio.html"
+      },
+      {
+        "texto": "Ficha proveedores del Estado →",
+        "url": "https://proveedor.mercadopublico.cl/ficha/78.491.451-8"
+      }
     ]
   },
-
   "offenbar": {
     "codigo": "/ 01",
     "nombre": "Offenbar",
@@ -54,7 +83,6 @@
     "titulo_2": "ejecutada por IA.",
     "enlace_texto": "Ficha proveedores del Estado →"
   },
-
   "il_cuore": {
     "codigo": "/ 02",
     "nombre": "Il Cuore",
@@ -62,65 +90,123 @@
     "video_poster": "media/il-cuore.webp",
     "ia": {
       "titulo": [
-        "INTELIGENCIA ARTIFICIAL APLICADA",
-        "SOLUCIONES TECNOLÓGICAS",
-        "& ALMA CREATIVA"
+        "soluciones tecnológicas",
+        "inteligencia artificial",
+        "& alma Creativa"
       ],
-      "parrafo": "Hablamos humano en un mundo digital. Somos una empresa tecnológica con alma creativa & inteligencia artificial aplicada. Ayudamos al Estado a gestionar requerimientos de manera ágil, combatir la burocracia paralizante y crear experiencias digitales que simplifiquen la vida de quien está del otro lado del mesón.",
+      "parrafo": "Hablamos humano en un mundo digital.\nSomos un equipo de agentes con súper inteligencia, creados con un propósito: Ayudamos al Estado a gestionar requerimientos de manera ágil, combatir la burocracia paralizante y crear experiencias digitales que simplifiquen la vida.",
       "ticks": "media/ticks.mp4",
       "ticks_poster": "media/ticks.webp"
     },
     "accesos": [
-      { "texto": "Creative", "ancla": "#creative" },
-      { "texto": "Contacto", "ancla": "#contacto" }
+      {
+        "texto": "Creative",
+        "ancla": "#creative"
+      },
+      {
+        "texto": "Contacto",
+        "ancla": "#contacto"
+      }
     ]
   },
-
   "grace": {
     "codigo": "/ 03",
     "nombre": "L'Intelligence",
     "titulo": "Grace System",
-    "linea": "Grace lee las compras públicas todos los días, descarta lo que no calza y deja sobre la mesa solo lo que CompAI puede entregar a tiempo.",
+    "linea": "Grace monitorea las publicaciones, filtra por rubro y presupuesto,\ny prepara la propuesta antes del cierre.",
     "pie": "Materialización por código",
     "fondo": "media/campo-codigo.mp4",
     "fondo_poster": "media/campo-codigo.webp",
     "fondo_velocidad": 0.5,
     "imagenes": [
-      { "src": "media/grace-retrato.webp", "alt": "Grace, retrato", "anclaje": "derecha" },
-      { "src": "media/grace-perfil.webp",  "alt": "Grace de perfil", "anclaje": "izquierda", "alto": "grande", "envivo": true },
-      { "src": "media/grace-lavanda.webp", "alt": "Grace en un campo de lavanda al atardecer", "anclaje": "cubrir", "revelado": 1 }
+      {
+        "src": "media/grace-retrato.webp",
+        "alt": "Grace, retrato",
+        "anclaje": "derecha"
+      },
+      {
+        "src": "media/grace-perfil.webp",
+        "alt": "Grace de perfil",
+        "anclaje": "izquierda",
+        "alto": "grande",
+        "envivo": true
+      },
+      {
+        "src": "media/grace-lavanda.webp",
+        "alt": "Grace en un campo de lavanda al atardecer",
+        "anclaje": "cubrir",
+        "revelado": 1
+      }
     ],
     "_leyendas": "Los pies «Grace ___ con efecto materialización por código» se quitaron el 02-10-2026: eran la instrucción del encargo, no información para el visitante.",
-
     "envivo": {
       "titulo": "GRACE",
       "estado": "EN VIVO",
       "barrido": "Barrido del 4 de septiembre de 2026 · 547 licitaciones revisadas, 11 pertinentes",
       "_barrido": "Se refresca a mano cuando RAIdar corre un barrido nuevo. Si la fecha envejece, se nota: no dejarla vieja.",
       "filas": [
-        { "marca": "PERTINENTE", "id": "1796-51-LE24",    "titulo": "Adquisición de Activos Fijos No Financieros SNCD", "cierre": "cierra en 5 días" },
-        { "marca": "PERTINENTE", "id": "2469-294-LE26",   "titulo": "Adquisición de Equipos Computacionales, Universidad de Talca", "cierre": "cierra en 5 días" },
-        { "marca": "PERTINENTE", "id": "3486-33-LE26",    "titulo": "Adquisición de pendrives para Servel", "cierre": "cierra en 6 días" },
-        { "marca": "PERTINENTE", "id": "1174385-46-LE26", "titulo": "Adquisición de equipos computacionales", "cierre": "cierra en 30 días" },
-        { "marca": "PERTINENTE", "id": "1796-51-LE24",    "titulo": "Adquisición de Activos Fijos No Financieros SNCD", "cierre": "cierra en 5 días" }
+        {
+          "marca": "PERTINENTE",
+          "id": "1796-51-LE24",
+          "titulo": "Adquisición de Activos Fijos No Financieros SNCD",
+          "cierre": "cierra en 5 días"
+        },
+        {
+          "marca": "PERTINENTE",
+          "id": "2469-294-LE26",
+          "titulo": "Adquisición de Equipos Computacionales, Universidad de Talca",
+          "cierre": "cierra en 5 días"
+        },
+        {
+          "marca": "PERTINENTE",
+          "id": "3486-33-LE26",
+          "titulo": "Adquisición de pendrives para Servel",
+          "cierre": "cierra en 6 días"
+        },
+        {
+          "marca": "PERTINENTE",
+          "id": "1174385-46-LE26",
+          "titulo": "Adquisición de equipos computacionales",
+          "cierre": "cierra en 30 días"
+        },
+        {
+          "marca": "PERTINENTE",
+          "id": "1796-51-LE24",
+          "titulo": "Adquisición de Activos Fijos No Financieros SNCD",
+          "cierre": "cierra en 5 días"
+        }
       ]
     },
-
     "franja": [
-      { "cifra": "24/7",  "glosa": "Operación continua" },
-      { "cifra": "<60m",  "glosa": "Respuesta a cotización" },
-      { "cifra": "100%",  "glosa": "Trazabilidad" }
+      {
+        "cifra": "24/7",
+        "glosa": "Operación continua"
+      },
+      {
+        "cifra": "<60m",
+        "glosa": "Respuesta a cotización"
+      },
+      {
+        "cifra": "100%",
+        "glosa": "Trazabilidad"
+      }
+    ],
+    "titulo_lineas": [
+      "CLASIFICA CADA LICITACIÓN",
+      "DE MERCADO PÚBLICO"
     ]
   },
-
   "creative": {
     "codigo": "/ 04",
     "nombre": "Creative",
     "titulo": "Servicios",
     "bajada": "Cuatro frentes. Uno basta para empezar.",
-    "etiquetas": ["/pista", "/nodo", "/nucleo"]
+    "etiquetas": [
+      "/pista",
+      "/nodo",
+      "/nucleo"
+    ]
   },
-
   "inbox": {
     "codigo": "/ 05",
     "nombre": "Inbox",
@@ -128,21 +214,38 @@
     "bajada": "Cuéntanos qué necesitas. Respondemos con una propuesta, no con un acuse de recibo.",
     "campos": {
       "nombre": "Nombre y apellido",
-      "correo": "Correo",
-      "telefono": "Teléfono",
-      "organismo": "Organismo o empresa (opcional)",
-      "mensaje": "¿Qué necesitas? (opcional)"
+      "correo": "Correo electrónico",
+      "telefono": "Teléfono de contacto",
+      "mensaje": "Detalla tus requerimientos",
+      "idmp": "ID Mercado Público (opcional)"
     },
-    "boton": "Enviar",
+    "boton": "ENVIAR",
     "nota": "Recibes la respuesta, no un acuse de recibo.",
     "exito": "Listo. Tu mensaje llegó a hola@compai.cl — te respondemos hoy mismo.",
-    "error": "No se pudo enviar. Escríbenos directo a hola@compai.cl."
+    "error": "No se pudo enviar. Escríbenos directo a hola@compai.cl.",
+    "antetitulo": "RUN · FORMULARIO DE COTIZACIÓN",
+    "titulo_1": "GESTIONA UNA",
+    "titulo_2": "COMPRA ÁGIL",
+    "placeholders": {
+      "nombre": "Cómo te llamas",
+      "correo": "nombre@institucion.cl",
+      "telefono": "+56 9 1234 5678",
+      "mensaje": "Qué necesitas comprar, cantidades, plazo y presupuesto estimado",
+      "idmp": "1057417-15390-AG26"
+    },
+    "adjunta": {
+      "titulo": "Bases, anexo u orden de compra",
+      "nota": "Se adjuntan en el correo que se abre al enviar"
+    }
   },
-
   "contacto_seccion": {
     "codigo": "/ 06",
     "nombre": "Contacto",
     "pregunta": "¿Necesitas ayuda con un proyecto?",
-    "intranet_texto": "Intranet"
+    "intranet_texto": "Intranet",
+    "pregunta_lineas": [
+      "¿Necesitas ayuda con un proyecto?",
+      "Envíanos un correo a"
+    ]
   }
 }

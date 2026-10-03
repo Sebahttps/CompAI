@@ -68,7 +68,10 @@
     let pix = null;        // color real de cada celda
     let col = null;        // estado de cada columna
     let im = null, listo = false, corriendo = false, dormido = 0;
-    let t0 = 0, puntero = null;
+    // `desfase` guarda el tiempo ya corrido. Sin el, cualquier resize —y el
+    // navegador dispara uno al capturar una seccion mas alta que la ventana—
+    // rebobinaba la materializacion a cero y la foto desaparecia. (03-10-2026)
+    let t0 = 0, desfase = 0, tAhora = 0, puntero = null;
 
     function mide() {
       const r = cv.getBoundingClientRect();
@@ -179,8 +182,9 @@
     function cuadro(ms) {
       if (!corriendo) return;
       if (!t0) t0 = ms;
-      pinta((ms - t0) / 1000);
-      if ((ms - t0) / 1000 > 4.2 && !puntero) { if (++dormido > 20) { corriendo = false; return; } }
+      tAhora = (ms - t0) / 1000 + desfase;
+      pinta(tAhora);
+      if (tAhora > 4.2 && !puntero) { if (++dormido > 20) { corriendo = false; return; } }
       else dormido = 0;
       requestAnimationFrame(cuadro);
     }
@@ -227,7 +231,7 @@
         });
         cv.addEventListener('pointerleave', () => { puntero = null; despierta(); });
         addEventListener('resize', () => {
-          if (mide()) { muestrea(); t0 = 0; despierta(); }
+          if (mide()) { muestrea(); desfase = tAhora; t0 = 0; despierta(); }
         }, { passive: true });
       });
       im.addEventListener('error', () => {

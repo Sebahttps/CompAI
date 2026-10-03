@@ -79,18 +79,24 @@ const MARIPOSA = `<svg class="mariposa" viewBox="0 0 400 310" role="img" aria-la
       <circle cx="200" cy="118" r="9" fill="#0B2A38" stroke="#7FC4DF" stroke-width="1.4"/>
     </svg>`;
 
-/* ── las secciones ───────────────────────────────────────────────────── */
+/* ── las secciones · maqueta exacta del Canva (kit-canva/PLANO-CANVA.md) ──
+   Lienzo 1366 px. Cada elemento lleva --x/--y/--w/--hh en px del lienzo y la
+   hoja css/canva.css los convierte con --u. No se interpreta ninguna medida. */
+
 const heroFranjas = `
-  <section class="hero" id="hero" aria-label="compAI">
-    <div class="muro">
-      <video id="heroVideo" src="media/hero-franjas.mp4" poster="media/hero-franjas.webp"
-             muted loop playsinline autoplay preload="metadata"
-             disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
+  <section class="hero cv" id="hero" aria-label="compAI">
+    <div class="pg" style="--h:1256">
+      <div class="b fh hfranjas" style="--x:0;--y:0;--w:1366;--hh:627">
+        <video id="heroVideo" src="media/hero-franjas.mp4" poster="media/hero-franjas.webp"
+               muted loop playsinline autoplay preload="metadata"
+               disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
+      </div>
+      <div class="b fh harco" style="--x:-139;--y:549;--w:1633;--hh:158" aria-hidden="true"></div>
+      <div class="b hsello" style="--x:518;--y:524;--w:330">
+        <img src="${esc(S.hero_sello)}" alt="compAI" width="512" height="512">
+      </div>
+      <a class="baja mono" href="#offenbar"><span>Bajar</span><i aria-hidden="true"></i></a>
     </div>
-    <div class="arco">
-      <img class="sello-img" src="${esc(S.hero_sello)}" alt="compAI" width="512" height="512">
-    </div>
-    <a class="baja mono" href="#offenbar"><span>Bajar</span><i aria-hidden="true"></i></a>
   </section>`;
 
 const heroNucleo = `
@@ -118,129 +124,169 @@ const menu = `
     </aside>
   </nav>`;
 
+/* rótulo de sección: «/ 0X — NOMBRE», IBM Plex Mono 24 extralight */
+const rot = (o, x, y) => `<p class="b rot" style="--x:${x};--y:${y};--w:420">${esc(o.codigo)} — ${esc(o.nombre)}</p>`;
+
 const offenbar = `
-  <section class="sec" id="offenbar">
-    <div class="circuitos" aria-hidden="true"></div>
-    <p class="kick mono">${esc(S.offenbar.codigo)} — <b>${esc(S.offenbar.nombre)}</b></p>
-    <div class="ancho offen">
-      <canvas id="lluvia" aria-hidden="true"></canvas>
-      <div class="offen-centro">
-        <h1 class="ofit" id="ofit" data-l1="${esc(S.offenbar.titulo_1)}" data-l2="${esc(S.offenbar.titulo_2)}"><span>${esc(S.offenbar.titulo_1)}</span><br><span class="l2">${esc(S.offenbar.titulo_2)}</span></h1>
-        <a class="enl bloque" href="${esc(S.contacto.ficha)}" target="_blank" rel="noopener"><span>${esc(S.offenbar.enlace_texto)}</span></a>
-      </div>
+  <section class="sec cv" id="offenbar">
+    <div class="pg" style="--h:1114">
+      <div class="b fh ofondo" style="--x:0;--y:146;--w:1366;--hh:968" aria-hidden="true"></div>
+      <div class="b fh obanda" style="--x:0;--y:0;--w:1366;--hh:146" aria-hidden="true"></div>
+      <div class="b fh opanel" style="--x:188;--y:146;--w:1023;--hh:968" aria-hidden="true"></div>
+      <canvas id="lluvia" class="b fh" style="--x:1096;--y:0;--w:270;--hh:322" aria-hidden="true"></canvas>
+      ${rot(S.offenbar, 48, 38)}
+      <h1 class="b t otit" style="--x:279;--y:174;--w:816;--fs:57.3;--lh:1.19;--tr:0.038">${esc(S.offenbar.titulo_1)}</h1>
+      <p class="b t osub" style="--x:346;--y:256;--w:683;--fs:49.3;--lh:1.19;--tr:0.021">ejecutada por <b>IA</b>.</p>
+      <a class="b t oenl" style="--x:667;--y:372;--w:420;--fs:20.7;--lh:1.12"
+         href="${esc(S.contacto.ficha)}" target="_blank" rel="noopener">${esc(S.offenbar.enlace_texto)}</a>
     </div>
   </section>`;
 
 const ilCuore = `
-  <section class="sec ap" id="il-cuore">
-    <p class="kick mono">${esc(S.il_cuore.codigo)} — <b>${esc(S.il_cuore.nombre)}</b></p>
-    <div class="ancho">
-      <div class="cuore-video">
+  <section class="sec cv ap" id="il-cuore">
+    <div class="pg" style="--h:2112">
+      <div class="b fh ccirc" style="--x:0;--y:767;--w:1366;--hh:1345" aria-hidden="true">
+        <img src="media/circuitos.webp" alt="" loading="lazy" decoding="async">
+      </div>
+      <div class="b fh cuvelo" style="--x:178;--y:0;--w:1034;--hh:2112" aria-hidden="true"></div>
+      <div class="b fh" style="--x:0;--y:180;--w:1366;--hh:578">
         <video src="${esc(S.il_cuore.video)}" poster="${esc(S.il_cuore.video_poster)}"
                muted loop playsinline autoplay preload="none"
                disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
       </div>
-
-      <div class="ia">
-        <div class="ia-texto">
-          <h2 class="ia-tit">${S.il_cuore.ia.titulo.map(l => `<span>${esc(l)}</span>`).join('')}</h2>
-          <p class="ia-par">${esc(S.il_cuore.ia.parrafo)}</p>
-        </div>
-        <div class="ia-ticks">
-          <video src="${esc(S.il_cuore.ia.ticks)}" poster="${esc(S.il_cuore.ia.ticks_poster)}"
-                 muted loop playsinline autoplay preload="none"
-                 disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
-        </div>
-      </div>
-
-      <div class="accesos">
-        ${S.il_cuore.accesos.map((a, i) => `<a href="${esc(a.ancla)}"><span class="ic" aria-hidden="true">${i === 0
-          ? '<svg width="16" height="13" viewBox="0 0 16 13" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 3.2V11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4.4a1 1 0 0 0-1-1H8L6.4 1.4A1 1 0 0 0 5.7 1H2a1 1 0 0 0-1 1z"/></svg>'
-          : '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5.6" r="2.7"/><path d="M2.6 14c.5-3 2.7-4.6 5.4-4.6S12.9 11 13.4 14"/></svg>'}</span><span>${esc(a.texto)}</span></a>`).join('')}
-      </div>
-      ${TICKS('isotipo', 'compAI')}
+      ${rot(S.il_cuore, 48, 84)}
+      <h2 class="b t ctit" style="--x:178;--y:930;--w:1034;--fs:41;--lh:1.32;--tr:0.158"><span>${esc(S.il_cuore.ia.titulo[0])}</span><span>${esc(S.il_cuore.ia.titulo[1])}</span><span><i class="amp">&amp;</i> ${esc(S.il_cuore.ia.titulo[2].replace(/^&\s*/, ''))}</span></h2>
+      <p class="b t cpar" style="--x:248;--y:1120;--w:914;--fs:24.1;--lh:1.3">${esc(S.il_cuore.ia.parrafo).replace(/\n/g, '<br>')}</p>
+      <div class="b ciso" style="--x:970;--y:1330;--w:150">${TICKS('iso-svg', 'compAI')}</div>
+      <a class="b cacc" style="--x:269;--y:1548;--w:330;--fs:15;--tr:0.14;font-size:calc(15*var(--u))" href="${esc(S.il_cuore.accesos[0].ancla)}"><span>/</span><span class="ic" aria-hidden="true"><svg viewBox="0 0 16 13" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 3.2V11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4.4a1 1 0 0 0-1-1H8L6.4 1.4A1 1 0 0 0 5.7 1H2a1 1 0 0 0-1 1z"/></svg></span><span>— ${esc(S.il_cuore.accesos[0].texto)}</span></a>
+      <a class="b cacc" style="--x:766;--y:1543;--w:330;--fs:15;--tr:0.14;font-size:calc(15*var(--u))" href="${esc(S.il_cuore.accesos[1].ancla)}"><span>/</span><span class="ic red" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5.6" r="2.7"/><path d="M2.6 14c.5-3 2.7-4.6 5.4-4.6S12.9 11 13.4 14"/></svg></span><span>— ${esc(S.il_cuore.accesos[1].texto)}</span></a>
     </div>
   </section>`;
 
-const grace = `
-  <section class="sec ap" id="grace">
-    <div class="grace-fondo" aria-hidden="true">
-      <video id="graceFondo" src="${esc(S.grace.fondo)}" poster="${esc(S.grace.fondo_poster)}"
-             data-velocidad="${S.grace.fondo_velocidad}"
-             muted loop playsinline autoplay preload="none"
-             disablepictureinpicture controlslist="nodownload noplaybackrate"></video>
-    </div>
-    <div class="ancho">
-      <p class="kick mono">${esc(S.grace.codigo)} — <b>${esc(S.grace.nombre)}</b></p>
-      <h2 class="t">${esc(S.grace.titulo)}</h2>
-      <p class="sub">${esc(S.grace.linea)}</p>
-      ${(() => {
-        const banda = g => {
-          const panel = g.envivo ? `
-            <div class="envivo">
-              <p class="ev-tit"><b>${esc(S.grace.envivo.titulo)}</b> <span class="ev-estado">(( ${esc(S.grace.envivo.estado)} ))</span></p>
-              <ul class="ev-lista">
-                ${S.grace.envivo.filas.map(f => `<li>
-                  <span class="ev-marca">${esc(f.marca)}</span>
-                  <span class="ev-dato"><b>${esc(f.id)}</b><em>${esc(f.titulo)}</em></span>
-                  <span class="ev-cierre">${esc(f.cierre)}</span>
-                </li>`).join('')}
-              </ul>
-              <p class="ev-pie">${esc(S.grace.envivo.barrido)}</p>
-            </div>` : '';
-          return `<figure class="gfig${g.alto === 'grande' ? ' alta' : ''}">
-            <canvas class="gcanvas" data-src="${esc(g.src)}" data-anclaje="${esc(g.anclaje)}"${g.revelado ? ` data-revelado="${g.revelado}"` : ''} role="img" aria-label="${esc(g.alt)}"></canvas>
-            <noscript><img src="${esc(g.src)}" alt="${esc(g.alt)}" class="gcanvas" loading="lazy" decoding="async"></noscript>${panel}
-          </figure>`;
-        };
-        const im = S.grace.imagenes;
-        // El orden lo fijo Sebastian el 02-10: retrato, perfil con el panel en
-        // vivo, LA FRANJA, y recien ahi el campo de lavanda.
-        return `<div class="gracelist">${im.slice(0, 2).map(banda).join('')}</div>
-      <div class="franja">${S.grace.franja.map(f => `<div><b>${esc(f.cifra)}</b><span>${esc(f.glosa)}</span></div>`).join('')}</div>
-      <div class="gracelist">${im.slice(2).map(banda).join('')}</div>`;
-      })()}
+const grace = (() => {
+  const im = S.grace.imagenes;
+  const fila = f => `<li>
+            <span class="mkr">${esc(f.marca)}</span>
+            <span class="dt"><b>${esc(f.id)}</b><em>${esc(f.titulo)}</em></span>
+            <span class="ci">${esc(f.cierre)}</span>
+          </li>`;
+  return `
+  <section class="sec cv ap" id="grace">
+    <div class="pg gcab" style="--h:587">
+      <div class="b fh" style="--x:0;--y:0;--w:1366;--hh:587">
+        <video id="graceFondo" src="${esc(S.grace.fondo)}" poster="${esc(S.grace.fondo_poster)}"
+               data-velocidad="${S.grace.fondo_velocidad}"
+               muted loop playsinline autoplay preload="none"
+               disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
       </div>
+      <div class="b fh" style="--x:844;--y:-24;--w:366;--hh:611">
+        <img src="${esc(im[0].src)}" alt="${esc(im[0].alt)}" loading="lazy" decoding="async">
+      </div>
+      ${rot(S.grace, 59, 0)}
+    </div>
+
+    <div class="pg" style="--h:932">
+      <div class="b fh" style="--x:0;--y:0;--w:1366;--hh:932" aria-hidden="true">
+        <img class="gcampo" src="${esc(S.grace.fondo_poster)}" alt="" loading="lazy" decoding="async">
+      </div>
+      <div class="b fh gvelo" style="--x:178;--y:0;--w:1033;--hh:932" aria-hidden="true"></div>
+      <div class="b fh gpanel" style="--x:415;--y:270;--w:786;--hh:432" aria-hidden="true"></div>
+      <h2 class="b t gtit" style="--x:44;--y:20;--w:800;--fs:38;--lh:1.45">${S.grace.titulo_lineas.map(l => `<span>${esc(l)}</span>`).join('')}</h2>
+      <p class="b t gsub" style="--x:44;--y:150;--w:760;--fs:17;--lh:1.7">${esc(S.grace.linea).replace(/\n/g, '<br>')}</p>
+      <figure class="b fh" style="--x:40;--y:160;--w:520;--hh:772;margin:0">
+        <canvas class="gcanvas" data-src="${esc(im[1].src)}" data-anclaje="izquierda" role="img" aria-label="${esc(im[1].alt)}"></canvas>
+      </figure>
+      <p class="b t gmarca" style="--x:455;--y:238;--w:200;--fs:27.8;--lh:1.1">${esc(S.grace.envivo.titulo)}</p>
+      <p class="b t gvivo fh" style="--x:580;--y:242;--w:110;--hh:30;--fs:12">(( ${esc(S.grace.envivo.estado)} ))</p>
+      <ul class="b glista" style="--x:415;--y:286;--w:786">
+        ${S.grace.envivo.filas.map(fila).join('\n        ')}
+      </ul>
+      <p class="b gpie" style="--x:415;--y:690;--w:786">${esc(S.grace.envivo.barrido)}</p>
+    </div>
+
+    <div class="pg" style="--h:1115">
+      <div class="b gcifras fh" style="--x:45;--y:57;--w:1275;--hh:152">
+        ${S.grace.franja.map(f => `<div><b>${esc(f.cifra)}</b><span>${esc(f.glosa)}</span></div>`).join('')}
+      </div>
+      <figure class="b fh" style="--x:0;--y:258;--w:1366;--hh:772;margin:0">
+        <canvas class="gcanvas" data-src="${esc(im[2].src)}" data-anclaje="cubrir" data-revelado="1" role="img" aria-label="${esc(im[2].alt)}"></canvas>
+      </figure>
     </div>
   </section>`;
+})();
+
+/* Los cuatro servicios del Canva: texto a la izquierda, mockup a la derecha.
+   La línea de las viñetas alterna azul y ámbar, igual que la referencia. */
+const servTexto = (s, x, y) => `<button class="b servblock" type="button" data-slug="${esc(s.slug)}" aria-haspopup="dialog"
+        style="--x:${x};--y:${y};--w:583;text-align:left;display:block">
+        <span class="serv-tit">${esc(s.titulo)}</span>
+        <span class="serv-par">${esc(s.bajada)}</span>
+        <ul class="serv-vin${(s.codigo === '02' || s.codigo === '03') ? ' ambar' : ''}">${s.vinetas.map(v => `<li>${esc(v)}</li>`).join('')}</ul>
+      </button>`;
+
+const mkTel = (x, y) => `<div class="mk tel" style="--x:${x};--y:${y};--w:289;--hh:572" aria-hidden="true"><span class="muesca"></span><span class="pantalla"></span></div>`;
+const mkMon = (x, y) => `<div class="mk mon" style="--x:${x};--y:${y};--w:458;--hh:368;--mh:300" aria-hidden="true"><span class="marco"><span class="pantalla"></span></span><span class="cuello"></span><span class="base"></span></div>`;
+const mkLap = (x, y) => `<div class="mk lap" style="--x:${x};--y:${y};--w:463;--hh:265;--mh:248" aria-hidden="true"><span class="marco"><span class="pantalla"></span></span><span class="base"></span></div>`;
 
 const creative = `
-  <section class="sec ap" id="creative">
-    <div class="circuitos" aria-hidden="true"></div>
-    <div class="ancho">
-      <p class="kick mono">${esc(S.creative.codigo)} — <b>${esc(S.creative.nombre)}</b></p>
-      <h2 class="t">${esc(S.creative.titulo)}</h2>
-      <p class="sub">${esc(S.creative.bajada)}</p>
-      <div class="servs">
-        ${SERV.map(s => `<button class="serv" type="button" data-slug="${esc(s.slug)}" aria-haspopup="dialog">
-          <span class="num">/ ${esc(s.codigo)}</span>
-          <span><span class="tit">${esc(s.titulo)}</span><span class="baj">${esc(s.bajada)}</span></span>
-          <span class="der"><span class="et">${esc(s.etiqueta)}</span><span class="fl" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 11 11 3M5 3h6v6"/></svg></span></span>
-        </button>`).join('\n        ')}
+  <section class="sec cv ap" id="creative">
+    <div class="pg cvfondo" style="--h:2380">
+      <div class="b fh ccirc" style="--x:704;--y:0;--w:662;--hh:2380" aria-hidden="true">
+        <img src="media/circuitos.webp" alt="" loading="lazy" decoding="async">
       </div>
-      <p class="etiquetas">${S.creative.etiquetas.map(e => `<span>${esc(e)}</span>`).join('')}</p>
+      <div class="b fh cvelo" style="--x:774;--y:0;--w:544;--hh:2380" aria-hidden="true"></div>
+      <div class="b fh cline" style="--x:657;--y:0;--w:7;--hh:2380" aria-hidden="true"></div>
+      ${rot(S.creative, 62, 38)}
+      ${servTexto(SERV[0], 79, 192)}
+      ${mkTel(902, 104)}
+      ${servTexto(SERV[1], 75, 1000)}
+      ${mkMon(817, 912)}
+      ${servTexto(SERV[2], 75, 1790)}
+      ${mkLap(804, 1690)}
+    </div>
+
+    <div class="pg cvfondo" style="--h:2110">
+      <div class="b fh ccirc" style="--x:704;--y:0;--w:662;--hh:896" aria-hidden="true">
+        <img src="media/circuitos.webp" alt="" loading="lazy" decoding="async">
+      </div>
+      <div class="b fh cvelo" style="--x:774;--y:0;--w:544;--hh:896" aria-hidden="true"></div>
+      <div class="b fh cline" style="--x:659;--y:0;--w:9;--hh:902" aria-hidden="true"></div>
+      ${servTexto(SERV[3], 79, 203)}
+      ${mkTel(902, 104)}
+      ${['pista', 'nodo', 'nucleo'].map((n, i) => {
+        const y = [896, 1278, 1704][i], h = [382, 426, 406][i], ty = [1040, 1420, 1850][i];
+        return `<div class="b fh ccirc" style="--x:0;--y:${y};--w:1366;--hh:${h}" aria-hidden="true">
+        <img src="media/circuitos.webp" alt="" loading="lazy" decoding="async">
+      </div>
+      <div class="b fh banda-velo" style="--x:0;--y:${y};--w:1366;--hh:${h}" aria-hidden="true"></div>
+      <p class="b t banda-tx" style="--x:137;--y:${ty};--w:500;--fs:81.1;--lh:1.1;--tr:0.054">/${n}</p>`;
+      }).join('\n      ')}
     </div>
   </section>`;
 
 const inbox = `
-  <section class="sec ap" id="inbox">
-    <div class="ancho">
-      <p class="kick mono">${esc(S.inbox.codigo)} — <b>${esc(S.inbox.nombre)}</b></p>
-      <h2 class="t">${esc(S.inbox.titulo)}</h2>
-      <p class="sub">${esc(S.inbox.bajada)}</p>
-      <div class="caja">
+  <section class="sec cv ap" id="inbox">
+    <div class="pg" style="--h:1491">
+      ${rot(S.inbox, 62, 82)}
+      <div class="b fh icaja" style="--x:189;--y:193;--w:988;--hh:1106">
         <form id="formLead" novalidate>
+          <p class="ikick">${esc(S.inbox.antetitulo)}</p>
+          <h2 class="ititulo">${esc(S.inbox.titulo_1)} <em>${esc(S.inbox.titulo_2)}</em></h2>
           <div class="campos">
-            <p class="campo"><label for="f-nombre">${esc(S.inbox.campos.nombre)}</label><input id="f-nombre" name="nombre" type="text" autocomplete="name" required></p>
-            <p class="campo"><label for="f-correo">${esc(S.inbox.campos.correo)}</label><input id="f-correo" name="correo" type="email" autocomplete="email" required></p>
-            <p class="campo"><label for="f-telefono">${esc(S.inbox.campos.telefono)}</label><input id="f-telefono" name="telefono" type="tel" autocomplete="tel" inputmode="tel"></p>
-            <p class="campo"><label for="f-organismo">${esc(S.inbox.campos.organismo)}</label><input id="f-organismo" name="organismo" type="text" autocomplete="organization"></p>
-            <p class="campo ancho2"><label for="f-mensaje">${esc(S.inbox.campos.mensaje)}</label><textarea id="f-mensaje" name="mensaje" rows="4"></textarea></p>
+            <p class="campo ancho2"><label for="f-nombre">${esc(S.inbox.campos.nombre)}</label><input id="f-nombre" name="nombre" type="text" autocomplete="name" placeholder="${esc(S.inbox.placeholders.nombre)}" required></p>
+            <p class="campo"><label for="f-correo">${esc(S.inbox.campos.correo)}</label><input id="f-correo" name="correo" type="email" autocomplete="email" placeholder="${esc(S.inbox.placeholders.correo)}" required></p>
+            <p class="campo"><label for="f-telefono">${esc(S.inbox.campos.telefono)}</label><input id="f-telefono" name="telefono" type="tel" autocomplete="tel" inputmode="tel" placeholder="${esc(S.inbox.placeholders.telefono)}" required></p>
+            <p class="campo ancho2"><label for="f-mensaje">${esc(S.inbox.campos.mensaje)}</label><textarea id="f-mensaje" name="mensaje" rows="4" placeholder="${esc(S.inbox.placeholders.mensaje)}" required></textarea></p>
+            <p class="campo ancho2 mono"><label for="f-idmp">${esc(S.inbox.campos.idmp)}</label><input id="f-idmp" name="idmp" type="text" placeholder="${esc(S.inbox.placeholders.idmp)}"></p>
+            <div class="iadjunta">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M13.5 6.5 7.9 12a2.1 2.1 0 0 0 3 3l5.6-5.6a4 4 0 1 0-5.7-5.7L5 9.6a5.9 5.9 0 0 0 8.4 8.4l4.3-4.3"/></svg>
+              <span><b>${esc(S.inbox.adjunta.titulo)}</b><span>${esc(S.inbox.adjunta.nota)}</span></span>
+            </div>
           </div>
           <p class="trampa" aria-hidden="true"><label for="f-sitioweb">No llenar</label><input id="f-sitioweb" name="sitioweb" type="text" tabindex="-1" autocomplete="off"></p>
           <div class="enviar">
             <button class="btn" id="formBtn" type="submit">${esc(S.inbox.boton)}</button>
-            <span class="mono" style="color:var(--crema2);text-transform:none;letter-spacing:0">${esc(S.inbox.nota)}</span>
+            <span class="nota">${esc(S.inbox.nota)}</span>
           </div>
           <p class="aviso" id="formAviso" role="status" aria-live="polite" hidden></p>
         </form>
@@ -249,27 +295,30 @@ const inbox = `
   </section>`;
 
 const contacto = `
-  <section class="sec ap" id="contacto">
-    <img class="colibries" src="media/picaflor.webp" alt="" width="900" height="900" loading="lazy" decoding="async">
-    <div class="ancho">
-      <p class="kick mono">${esc(S.contacto_seccion.codigo)} — <b>${esc(S.contacto_seccion.nombre)}</b></p>
-      <p class="scl">${esc(S.contacto.ciudad)}</p>
-      <p class="lugar">${esc(S.contacto.lugar)}</p>
-      <div class="contactos">
-        <a class="cbtn" href="mailto:${esc(S.contacto.correo)}">${esc(S.contacto.correo)}</a>
-        ${S.contacto.whatsapp ? `<a class="cbtn" href="${esc(S.contacto.whatsapp)}" target="_blank" rel="noopener">WhatsApp ${esc(S.contacto.whatsapp_texto)}</a>` : ''}
+  <section class="sec cv ap" id="contacto">
+    <div class="pg" style="--h:525">
+      <div class="b fh korbe" style="--x:1121;--y:0;--w:385;--hh:527" aria-hidden="true"></div>
+      ${rot(S.contacto_seccion, 41, 96)}
+      <p class="b t kpreg" style="--x:171;--y:250;--w:1024;--fs:25.7;--lh:1.45">${S.contacto_seccion.pregunta_lineas.map(l => esc(l)).join('<br>')}</p>
+      <a class="b t kcorreo" style="--x:171;--y:348;--w:1024;--fs:32.3;--lh:1.21" href="mailto:${esc(S.contacto.correo)}">${esc(S.contacto.correo)}</a>
+    </div>
+
+    <div class="pg" style="--h:1006">
+      <div class="b fh kpicaflor" style="--x:0;--y:320;--w:493;--hh:493" aria-hidden="true">
+        <img src="media/picaflor.webp" alt="" width="900" height="900" loading="lazy" decoding="async">
       </div>
-      <a class="compuerta" href="${esc(S.contacto.intranet)}" target="_blank" rel="noopener"
+      <p class="b t kscl" style="--x:425;--y:215;--w:515;--fs:236;--lh:1.21;--tr:-0.031">${esc(S.contacto.ciudad)}</p>
+      <p class="b t klugar" style="--x:555;--y:499;--w:256;--fs:26.7;--lh:1.21;--tr:-0.031">${esc(S.contacto.lugar)}</p>
+      <a class="b fh kcomp" style="--x:1078;--y:820;--w:205;--hh:115" href="${esc(S.contacto.intranet)}" target="_blank" rel="noopener"
          aria-label="${esc(S.contacto_seccion.intranet_texto)} — acceso del equipo">
         <img src="media/compuerta.webp" alt="" width="760" height="836" loading="lazy" decoding="async">
-        <span class="luz" aria-hidden="true"></span>
-        <span class="et mono">${esc(S.contacto_seccion.intranet_texto)}</span>
       </a>
-
-      <div class="pie">
+      <a class="b t kintranet" style="--x:1124;--y:852;--w:124;--fs:26.7;--lh:1.21;--tr:-0.031"
+         href="${esc(S.contacto.intranet)}" target="_blank" rel="noopener">${esc(S.contacto_seccion.intranet_texto)}</a>
+      <p class="b kpie" style="--x:41;--y:960;--w:1284">
         <span>${esc(S.contacto.razon_social)} · RUT ${esc(S.contacto.rut)}</span>
         <span><a href="${esc(S.contacto.ficha)}" target="_blank" rel="noopener">Ficha proveedores del Estado</a> · <a href="/portafolio.html">Portafolio</a></span>
-      </div>
+      </p>
     </div>
   </section>`;
 
@@ -308,6 +357,9 @@ const html = `<!doctype html>
 <link rel="preload" as="font" type="font/woff2" href="css/fuentes/archivo-var-latin.woff2" crossorigin>
 <link rel="preload" as="image" href="media/hero-franjas.webp" fetchpriority="high">
 <link rel="stylesheet" href="css/sitio.css">
+<link rel="stylesheet" href="css/canva.css">
+<link rel="preload" as="font" type="font/woff2" href="css/fuentes/plexmono-700-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="css/fuentes/plexmono-200-latin.woff2" crossorigin>
 <script type="application/ld+json">${JSON.stringify({
   '@context': 'https://schema.org', '@type': 'ProfessionalService',
   name: 'compAI', legalName: S.contacto.razon_social, taxID: S.contacto.rut,

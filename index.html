@@ -27,6 +27,9 @@
 <link rel="preload" as="font" type="font/woff2" href="css/fuentes/archivo-var-latin.woff2" crossorigin>
 <link rel="preload" as="image" href="media/hero-franjas.webp" fetchpriority="high">
 <link rel="stylesheet" href="css/sitio.css">
+<link rel="stylesheet" href="css/canva.css">
+<link rel="preload" as="font" type="font/woff2" href="css/fuentes/plexmono-700-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="css/fuentes/plexmono-200-latin.woff2" crossorigin>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"compAI","legalName":"COMPAI GLOBAL SOLUTIONS SpA","taxID":"78.491.451-8","url":"https://compai.cl/","image":"https://compai.cl/media/og.jpg","email":"hola@compai.cl","description":"Automatización, agentes de IA, desarrollo web y dirección creativa. Proveedor del Estado en Mercado Público. Santiago, Chile.","address":{"@type":"PostalAddress","addressLocality":"Santiago","addressCountry":"CL"},"areaServed":"CL","sameAs":["https://proveedor.mercadopublico.cl/ficha/78.491.451-8"],"makesOffer":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Agentes de IA que leen lo que nadie tiene tiempo de leer","description":"Clasifican correos, revisan documentos y contestan en minutos. Tu equipo deja de transcribir planillas y vuelve a decidir."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Procesos que se ejecutan solos","description":"Conectamos planillas, correos y aprobaciones en un flujo que no se detiene. Y cotizamos rápido cuando el plazo es corto."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Sitios y plataformas que la gente logra usar","description":"Webs, portales y aplicaciones claras, rápidas y fáciles de mantener. Terminadas y funcionando en semanas, no en un año."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Que se entienda, y que se recuerde","description":"Identidad, campañas y textos en lenguaje claro, para que lo que haces bien no se pierda en un comunicado que nadie lee."}}]}</script>
 </head>
 <body>
@@ -61,166 +64,210 @@
   </nav>
 <main>
 
-  <section class="hero" id="hero" aria-label="compAI">
-    <div class="muro">
-      <video id="heroVideo" src="media/hero-franjas.mp4" poster="media/hero-franjas.webp"
-             muted loop playsinline autoplay preload="metadata"
-             disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
-    </div>
-    <div class="arco">
-      <img class="sello-img" src="media/compai-sello.svg" alt="compAI" width="512" height="512">
-    </div>
-    <a class="baja mono" href="#offenbar"><span>Bajar</span><i aria-hidden="true"></i></a>
-  </section>
-
-  <section class="sec" id="offenbar">
-    <div class="circuitos" aria-hidden="true"></div>
-    <p class="kick mono">/ 01 — <b>Offenbar</b></p>
-    <div class="ancho offen">
-      <canvas id="lluvia" aria-hidden="true"></canvas>
-      <div class="offen-centro">
-        <h1 class="ofit" id="ofit" data-l1="TECNOLOGÍA PARA CHILE" data-l2="ejecutada por IA."><span>TECNOLOGÍA PARA CHILE</span><br><span class="l2">ejecutada por IA.</span></h1>
-        <a class="enl bloque" href="https://proveedor.mercadopublico.cl/ficha/78.491.451-8" target="_blank" rel="noopener"><span>Ficha proveedores del Estado →</span></a>
+  <section class="hero cv" id="hero" aria-label="compAI">
+    <div class="pg" style="--h:1256">
+      <div class="b fh hfranjas" style="--x:0;--y:0;--w:1366;--hh:627">
+        <video id="heroVideo" src="media/hero-franjas.mp4" poster="media/hero-franjas.webp"
+               muted loop playsinline autoplay preload="metadata"
+               disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
       </div>
+      <div class="b fh harco" style="--x:-139;--y:549;--w:1633;--hh:158" aria-hidden="true"></div>
+      <div class="b hsello" style="--x:518;--y:524;--w:330">
+        <img src="media/compai-sello.svg" alt="compAI" width="512" height="512">
+      </div>
+      <a class="baja mono" href="#offenbar"><span>Bajar</span><i aria-hidden="true"></i></a>
     </div>
   </section>
 
-  <section class="sec ap" id="il-cuore">
-    <p class="kick mono">/ 02 — <b>Il Cuore</b></p>
-    <div class="ancho">
-      <div class="cuore-video">
+  <section class="sec cv" id="offenbar">
+    <div class="pg" style="--h:1114">
+      <div class="b fh ofondo" style="--x:0;--y:146;--w:1366;--hh:968" aria-hidden="true"></div>
+      <div class="b fh obanda" style="--x:0;--y:0;--w:1366;--hh:146" aria-hidden="true"></div>
+      <div class="b fh opanel" style="--x:188;--y:146;--w:1023;--hh:968" aria-hidden="true"></div>
+      <canvas id="lluvia" class="b fh" style="--x:1096;--y:0;--w:270;--hh:322" aria-hidden="true"></canvas>
+      <p class="b rot" style="--x:48;--y:38;--w:420">/ 01 — Offenbar</p>
+      <h1 class="b t otit" style="--x:279;--y:174;--w:816;--fs:57.3;--lh:1.19;--tr:0.038">TECNOLOGÍA PARA CHILE</h1>
+      <p class="b t osub" style="--x:346;--y:256;--w:683;--fs:49.3;--lh:1.19;--tr:0.021">ejecutada por <b>IA</b>.</p>
+      <a class="b t oenl" style="--x:667;--y:372;--w:420;--fs:20.7;--lh:1.12"
+         href="https://proveedor.mercadopublico.cl/ficha/78.491.451-8" target="_blank" rel="noopener">Ficha proveedores del Estado →</a>
+    </div>
+  </section>
+
+  <section class="sec cv ap" id="il-cuore">
+    <div class="pg" style="--h:2112">
+      <div class="b fh ccirc" style="--x:0;--y:767;--w:1366;--hh:1345" aria-hidden="true">
+        <img src="media/circuitos.webp" alt="" loading="lazy" decoding="async">
+      </div>
+      <div class="b fh cuvelo" style="--x:178;--y:0;--w:1034;--hh:2112" aria-hidden="true"></div>
+      <div class="b fh" style="--x:0;--y:180;--w:1366;--hh:578">
         <video src="media/il-cuore.mp4" poster="media/il-cuore.webp"
                muted loop playsinline autoplay preload="none"
                disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
       </div>
-
-      <div class="ia">
-        <div class="ia-texto">
-          <h2 class="ia-tit"><span>INTELIGENCIA ARTIFICIAL APLICADA</span><span>SOLUCIONES TECNOLÓGICAS</span><span>&amp; ALMA CREATIVA</span></h2>
-          <p class="ia-par">Hablamos humano en un mundo digital. Somos una empresa tecnológica con alma creativa &amp; inteligencia artificial aplicada. Ayudamos al Estado a gestionar requerimientos de manera ágil, combatir la burocracia paralizante y crear experiencias digitales que simplifiquen la vida de quien está del otro lado del mesón.</p>
-        </div>
-        <div class="ia-ticks">
-          <video src="media/ticks.mp4" poster="media/ticks.webp"
-                 muted loop playsinline autoplay preload="none"
-                 disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
-        </div>
-      </div>
-
-      <div class="accesos">
-        <a href="#creative"><span class="ic" aria-hidden="true"><svg width="16" height="13" viewBox="0 0 16 13" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 3.2V11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4.4a1 1 0 0 0-1-1H8L6.4 1.4A1 1 0 0 0 5.7 1H2a1 1 0 0 0-1 1z"/></svg></span><span>Creative</span></a><a href="#contacto"><span class="ic" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5.6" r="2.7"/><path d="M2.6 14c.5-3 2.7-4.6 5.4-4.6S12.9 11 13.4 14"/></svg></span><span>Contacto</span></a>
-      </div>
-      <svg class="isotipo" viewBox="0 0 22 20" role="img" aria-label="compAI">
+      <p class="b rot" style="--x:48;--y:84;--w:420">/ 02 — Il Cuore</p>
+      <h2 class="b t ctit" style="--x:178;--y:930;--w:1034;--fs:41;--lh:1.32;--tr:0.158"><span>soluciones tecnológicas</span><span>inteligencia artificial</span><span><i class="amp">&amp;</i> alma Creativa</span></h2>
+      <p class="b t cpar" style="--x:248;--y:1120;--w:914;--fs:24.1;--lh:1.3">Hablamos humano en un mundo digital.<br>Somos un equipo de agentes con súper inteligencia, creados con un propósito: Ayudamos al Estado a gestionar requerimientos de manera ágil, combatir la burocracia paralizante y crear experiencias digitales que simplifiquen la vida.</p>
+      <div class="b ciso" style="--x:970;--y:1330;--w:150"><svg class="iso-svg" viewBox="0 0 22 20" role="img" aria-label="compAI">
       <title>compAI</title>
       <path d="M2.56 7.37 4.86 9.68 9.83 3.64"/><path d="M1 8.5 5 12.5 12 4"/><path d="M.22 10.41 5.14 15.32 12.26 6.67"/>
       <path d="M11.56 7.37 13.86 9.68 18.83 3.64"/><path d="M10 8.5 14 12.5 21 4"/><path d="M9.22 10.41 14.14 15.32 21.26 6.67"/>
-    </svg>
+    </svg></div>
+      <a class="b cacc" style="--x:269;--y:1548;--w:330;--fs:15;--tr:0.14;font-size:calc(15*var(--u))" href="#creative"><span>/</span><span class="ic" aria-hidden="true"><svg viewBox="0 0 16 13" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 3.2V11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4.4a1 1 0 0 0-1-1H8L6.4 1.4A1 1 0 0 0 5.7 1H2a1 1 0 0 0-1 1z"/></svg></span><span>— Creative</span></a>
+      <a class="b cacc" style="--x:766;--y:1543;--w:330;--fs:15;--tr:0.14;font-size:calc(15*var(--u))" href="#contacto"><span>/</span><span class="ic red" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5.6" r="2.7"/><path d="M2.6 14c.5-3 2.7-4.6 5.4-4.6S12.9 11 13.4 14"/></svg></span><span>— Contacto</span></a>
     </div>
   </section>
 
-  <section class="sec ap" id="grace">
-    <div class="grace-fondo" aria-hidden="true">
-      <video id="graceFondo" src="media/campo-codigo.mp4" poster="media/campo-codigo.webp"
-             data-velocidad="0.5"
-             muted loop playsinline autoplay preload="none"
-             disablepictureinpicture controlslist="nodownload noplaybackrate"></video>
-    </div>
-    <div class="ancho">
-      <p class="kick mono">/ 03 — <b>L'Intelligence</b></p>
-      <h2 class="t">Grace System</h2>
-      <p class="sub">Grace lee las compras públicas todos los días, descarta lo que no calza y deja sobre la mesa solo lo que CompAI puede entregar a tiempo.</p>
-      <div class="gracelist"><figure class="gfig">
-            <canvas class="gcanvas" data-src="media/grace-retrato.webp" data-anclaje="derecha" role="img" aria-label="Grace, retrato"></canvas>
-            <noscript><img src="media/grace-retrato.webp" alt="Grace, retrato" class="gcanvas" loading="lazy" decoding="async"></noscript>
-          </figure><figure class="gfig alta">
-            <canvas class="gcanvas" data-src="media/grace-perfil.webp" data-anclaje="izquierda" role="img" aria-label="Grace de perfil"></canvas>
-            <noscript><img src="media/grace-perfil.webp" alt="Grace de perfil" class="gcanvas" loading="lazy" decoding="async"></noscript>
-            <div class="envivo">
-              <p class="ev-tit"><b>GRACE</b> <span class="ev-estado">(( EN VIVO ))</span></p>
-              <ul class="ev-lista">
-                <li>
-                  <span class="ev-marca">PERTINENTE</span>
-                  <span class="ev-dato"><b>1796-51-LE24</b><em>Adquisición de Activos Fijos No Financieros SNCD</em></span>
-                  <span class="ev-cierre">cierra en 5 días</span>
-                </li><li>
-                  <span class="ev-marca">PERTINENTE</span>
-                  <span class="ev-dato"><b>2469-294-LE26</b><em>Adquisición de Equipos Computacionales, Universidad de Talca</em></span>
-                  <span class="ev-cierre">cierra en 5 días</span>
-                </li><li>
-                  <span class="ev-marca">PERTINENTE</span>
-                  <span class="ev-dato"><b>3486-33-LE26</b><em>Adquisición de pendrives para Servel</em></span>
-                  <span class="ev-cierre">cierra en 6 días</span>
-                </li><li>
-                  <span class="ev-marca">PERTINENTE</span>
-                  <span class="ev-dato"><b>1174385-46-LE26</b><em>Adquisición de equipos computacionales</em></span>
-                  <span class="ev-cierre">cierra en 30 días</span>
-                </li><li>
-                  <span class="ev-marca">PERTINENTE</span>
-                  <span class="ev-dato"><b>1796-51-LE24</b><em>Adquisición de Activos Fijos No Financieros SNCD</em></span>
-                  <span class="ev-cierre">cierra en 5 días</span>
-                </li>
-              </ul>
-              <p class="ev-pie">Barrido del 4 de septiembre de 2026 · 547 licitaciones revisadas, 11 pertinentes</p>
-            </div>
-          </figure></div>
-      <div class="franja"><div><b>24/7</b><span>Operación continua</span></div><div><b>&lt;60m</b><span>Respuesta a cotización</span></div><div><b>100%</b><span>Trazabilidad</span></div></div>
-      <div class="gracelist"><figure class="gfig">
-            <canvas class="gcanvas" data-src="media/grace-lavanda.webp" data-anclaje="cubrir" data-revelado="1" role="img" aria-label="Grace en un campo de lavanda al atardecer"></canvas>
-            <noscript><img src="media/grace-lavanda.webp" alt="Grace en un campo de lavanda al atardecer" class="gcanvas" loading="lazy" decoding="async"></noscript>
-          </figure></div>
+  <section class="sec cv ap" id="grace">
+    <div class="pg gcab" style="--h:587">
+      <div class="b fh" style="--x:0;--y:0;--w:1366;--hh:587">
+        <video id="graceFondo" src="media/campo-codigo.mp4" poster="media/campo-codigo.webp"
+               data-velocidad="0.5"
+               muted loop playsinline autoplay preload="none"
+               disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
       </div>
-    </div>
-  </section>
-
-  <section class="sec ap" id="creative">
-    <div class="circuitos" aria-hidden="true"></div>
-    <div class="ancho">
-      <p class="kick mono">/ 04 — <b>Creative</b></p>
-      <h2 class="t">Servicios</h2>
-      <p class="sub">Cuatro frentes. Uno basta para empezar.</p>
-      <div class="servs">
-        <button class="serv" type="button" data-slug="ia-aplicada" aria-haspopup="dialog">
-          <span class="num">/ 01</span>
-          <span><span class="tit">Agentes de IA que leen lo que nadie tiene tiempo de leer</span><span class="baj">Clasifican correos, revisan documentos y contestan en minutos. Tu equipo deja de transcribir planillas y vuelve a decidir.</span></span>
-          <span class="der"><span class="et">/nucleo</span><span class="fl" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 11 11 3M5 3h6v6"/></svg></span></span>
-        </button>
-        <button class="serv" type="button" data-slug="automatizacion" aria-haspopup="dialog">
-          <span class="num">/ 02</span>
-          <span><span class="tit">Procesos que se ejecutan solos</span><span class="baj">Conectamos planillas, correos y aprobaciones en un flujo que no se detiene. Y cotizamos rápido cuando el plazo es corto.</span></span>
-          <span class="der"><span class="et">/nodo</span><span class="fl" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 11 11 3M5 3h6v6"/></svg></span></span>
-        </button>
-        <button class="serv" type="button" data-slug="desarrollo-web" aria-haspopup="dialog">
-          <span class="num">/ 03</span>
-          <span><span class="tit">Sitios y plataformas que la gente logra usar</span><span class="baj">Webs, portales y aplicaciones claras, rápidas y fáciles de mantener. Terminadas y funcionando en semanas, no en un año.</span></span>
-          <span class="der"><span class="et">/pista</span><span class="fl" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 11 11 3M5 3h6v6"/></svg></span></span>
-        </button>
-        <button class="serv" type="button" data-slug="direccion-creativa" aria-haspopup="dialog">
-          <span class="num">/ 04</span>
-          <span><span class="tit">Que se entienda, y que se recuerde</span><span class="baj">Identidad, campañas y textos en lenguaje claro, para que lo que haces bien no se pierda en un comunicado que nadie lee.</span></span>
-          <span class="der"><span class="et">/nucleo</span><span class="fl" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 11 11 3M5 3h6v6"/></svg></span></span>
-        </button>
+      <div class="b fh" style="--x:844;--y:-24;--w:366;--hh:611">
+        <img src="media/grace-retrato.webp" alt="Grace, retrato" loading="lazy" decoding="async">
       </div>
-      <p class="etiquetas"><span>/pista</span><span>/nodo</span><span>/nucleo</span></p>
+      <p class="b rot" style="--x:59;--y:0;--w:420">/ 03 — L'Intelligence</p>
+    </div>
+
+    <div class="pg" style="--h:932">
+      <div class="b fh" style="--x:0;--y:0;--w:1366;--hh:932" aria-hidden="true">
+        <img class="gcampo" src="media/campo-codigo.webp" alt="" loading="lazy" decoding="async">
+      </div>
+      <div class="b fh gvelo" style="--x:178;--y:0;--w:1033;--hh:932" aria-hidden="true"></div>
+      <div class="b fh gpanel" style="--x:415;--y:270;--w:786;--hh:432" aria-hidden="true"></div>
+      <h2 class="b t gtit" style="--x:44;--y:20;--w:800;--fs:38;--lh:1.45"><span>CLASIFICA CADA LICITACIÓN</span><span>DE MERCADO PÚBLICO</span></h2>
+      <p class="b t gsub" style="--x:44;--y:150;--w:760;--fs:17;--lh:1.7">Grace monitorea las publicaciones, filtra por rubro y presupuesto,<br>y prepara la propuesta antes del cierre.</p>
+      <figure class="b fh" style="--x:40;--y:160;--w:520;--hh:772;margin:0">
+        <canvas class="gcanvas" data-src="media/grace-perfil.webp" data-anclaje="izquierda" role="img" aria-label="Grace de perfil"></canvas>
+      </figure>
+      <p class="b t gmarca" style="--x:455;--y:238;--w:200;--fs:27.8;--lh:1.1">GRACE</p>
+      <p class="b t gvivo fh" style="--x:580;--y:242;--w:110;--hh:30;--fs:12">(( EN VIVO ))</p>
+      <ul class="b glista" style="--x:415;--y:286;--w:786">
+        <li>
+            <span class="mkr">PERTINENTE</span>
+            <span class="dt"><b>1796-51-LE24</b><em>Adquisición de Activos Fijos No Financieros SNCD</em></span>
+            <span class="ci">cierra en 5 días</span>
+          </li>
+        <li>
+            <span class="mkr">PERTINENTE</span>
+            <span class="dt"><b>2469-294-LE26</b><em>Adquisición de Equipos Computacionales, Universidad de Talca</em></span>
+            <span class="ci">cierra en 5 días</span>
+          </li>
+        <li>
+            <span class="mkr">PERTINENTE</span>
+            <span class="dt"><b>3486-33-LE26</b><em>Adquisición de pendrives para Servel</em></span>
+            <span class="ci">cierra en 6 días</span>
+          </li>
+        <li>
+            <span class="mkr">PERTINENTE</span>
+            <span class="dt"><b>1174385-46-LE26</b><em>Adquisición de equipos computacionales</em></span>
+            <span class="ci">cierra en 30 días</span>
+          </li>
+        <li>
+            <span class="mkr">PERTINENTE</span>
+            <span class="dt"><b>1796-51-LE24</b><em>Adquisición de Activos Fijos No Financieros SNCD</em></span>
+            <span class="ci">cierra en 5 días</span>
+          </li>
+      </ul>
+      <p class="b gpie" style="--x:415;--y:690;--w:786">Barrido del 4 de septiembre de 2026 · 547 licitaciones revisadas, 11 pertinentes</p>
+    </div>
+
+    <div class="pg" style="--h:1115">
+      <div class="b gcifras fh" style="--x:45;--y:57;--w:1275;--hh:152">
+        <div><b>24/7</b><span>Operación continua</span></div><div><b>&lt;60m</b><span>Respuesta a cotización</span></div><div><b>100%</b><span>Trazabilidad</span></div>
+      </div>
+      <figure class="b fh" style="--x:0;--y:258;--w:1366;--hh:772;margin:0">
+        <canvas class="gcanvas" data-src="media/grace-lavanda.webp" data-anclaje="cubrir" data-revelado="1" role="img" aria-label="Grace en un campo de lavanda al atardecer"></canvas>
+      </figure>
     </div>
   </section>
 
-  <section class="sec ap" id="inbox">
-    <div class="ancho">
-      <p class="kick mono">/ 05 — <b>Inbox</b></p>
-      <h2 class="t">Gestiona una Compra Ágil</h2>
-      <p class="sub">Cuéntanos qué necesitas. Respondemos con una propuesta, no con un acuse de recibo.</p>
-      <div class="caja">
+  <section class="sec cv ap" id="creative">
+    <div class="pg cvfondo" style="--h:2380">
+      <div class="b fh ccirc" style="--x:704;--y:0;--w:662;--hh:2380" aria-hidden="true">
+        <img src="media/circuitos.webp" alt="" loading="lazy" decoding="async">
+      </div>
+      <div class="b fh cvelo" style="--x:774;--y:0;--w:544;--hh:2380" aria-hidden="true"></div>
+      <div class="b fh cline" style="--x:657;--y:0;--w:7;--hh:2380" aria-hidden="true"></div>
+      <p class="b rot" style="--x:62;--y:38;--w:420">/ 04 — Creative</p>
+      <button class="b servblock" type="button" data-slug="ia-aplicada" aria-haspopup="dialog"
+        style="--x:79;--y:192;--w:583;text-align:left;display:block">
+        <span class="serv-tit">Agentes de IA que leen lo que nadie tiene tiempo de leer</span>
+        <span class="serv-par">Clasifican correos, revisan documentos y contestan en minutos. Tu equipo deja de transcribir planillas y vuelve a decidir.</span>
+        <ul class="serv-vin"><li>Agentes y asistentes de IA</li><li>Lectura y resumen de documentos</li><li>Clasificación de requerimientos</li><li>Atención que contesta a toda hora</li><li>Se conecta a lo que ya tienes</li></ul>
+      </button>
+      <div class="mk tel" style="--x:902;--y:104;--w:289;--hh:572" aria-hidden="true"><span class="muesca"></span><span class="pantalla"></span></div>
+      <button class="b servblock" type="button" data-slug="automatizacion" aria-haspopup="dialog"
+        style="--x:75;--y:1000;--w:583;text-align:left;display:block">
+        <span class="serv-tit">Procesos que se ejecutan solos</span>
+        <span class="serv-par">Conectamos planillas, correos y aprobaciones en un flujo que no se detiene. Y cotizamos rápido cuando el plazo es corto.</span>
+        <ul class="serv-vin ambar"><li>Automatización de procesos</li><li>Google Workspace y Apps Script</li><li>Tableros de control en vivo</li><li>Flujos de aprobación con firma</li><li>Cotizaciones en plazos cortos</li></ul>
+      </button>
+      <div class="mk mon" style="--x:817;--y:912;--w:458;--hh:368;--mh:300" aria-hidden="true"><span class="marco"><span class="pantalla"></span></span><span class="cuello"></span><span class="base"></span></div>
+      <button class="b servblock" type="button" data-slug="desarrollo-web" aria-haspopup="dialog"
+        style="--x:75;--y:1790;--w:583;text-align:left;display:block">
+        <span class="serv-tit">Sitios y plataformas que la gente logra usar</span>
+        <span class="serv-par">Webs, portales y aplicaciones claras, rápidas y fáciles de mantener. Terminadas y funcionando en semanas, no en un año.</span>
+        <ul class="serv-vin ambar"><li>Sitios y landing pages</li><li>Aplicaciones web a medida</li><li>Portales y trámites en línea</li><li>Formularios que sí se completan</li><li>Experiencia de usuario (UX)</li></ul>
+      </button>
+      <div class="mk lap" style="--x:804;--y:1690;--w:463;--hh:265;--mh:248" aria-hidden="true"><span class="marco"><span class="pantalla"></span></span><span class="base"></span></div>
+    </div>
+
+    <div class="pg cvfondo" style="--h:2110">
+      <div class="b fh ccirc" style="--x:704;--y:0;--w:662;--hh:896" aria-hidden="true">
+        <img src="media/circuitos.webp" alt="" loading="lazy" decoding="async">
+      </div>
+      <div class="b fh cvelo" style="--x:774;--y:0;--w:544;--hh:896" aria-hidden="true"></div>
+      <div class="b fh cline" style="--x:659;--y:0;--w:9;--hh:902" aria-hidden="true"></div>
+      <button class="b servblock" type="button" data-slug="direccion-creativa" aria-haspopup="dialog"
+        style="--x:79;--y:203;--w:583;text-align:left;display:block">
+        <span class="serv-tit">Que se entienda, y que se recuerde</span>
+        <span class="serv-par">Identidad, campañas y textos en lenguaje claro, para que lo que haces bien no se pierda en un comunicado que nadie lee.</span>
+        <ul class="serv-vin"><li>Dirección creativa</li><li>Copywriting y lenguaje claro</li><li>Diseño de campañas</li><li>Posicionamiento de marca</li><li>Contenido generado con IA</li></ul>
+      </button>
+      <div class="mk tel" style="--x:902;--y:104;--w:289;--hh:572" aria-hidden="true"><span class="muesca"></span><span class="pantalla"></span></div>
+      <div class="b fh ccirc" style="--x:0;--y:896;--w:1366;--hh:382" aria-hidden="true">
+        <img src="media/circuitos.webp" alt="" loading="lazy" decoding="async">
+      </div>
+      <div class="b fh banda-velo" style="--x:0;--y:896;--w:1366;--hh:382" aria-hidden="true"></div>
+      <p class="b t banda-tx" style="--x:137;--y:1040;--w:500;--fs:81.1;--lh:1.1;--tr:0.054">/pista</p>
+      <div class="b fh ccirc" style="--x:0;--y:1278;--w:1366;--hh:426" aria-hidden="true">
+        <img src="media/circuitos.webp" alt="" loading="lazy" decoding="async">
+      </div>
+      <div class="b fh banda-velo" style="--x:0;--y:1278;--w:1366;--hh:426" aria-hidden="true"></div>
+      <p class="b t banda-tx" style="--x:137;--y:1420;--w:500;--fs:81.1;--lh:1.1;--tr:0.054">/nodo</p>
+      <div class="b fh ccirc" style="--x:0;--y:1704;--w:1366;--hh:406" aria-hidden="true">
+        <img src="media/circuitos.webp" alt="" loading="lazy" decoding="async">
+      </div>
+      <div class="b fh banda-velo" style="--x:0;--y:1704;--w:1366;--hh:406" aria-hidden="true"></div>
+      <p class="b t banda-tx" style="--x:137;--y:1850;--w:500;--fs:81.1;--lh:1.1;--tr:0.054">/nucleo</p>
+    </div>
+  </section>
+
+  <section class="sec cv ap" id="inbox">
+    <div class="pg" style="--h:1491">
+      <p class="b rot" style="--x:62;--y:82;--w:420">/ 05 — Inbox</p>
+      <div class="b fh icaja" style="--x:189;--y:193;--w:988;--hh:1106">
         <form id="formLead" novalidate>
+          <p class="ikick">RUN · FORMULARIO DE COTIZACIÓN</p>
+          <h2 class="ititulo">GESTIONA UNA <em>COMPRA ÁGIL</em></h2>
           <div class="campos">
-            <p class="campo"><label for="f-nombre">Nombre y apellido</label><input id="f-nombre" name="nombre" type="text" autocomplete="name" required></p>
-            <p class="campo"><label for="f-correo">Correo</label><input id="f-correo" name="correo" type="email" autocomplete="email" required></p>
-            <p class="campo"><label for="f-telefono">Teléfono</label><input id="f-telefono" name="telefono" type="tel" autocomplete="tel" inputmode="tel"></p>
-            <p class="campo"><label for="f-organismo">Organismo o empresa (opcional)</label><input id="f-organismo" name="organismo" type="text" autocomplete="organization"></p>
-            <p class="campo ancho2"><label for="f-mensaje">¿Qué necesitas? (opcional)</label><textarea id="f-mensaje" name="mensaje" rows="4"></textarea></p>
+            <p class="campo ancho2"><label for="f-nombre">Nombre y apellido</label><input id="f-nombre" name="nombre" type="text" autocomplete="name" placeholder="Cómo te llamas" required></p>
+            <p class="campo"><label for="f-correo">Correo electrónico</label><input id="f-correo" name="correo" type="email" autocomplete="email" placeholder="nombre@institucion.cl" required></p>
+            <p class="campo"><label for="f-telefono">Teléfono de contacto</label><input id="f-telefono" name="telefono" type="tel" autocomplete="tel" inputmode="tel" placeholder="+56 9 1234 5678" required></p>
+            <p class="campo ancho2"><label for="f-mensaje">Detalla tus requerimientos</label><textarea id="f-mensaje" name="mensaje" rows="4" placeholder="Qué necesitas comprar, cantidades, plazo y presupuesto estimado" required></textarea></p>
+            <p class="campo ancho2 mono"><label for="f-idmp">ID Mercado Público (opcional)</label><input id="f-idmp" name="idmp" type="text" placeholder="1057417-15390-AG26"></p>
+            <div class="iadjunta">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M13.5 6.5 7.9 12a2.1 2.1 0 0 0 3 3l5.6-5.6a4 4 0 1 0-5.7-5.7L5 9.6a5.9 5.9 0 0 0 8.4 8.4l4.3-4.3"/></svg>
+              <span><b>Bases, anexo u orden de compra</b><span>Se adjuntan en el correo que se abre al enviar</span></span>
+            </div>
           </div>
           <p class="trampa" aria-hidden="true"><label for="f-sitioweb">No llenar</label><input id="f-sitioweb" name="sitioweb" type="text" tabindex="-1" autocomplete="off"></p>
           <div class="enviar">
-            <button class="btn" id="formBtn" type="submit">Enviar</button>
-            <span class="mono" style="color:var(--crema2);text-transform:none;letter-spacing:0">Recibes la respuesta, no un acuse de recibo.</span>
+            <button class="btn" id="formBtn" type="submit">ENVIAR</button>
+            <span class="nota">Recibes la respuesta, no un acuse de recibo.</span>
           </div>
           <p class="aviso" id="formAviso" role="status" aria-live="polite" hidden></p>
         </form>
@@ -228,27 +275,30 @@
     </div>
   </section>
 
-  <section class="sec ap" id="contacto">
-    <img class="colibries" src="media/picaflor.webp" alt="" width="900" height="900" loading="lazy" decoding="async">
-    <div class="ancho">
-      <p class="kick mono">/ 06 — <b>Contacto</b></p>
-      <p class="scl">SCL.</p>
-      <p class="lugar">Santiago, Chile</p>
-      <div class="contactos">
-        <a class="cbtn" href="mailto:hola@compai.cl">hola@compai.cl</a>
-        
+  <section class="sec cv ap" id="contacto">
+    <div class="pg" style="--h:525">
+      <div class="b fh korbe" style="--x:1121;--y:0;--w:385;--hh:527" aria-hidden="true"></div>
+      <p class="b rot" style="--x:41;--y:96;--w:420">/ 06 — Contacto</p>
+      <p class="b t kpreg" style="--x:171;--y:250;--w:1024;--fs:25.7;--lh:1.45">¿Necesitas ayuda con un proyecto?<br>Envíanos un correo a</p>
+      <a class="b t kcorreo" style="--x:171;--y:348;--w:1024;--fs:32.3;--lh:1.21" href="mailto:hola@compai.cl">hola@compai.cl</a>
+    </div>
+
+    <div class="pg" style="--h:1006">
+      <div class="b fh kpicaflor" style="--x:0;--y:320;--w:493;--hh:493" aria-hidden="true">
+        <img src="media/picaflor.webp" alt="" width="900" height="900" loading="lazy" decoding="async">
       </div>
-      <a class="compuerta" href="https://claude.ai/artifact/MqfeH8WXnVQN1A6WgAEx9g" target="_blank" rel="noopener"
+      <p class="b t kscl" style="--x:425;--y:215;--w:515;--fs:236;--lh:1.21;--tr:-0.031">SCL.</p>
+      <p class="b t klugar" style="--x:555;--y:499;--w:256;--fs:26.7;--lh:1.21;--tr:-0.031">Santiago, Chile</p>
+      <a class="b fh kcomp" style="--x:1078;--y:820;--w:205;--hh:115" href="https://claude.ai/artifact/MqfeH8WXnVQN1A6WgAEx9g" target="_blank" rel="noopener"
          aria-label="Intranet — acceso del equipo">
         <img src="media/compuerta.webp" alt="" width="760" height="836" loading="lazy" decoding="async">
-        <span class="luz" aria-hidden="true"></span>
-        <span class="et mono">Intranet</span>
       </a>
-
-      <div class="pie">
+      <a class="b t kintranet" style="--x:1124;--y:852;--w:124;--fs:26.7;--lh:1.21;--tr:-0.031"
+         href="https://claude.ai/artifact/MqfeH8WXnVQN1A6WgAEx9g" target="_blank" rel="noopener">Intranet</a>
+      <p class="b kpie" style="--x:41;--y:960;--w:1284">
         <span>COMPAI GLOBAL SOLUTIONS SpA · RUT 78.491.451-8</span>
         <span><a href="https://proveedor.mercadopublico.cl/ficha/78.491.451-8" target="_blank" rel="noopener">Ficha proveedores del Estado</a> · <a href="/portafolio.html">Portafolio</a></span>
-      </div>
+      </p>
     </div>
   </section>
 </main>
@@ -276,7 +326,7 @@
   </div>
 </div>
 
-<script>window.COMPAI={"servicios":[{"slug":"ia-aplicada","codigo":"01","titulo":"Agentes de IA que leen lo que nadie tiene tiempo de leer","bajada":"Clasifican correos, revisan documentos y contestan en minutos. Tu equipo deja de transcribir planillas y vuelve a decidir.","vinetas":["Agentes y asistentes de IA","Lectura y resumen de documentos","Clasificación de requerimientos","Atención que contesta a toda hora","Se conecta a lo que ya tienes"],"lamina":["Tu bandeja tiene trescientos correos y tres son urgentes. La planilla de licencias la mantiene una persona que está de vacaciones. El inventario de equipos se actualizó por última vez en marzo. Nada de eso está roto: está disperso, y ordenarlo a mano cuesta horas que ya no tienes para dar.","Un agente de IA es un trabajador que no se cansa de lo repetitivo. Lee los correos y los ordena por urgencia. Revisa cien documentos y te dice cuáles tienen el dato que buscas. Compara el inventario con las facturas y marca qué licencia vence antes de que termine el año.","No cambiamos tus sistemas: nos conectamos a ellos. Si trabajas en planillas, el agente escribe en tus planillas. Si la información vive en correos y carpetas compartidas, ahí trabaja. Nadie tiene que aprender un programa nuevo para que el lunes el resumen esté listo antes de la reunión.","Lo medimos en tiempo. Una revisión que tomaba dos días pasa a tomar veinte minutos, y el equipo vuelve a lo que solo una persona puede hacer: decidir. Si tienes presupuesto por ejecutar y un problema que se repite todos los meses, esto se implementa en semanas y no en años.","Casi nunca llega solo. El agente necesita un flujo que lo alimente, una pantalla donde el equipo lo use y un mensaje que explique el cambio a quien va a usarlo. Eso son tres cosas, no una, y las tres se trabajan acá mismo: automatización, desarrollo y dirección creativa."],"etiqueta":"/nucleo","cta":"Cotizar un agente de IA","imagen":"media/grace-retrato.webp","imagen_alt":"Grace, el sistema de agentes de compAI"},{"slug":"automatizacion","codigo":"02","titulo":"Procesos que se ejecutan solos","bajada":"Conectamos planillas, correos y aprobaciones en un flujo que no se detiene. Y cotizamos rápido cuando el plazo es corto.","vinetas":["Automatización de procesos","Google Workspace y Apps Script","Tableros de control en vivo","Flujos de aprobación con firma","Cotizaciones en plazos cortos"],"lamina":["La planilla de aprobaciones va y vuelve por correo con catorce versiones. Alguien copia a mano los mismos datos en tres lugares distintos. La orden de compra rebota por la glosa y hay que empezar de nuevo. Nada de eso aparece en un informe de gestión, pero se come la semana completa.","Automatizar es sacar a la persona del medio. El dato entra una vez y viaja solo: de la solicitud al visto bueno, del visto bueno al registro, del registro al tablero. Cuando algo se atrasa, el flujo avisa antes de que el atraso se convierta en el problema de alguien.","Lo hacemos con lo que ya tienes. Planillas, formularios, correo y Google Workspace alcanzan para montar un flujo serio; cuando hace falta más, lo programamos. No te vendemos una plataforma con licencia anual: dejamos funcionando algo tuyo, que sigue andando cuando nosotros ya no estamos.","El tablero es la parte que más se usa. Una pantalla con lo que importa hoy: qué está pendiente, qué vence esta semana, cuánto queda por ejecutar. Cuando llega el momento de la rendición los números ya están ahí, y nadie pasa el fin de semana armándolos a mano.","Trabajamos con plazos cortos porque sabemos cómo son: el presupuesto se ejecuta en diciembre y la necesidad apareció en noviembre. Estamos inscritos en el mismo canal de compra que usas, pedimos tres datos y mandamos la cotización el mismo día. Si también hace falta una pantalla, se arma junto."],"etiqueta":"/nodo","cta":"Pedir cotización del flujo","imagen":"media/circuitos.webp","imagen_alt":"Trazas de cobre de un circuito"},{"slug":"desarrollo-web","codigo":"03","titulo":"Sitios y plataformas que la gente logra usar","bajada":"Webs, portales y aplicaciones claras, rápidas y fáciles de mantener. Terminadas y funcionando en semanas, no en un año.","vinetas":["Sitios y landing pages","Aplicaciones web a medida","Portales y trámites en línea","Formularios que sí se completan","Experiencia de usuario (UX)"],"lamina":["El sitio lo hizo alguien que ya no trabaja ahí. Se actualiza pidiéndole el favor a un conocido. El formulario de contacto manda los mensajes a una casilla que nadie abre, y la gente igual llama por teléfono porque en la pantalla no encuentra lo que vino a buscar.","Partimos por lo que el visitante viene a hacer. Si viene a pedir un certificado, el botón que lo pide va primero y el resto espera su turno. Un portal se mide en una sola cosa: cuántas personas terminan lo que empezaron. Todo lo demás es decoración con buena intención.","Lo entregamos para que lo manejes tú. Texto, imágenes y documentos se cambian sin tocar código y sin pedirle permiso a nadie. Te dejamos el soporte escrito y no una reunión que hay que recordar: qué se cambia dónde, y a quién se le escribe cuando algo se rompe.","Las semanas importan. Una landing con formulario andando queda en días; un portal con trámites, en algunas semanas. Lo decimos con fecha antes de empezar, y si el plazo no se puede cumplir lo decimos antes de firmar y no después. El vencimiento de tu presupuesto no espera a nadie.","Un sitio nuevo deja a la vista las otras dos piezas: lo que llega por el formulario hay que resolverlo con un flujo, y las consultas que se repiten las puede contestar un asistente. Lo mismo pasa con la marca. Por eso casi nadie se lleva una sola cosa de acá."],"etiqueta":"/pista","cta":"Cotizar mi sitio o portal","imagen":"media/captura-portafolio.webp","imagen_alt":"Portafolio de compai.cl en pantalla"},{"slug":"direccion-creativa","codigo":"04","titulo":"Que se entienda, y que se recuerde","bajada":"Identidad, campañas y textos en lenguaje claro, para que lo que haces bien no se pierda en un comunicado que nadie lee.","vinetas":["Dirección creativa","Copywriting y lenguaje claro","Diseño de campañas","Posicionamiento de marca","Contenido generado con IA"],"lamina":["El servicio funciona bien y nadie lo sabe. El afiche lo armó quien tenía el programa abierto. El texto lo escribió quien redacta los informes, y se lee como un informe. La gente llega al mesón a preguntar algo que estaba explicado en la pared, con palabras que no usa nadie.","Nuestro trabajo es traducir. Tomamos lo que ya haces y lo decimos en el idioma de quien lo necesita: una frase que se entiende de pie, en treinta segundos y sin segunda lectura. No simplificamos el contenido; sacamos las palabras que estaban ahí para quedar bien ante otra oficina.","La identidad es lo que te hace reconocible cuando no estás presente. Colores, tipografía, tono y plantillas que cualquiera del equipo pueda usar sin romper nada. Una vez armado, hacer la pieza siguiente cuesta una hora en vez de una semana, y todas se parecen entre sí a propósito.","Usamos IA para producir en volumen sin bajar el nivel: variantes de un aviso, piezas para cada canal, contenido de seis meses en una sola sesión. La decisión creativa sigue siendo humana. La máquina acelera la mano, no reemplaza el criterio de qué vale la pena decir y qué no.","Esta es la pieza que más se olvida y la que hace que las otras dos se noten. Un flujo impecable que nadie entiende no se usa, y un sitio bonito sin un mensaje claro no convierte nada. Dinos qué tienes que comunicar y la cotización sale con su fecha de entrega."],"etiqueta":"/nucleo","cta":"Pedir cotización creativa","imagen":"media/grace-lavanda.webp","imagen_alt":"Grace en un campo de lavanda"}],"sitio":{"formEndpoint":"https://script.google.com/macros/s/AKfycbxiRLWaLHDVNm99KXKboz7DxslZeUtbl8Rq36MJ3FFuiRfNqpACklvcp7pfX-y5F-M8/exec","inbox":{"exito":"Listo. Tu mensaje llegó a hola@compai.cl — te respondemos hoy mismo.","error":"No se pudo enviar. Escríbenos directo a hola@compai.cl.","boton":"Enviar"}}};</script>
+<script>window.COMPAI={"servicios":[{"slug":"ia-aplicada","codigo":"01","titulo":"Agentes de IA que leen lo que nadie tiene tiempo de leer","bajada":"Clasifican correos, revisan documentos y contestan en minutos. Tu equipo deja de transcribir planillas y vuelve a decidir.","vinetas":["Agentes y asistentes de IA","Lectura y resumen de documentos","Clasificación de requerimientos","Atención que contesta a toda hora","Se conecta a lo que ya tienes"],"lamina":["Tu bandeja tiene trescientos correos y tres son urgentes. La planilla de licencias la mantiene una persona que está de vacaciones. El inventario de equipos se actualizó por última vez en marzo. Nada de eso está roto: está disperso, y ordenarlo a mano cuesta horas que ya no tienes para dar.","Un agente de IA es un trabajador que no se cansa de lo repetitivo. Lee los correos y los ordena por urgencia. Revisa cien documentos y te dice cuáles tienen el dato que buscas. Compara el inventario con las facturas y marca qué licencia vence antes de que termine el año.","No cambiamos tus sistemas: nos conectamos a ellos. Si trabajas en planillas, el agente escribe en tus planillas. Si la información vive en correos y carpetas compartidas, ahí trabaja. Nadie tiene que aprender un programa nuevo para que el lunes el resumen esté listo antes de la reunión.","Lo medimos en tiempo. Una revisión que tomaba dos días pasa a tomar veinte minutos, y el equipo vuelve a lo que solo una persona puede hacer: decidir. Si tienes presupuesto por ejecutar y un problema que se repite todos los meses, esto se implementa en semanas y no en años.","Casi nunca llega solo. El agente necesita un flujo que lo alimente, una pantalla donde el equipo lo use y un mensaje que explique el cambio a quien va a usarlo. Eso son tres cosas, no una, y las tres se trabajan acá mismo: automatización, desarrollo y dirección creativa."],"etiqueta":"/nucleo","cta":"Cotizar un agente de IA","imagen":"media/grace-retrato.webp","imagen_alt":"Grace, el sistema de agentes de compAI"},{"slug":"automatizacion","codigo":"02","titulo":"Procesos que se ejecutan solos","bajada":"Conectamos planillas, correos y aprobaciones en un flujo que no se detiene. Y cotizamos rápido cuando el plazo es corto.","vinetas":["Automatización de procesos","Google Workspace y Apps Script","Tableros de control en vivo","Flujos de aprobación con firma","Cotizaciones en plazos cortos"],"lamina":["La planilla de aprobaciones va y vuelve por correo con catorce versiones. Alguien copia a mano los mismos datos en tres lugares distintos. La orden de compra rebota por la glosa y hay que empezar de nuevo. Nada de eso aparece en un informe de gestión, pero se come la semana completa.","Automatizar es sacar a la persona del medio. El dato entra una vez y viaja solo: de la solicitud al visto bueno, del visto bueno al registro, del registro al tablero. Cuando algo se atrasa, el flujo avisa antes de que el atraso se convierta en el problema de alguien.","Lo hacemos con lo que ya tienes. Planillas, formularios, correo y Google Workspace alcanzan para montar un flujo serio; cuando hace falta más, lo programamos. No te vendemos una plataforma con licencia anual: dejamos funcionando algo tuyo, que sigue andando cuando nosotros ya no estamos.","El tablero es la parte que más se usa. Una pantalla con lo que importa hoy: qué está pendiente, qué vence esta semana, cuánto queda por ejecutar. Cuando llega el momento de la rendición los números ya están ahí, y nadie pasa el fin de semana armándolos a mano.","Trabajamos con plazos cortos porque sabemos cómo son: el presupuesto se ejecuta en diciembre y la necesidad apareció en noviembre. Estamos inscritos en el mismo canal de compra que usas, pedimos tres datos y mandamos la cotización el mismo día. Si también hace falta una pantalla, se arma junto."],"etiqueta":"/nodo","cta":"Pedir cotización del flujo","imagen":"media/circuitos.webp","imagen_alt":"Trazas de cobre de un circuito"},{"slug":"desarrollo-web","codigo":"03","titulo":"Sitios y plataformas que la gente logra usar","bajada":"Webs, portales y aplicaciones claras, rápidas y fáciles de mantener. Terminadas y funcionando en semanas, no en un año.","vinetas":["Sitios y landing pages","Aplicaciones web a medida","Portales y trámites en línea","Formularios que sí se completan","Experiencia de usuario (UX)"],"lamina":["El sitio lo hizo alguien que ya no trabaja ahí. Se actualiza pidiéndole el favor a un conocido. El formulario de contacto manda los mensajes a una casilla que nadie abre, y la gente igual llama por teléfono porque en la pantalla no encuentra lo que vino a buscar.","Partimos por lo que el visitante viene a hacer. Si viene a pedir un certificado, el botón que lo pide va primero y el resto espera su turno. Un portal se mide en una sola cosa: cuántas personas terminan lo que empezaron. Todo lo demás es decoración con buena intención.","Lo entregamos para que lo manejes tú. Texto, imágenes y documentos se cambian sin tocar código y sin pedirle permiso a nadie. Te dejamos el soporte escrito y no una reunión que hay que recordar: qué se cambia dónde, y a quién se le escribe cuando algo se rompe.","Las semanas importan. Una landing con formulario andando queda en días; un portal con trámites, en algunas semanas. Lo decimos con fecha antes de empezar, y si el plazo no se puede cumplir lo decimos antes de firmar y no después. El vencimiento de tu presupuesto no espera a nadie.","Un sitio nuevo deja a la vista las otras dos piezas: lo que llega por el formulario hay que resolverlo con un flujo, y las consultas que se repiten las puede contestar un asistente. Lo mismo pasa con la marca. Por eso casi nadie se lleva una sola cosa de acá."],"etiqueta":"/pista","cta":"Cotizar mi sitio o portal","imagen":"media/captura-portafolio.webp","imagen_alt":"Portafolio de compai.cl en pantalla"},{"slug":"direccion-creativa","codigo":"04","titulo":"Que se entienda, y que se recuerde","bajada":"Identidad, campañas y textos en lenguaje claro, para que lo que haces bien no se pierda en un comunicado que nadie lee.","vinetas":["Dirección creativa","Copywriting y lenguaje claro","Diseño de campañas","Posicionamiento de marca","Contenido generado con IA"],"lamina":["El servicio funciona bien y nadie lo sabe. El afiche lo armó quien tenía el programa abierto. El texto lo escribió quien redacta los informes, y se lee como un informe. La gente llega al mesón a preguntar algo que estaba explicado en la pared, con palabras que no usa nadie.","Nuestro trabajo es traducir. Tomamos lo que ya haces y lo decimos en el idioma de quien lo necesita: una frase que se entiende de pie, en treinta segundos y sin segunda lectura. No simplificamos el contenido; sacamos las palabras que estaban ahí para quedar bien ante otra oficina.","La identidad es lo que te hace reconocible cuando no estás presente. Colores, tipografía, tono y plantillas que cualquiera del equipo pueda usar sin romper nada. Una vez armado, hacer la pieza siguiente cuesta una hora en vez de una semana, y todas se parecen entre sí a propósito.","Usamos IA para producir en volumen sin bajar el nivel: variantes de un aviso, piezas para cada canal, contenido de seis meses en una sola sesión. La decisión creativa sigue siendo humana. La máquina acelera la mano, no reemplaza el criterio de qué vale la pena decir y qué no.","Esta es la pieza que más se olvida y la que hace que las otras dos se noten. Un flujo impecable que nadie entiende no se usa, y un sitio bonito sin un mensaje claro no convierte nada. Dinos qué tienes que comunicar y la cotización sale con su fecha de entrega."],"etiqueta":"/nucleo","cta":"Pedir cotización creativa","imagen":"media/grace-lavanda.webp","imagen_alt":"Grace en un campo de lavanda"}],"sitio":{"formEndpoint":"https://script.google.com/macros/s/AKfycbxiRLWaLHDVNm99KXKboz7DxslZeUtbl8Rq36MJ3FFuiRfNqpACklvcp7pfX-y5F-M8/exec","inbox":{"exito":"Listo. Tu mensaje llegó a hola@compai.cl — te respondemos hoy mismo.","error":"No se pudo enviar. Escríbenos directo a hola@compai.cl.","boton":"ENVIAR"}}};</script>
 <script src="js/sitio.js" defer></script>
 <script src="js/materializa.js" defer></script>
 </body>

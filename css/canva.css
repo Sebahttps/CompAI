@@ -1,0 +1,326 @@
+/* compai.cl · maqueta exacta del Canva «compai.cl».
+   Lienzo 1366 px. Toda medida sale de kit-canva/PLANO-CANVA.md y de
+   kit-canva/referencias/canva-spec.json. No se interpreta nada: si una medida
+   no esta en el plano, no se inventa.
+
+   Unidad: --u = 1 px del lienzo. Se resuelve con `cqw` contra la seccion, asi
+   la barra de desplazamiento no corre la maqueta (100vw si lo haria).
+   Esta hoja se carga DESPUES de sitio.css y manda sobre ella. */
+
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:200;font-display:swap;
+  src:url(fuentes/plexmono-200-latin.woff2) format('woff2')}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:700;font-display:swap;
+  src:url(fuentes/plexmono-700-latin.woff2) format('woff2')}
+@font-face{font-family:'Space Mono';font-style:normal;font-weight:400;font-display:swap;
+  src:url(fuentes/spacemono-400-latin.woff2) format('woff2')}
+@font-face{font-family:'Clear Sans';font-style:normal;font-weight:300;font-display:swap;
+  src:url(fuentes/clearsans-light.woff) format('woff')}
+@font-face{font-family:'Clear Sans';font-style:normal;font-weight:400;font-display:swap;
+  src:url(fuentes/clearsans-regular.woff) format('woff')}
+
+:root{
+  --plex:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+  --clear:'Clear Sans',system-ui,-apple-system,"Segoe UI",sans-serif;
+  --courier:'Courier New',Courier,monospace;
+  --space:'Space Mono',ui-monospace,monospace;
+  --cian:#05f8f9;
+  --azul:#1d6688;
+  --grafito:#14181f;
+}
+
+/* ── armazon ───────────────────────────────────────────────────────────── */
+.cv{position:relative;container-type:inline-size;width:100%;margin:0;padding:0;
+  background:#000;overflow:hidden;--u:0.0732064cqw;scroll-margin-top:0}
+.cv .pg{position:relative;width:100%;aspect-ratio:calc(1366 / var(--h));overflow:hidden;background:#000}
+.cv .b{position:absolute;left:calc(var(--x,0)*var(--u));top:calc(var(--y,0)*var(--u));
+  width:calc(var(--w,1366)*var(--u));margin:0}
+.cv .b.fh{height:calc(var(--hh,0)*var(--u))}
+.cv .pg{color:#fff}
+.cv .t{font-size:calc(var(--fs,16)*var(--u));line-height:var(--lh,1.21);
+  letter-spacing:calc(var(--tr,0)*1em)}
+.cv video,.cv img,.cv canvas{display:block;width:100%;height:100%;object-fit:cover}
+.cv .b>video,.cv .b>img{width:100%;height:100%}
+.cv p,.cv h1,.cv h2{margin:0}
+
+/* El rotulo «/ 0X — nombre» de cada seccion: IBM Plex Mono 24 px extralight. */
+.cv .rot{font-family:var(--plex);font-weight:200;color:#fff;white-space:nowrap;
+  font-size:calc(24*var(--u));line-height:1.21;letter-spacing:.122em;text-transform:uppercase}
+
+/* ── / 00 Hero ─────────────────────────────────────────────────────────── */
+#hero.cv{height:auto;min-height:0}
+.hfranjas{overflow:hidden;background:#000}
+/* La elipse negra que remata el video: equilibra la viñeta que traen 4 de los
+   5 videos. En el Canva es un shape de 1633x158 centrado en x=677. */
+.harco{border-radius:50%;background:#000;filter:blur(calc(6*var(--u)))}
+.hsello{filter:drop-shadow(0 calc(6*var(--u)) calc(26*var(--u)) rgba(0,0,0,.75))}
+.hsello img{object-fit:contain;height:auto}
+#hero .baja{bottom:calc(40*var(--u))}
+
+/* ── / 01 Offenbar ─────────────────────────────────────────────────────── */
+#offenbar.cv{display:block;min-height:0}
+.ofondo{background:url(../media/circuitos.webp) center/cover no-repeat}
+/* Banda negra superior: shape 596,-624 173x1366 girado -90 => y 0..146. */
+.obanda{background:#000}
+/* Panel central oscuro: shape 130,31 1141x1024 girado -90 => x 188..1211. */
+.opanel{background:rgba(0,0,0,.94)}
+/* sitio.css lo deja a pantalla completa con un selector de id; aqui se le
+   devuelven las medidas del Canva (dos rect de 816x163 arriba a la derecha). */
+#lluvia{position:absolute;inset:auto;display:block;opacity:.9;z-index:2;
+  left:calc(var(--x)*var(--u));top:calc(var(--y)*var(--u));
+  width:calc(var(--w)*var(--u));height:calc(var(--hh)*var(--u));
+  -webkit-mask-image:linear-gradient(to left,#000 62%,transparent);
+  mask-image:linear-gradient(to left,#000 62%,transparent)}
+.otit{font-family:var(--plex);font-weight:700;text-align:center;color:#fffefe;opacity:.56;
+  text-transform:uppercase}
+.osub{font-family:var(--plex);font-weight:400;text-align:center;color:#fff;opacity:.61}
+.osub b{font-weight:700}
+.oenl{font-family:var(--plex);font-weight:700;color:var(--azul);opacity:.61;
+  text-decoration:underline;text-underline-offset:calc(5*var(--u));display:block;
+  text-align:left;white-space:nowrap}
+
+/* ── / 02 Il Cuore ─────────────────────────────────────────────────────── */
+.ctit{font-family:var(--plex);font-weight:700;text-align:center;color:#fff;text-transform:uppercase}
+.ctit span{display:block}
+.ctit .amp{color:var(--azul);font-style:normal}
+/* shape -361,543 2112x1034 girado -90 => x 178..1212: apaga los circuitos
+   del fondo en el centro y los deja asomar solo por los bordes. */
+.cuvelo{background:rgba(0,0,0,.96)}
+.cpar{font-family:var(--clear);font-weight:300;text-align:center;color:#fff}
+.cacc{display:flex;align-items:center;gap:calc(14*var(--u));text-decoration:none;color:#fff;
+  font-family:var(--plex);font-weight:400;text-transform:uppercase;white-space:nowrap}
+.cacc .ic{width:calc(34*var(--u));height:calc(26*var(--u));border:calc(1.4*var(--u)) solid var(--azul);
+  border-radius:calc(4*var(--u));display:grid;place-items:center;color:var(--azul);flex:0 0 auto}
+.cacc .ic svg{width:60%;height:auto;object-fit:contain}
+.cacc .ic.red{border-radius:50%;width:calc(28*var(--u));height:calc(28*var(--u))}
+.ciso{overflow:visible;opacity:.9;filter:drop-shadow(0 0 calc(7*var(--u)) rgba(5,248,249,.55))}
+.ciso svg{width:100%;height:auto;object-fit:contain;overflow:visible}
+.ciso path{fill:none;stroke:var(--cian);stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round}
+
+/* ── / 03 L'Intelligence · Grace ───────────────────────────────────────── */
+.gcab{background:#000}
+.gcampo{filter:saturate(.9)}
+/* shape 229,-50 932x1033 girado -90 => x 178..1211: apaga el campo de
+   codigo en el centro para que se lean el titulo y la lista. */
+.gvelo{background:rgba(0,0,0,.9)}
+/* los dos rect 415,276 786x229 y 415,473 786x226: el fondo de la lista. */
+.gpanel{background:rgba(2,6,10,.8)}
+.gtit{font-family:var(--plex);font-weight:700;color:#fff;text-transform:uppercase}
+.gtit span{display:block}
+.gsub{font-family:var(--clear);font-weight:300;color:#cfd6dc}
+.gperfil{object-fit:contain;object-position:left bottom}
+.gcanvas{display:block;width:100%;height:100%;background:transparent}
+.gmarca{font-family:var(--plex);font-weight:700;color:var(--cian);letter-spacing:.054em;
+  text-transform:uppercase;white-space:nowrap}
+.gvivo{font-family:var(--plex);font-weight:400;color:#fff;border:calc(1.4*var(--u)) solid rgba(5,248,249,.6);
+  border-radius:999px;display:inline-grid;place-items:center;white-space:nowrap;letter-spacing:.14em}
+.glista{list-style:none;padding:0;margin:0;display:grid}
+.glista li{display:grid;grid-template-columns:calc(96*var(--u)) minmax(0,1fr) calc(130*var(--u));
+  align-items:center;gap:calc(12*var(--u));
+  font-family:var(--plex);font-size:calc(10*var(--u));line-height:1.35;color:#c3cad1;
+  border-top:1px solid rgba(255,255,255,.07);padding:calc(7*var(--u)) 0}
+.glista .mkr{color:#2fe06a;font-weight:700;font-size:calc(8*var(--u));letter-spacing:.09em}
+.glista .dt{min-width:0}
+.glista .dt b{display:block;font-weight:400;color:#8f98a0;font-size:calc(8*var(--u))}
+.glista .dt em{display:block;font-style:normal;color:#e6eaee;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+.glista .ci{color:#9aa3ab;text-align:right;white-space:nowrap;font-size:calc(8.4*var(--u))}
+.gpie{font-family:var(--plex);font-size:calc(8*var(--u));color:#6f777e;letter-spacing:.05em}
+.gcifras{display:grid;grid-template-columns:repeat(3,1fr);align-items:center;text-align:center}
+.gcifras b{display:block;font-family:Archivo,sans-serif;font-variation-settings:"wdth" 104;font-weight:800;
+  font-size:calc(58*var(--u));line-height:1;letter-spacing:-.02em;color:#fff}
+.gcifras span{display:block;font-family:var(--plex);font-size:calc(13*var(--u));letter-spacing:.14em;
+  text-transform:uppercase;color:#b9c0c6;margin-top:calc(10*var(--u))}
+
+/* ── / 04 Creative ─────────────────────────────────────────────────────── */
+.cvfondo{background:var(--grafito)}
+.ccirc{opacity:.55}
+.cvelo{background:rgba(10,13,17,.96)}
+.cline{background:linear-gradient(#5b3a22,#c87941 35%,#c87941 65%,#5b3a22)}
+.serv-tit{display:block;font-family:Archivo,sans-serif;font-weight:700;font-size:calc(26*var(--u));
+  line-height:1.1;color:#fff;letter-spacing:-.01em}
+.serv-par{display:block;font-family:Archivo,sans-serif;font-weight:600;font-size:calc(11.5*var(--u));
+  line-height:1.5;color:#dfe3e7;text-align:justify;text-transform:uppercase;letter-spacing:.02em;
+  margin-top:calc(20*var(--u))}
+.serv-vin{list-style:none;margin:calc(118*var(--u)) 0 0;padding:0 0 0 calc(18*var(--u));display:grid;gap:calc(1*var(--u));
+  border-left:calc(2.4*var(--u)) solid var(--azul);
+  font-family:Archivo,sans-serif;font-size:calc(10.5*var(--u));line-height:1.6;color:#cfd4d9;
+  letter-spacing:.03em}
+.serv-vin.ambar{border-left-color:#c87941}
+
+/* Los mockups del Canva: carcasa neutra + un fondo de cielo y pasto. */
+.mk{position:absolute;left:calc(var(--x)*var(--u));top:calc(var(--y)*var(--u));
+  width:calc(var(--w)*var(--u));height:calc(var(--hh)*var(--u))}
+.mk .pantalla{position:absolute;inset:0;overflow:hidden;
+  background:linear-gradient(#bfe3f5 0%,#dff0fa 46%,#eaf6fb 54%,#9ccb3f 55%,#6aa828 100%)}
+.mk .pantalla::after{content:"";position:absolute;left:14%;top:14%;width:46%;aspect-ratio:2.1/1;
+  background:#fff;border-radius:999px;box-shadow:calc(14*var(--u)) calc(5*var(--u)) 0 calc(-3*var(--u)) #fff}
+.mk.tel{border:calc(9*var(--u)) solid #0d0f12;border-radius:calc(34*var(--u));
+  background:#0d0f12;box-shadow:0 0 0 calc(2*var(--u)) #33383e}
+.mk.tel .pantalla{border-radius:calc(25*var(--u))}
+.mk.tel .muesca{position:absolute;left:50%;top:0;transform:translateX(-50%);z-index:2;
+  width:38%;height:calc(14*var(--u));background:#0d0f12;border-radius:0 0 calc(10*var(--u)) calc(10*var(--u))}
+.mk.mon .marco{position:absolute;left:0;top:0;right:0;height:calc(var(--mh)*var(--u));
+  border:calc(7*var(--u)) solid #e8eaec;border-radius:calc(8*var(--u));background:#e8eaec;overflow:hidden}
+.mk.mon .marco .pantalla{inset:0}
+.mk.mon .cuello{position:absolute;left:50%;transform:translateX(-50%);
+  top:calc(var(--mh)*var(--u));width:14%;height:calc(42*var(--u));background:#d8dbde}
+.mk.mon .base{position:absolute;left:50%;bottom:0;transform:translateX(-50%);
+  width:46%;height:calc(10*var(--u));border-radius:calc(6*var(--u));background:#e8eaec}
+.mk.lap .marco{position:absolute;left:6%;top:0;right:6%;height:calc(var(--mh)*var(--u));
+  border:calc(7*var(--u)) solid #cfd3d7;border-radius:calc(7*var(--u));background:#cfd3d7;overflow:hidden}
+.mk.lap .marco .pantalla{inset:0}
+.mk.lap .base{position:absolute;left:0;right:0;bottom:0;height:calc(9*var(--u));
+  background:linear-gradient(#e6e9ec,#b9bec4);border-radius:0 0 calc(6*var(--u)) calc(6*var(--u))}
+
+/* Las tres bandas /pista /nodo /nucleo */
+.banda-velo{background:rgba(0,0,0,.78)}
+.banda-tx{font-family:var(--courier);font-weight:700;color:var(--cian);opacity:.92;
+  white-space:nowrap;text-transform:uppercase}
+
+/* ── / 05 Inbox ────────────────────────────────────────────────────────── */
+.icaja{background:#15181c;border:1px solid rgba(255,255,255,.07);
+  padding:calc(82*var(--u)) calc(70*var(--u))}
+.ikick{font-family:var(--plex);font-weight:400;font-size:calc(11*var(--u));letter-spacing:.22em;
+  color:#9aa0a6;text-transform:uppercase}
+.ititulo{font-family:var(--plex);font-weight:700;font-size:calc(44*var(--u));line-height:1.1;
+  letter-spacing:.01em;color:#fff;margin:calc(34*var(--u)) 0 calc(52*var(--u));text-transform:uppercase}
+.ititulo em{font-style:normal;color:#c87941}
+#inbox .campos{display:grid;grid-template-columns:1fr 1fr;gap:calc(40*var(--u)) calc(30*var(--u))}
+#inbox .campo{display:grid;gap:calc(16*var(--u))}
+#inbox .campo.ancho2{grid-column:1/-1}
+#inbox .campo label{font-family:var(--plex);font-weight:400;font-size:calc(10.5*var(--u));
+  letter-spacing:.2em;text-transform:uppercase;color:#8e949a}
+#inbox .campo input,#inbox .campo textarea{background:transparent;border:1px solid rgba(255,255,255,.22);
+  border-radius:calc(3*var(--u));color:#e9ecef;padding:calc(18*var(--u)) calc(22*var(--u));
+  font-family:var(--clear);font-size:calc(17*var(--u));line-height:1.3;width:100%}
+#inbox .campo input::placeholder,#inbox .campo textarea::placeholder{color:#b6bbc0}
+#inbox .campo.mono input{font-family:var(--plex);letter-spacing:.06em}
+#inbox .campo textarea{min-height:calc(160*var(--u));resize:vertical}
+.iadjunta{grid-column:1/-1;margin-top:calc(26*var(--u));border:1px dashed rgba(255,255,255,.25);
+  border-radius:calc(3*var(--u));padding:calc(20*var(--u)) calc(24*var(--u));
+  display:grid;grid-template-columns:auto 1fr;gap:calc(16*var(--u));align-items:center}
+.iadjunta svg{width:calc(22*var(--u));height:auto;object-fit:contain;color:#c9ced3}
+.iadjunta b{display:block;font-family:var(--clear);font-weight:400;font-size:calc(16*var(--u));color:#e4e8eb}
+.iadjunta span{display:block;font-family:var(--plex);font-size:calc(11*var(--u));color:#8e949a;
+  letter-spacing:.04em;margin-top:calc(6*var(--u))}
+#inbox .enviar{margin-top:calc(34*var(--u));display:flex;align-items:center;gap:calc(32*var(--u))}
+#inbox .btn{background:#c87941;color:#1a1208;border-radius:calc(3*var(--u));
+  padding:calc(22*var(--u)) calc(38*var(--u));font-family:var(--plex);font-weight:700;
+  font-size:calc(13*var(--u));letter-spacing:.18em;text-transform:uppercase}
+#inbox .nota{font-family:var(--plex);font-size:calc(12*var(--u));color:#9aa0a6;letter-spacing:.04em}
+#inbox .aviso{grid-column:1/-1;margin-top:calc(22*var(--u));font-size:calc(14*var(--u))}
+
+/* ── / 06 Contacto ─────────────────────────────────────────────────────── */
+.kpreg{font-family:Archivo,sans-serif;font-weight:700;text-align:center;color:#fff;
+  text-transform:uppercase;letter-spacing:.122em;line-height:1.21}
+.kcorreo{font-family:var(--plex);font-weight:400;text-align:center;color:var(--azul);
+  text-decoration:none;display:block;letter-spacing:.122em}
+/* El orbe de la esquina: en el Canva es un video. Aca se arma con gradientes. */
+.korbe{border-radius:50%;opacity:.75;overflow:hidden;
+  background:
+    radial-gradient(ellipse at 46% 66%,rgba(255,150,40,.75) 0 6%,transparent 34%),
+    radial-gradient(ellipse at 58% 44%,rgba(214,32,52,.78) 0 14%,transparent 46%),
+    radial-gradient(ellipse at 36% 30%,rgba(86,24,140,.8) 0 18%,transparent 52%),
+    radial-gradient(circle at 50% 50%,transparent 44%,rgba(6,4,20,.8) 70%,#040310 100%),
+    radial-gradient(circle at 50% 50%,#160a38,#05030f 74%)}
+.korbe::after{content:"";position:absolute;inset:0;border-radius:50%;
+  box-shadow:inset 0 0 calc(30*var(--u)) rgba(90,150,200,.22)}
+.kscl{font-family:Archivo,sans-serif;font-variation-settings:"wdth" 96;font-weight:800;
+  text-align:center;color:#fff;line-height:1;letter-spacing:-.031em;
+  text-shadow:0 calc(10*var(--u)) calc(40*var(--u)) rgba(0,0,0,.9)}
+.klugar{font-family:var(--space);font-weight:400;text-align:center;color:#fff;
+  letter-spacing:.06em;white-space:nowrap}
+.kpicaflor{mix-blend-mode:screen;opacity:.95}
+.kpicaflor img{object-fit:contain}
+.kcomp{display:block;text-decoration:none;opacity:.5;transition:opacity .4s}
+.kcomp:hover{opacity:1}
+.kcomp img{object-fit:cover;object-position:center 42%}
+.kintranet{font-family:var(--space);font-weight:400;text-align:center;color:#fff;opacity:.4;
+  text-decoration:none;display:block;letter-spacing:-.031em}
+.kpie{font-family:var(--plex);font-size:calc(11*var(--u));letter-spacing:.08em;color:#45484c;
+  text-transform:uppercase;display:flex;justify-content:space-between;gap:calc(16*var(--u))}
+.kpie a{text-decoration:none}
+.kpie a:hover{color:#c87941}
+
+/* ── telefono: bajo 700 px la maqueta se apila en una columna ───────────
+   El lienzo se lee al doble de escala (--u pasa de 1/1366 a 1/683) y cada
+   pagina deja de ser un plano absoluto para ser una columna. Las capas que
+   solo existen para oscurecer o decorar no se apilan: se esconden. */
+@media (max-width:700px){
+  .cv{--u:0.1465128cqw}
+  .cv .pg{aspect-ratio:auto;height:auto;min-height:0;
+    display:flex;flex-direction:column;align-items:stretch;
+    gap:calc(34*var(--u));padding:calc(70*var(--u)) calc(40*var(--u))}
+  .cv .b{position:static;left:auto;top:auto;width:100%;height:auto;margin:0}
+  /* el mockup conserva `relative`: su pantalla va absoluta adentro y sin
+     contenedor posicionado se estira sobre la seccion entera. */
+  .cv .mk{position:relative;left:auto;top:auto;width:100%;height:auto;margin:0}
+  .cv .b.fh{height:auto}
+  .cv .b>video,.cv .b>img{width:100%;height:auto;object-fit:contain}
+  .cv .b>canvas.gcanvas{width:100%;height:auto;aspect-ratio:calc(var(--w) / var(--hh))}
+  .cv .rot{order:-1}
+  .harco,.obanda,.opanel,.cvelo,.cuvelo,.gvelo,.gpanel,.banda-velo,.ccirc,.cline,#lluvia{display:none}
+
+  #hero .pg{padding:0;gap:0}
+  #hero .hfranjas{height:calc(430*var(--u))}
+  #hero .hfranjas video{height:100%;object-fit:cover}
+  #hero .hsello{width:64%;margin:calc(-40*var(--u)) auto calc(70*var(--u))}
+
+  #offenbar .pg{position:relative}
+  .ofondo{display:block;position:absolute;inset:0;width:100%;height:100%;opacity:.45}
+  .otit{font-size:calc(46*var(--u))}
+  .osub{font-size:calc(38*var(--u))}
+  .oenl{text-align:center;white-space:normal;font-size:calc(24*var(--u))}
+
+  .ctit{font-size:calc(34*var(--u))}
+  .cpar{font-size:calc(22*var(--u))}
+  .ciso{width:min(160px,42%);margin-inline:auto;order:4}
+  .cacc{justify-content:center;font-size:calc(20*var(--u))}
+
+  .gtit{font-size:calc(34*var(--u))}
+  .gsub{font-size:calc(20*var(--u))}
+  .gmarca{font-size:calc(26*var(--u))}
+  .gvivo{font-size:calc(13*var(--u));padding:calc(6*var(--u)) calc(16*var(--u));
+    width:auto;align-self:flex-start}
+  .glista li{grid-template-columns:1fr;gap:calc(4*var(--u));font-size:calc(14*var(--u))}
+  .glista .mkr,.glista .dt b,.glista .ci{font-size:calc(12*var(--u))}
+  .glista .ci{text-align:left}
+  .glista .dt em{white-space:normal}
+  .gpie{font-size:calc(12*var(--u))}
+  .gcifras{grid-template-columns:1fr;gap:calc(40*var(--u))}
+  .gcifras b{font-size:calc(64*var(--u))}
+  .gcifras span{font-size:calc(16*var(--u))}
+
+  .serv-tit{font-size:calc(30*var(--u))}
+  .serv-par{font-size:calc(17*var(--u));text-align:left}
+  .serv-vin{margin-top:calc(26*var(--u));font-size:calc(16*var(--u))}
+  .mk{aspect-ratio:calc(var(--w) / var(--hh));height:auto;margin-inline:auto}
+  .mk.tel{width:min(210px,56%)}
+  .banda-tx{font-size:calc(64*var(--u));text-align:center}
+
+  .icaja{padding:calc(44*var(--u)) calc(34*var(--u))}
+  .ikick{font-size:calc(15*var(--u))}
+  .ititulo{font-size:calc(42*var(--u));margin:calc(26*var(--u)) 0 calc(34*var(--u))}
+  #inbox .campos{grid-template-columns:1fr;gap:calc(30*var(--u))}
+  #inbox .campo label{font-size:calc(15*var(--u))}
+  #inbox .campo input,#inbox .campo textarea{font-size:16px;padding:calc(18*var(--u)) calc(20*var(--u))}
+  #inbox .campo textarea{min-height:calc(190*var(--u))}
+  .iadjunta b{font-size:calc(20*var(--u))}
+  .iadjunta span{font-size:calc(15*var(--u))}
+  #inbox .enviar{flex-wrap:wrap;gap:calc(20*var(--u))}
+  #inbox .btn{font-size:calc(17*var(--u))}
+  #inbox .nota{font-size:calc(15*var(--u))}
+
+  .kpreg{font-size:calc(26*var(--u))}
+  .kcorreo{font-size:calc(32*var(--u))}
+  .korbe{width:min(190px,48%);aspect-ratio:1;margin-inline:auto;order:4}
+  .kscl{font-size:calc(170*var(--u))}
+  .klugar{font-size:calc(24*var(--u))}
+  .kpicaflor{order:3;width:min(260px,70%);margin-inline:auto}
+  .kcomp{order:5;width:min(190px,52%);aspect-ratio:205/115;margin-inline:auto}
+  .kintranet{order:6;font-size:calc(22*var(--u))}
+  .kpie{order:7;flex-direction:column;gap:calc(10*var(--u));font-size:calc(14*var(--u));text-align:center}
+}
+
+#contacto.cv{padding:0}
+#inbox.cv,#creative.cv,#grace.cv,#il-cuore.cv{padding:0}

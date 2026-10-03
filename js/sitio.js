@@ -277,7 +277,7 @@
       if (foco) { foco.focus({ preventScroll: true }); foco = null; }
       if (empujarUrl && location.hash.startsWith('#servicio-')) history.pushState({}, '', location.pathname + '#creative');
     }
-    $$('.serv').forEach(b => b.addEventListener('click', () => abre(b.dataset.slug)));
+    $$('[data-slug]').forEach(b => b.addEventListener('click', () => abre(b.dataset.slug)));
     $('#lamX').addEventListener('click', () => cierra());
     addEventListener('keydown', e => {
       if (e.key !== 'Escape') return;
@@ -317,13 +317,21 @@
       if (d.sitioweb) return;                       // campo trampa: bot
       if (!d.nombre || !d.correo) { muestra('Falta el nombre o el correo.', true); return; }
 
-      if (!url) {                                   // respaldo mientras no exista el web app
+      // El correo se abre SIEMPRE: es donde la persona adjunta las bases, el
+      // anexo o la orden de compra. El Apps Script solo deja el registro.
+      const correo = () => {
         const cuerpo = [
-          `Nombre: ${d.nombre}`, `Correo: ${d.correo}`, `Teléfono: ${d.telefono || '—'}`,
-          `Organismo: ${d.organismo || '—'}`, '', d.mensaje || ''
+          `Nombre y apellido: ${d.nombre}`, `Correo electronico: ${d.correo}`,
+          `Telefono de contacto: ${d.telefono || '-'}`, `ID Mercado Publico: ${d.idmp || '-'}`,
+          '', 'Requerimientos:', d.mensaje || '-', '',
+          'Adjunta aqui las bases, el anexo o la orden de compra.'
         ].join('\n');
-        location.href = `mailto:hola@compai.cl?subject=${encodeURIComponent('[compai.cl] Lead — ' + d.nombre)}&body=${encodeURIComponent(cuerpo)}`;
-        muestra('Te abrimos el correo con los datos listos. Si no se abrió, escríbenos a hola@compai.cl.');
+        const asunto = `Compra Agil — ${d.idmp || d.nombre}`;
+        location.href = `mailto:hola@compai.cl?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
+      };
+      if (!url) {                                   // respaldo mientras no exista el web app
+        correo();
+        muestra('Te abrimos el correo con los datos listos. Adjunta ahi las bases u orden de compra.');
         return;
       }
       btnEnviar.disabled = true;
@@ -332,6 +340,7 @@
         // text/plain evita el preflight CORS contra Apps Script
         await fetch(url, { method: 'POST', body: JSON.stringify({ ...d, origen: 'compai.cl' }),
                            headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
+        correo();
         f.reset();
         muestra(texto.exito || 'Listo, tu mensaje llegó.');
         btnEnviar.textContent = 'Enviado';
