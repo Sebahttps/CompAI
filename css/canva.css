@@ -119,6 +119,50 @@
 .ciso path{fill:none;stroke:var(--cian);stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round}
 
 /* ── / 03 L'Intelligence · Grace ───────────────────────────────────────── */
+/* LAMINA 1 DE / 03, segun la referencia que dio Sebastian el 04-10-2026
+   (Pictures/Screenshots/Captura de pantalla 2026-10-04 162841.png): lamina
+   negra a sangre, el video de Grace vertical y centrado, el texto a los dos
+   lados y las trazas de circuito en el cobre de la piel del personaje. */
+.glam{background:#000}
+/* el video se funde con el negro por los cuatro bordes: sin esto se ve el
+   rectangulo del archivo y la lamina deja de ser una sola pieza. */
+.gvideo{overflow:hidden}
+.gvideo video{object-fit:cover;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 13%,#000 87%,transparent),
+                     linear-gradient(transparent,#000 9%,#000 88%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 13%,#000 87%,transparent),
+             linear-gradient(transparent,#000 9%,#000 88%,transparent);
+  -webkit-mask-composite:source-in;mask-composite:intersect}
+.gltit{font-family:var(--plex);font-weight:700;color:#fff;text-transform:uppercase;
+  letter-spacing:.01em}
+.gltit span{display:block}
+.glpar,.glcierre{font-family:var(--plex);font-weight:300;color:#c9d2d9}
+.gldcha{list-style:none;padding:0;margin:0;display:grid;gap:calc(22*var(--u));
+  font-family:var(--plex);font-weight:300;color:#c9d2d9;
+  font-size:calc(var(--fs)*var(--u));line-height:var(--lh)}
+.gldcha li{position:relative;padding-left:calc(18*var(--u))}
+.gldcha li::before{content:"";position:absolute;left:0;top:calc(.62em - 2px);
+  width:calc(5*var(--u));height:calc(5*var(--u));border-radius:50%;background:var(--cian)}
+.gldcha b{font-weight:700;color:var(--cian);font-style:normal}
+.gldcha b.no{color:var(--petroleo2)}
+.glcierre{color:#aeb9c2}
+.gllock{display:flex;align-items:center;justify-content:center;gap:calc(10*var(--u));
+  font-family:var(--plex);font-weight:700;color:var(--cian);text-transform:uppercase;
+  letter-spacing:.055em;font-size:calc(15*var(--u));white-space:nowrap}
+.gllock img{width:calc(30*var(--u));height:auto;flex:0 0 auto;object-fit:contain;
+  filter:drop-shadow(0 0 calc(7*var(--u)) rgba(5,248,249,.5))}
+/* La traza: dos copias del patron y el conjunto se corre una copia entera en
+   bucle. 26 s por vuelta es el «paneo lento» del encargo; a mas rapido se lee
+   como una barra de carga y no como un circuito vivo. */
+.traza{display:block;overflow:hidden;height:calc(24*var(--u));
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 16%,#000 84%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 16%,#000 84%,transparent)}
+.traza svg{display:block;width:200%;height:100%;animation:panea 26s linear infinite}
+.traza g{fill:none;stroke:#C87941;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.traza circle{fill:#C87941;stroke:none}
+@keyframes panea{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.traza svg{animation:none}}
+
 .gcab{background:#000}
 .gcampo{filter:saturate(.9)}
 /* shape 229,-50 932x1033 girado -90 => x 178..1211: apaga el campo de
@@ -324,6 +368,19 @@
   .cpar{font-size:calc(22*var(--u))}
   .cv .ciso{width:min(160px,42%);margin-inline:auto;order:4}
   .cacc{justify-content:center;font-size:calc(20*var(--u))}
+
+  /* LAMINA 1 de / 03 en telefono: el lienzo apila, pero los cuerpos del
+     escritorio (14,5 px de lienzo) caen a 8 px aca. Visu/04-10-2026. */
+  .cv .gltit{font-size:calc(46*var(--u))}
+  .cv .glpar,.cv .glcierre{font-size:calc(28*var(--u))}
+  .gldcha{font-size:calc(28*var(--u));gap:calc(30*var(--u))}
+  .gldcha li{padding-left:calc(34*var(--u))}
+  .gldcha li::before{width:calc(10*var(--u));height:calc(10*var(--u))}
+  .gllock{justify-content:flex-start;font-size:calc(26*var(--u));gap:calc(16*var(--u))}
+  /* sin esto, `.cv .b>img{width:100%}` convierte el emblema en una lamina */
+  .cv .gllock img{width:calc(56*var(--u))}
+  .traza{height:calc(44*var(--u))}
+  .gvideo video{max-height:72vh}
 
   /* `.cv` delante: sin el, `.cv .t` (0,2,0) de arriba le gana a `.gtit`
      (0,1,0) y estas tres reglas no se aplicaban nunca. Visu, 04-10-2026. */

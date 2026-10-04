@@ -25,6 +25,25 @@ const TICKS = (clase, etiqueta) => `<svg class="${clase}" viewBox="0 0 22 20" ro
       <path d="M11.56 7.37 13.86 9.68 18.83 3.64"/><path d="M10 8.5 14 12.5 21 4"/><path d="M9.22 10.41 14.14 15.32 21.26 6.67"/>
     </svg>`;
 
+/* ── la traza de circuito: el mismo cobre de la piel de Grace ───────
+   Dos copias del patron, una detras de otra, y el grupo se corre un patron
+   completo en bucle: el paneo lento que pidio Sebastian el 04-10-2026 sin un
+   solo fotograma de video. El patron mide 300 de ancho en su propio viewBox. */
+const PATRON_TRAZA = `
+        <circle cx="4" cy="12" r="3"/>
+        <path d="M7 12h26l8-7h34l8 7h22"/>
+        <path d="M105 12h18l7 6h40l7-6h20"/>
+        <circle cx="197" cy="12" r="2.4"/>
+        <path d="M200 12h22l9-8h30"/>
+        <path d="M261 4h16"/>
+        <path d="M231 12h28l8 8h26"/>`;
+const TRAZA = (clase, x, y, w) => `<span class="${clase} traza" style="--x:${x};--y:${y};--w:${w}" aria-hidden="true">
+        <svg viewBox="0 0 600 24" preserveAspectRatio="none" focusable="false">
+          <g class="t1">${PATRON_TRAZA}</g>
+          <g class="t1" transform="translate(300 0)">${PATRON_TRAZA}</g>
+        </svg>
+      </span>`;
+
 /* ── la mariposa: dibujada, no tomada de ninguna parte ───────────────── */
 const MARIPOSA = `<svg class="mariposa" viewBox="0 0 400 310" role="img" aria-label="Mariposa">
       <title>Mariposa</title>
@@ -187,6 +206,7 @@ const grace = (() => {
        · gcifras 45/1275 -> 62/1242: el cuarto margen izquierdo distinto
          dentro de 19 px. Ahora los cuatro cierran en 62. */
   const im = S.grace.imagenes;
+  const L = S.grace.lamina;
   const fila = f => `<li>
             <span class="mkr${/^NO/.test(f.marca) ? ' no' : ''}">${esc(f.marca)}</span>
             <span class="dt"><b>${esc(f.id)}</b><em>${esc(f.titulo)}</em></span>
@@ -194,38 +214,41 @@ const grace = (() => {
           </li>`;
   return `
   <section class="sec cv ap" id="grace">
-    <div class="pg gcab" style="--h:587">
-      <div class="b fh" style="--x:0;--y:0;--w:1366;--hh:587">
-        <video id="graceFondo" src="${esc(S.grace.fondo)}" poster="${esc(S.grace.fondo_poster)}"
-               data-velocidad="${S.grace.fondo_velocidad}"
+    <div class="pg glam" style="--h:840">
+      <div class="b fh gvideo" style="--x:439;--y:0;--w:488;--hh:840">
+        <video id="graceFondo" src="${esc(L.video)}" poster="${esc(L.video_poster)}"
                muted loop playsinline autoplay preload="none"
                disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
       </div>
-      <div class="b fh" style="--x:844;--y:-24;--w:366;--hh:611">
-        <img src="${esc(im[0].src)}" alt="${esc(im[0].alt)}" loading="lazy" decoding="async">
-      </div>
-      ${rot(S.grace, 62, 38)}
+      ${rot(S.grace, 62, 44)}
+      <h2 class="b t gltit" style="--x:64;--y:160;--w:300;--fs:26;--lh:1.26">${L.titulo.map(l => `<span>${esc(l)}</span>`).join('')}</h2>
+      <p class="b t glpar" style="--x:64;--y:296;--w:268;--fs:14.5;--lh:1.62">${esc(L.izquierda)}</p>
+      ${TRAZA('b glzurda', 228, 452, 150)}
+      ${TRAZA('b gldiestra', 904, 528, 150)}
+      <ul class="b gldcha" style="--x:904;--y:584;--w:400;--fs:14.5;--lh:1.62">
+        ${L.derecha.map(d => `<li><b class="${/^NO/.test(d.marca) ? 'no' : ''}">${esc(d.marca)}</b> ${esc(d.texto)}</li>`).join('')}
+      </ul>
+      <p class="b t glcierre" style="--x:904;--y:730;--w:400;--fs:14.5;--lh:1.62">${esc(L.cierre)}</p>
+      <p class="b gllock" style="--x:483;--y:772;--w:400"><img src="media/grace-logo.webp" alt="" width="512" height="512" loading="lazy" decoding="async"><span>${esc(L.lockup)}</span></p>
     </div>
 
-    <div class="pg" style="--h:1000">
-      <div class="b fh" style="--x:0;--y:0;--w:1366;--hh:932" aria-hidden="true">
+    <div class="pg" style="--h:850">
+      <div class="b fh" style="--x:0;--y:0;--w:1366;--hh:850" aria-hidden="true">
         <img class="gcampo" src="${esc(S.grace.fondo_poster)}" alt="" loading="lazy" decoding="async">
       </div>
-      <div class="b fh gvelo" style="--x:178;--y:0;--w:1033;--hh:932" aria-hidden="true"></div>
-      <div class="b fh gpanel" style="--x:415;--y:222;--w:786;--hh:646" aria-hidden="true"></div>
-      <h2 class="b t gtit" style="--x:62;--y:20;--w:800;--fs:38;--lh:1.45">${S.grace.titulo_lineas.map(l => `<span>${esc(l)}</span>`).join('')}</h2>
-      <p class="b t gsub" style="--x:62;--y:150;--w:760;--fs:17;--lh:1.7">${esc(S.grace.linea).replace(/\n/g, '<br>')}</p>
-      <figure class="b fh" style="--x:40;--y:190;--w:470;--hh:742;margin:0">
+      <div class="b fh gvelo" style="--x:178;--y:0;--w:1033;--hh:850" aria-hidden="true"></div>
+      <div class="b fh gpanel" style="--x:415;--y:72;--w:786;--hh:646" aria-hidden="true"></div>
+      <figure class="b fh" style="--x:40;--y:60;--w:470;--hh:742;margin:0">
         <canvas class="gcanvas" data-src="${esc(im[1].src)}" data-anclaje="cubrir" data-revelado="0.68" role="img" aria-label="${esc(im[1].alt)}"></canvas>
       </figure>
-      <img class="b fh gemblema" style="--x:405;--y:240;--w:40;--hh:40" src="media/grace-logo.webp" alt="" width="512" height="512" loading="lazy" decoding="async">
-      <p class="b t gmarca" style="--x:455;--y:244;--w:300;--fs:26;--lh:1.1">${esc(S.grace.envivo.titulo)}</p>
-      <p class="b t gvivo fh" style="--x:712;--y:246;--w:112;--hh:30;--fs:12">(( ${esc(S.grace.envivo.estado)} ))</p>
-      <ul class="b glista" style="--x:432;--y:300;--w:752">
+      <img class="b fh gemblema" style="--x:405;--y:90;--w:40;--hh:40" src="media/grace-logo.webp" alt="" width="512" height="512" loading="lazy" decoding="async">
+      <p class="b t gmarca" style="--x:455;--y:94;--w:300;--fs:26;--lh:1.1">${esc(S.grace.envivo.titulo)}</p>
+      <p class="b t gvivo fh" style="--x:712;--y:96;--w:112;--hh:30;--fs:12">(( ${esc(S.grace.envivo.estado)} ))</p>
+      <ul class="b glista" style="--x:432;--y:150;--w:752">
         ${S.grace.envivo.filas.map(fila).join('\n        ')}
       </ul>
-      <p class="b gpie" style="--x:432;--y:726;--w:752">${esc(S.grace.envivo.barrido)}</p>
-      <a class="b gcta" style="--x:432;--y:798;--w:752" href="#creative">${esc(S.grace.cta)}</a>
+      <p class="b gpie" style="--x:432;--y:576;--w:752">${esc(S.grace.envivo.barrido)}</p>
+      <a class="b gcta" style="--x:432;--y:648;--w:752" href="#creative">${esc(S.grace.cta)}</a>
     </div>
 
     <div class="pg" style="--h:1115">

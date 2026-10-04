@@ -142,7 +142,7 @@
     "envivo": {
       "titulo": "Grace System",
       "estado": "EJEMPLO",
-      "barrido": "Grace revisa las publicaciones todos los días y filtra por rubro y presupuesto. De cada oportunidad pertinente emite un análisis breve y un veredicto: GO deja la propuesta lista para descargar y revisar por una persona; NO-GO deja escrita la justificación de no proceder. El panel muestra cómo se ve ese resultado.",
+      "barrido": "",
       "_barrido": "Se refresca a mano cuando RAIdar corre un barrido nuevo. Si la fecha envejece, se nota: no dejarla vieja.",
       "filas": [
         {
@@ -213,7 +213,30 @@
       "CLASIFICA CADA LICITACIÓN",
       "DE MERCADO PÚBLICO"
     ],
-    "cta": "Ver los servicios, desde $360.000 neto"
+    "cta": "Ver los servicios, desde $360.000 neto",
+    "lamina": {
+      "video": "media/grace-lamina.mp4",
+      "video_poster": "media/grace-lamina.webp",
+      "titulo": [
+        "CLASIFICA CADA",
+        "LICITACIÓN",
+        "DE MERCADO",
+        "PÚBLICO"
+      ],
+      "izquierda": "Grace revisa las publicaciones todos los días y filtra por rubro y presupuesto. De cada oportunidad pertinente emite un análisis breve y un veredicto:",
+      "derecha": [
+        {
+          "marca": "GO",
+          "texto": "deja la propuesta lista para descargar y revisar por una persona."
+        },
+        {
+          "marca": "NO-GO",
+          "texto": "deja escrita la justificación de no proceder."
+        }
+      ],
+      "cierre": "El panel muestra cómo se ve ese resultado.",
+      "lockup": "GRACE SYSTEM"
+    }
   },
   "creative": {
     "codigo": "/ 04",
