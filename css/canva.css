@@ -128,9 +128,11 @@
   mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
 /* los dos rect 415,276 786x229 y 415,473 786x226: el fondo de la lista. */
 .gpanel{background:rgba(2,6,10,.8)}
-.gtit{font-family:var(--plex);font-weight:700;color:#fff;text-transform:uppercase}
+.gtit{font-family:var(--plex);font-weight:700;color:#fff;text-transform:uppercase;
+  text-shadow:0 calc(2*var(--u)) calc(18*var(--u)) rgba(0,0,0,.95)}
 .gtit span{display:block}
-.gsub{font-family:var(--clear);font-weight:300;color:#cfd6dc}
+.gsub{font-family:var(--clear);font-weight:300;color:#dfe5ea;
+  text-shadow:0 calc(2*var(--u)) calc(14*var(--u)) rgba(0,0,0,.95)}
 .gperfil{object-fit:contain;object-position:left bottom}
 .gcanvas{display:block;width:100%;height:100%;background:transparent}
 .gemblema{object-fit:contain;filter:drop-shadow(0 0 calc(8*var(--u)) rgba(5,248,249,.5))}
@@ -139,7 +141,7 @@
 .gvivo{font-family:var(--plex);font-weight:400;color:#fff;border:calc(1.4*var(--u)) solid rgba(5,248,249,.6);
   border-radius:999px;display:inline-grid;place-items:center;white-space:nowrap;letter-spacing:.14em}
 .glista{list-style:none;padding:0;margin:0;display:grid}
-.glista li{display:grid;grid-template-columns:calc(96*var(--u)) minmax(0,1fr) calc(130*var(--u));
+.glista li{display:grid;grid-template-columns:calc(104*var(--u)) minmax(0,1fr) calc(132*var(--u));
   align-items:center;gap:calc(12*var(--u));
   font-family:var(--plex);font-size:calc(10*var(--u));line-height:1.35;color:#c3cad1;
   border-top:1px solid rgba(255,255,255,.07);padding:calc(7*var(--u)) 0}
@@ -149,7 +151,14 @@
 .glista .dt em{display:block;font-style:normal;color:#e6eaee;overflow:hidden;
   text-overflow:ellipsis;white-space:nowrap}
 .glista .ci{color:#9aa3ab;text-align:right;white-space:nowrap;font-size:calc(8.4*var(--u))}
-.gpie{font-family:var(--plex);font-size:calc(8*var(--u));color:#6f777e;letter-spacing:.05em}
+.gpie{font-family:var(--plex);font-size:calc(9*var(--u));line-height:1.5;color:#8a9299;letter-spacing:.04em}
+/* El llamado a la accion de / 03, que el Canva no traia: la seccion cerraba
+   sin decirle al visitante que hacer. */
+.gcta{display:inline-block;font-family:var(--plex);font-weight:700;font-size:calc(14*var(--u));
+  letter-spacing:.1em;text-transform:uppercase;color:#1a1208;background:#c87941;
+  padding:calc(14*var(--u)) calc(26*var(--u));border-radius:calc(3*var(--u));
+  text-decoration:none;transition:filter .2s}
+.gcta:hover{filter:brightness(1.1)}
 .gcifras{display:grid;grid-template-columns:repeat(3,1fr);align-items:center;text-align:center}
 .gcifras b{display:block;font-family:Archivo,sans-serif;font-variation-settings:"wdth" 104;font-weight:800;
   font-size:calc(58*var(--u));line-height:1;letter-spacing:-.02em;color:#fff}
@@ -315,7 +324,8 @@
   .glista .mkr,.glista .dt b,.glista .ci{font-size:calc(12*var(--u))}
   .glista .ci{text-align:left}
   .glista .dt em{white-space:normal}
-  .gpie{font-size:calc(12*var(--u))}
+  .gpie{font-size:calc(13*var(--u))}
+  .cv .gcta{font-size:calc(20*var(--u));align-self:flex-start}
   .gcifras{grid-template-columns:1fr;gap:calc(40*var(--u))}
   .gcifras b{font-size:calc(64*var(--u))}
   .gcifras span{font-size:calc(16*var(--u))}

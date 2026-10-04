@@ -113,7 +113,7 @@
     "codigo": "/ 03",
     "nombre": "L'Intelligence",
     "titulo": "Grace System",
-    "linea": "Grace monitorea las publicaciones, filtra por rubro y presupuesto,\ny prepara la propuesta antes del cierre.",
+    "linea": "Grace vigila cada licencia, certificado y contrato de soporte de su\ninstitución, y avisa con la cotización de renovación ya escrita.",
     "pie": "Materialización por código",
     "fondo": "media/campo-codigo.mp4",
     "fondo_poster": "media/campo-codigo.webp",
@@ -141,78 +141,79 @@
     "_leyendas": "Los pies «Grace ___ con efecto materialización por código» se quitaron el 02-10-2026: eran la instrucción del encargo, no información para el visitante.",
     "envivo": {
       "titulo": "GRACE",
-      "estado": "EN VIVO",
-      "barrido": "Barrido del 4 de septiembre de 2026 · 547 licitaciones revisadas, 11 pertinentes. Grace es la cara visible del rastreo: filtra por rubro, presupuesto y plazo.",
+      "estado": "EJEMPLO",
+      "barrido": "Así se ve el calendario de vencimientos de una institución. Grace lo revisa todos los meses: licencias, certificados, respaldos y presupuesto por ejecutar. El panel es un ejemplo; su calendario se arma con sus propios datos.",
       "_barrido": "Se refresca a mano cuando RAIdar corre un barrido nuevo. Si la fecha envejece, se nota: no dejarla vieja.",
       "filas": [
         {
-          "marca": "PERTINENTE",
-          "id": "1796-51-LE24",
-          "titulo": "Adquisición de Activos Fijos No Financieros SNCD",
-          "cierre": "cierra en 5 días"
+          "marca": "POR VENCER",
+          "id": "LICENCIAS DE OFICINA · 40 PUESTOS",
+          "titulo": "Renovación cotizada antes de que el primer puesto pierda el acceso",
+          "cierre": "aviso a 60 días"
         },
         {
-          "marca": "PERTINENTE",
-          "id": "2469-294-LE26",
-          "titulo": "Adquisición de Equipos Computacionales, Universidad de Talca",
-          "cierre": "cierra en 5 días"
+          "marca": "RENOVAR",
+          "id": "CERTIFICADO DEL SITIO INSTITUCIONAL",
+          "titulo": "Se renueva y se valida antes de que el navegador muestre la alerta",
+          "cierre": "aviso a 30 días"
         },
         {
-          "marca": "PERTINENTE",
-          "id": "3486-33-LE26",
-          "titulo": "Adquisición de pendrives para Servel",
-          "cierre": "cierra en 6 días"
+          "marca": "VENCE HOY",
+          "id": "SOPORTE DEL SERVIDOR DE CORREO · 12 MESES",
+          "titulo": "El soporte caduca sin que nadie haya autorizado la continuidad",
+          "cierre": "aviso a 90 días"
         },
         {
-          "marca": "PERTINENTE",
-          "id": "1174385-46-LE26",
-          "titulo": "Adquisición de equipos computacionales",
-          "cierre": "cierra en 30 días"
+          "marca": "POR RENDIR",
+          "id": "ORDEN DE COMPRA · RECEPCIÓN CONFORME",
+          "titulo": "El acta de puesta en marcha que la rendición necesita, ya emitida",
+          "cierre": "aviso a 15 días"
         },
         {
-          "marca": "PERTINENTE",
-          "id": "1057417-15390-AG26",
-          "titulo": "Licencias de software de productividad, 40 puestos",
-          "cierre": "cierra en 3 días"
+          "marca": "SIN COPIA",
+          "id": "RESPALDO DE LA BASE DE DATOS",
+          "titulo": "Respaldo verificado cada mes: que exista no es que se pueda restaurar",
+          "cierre": "reporte mensual"
         },
         {
-          "marca": "PERTINENTE",
-          "id": "2328-71-LE26",
-          "titulo": "Hospedaje y correo institucional, 12 meses",
-          "cierre": "cierra en 8 días"
+          "marca": "POR USAR",
+          "id": "PRESUPUESTO DE TECNOLOGÍA · AÑO FISCAL",
+          "titulo": "Lo que queda por ejecutar y en qué alcanza a convertirse este año",
+          "cierre": "reporte mensual"
         },
         {
-          "marca": "PERTINENTE",
-          "id": "1409-22-LE26",
-          "titulo": "Puesta en marcha de servidores ya adquiridos",
-          "cierre": "cierra en 4 días"
+          "marca": "AL DÍA",
+          "id": "DOMINIO INSTITUCIONAL · 24 MESES",
+          "titulo": "Pagado y vigente: la fecha queda escrita y vuelve a avisar sola",
+          "cierre": "aviso a 90 días"
         },
         {
-          "marca": "PERTINENTE",
-          "id": "4521-118-LE26",
-          "titulo": "Migración de sitio, dominio y certificado",
-          "cierre": "cierra en 11 días"
+          "marca": "POR CERRAR",
+          "id": "COTIZACIÓN VIGENTE · GLOSA REDACTADA",
+          "titulo": "El valor sostenido por escrito y la glosa lista para emitir la orden",
+          "cierre": "aviso a 5 días"
         }
       ]
     },
     "franja": [
       {
-        "cifra": "24/7",
-        "glosa": "Operación continua"
+        "cifra": "9",
+        "glosa": "SERVICIOS CON PRECIO PUBLICADO"
       },
       {
-        "cifra": "<60m",
-        "glosa": "Respuesta a cotización"
+        "cifra": "5",
+        "glosa": "DÍAS HÁBILES DESDE SU ORDEN"
       },
       {
-        "cifra": "100%",
-        "glosa": "Trazabilidad"
+        "cifra": "0",
+        "glosa": "VENTAS EN EL ESTADO: COMPRUÉBELO"
       }
     ],
     "titulo_lineas": [
-      "CLASIFICA CADA LICITACIÓN",
-      "DE MERCADO PÚBLICO"
-    ]
+      "NINGÚN VENCIMIENTO SE PASA",
+      "CUANDO ALGUIEN LO MIRA"
+    ],
+    "cta": "Solicitar cotización del plan de doce meses"
   },
   "creative": {
     "codigo": "/ 04",

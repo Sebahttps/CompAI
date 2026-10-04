@@ -192,7 +192,7 @@ const grace = (() => {
         <img class="gcampo" src="${esc(S.grace.fondo_poster)}" alt="" loading="lazy" decoding="async">
       </div>
       <div class="b fh gvelo" style="--x:178;--y:0;--w:1033;--hh:932" aria-hidden="true"></div>
-      <div class="b fh gpanel" style="--x:415;--y:264;--w:786;--hh:444" aria-hidden="true"></div>
+      <div class="b fh gpanel" style="--x:415;--y:258;--w:786;--hh:478" aria-hidden="true"></div>
       <h2 class="b t gtit" style="--x:44;--y:20;--w:800;--fs:38;--lh:1.45">${S.grace.titulo_lineas.map(l => `<span>${esc(l)}</span>`).join('')}</h2>
       <p class="b t gsub" style="--x:44;--y:150;--w:760;--fs:17;--lh:1.7">${esc(S.grace.linea).replace(/\n/g, '<br>')}</p>
       <figure class="b fh" style="--x:40;--y:190;--w:470;--hh:742;margin:0">
@@ -201,10 +201,11 @@ const grace = (() => {
       <img class="b fh gemblema" style="--x:405;--y:234;--w:40;--hh:40" src="media/grace-logo.webp" alt="" width="512" height="512" loading="lazy" decoding="async">
       <p class="b t gmarca" style="--x:455;--y:238;--w:200;--fs:27.8;--lh:1.1">${esc(S.grace.envivo.titulo)}</p>
       <p class="b t gvivo fh" style="--x:580;--y:242;--w:110;--hh:30;--fs:12">(( ${esc(S.grace.envivo.estado)} ))</p>
-      <ul class="b glista" style="--x:415;--y:292;--w:786">
+      <ul class="b glista" style="--x:432;--y:286;--w:752">
         ${S.grace.envivo.filas.map(fila).join('\n        ')}
       </ul>
-      <p class="b gpie" style="--x:415;--y:690;--w:786">${esc(S.grace.envivo.barrido)}</p>
+      <p class="b gpie" style="--x:432;--y:688;--w:752">${esc(S.grace.envivo.barrido)}</p>
+      <a class="b gcta" style="--x:432;--y:752;--w:560" href="#inbox">${esc(S.grace.cta)}</a>
     </div>
 
     <div class="pg" style="--h:1115">
