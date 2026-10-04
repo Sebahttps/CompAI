@@ -140,25 +140,31 @@
   text-transform:uppercase;white-space:nowrap}
 .gvivo{font-family:var(--plex);font-weight:400;color:#fff;border:calc(1.4*var(--u)) solid rgba(5,248,249,.6);
   border-radius:999px;display:inline-grid;place-items:center;white-space:nowrap;letter-spacing:.14em}
+/* El panel se lee, no se descifra: el cuerpo pasa de 8-10 px a 11-14 px
+   y la columna del veredicto baja de 104 a 48 px de lienzo, que es lo que
+   mide «NO-GO». Medido por Visu, 04-10-2026. */
 .glista{list-style:none;padding:0;margin:0;display:grid}
-.glista li{display:grid;grid-template-columns:calc(104*var(--u)) minmax(0,1fr) calc(132*var(--u));
+.glista li{display:grid;grid-template-columns:calc(48*var(--u)) minmax(0,1fr) calc(96*var(--u));
   align-items:center;gap:calc(12*var(--u));
-  font-family:var(--plex);font-size:calc(10*var(--u));line-height:1.35;color:#c3cad1;
+  font-family:var(--plex);font-size:calc(14*var(--u));line-height:1.35;color:#c3cad1;
   border-top:1px solid rgba(255,255,255,.07);padding:calc(7*var(--u)) 0}
-.glista .mkr{color:var(--petroleo2);font-weight:700;font-size:calc(8.4*var(--u));letter-spacing:.09em}
+.glista .mkr{color:var(--petroleo2);font-weight:700;font-size:calc(11*var(--u));letter-spacing:.09em}
 /* El veredicto se lee de un vistazo: GO en azul de traza, NO-GO apagado.
    Tres NO-GO en ocho filas dicen que hay criterio y que sabe decir que no. */
 .glista li:has(.mkr:not(:empty)) .mkr{white-space:nowrap}
 .glista .mkr.no{color:#8a9299}
 .glista .dt{min-width:0}
-.glista .dt b{display:block;font-weight:400;color:#8f98a0;font-size:calc(8*var(--u))}
+.glista .dt b{display:block;font-weight:400;color:#8f98a0;font-size:calc(11*var(--u))}
 .glista .dt em{display:block;font-style:normal;color:#e6eaee;overflow:hidden;
   text-overflow:ellipsis;white-space:nowrap}
-.glista .ci{color:#9aa3ab;text-align:right;white-space:nowrap;font-size:calc(8.4*var(--u))}
-.gpie{font-family:var(--plex);font-size:calc(9*var(--u));line-height:1.5;color:#8a9299;letter-spacing:.04em}
+.glista .ci{color:#9aa3ab;text-align:right;white-space:nowrap;font-size:calc(11*var(--u))}
+.gpie{font-family:var(--plex);font-size:calc(12*var(--u));line-height:1.5;color:#8a9299;letter-spacing:.04em}
 /* El llamado a la accion de / 03, que el Canva no traia: la seccion cerraba
-   sin decirle al visitante que hacer. */
-.gcta{display:inline-block;font-family:var(--plex);font-weight:700;font-size:calc(14*var(--u));
+   sin decirle al visitante que hacer.
+   VISU 04-10-2026: pasa a ocupar el ancho de la lista (--w 560 -> 752 en
+   construir.mjs), asi que el rotulo se centra; antes el boton cerraba 192 px
+   del lienzo antes que la lista y el pie, y era el descuadre mas visible. */
+.gcta{display:inline-block;text-align:center;font-family:var(--plex);font-weight:700;font-size:calc(14*var(--u));
   letter-spacing:.1em;text-transform:uppercase;color:#1a1208;background:#c87941;
   padding:calc(14*var(--u)) calc(26*var(--u));border-radius:calc(3*var(--u));
   text-decoration:none;transition:filter .2s}
@@ -319,20 +325,25 @@
   .cv .ciso{width:min(160px,42%);margin-inline:auto;order:4}
   .cacc{justify-content:center;font-size:calc(20*var(--u))}
 
-  .gtit{font-size:calc(34*var(--u))}
-  .gsub{font-size:calc(20*var(--u))}
-  .gmarca{font-size:calc(26*var(--u))}
-  .cv .gvivo{font-size:calc(13*var(--u));padding:calc(6*var(--u)) calc(16*var(--u));
+  /* `.cv` delante: sin el, `.cv .t` (0,2,0) de arriba le gana a `.gtit`
+     (0,1,0) y estas tres reglas no se aplicaban nunca. Visu, 04-10-2026. */
+  .cv .gtit{font-size:calc(52*var(--u))}
+  .cv .gsub{font-size:calc(28*var(--u))}
+  .cv .gmarca{font-size:calc(34*var(--u))}
+  .cv .gvivo{font-size:calc(22*var(--u));padding:calc(6*var(--u)) calc(16*var(--u));
     width:auto;align-self:flex-start}
-  .glista li{grid-template-columns:1fr;gap:calc(4*var(--u));font-size:calc(14*var(--u))}
-  .glista .mkr,.glista .dt b,.glista .ci{font-size:calc(12*var(--u))}
+  .glista li{grid-template-columns:1fr;gap:calc(4*var(--u));font-size:calc(28*var(--u))}
+  .glista .mkr,.glista .dt b,.glista .ci{font-size:calc(23*var(--u))}
   .glista .ci{text-align:left}
   .glista .dt em{white-space:normal}
-  .gpie{font-size:calc(13*var(--u))}
-  .cv .gcta{font-size:calc(20*var(--u));align-self:flex-start}
+  .gpie{font-size:calc(23*var(--u))}
+  /* la unica accion de la seccion no puede ser la pieza mas chica:
+     33,7 px de alto a 390 px pasan a 50. Visu, 04-10-2026. */
+  .cv .gcta{font-size:calc(28*var(--u));padding:calc(22*var(--u)) calc(26*var(--u));
+    align-self:stretch;text-align:center}
   .gcifras{grid-template-columns:1fr;gap:calc(40*var(--u))}
   .gcifras b{font-size:calc(64*var(--u))}
-  .gcifras span{font-size:calc(16*var(--u))}
+  .gcifras span{font-size:calc(24*var(--u))}
 
   .serv-tit{font-size:calc(30*var(--u))}
   .serv-par{font-size:calc(17*var(--u));text-align:left}

@@ -2,8 +2,8 @@
   "_leeme": "Única fuente de los textos del sitio. Cambiar un texto = editar este archivo y hacer push. El workflow .github/workflows/sitio-compai.yml vuelve a armar index.html solo.",
   "meta": {
     "lang": "es-CL",
-    "title": "compAI — Tecnología para Chile, ejecutada por IA",
-    "description": "Automatización, agentes de IA, desarrollo web y dirección creativa. Proveedor del Estado en Mercado Público. Santiago, Chile.",
+    "title": "compAI — Servicios TI para el Estado, con precio publicado",
+    "description": "Servicios de TI con su valor neto publicado, el que va en la orden de compra. Compra Ágil bajo 100 UTM. Santiago, Chile.",
     "url": "https://compai.cl/",
     "og_image": "https://compai.cl/media/og.jpg",
     "og_image_alt": "compAI — Tecnología para Chile, ejecutada por IA"
@@ -201,8 +201,8 @@
         "glosa": "SERVICIOS CON PRECIO PUBLICADO"
       },
       {
-        "cifra": "5",
-        "glosa": "DÍAS HÁBILES DESDE SU ORDEN"
+        "cifra": "$360.000",
+        "glosa": "NETO · EL SERVICIO MÁS BARATO"
       },
       {
         "cifra": "0",
@@ -213,7 +213,7 @@
       "CLASIFICA CADA LICITACIÓN",
       "DE MERCADO PÚBLICO"
     ],
-    "cta": "Ver los nueve servicios, con su precio"
+    "cta": "Ver los servicios, desde $360.000 neto"
   },
   "creative": {
     "codigo": "/ 04",

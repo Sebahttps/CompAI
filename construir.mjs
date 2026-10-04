@@ -166,6 +166,26 @@ const ilCuore = `
   </section>`;
 
 const grace = (() => {
+  /* ENCUADRE CORREGIDO POR VISU, 04-10-2026. Medido por CDP a 1440x900 sobre
+     el index.html construido. Solo se movieron cajas; ni un texto ni un color.
+       · rot / 03: 59,0 -> 62,38. A y=0 el rotulo salia cortado contra el borde
+         superior de la seccion; /04 y /05 ya estaban a x=62 y=38.
+       · gpanel 258/478 -> 222/578. El borde superior del panel pasaba por la
+         mitad del lockup GRACE SYSTEM (emblema 234..274 contra panel 258) y su
+         borde inferior (736) dejaba el boton AFUERA (752..801).
+       · emblema/gmarca/gvivo +6 y glista 286 -> 300: el lockup queda dentro del
+         panel con 18 px de aire y la lista arranca 20 px bajo el.
+       · gpie 688 -> 658 y gcta 752 -> 730: el hueco entre la lista y el pie era
+         de 88 px del lienzo, el doble que cualquier otro aire del panel.
+       · gcta w 560 -> 752: su borde derecho quedaba 192 px del lienzo mas corto
+         que el de la lista y el del pie. Ahora los tres cierran en 1184.
+       · gtit/gsub x 44 -> 62: alineados con el rotulo de la seccion.
+     ARRASTRE DEL CUERPO DE LETRA, 04-10-2026: la lista pasa de 8-10 px a
+     11-14 px (css/canva.css, bloque .glista) y crece 68 px de lienzo. Lo
+     acompanan gpanel 578->646, gpie 658->726, gcta 730->798 y la pagina
+     932->1000; si no, el pie se mete dentro de la ultima fila.
+       · gcifras 45/1275 -> 62/1242: el cuarto margen izquierdo distinto
+         dentro de 19 px. Ahora los cuatro cierran en 62. */
   const im = S.grace.imagenes;
   const fila = f => `<li>
             <span class="mkr${/^NO/.test(f.marca) ? ' no' : ''}">${esc(f.marca)}</span>
@@ -184,32 +204,32 @@ const grace = (() => {
       <div class="b fh" style="--x:844;--y:-24;--w:366;--hh:611">
         <img src="${esc(im[0].src)}" alt="${esc(im[0].alt)}" loading="lazy" decoding="async">
       </div>
-      ${rot(S.grace, 59, 0)}
+      ${rot(S.grace, 62, 38)}
     </div>
 
-    <div class="pg" style="--h:932">
+    <div class="pg" style="--h:1000">
       <div class="b fh" style="--x:0;--y:0;--w:1366;--hh:932" aria-hidden="true">
         <img class="gcampo" src="${esc(S.grace.fondo_poster)}" alt="" loading="lazy" decoding="async">
       </div>
       <div class="b fh gvelo" style="--x:178;--y:0;--w:1033;--hh:932" aria-hidden="true"></div>
-      <div class="b fh gpanel" style="--x:415;--y:258;--w:786;--hh:478" aria-hidden="true"></div>
-      <h2 class="b t gtit" style="--x:44;--y:20;--w:800;--fs:38;--lh:1.45">${S.grace.titulo_lineas.map(l => `<span>${esc(l)}</span>`).join('')}</h2>
-      <p class="b t gsub" style="--x:44;--y:150;--w:760;--fs:17;--lh:1.7">${esc(S.grace.linea).replace(/\n/g, '<br>')}</p>
+      <div class="b fh gpanel" style="--x:415;--y:222;--w:786;--hh:646" aria-hidden="true"></div>
+      <h2 class="b t gtit" style="--x:62;--y:20;--w:800;--fs:38;--lh:1.45">${S.grace.titulo_lineas.map(l => `<span>${esc(l)}</span>`).join('')}</h2>
+      <p class="b t gsub" style="--x:62;--y:150;--w:760;--fs:17;--lh:1.7">${esc(S.grace.linea).replace(/\n/g, '<br>')}</p>
       <figure class="b fh" style="--x:40;--y:190;--w:470;--hh:742;margin:0">
         <canvas class="gcanvas" data-src="${esc(im[1].src)}" data-anclaje="cubrir" data-revelado="0.68" role="img" aria-label="${esc(im[1].alt)}"></canvas>
       </figure>
-      <img class="b fh gemblema" style="--x:405;--y:234;--w:40;--hh:40" src="media/grace-logo.webp" alt="" width="512" height="512" loading="lazy" decoding="async">
-      <p class="b t gmarca" style="--x:455;--y:238;--w:300;--fs:26;--lh:1.1">${esc(S.grace.envivo.titulo)}</p>
-      <p class="b t gvivo fh" style="--x:712;--y:240;--w:112;--hh:30;--fs:12">(( ${esc(S.grace.envivo.estado)} ))</p>
-      <ul class="b glista" style="--x:432;--y:286;--w:752">
+      <img class="b fh gemblema" style="--x:405;--y:240;--w:40;--hh:40" src="media/grace-logo.webp" alt="" width="512" height="512" loading="lazy" decoding="async">
+      <p class="b t gmarca" style="--x:455;--y:244;--w:300;--fs:26;--lh:1.1">${esc(S.grace.envivo.titulo)}</p>
+      <p class="b t gvivo fh" style="--x:712;--y:246;--w:112;--hh:30;--fs:12">(( ${esc(S.grace.envivo.estado)} ))</p>
+      <ul class="b glista" style="--x:432;--y:300;--w:752">
         ${S.grace.envivo.filas.map(fila).join('\n        ')}
       </ul>
-      <p class="b gpie" style="--x:432;--y:688;--w:752">${esc(S.grace.envivo.barrido)}</p>
-      <a class="b gcta" style="--x:432;--y:752;--w:560" href="#creative">${esc(S.grace.cta)}</a>
+      <p class="b gpie" style="--x:432;--y:726;--w:752">${esc(S.grace.envivo.barrido)}</p>
+      <a class="b gcta" style="--x:432;--y:798;--w:752" href="#creative">${esc(S.grace.cta)}</a>
     </div>
 
     <div class="pg" style="--h:1115">
-      <div class="b gcifras fh" style="--x:45;--y:57;--w:1275;--hh:152">
+      <div class="b gcifras fh" style="--x:62;--y:57;--w:1242;--hh:152">
         ${S.grace.franja.map(f => `<div><b>${esc(f.cifra)}</b><span>${esc(f.glosa)}</span></div>`).join('')}
       </div>
       <figure class="b fh" style="--x:0;--y:258;--w:1366;--hh:772;margin:0">
