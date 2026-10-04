@@ -113,7 +113,7 @@
     "codigo": "/ 03",
     "nombre": "L'Intelligence",
     "titulo": "Grace System",
-    "linea": "Grace vigila cada licencia, certificado y contrato de soporte de su\ninstitución, y avisa con la cotización de renovación ya escrita.",
+    "linea": "La agente Grace monitorea a diario las publicaciones de Mercado\nPúblico y filtra por rubro y presupuesto antes de que alguien mire.",
     "pie": "Materialización por código",
     "fondo": "media/campo-codigo.mp4",
     "fondo_poster": "media/campo-codigo.webp",
@@ -140,58 +140,58 @@
     ],
     "_leyendas": "Los pies «Grace ___ con efecto materialización por código» se quitaron el 02-10-2026: eran la instrucción del encargo, no información para el visitante.",
     "envivo": {
-      "titulo": "GRACE",
+      "titulo": "Grace System",
       "estado": "EJEMPLO",
-      "barrido": "Así se ve el calendario de vencimientos de una institución. Grace lo revisa todos los meses: licencias, certificados, respaldos y presupuesto por ejecutar. El panel es un ejemplo; su calendario se arma con sus propios datos.",
+      "barrido": "Grace revisa las publicaciones todos los días y filtra por rubro y presupuesto. De cada oportunidad pertinente emite un análisis breve y un veredicto: GO deja la propuesta lista para descargar y revisar por una persona; NO-GO deja escrita la justificación de no proceder. El panel muestra cómo se ve ese resultado.",
       "_barrido": "Se refresca a mano cuando RAIdar corre un barrido nuevo. Si la fecha envejece, se nota: no dejarla vieja.",
       "filas": [
         {
-          "marca": "POR VENCER",
+          "marca": "GO",
           "id": "LICENCIAS DE OFICINA · 40 PUESTOS",
-          "titulo": "Renovación cotizada antes de que el primer puesto pierda el acceso",
-          "cierre": "aviso a 60 días"
+          "titulo": "Calza con el rubro y el presupuesto alcanza: propuesta armada",
+          "cierre": "propuesta lista"
         },
         {
-          "marca": "RENOVAR",
-          "id": "CERTIFICADO DEL SITIO INSTITUCIONAL",
-          "titulo": "Se renueva y se valida antes de que el navegador muestre la alerta",
-          "cierre": "aviso a 30 días"
+          "marca": "GO",
+          "id": "PUESTA EN MARCHA DE SERVIDORES COMPRADOS",
+          "titulo": "Entregable cerrado y sin bulto que despachar: se oferta",
+          "cierre": "propuesta lista"
         },
         {
-          "marca": "VENCE HOY",
-          "id": "SOPORTE DEL SERVIDOR DE CORREO · 12 MESES",
-          "titulo": "El soporte caduca sin que nadie haya autorizado la continuidad",
-          "cierre": "aviso a 90 días"
+          "marca": "NO-GO",
+          "id": "CABLEADO Y PUNTOS DE RED EN TERRENO",
+          "titulo": "Es obra física de cuadrilla: queda fuera del alcance declarado",
+          "cierre": "justificado"
         },
         {
-          "marca": "POR RENDIR",
-          "id": "ORDEN DE COMPRA · RECEPCIÓN CONFORME",
-          "titulo": "El acta de puesta en marcha que la rendición necesita, ya emitida",
-          "cierre": "aviso a 15 días"
+          "marca": "GO",
+          "id": "HOSPEDAJE Y CORREO · 12 MESES",
+          "titulo": "Se pide por capacidad y plazo, que es como se cotiza aquí",
+          "cierre": "propuesta lista"
         },
         {
-          "marca": "SIN COPIA",
-          "id": "RESPALDO DE LA BASE DE DATOS",
-          "titulo": "Respaldo verificado cada mes: que exista no es que se pueda restaurar",
-          "cierre": "reporte mensual"
+          "marca": "NO-GO",
+          "id": "ENLACE DE INTERNET · FIBRA, 36 MESES",
+          "titulo": "Lo provee una empresa de telecomunicaciones, no un proveedor de nube",
+          "cierre": "justificado"
         },
         {
-          "marca": "POR USAR",
-          "id": "PRESUPUESTO DE TECNOLOGÍA · AÑO FISCAL",
-          "titulo": "Lo que queda por ejecutar y en qué alcanza a convertirse este año",
-          "cierre": "reporte mensual"
+          "marca": "GO",
+          "id": "INFORME DE ESPECIFICACIÓN TÉCNICA",
+          "titulo": "Se entrega por informe y no hay un tercero a quien pagarle",
+          "cierre": "propuesta lista"
         },
         {
-          "marca": "AL DÍA",
-          "id": "DOMINIO INSTITUCIONAL · 24 MESES",
-          "titulo": "Pagado y vigente: la fecha queda escrita y vuelve a avisar sola",
-          "cierre": "aviso a 90 días"
+          "marca": "NO-GO",
+          "id": "EQUIPOS A DESPACHAR EN CINCO REGIONES",
+          "titulo": "Fuera del radio de despacho: le sirve un proveedor con bodega",
+          "cierre": "justificado"
         },
         {
-          "marca": "POR CERRAR",
-          "id": "COTIZACIÓN VIGENTE · GLOSA REDACTADA",
-          "titulo": "El valor sostenido por escrito y la glosa lista para emitir la orden",
-          "cierre": "aviso a 5 días"
+          "marca": "GO",
+          "id": "MIGRACIÓN DE SITIO, DOMINIO Y CERTIFICADO",
+          "titulo": "Un solo responsable para el corte y para lo que queda andando",
+          "cierre": "propuesta lista"
         }
       ]
     },
@@ -210,10 +210,10 @@
       }
     ],
     "titulo_lineas": [
-      "NINGÚN VENCIMIENTO SE PASA",
-      "CUANDO ALGUIEN LO MIRA"
+      "CLASIFICA CADA LICITACIÓN",
+      "DE MERCADO PÚBLICO"
     ],
-    "cta": "Solicitar cotización del plan de doce meses"
+    "cta": "Ver los nueve servicios, con su precio"
   },
   "creative": {
     "codigo": "/ 04",

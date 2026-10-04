@@ -145,7 +145,11 @@
   align-items:center;gap:calc(12*var(--u));
   font-family:var(--plex);font-size:calc(10*var(--u));line-height:1.35;color:#c3cad1;
   border-top:1px solid rgba(255,255,255,.07);padding:calc(7*var(--u)) 0}
-.glista .mkr{color:#2fe06a;font-weight:700;font-size:calc(8*var(--u));letter-spacing:.09em}
+.glista .mkr{color:var(--petroleo2);font-weight:700;font-size:calc(8.4*var(--u));letter-spacing:.09em}
+/* El veredicto se lee de un vistazo: GO en azul de traza, NO-GO apagado.
+   Tres NO-GO en ocho filas dicen que hay criterio y que sabe decir que no. */
+.glista li:has(.mkr:not(:empty)) .mkr{white-space:nowrap}
+.glista .mkr.no{color:#8a9299}
 .glista .dt{min-width:0}
 .glista .dt b{display:block;font-weight:400;color:#8f98a0;font-size:calc(8*var(--u))}
 .glista .dt em{display:block;font-style:normal;color:#e6eaee;overflow:hidden;

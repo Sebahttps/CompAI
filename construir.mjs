@@ -168,7 +168,7 @@ const ilCuore = `
 const grace = (() => {
   const im = S.grace.imagenes;
   const fila = f => `<li>
-            <span class="mkr">${esc(f.marca)}</span>
+            <span class="mkr${/^NO/.test(f.marca) ? ' no' : ''}">${esc(f.marca)}</span>
             <span class="dt"><b>${esc(f.id)}</b><em>${esc(f.titulo)}</em></span>
             <span class="ci">${esc(f.cierre)}</span>
           </li>`;
@@ -199,13 +199,13 @@ const grace = (() => {
         <canvas class="gcanvas" data-src="${esc(im[1].src)}" data-anclaje="cubrir" data-revelado="0.68" role="img" aria-label="${esc(im[1].alt)}"></canvas>
       </figure>
       <img class="b fh gemblema" style="--x:405;--y:234;--w:40;--hh:40" src="media/grace-logo.webp" alt="" width="512" height="512" loading="lazy" decoding="async">
-      <p class="b t gmarca" style="--x:455;--y:238;--w:200;--fs:27.8;--lh:1.1">${esc(S.grace.envivo.titulo)}</p>
-      <p class="b t gvivo fh" style="--x:580;--y:242;--w:110;--hh:30;--fs:12">(( ${esc(S.grace.envivo.estado)} ))</p>
+      <p class="b t gmarca" style="--x:455;--y:238;--w:300;--fs:26;--lh:1.1">${esc(S.grace.envivo.titulo)}</p>
+      <p class="b t gvivo fh" style="--x:712;--y:240;--w:112;--hh:30;--fs:12">(( ${esc(S.grace.envivo.estado)} ))</p>
       <ul class="b glista" style="--x:432;--y:286;--w:752">
         ${S.grace.envivo.filas.map(fila).join('\n        ')}
       </ul>
       <p class="b gpie" style="--x:432;--y:688;--w:752">${esc(S.grace.envivo.barrido)}</p>
-      <a class="b gcta" style="--x:432;--y:752;--w:560" href="#inbox">${esc(S.grace.cta)}</a>
+      <a class="b gcta" style="--x:432;--y:752;--w:560" href="#creative">${esc(S.grace.cta)}</a>
     </div>
 
     <div class="pg" style="--h:1115">
