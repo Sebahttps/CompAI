@@ -341,6 +341,24 @@ button:disabled{opacity:.5; cursor:default}
         a2.style.cssText="color:var(--terracota,#C87941);text-decoration:underline;text-underline-offset:5px";
         nav2.appendChild(a2); document.body.appendChild(nav2);
       }
+      // MISMO PATRON (03-10-2026): enlace que solo aparece con la clave ya probada.
+      if(!document.querySelector('a[href="oportunidades/"], a[href="/estado/oportunidades/"]')){
+        var nav3=document.createElement("p");
+        nav3.style.cssText="margin:10px 0 0;text-align:center;font-family:var(--font-data,ui-monospace,monospace);font-size:13px";
+        var bnav3=document.createElement("a");
+        bnav3.href="oportunidades/"; bnav3.textContent="Ir a licitaciones pertinentes \u2192";
+        bnav3.style.cssText="color:var(--terracota,#C87941);text-decoration:underline;text-underline-offset:5px";
+        nav3.appendChild(bnav3); document.body.appendChild(nav3);
+      }
+      // MISMO PATRON (03-10-2026): enlace que solo aparece con la clave ya probada.
+      if(!document.querySelector('a[href="flujo/"], a[href="/estado/flujo/"]')){
+        var nav4=document.createElement("p");
+        nav4.style.cssText="margin:10px 0 0;text-align:center;font-family:var(--font-data,ui-monospace,monospace);font-size:13px";
+        var bnav4=document.createElement("a");
+        bnav4.href="flujo/"; bnav4.textContent="Ver el flujo de una licitaci\u00f3n \u2192";
+        bnav4.style.cssText="color:var(--terracota,#C87941);text-decoration:underline;text-underline-offset:5px";
+        nav4.appendChild(bnav4); document.body.appendChild(nav4);
+      }
       document.title="En qu\u00e9 va cada cosa \u00b7 COMPAI GLOBAL SOLUTIONS SPA";
       // Se guarda DESPUES de confirmar que la clave abrio de verdad (nunca
       // antes): si se guardara al escribirla, una clave mala tambien

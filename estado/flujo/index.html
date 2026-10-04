@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Flujo de licitación · demo · COMPAI GLOBAL SOLUTIONS SPA</title>
+<style>
+:root{
+  --ink-900:#08090C; --ink-850:#0B0D12; --ink-800:#0E1015; --ink-700:#161A21; --ink-600:#1F242D;
+  --crema:#F5F0E4; --crema-75:#BAB6AE; --crema-60:#96948E; --crema-28:#4A4A48;
+  --crema-12:#242526; --crema-06:#161719;
+  --azul:#2E8FB5; --azul-600:#13749A; --azul-300:#78C5E3;
+  --terracota:#C87941; --terracota-700:#8A4F27; --terracota-600:#A66234;
+  --terracota-400:#D88A52; --terracota-300:#E09A63; --terracota-200:#EFB98C;
+  --alerta:#D65454; --alerta-300:#F0A0A0;
+  --glow-azul:0 0 30px rgba(46,143,181,.42);
+  --glow-terracota:0 0 30px rgba(200,121,65,.42);
+  --font-data:'IBM Plex Mono',ui-monospace,"SF Mono","Cascadia Mono","Segoe UI Mono",Menlo,Consolas,"Courier New",monospace;
+  --radio:3px; --radio-caja:4px;
+  --shell:1280px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--ink-900); color:var(--crema);
+  font-family:var(--font-data); min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  padding:clamp(14px,2.4vw,32px);
+}
+.shell{max-width:var(--shell); margin:0 auto}
+
+/* ---------- cabecera ---------- */
+.hdr{
+  display:flex; flex-wrap:wrap; gap:16px; align-items:flex-start;
+  justify-content:space-between; margin-bottom:14px;
+}
+.brand{font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--crema-60)}
+.brand b{color:var(--terracota); font-weight:700}
+.titulo-wrap{flex:1 1 420px; min-width:260px}
+h1{
+  font-size:clamp(18px,2.6vw,26px); line-height:1.25; margin:2px 0 8px; font-weight:600;
+  letter-spacing:-.01em;
+}
+.aviso-ejemplo{
+  display:inline-flex; align-items:center; gap:8px; margin:0;
+  font-size:12px; letter-spacing:.04em; color:var(--terracota-200);
+  background:rgba(200,121,65,.12); border:1px solid rgba(200,121,65,.45);
+  border-radius:var(--radio); padding:6px 10px;
+}
+.controles{display:flex; gap:10px; flex-wrap:wrap}
+button{
+  font-family:var(--font-data); font-size:13px; font-weight:700; letter-spacing:.06em;
+  text-transform:uppercase; cursor:pointer; border:0; border-radius:var(--radio);
+  padding:11px 18px; color:var(--ink-900); background:var(--terracota);
+  transition:background .18s ease, box-shadow .18s ease, opacity .18s ease;
+}
+button:hover:not(:disabled){background:var(--terracota-400); box-shadow:var(--glow-terracota)}
+button:disabled{opacity:.4; cursor:default}
+button.secundario{
+  background:transparent; color:var(--crema-75); border:1px solid var(--crema-28);
+}
+button.secundario:hover:not(:disabled){border-color:var(--crema-60); color:var(--crema); box-shadow:none}
+
+/* ---------- barra de progreso ---------- */
+.progreso-wrap{
+  height:6px; border-radius:6px; background:var(--crema-12); overflow:hidden; margin:10px 0 16px;
+}
+.progreso-barra{
+  height:100%; width:0%; border-radius:6px;
+  background:linear-gradient(90deg,var(--azul),var(--azul) 50%,var(--terracota) 50%,var(--terracota));
+  background-size:200% 100%; background-position:100% 0;
+  transition:width .5s cubic-bezier(.16,1,.3,1);
+}
+
+/* ---------- leyenda ---------- */
+.leyenda{
+  display:flex; flex-wrap:wrap; gap:18px; margin-bottom:22px;
+  font-size:12px; color:var(--crema-75); letter-spacing:.02em;
+}
+.leyenda-item{display:inline-flex; align-items:center; gap:7px}
+.dot{width:9px; height:9px; border-radius:50%; display:inline-block; flex:0 0 auto}
+.dot.azul{background:var(--azul); box-shadow:0 0 8px rgba(46,143,181,.7)}
+.dot.ambar{background:var(--terracota); box-shadow:0 0 8px rgba(200,121,65,.7)}
+
+/* ---------- estado (status line) ---------- */
+.estado-linea{
+  font-size:13px; color:var(--crema-60); min-height:18px; margin-bottom:18px;
+  letter-spacing:.02em;
+}
+.estado-linea b{color:var(--crema)}
+
+/* ---------- rail / etapas ---------- */
+.rail{
+  display:flex; align-items:stretch; gap:0; margin-bottom:10px;
+}
+.etapa{
+  flex:1; min-width:0; position:relative; padding:46px 12px 0;
+  display:flex; flex-direction:column;
+}
+.nodo{
+  position:absolute; top:0; left:50%; transform:translateX(-50%);
+  width:32px; height:32px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:13px; font-weight:700;
+  background:var(--ink-800); border:2px solid var(--crema-28); color:var(--crema-60);
+  z-index:2; transition:all .35s cubic-bezier(.16,1,.3,1);
+}
+.etapa:not(:first-child)::before{
+  content:""; position:absolute; top:15px; left:-50%; width:100%; height:2px;
+  background:var(--crema-28); z-index:1; transition:background .35s ease;
+}
+.etapa[data-grupo="azul"].listo::before,
+.etapa[data-grupo="azul"].activo::before{background:var(--azul)}
+.etapa[data-grupo="ambar"].listo::before,
+.etapa[data-grupo="ambar"].activo::before{background:var(--terracota)}
+
+.etapa.activo .nodo{
+  border-color:var(--crema); color:var(--ink-900); background:var(--crema);
+  transform:translateX(-50%) scale(1.12);
+}
+.etapa[data-grupo="azul"].activo .nodo{background:var(--azul); border-color:var(--azul-300); color:var(--ink-900); box-shadow:var(--glow-azul)}
+.etapa[data-grupo="ambar"].activo .nodo{background:var(--terracota); border-color:var(--terracota-300); color:var(--ink-900); box-shadow:var(--glow-terracota)}
+.etapa[data-grupo="azul"].listo .nodo{background:transparent; border-color:var(--azul); color:var(--azul-300)}
+.etapa[data-grupo="ambar"].listo .nodo{background:transparent; border-color:var(--terracota); color:var(--terracota-300)}
+
+.tarjeta{
+  flex:1; background:var(--ink-850); border:1px solid var(--crema-12);
+  border-radius:var(--radio-caja); padding:14px; display:flex; flex-direction:column; gap:8px;
+  transition:border-color .35s ease, box-shadow .35s ease, opacity .35s ease, transform .35s ease;
+  opacity:.45;
+}
+.etapa.pendiente .tarjeta{opacity:.4}
+.etapa.activo .tarjeta{
+  opacity:1; transform:translateY(-2px);
+}
+.etapa[data-grupo="azul"].activo .tarjeta{border-color:var(--azul); box-shadow:var(--glow-azul)}
+.etapa[data-grupo="ambar"].activo .tarjeta{border-color:var(--terracota); box-shadow:var(--glow-terracota)}
+.etapa.listo .tarjeta{opacity:.92}
+.etapa[data-grupo="azul"].listo .tarjeta{border-color:rgba(46,143,181,.45)}
+.etapa[data-grupo="ambar"].listo .tarjeta{border-color:rgba(200,121,65,.45)}
+
+.tag-grupo{
+  font-size:10px; letter-spacing:.14em; text-transform:uppercase; font-weight:700;
+  width:fit-content; padding:2px 7px; border-radius:2px;
+}
+.etapa[data-grupo="azul"] .tag-grupo{color:var(--azul-300); background:rgba(46,143,181,.14)}
+.etapa[data-grupo="ambar"] .tag-grupo{color:var(--terracota-300); background:rgba(200,121,65,.14)}
+
+.tarjeta h2{font-size:13.5px; line-height:1.35; margin:0; font-weight:700; color:var(--crema)}
+.meta{display:flex; flex-direction:column; gap:3px; font-size:11px; color:var(--crema-75)}
+.meta b{color:var(--crema-60); font-weight:700}
+.detalle{font-size:11.5px; line-height:1.5; color:var(--crema-75); margin:2px 0 0}
+.ejemplo{
+  margin-top:auto; font-size:10.5px; line-height:1.5; color:var(--crema-60);
+  background:var(--crema-06); border:1px dashed var(--crema-28); border-radius:3px;
+  padding:7px 8px;
+}
+.ejemplo b{color:var(--terracota-200); letter-spacing:.06em; text-transform:uppercase; font-size:9.5px}
+
+.estado-pill{
+  font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; font-weight:700;
+  width:fit-content; padding:2px 7px; border-radius:2px; color:var(--crema-60);
+  background:var(--crema-12); margin-left:auto;
+}
+.etapa.activo .estado-pill{color:var(--ink-900)}
+.etapa[data-grupo="azul"].activo .estado-pill{background:var(--azul)}
+.etapa[data-grupo="ambar"].activo .estado-pill{background:var(--terracota)}
+.etapa.listo .estado-pill{color:var(--ink-900); background:var(--crema-60)}
+.cabecera-tarjeta{display:flex; align-items:center; gap:8px}
+
+/* ---------- pie ---------- */
+.pie{
+  margin-top:18px; padding-top:14px; border-top:1px solid var(--crema-12);
+  display:flex; flex-wrap:wrap; gap:8px 24px; justify-content:space-between;
+  font-size:11.5px; color:var(--crema-60);
+}
+.pie b{color:var(--crema-75)}
+
+/* ---------- responsive: proyector grande ---------- */
+@media (min-width:1500px){
+  .tarjeta h2{font-size:14.5px}
+  .detalle{font-size:12.5px}
+  .ejemplo{font-size:11px}
+}
+
+/* ---------- responsive: tablet ---------- */
+@media (max-width:980px){
+  .rail{flex-direction:column; gap:14px}
+  .etapa{padding:0 0 0 46px; flex-direction:column}
+  .nodo{top:0; left:16px; transform:translate(-50%,0)}
+  .etapa.activo .nodo{transform:translate(-50%,0) scale(1.12)}
+  .etapa:not(:first-child)::before{
+    top:-14px; left:16px; transform:translateX(-50%); width:2px; height:28px;
+  }
+}
+
+/* ---------- responsive: móvil 390px ---------- */
+@media (max-width:480px){
+  body{padding:12px}
+  .hdr{flex-direction:column}
+  .controles{width:100%}
+  .controles button{flex:1}
+  h1{font-size:17px}
+  .leyenda{font-size:11px; gap:12px}
+  .rail{gap:16px}
+  .etapa{padding-left:40px}
+  .nodo{width:28px; height:28px; font-size:12px; left:14px}
+  .etapa:not(:first-child)::before{left:14px; height:30px; top:-16px}
+  .tarjeta{padding:12px}
+  .pie{flex-direction:column; gap:6px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header class="hdr">
+    <div>
+      <div class="brand"><b>compAI</b> · estudio</div>
+    </div>
+    <div class="titulo-wrap">
+      <h1>De la publicación en Mercado Público a la recepción conforme</h1>
+      <p class="aviso-ejemplo">⚠ TODO el contenido es un EJEMPLO ilustrativo — ninguna cifra, código ni organismo corresponde a una licitación real</p>
+    </div>
+    <div class="controles">
+      <button id="btnPlay" type="button">▶ Reproducir</button>
+      <button id="btnReset" class="secundario" type="button">↺ Reiniciar</button>
+    </div>
+  </header>
+
+  <div class="progreso-wrap"><div class="progreso-barra" id="progresoBarra"></div></div>
+
+  <div class="leyenda">
+    <span class="leyenda-item"><i class="dot azul"></i> Traza — evaluación interna, no compromete dinero</span>
+    <span class="leyenda-item"><i class="dot ambar"></i> Transacción — compromete dinero, plazo u entrega</span>
+  </div>
+
+  <p class="estado-linea" id="estadoLinea">Listo para reproducir. 6 etapas, ritmo de demo ~1,6 s por etapa.</p>
+
+  <main class="rail" id="rail">
+
+    <!-- ETAPA 1 -->
+    <section class="etapa pendiente" data-grupo="azul" data-tiempo="~3 min, automático">
+      <div class="nodo">1</div>
+      <div class="tarjeta">
+        <div class="cabecera-tarjeta">
+          <span class="tag-grupo">Traza</span>
+          <span class="estado-pill">Pendiente</span>
+        </div>
+        <h2>Grace detecta y clasifica</h2>
+        <div class="meta">
+          <span><b>Ejecuta:</b> Grace / RAIdar (barrido automático)</span>
+          <span><b>Tiempo:</b> ~3 min, sin intervención humana</span>
+        </div>
+        <p class="detalle">Barre api.mercadopublico.cl, lee rubro UNSPSC, presupuesto estimado y plazo de cierre. Si la familia no calza con los rubros del estudio, se descarta aquí mismo (FUERA_DE_RUBRO).</p>
+        <div class="ejemplo">
+          <b>Ejemplo</b><br>
+          Compra Ágil CA26-EJEMPLO-0458 · Rubro "Suministro de insumos de oficina" (UNSPSC 44000000, EJEMPLO) · Presupuesto estimado $1.850.000 CLP (EJEMPLO) · Cierre: hoy 18:00 (EJEMPLO)
+        </div>
+      </div>
+    </section>
+
+    <!-- ETAPA 2 -->
+    <section class="etapa pendiente" data-grupo="azul" data-tiempo="~1 min, automático">
+      <div class="nodo">2</div>
+      <div class="tarjeta">
+        <div class="cabecera-tarjeta">
+          <span class="tag-grupo">Traza</span>
+          <span class="estado-pill">Pendiente</span>
+        </div>
+        <h2>Veredicto de pertinencia (4 filtros)</h2>
+        <div class="meta">
+          <span><b>Ejecuta:</b> RAIdar, motor de filtros (radar/filtros.py)</span>
+          <span><b>Tiempo:</b> ~1 min, automático</span>
+        </div>
+        <p class="detalle">Corre la compuerta de vigencia y 4 filtros en cadena: máx. 3 líneas por orden · comprador en la RM o entrega sin bulto · marca y modelo (o SKU) identificables en cada línea · si hay licencias, factura chilena por canal autorizado. Basta 1 filtro caído para descartar la orden completa.</p>
+        <div class="ejemplo">
+          <b>Ejemplo</b><br>
+          PASA los 4 filtros: 2 líneas · Región Metropolitana · SKU explícito en ambas líneas · sin líneas de licencia (EJEMPLO)
+        </div>
+      </div>
+    </section>
+
+    <!-- ETAPA 3 -->
+    <section class="etapa pendiente" data-grupo="azul" data-tiempo="<1 min, automático">
+      <div class="nodo">3</div>
+      <div class="tarjeta">
+        <div class="cabecera-tarjeta">
+          <span class="tag-grupo">Traza</span>
+          <span class="estado-pill">Pendiente</span>
+        </div>
+        <h2>Decisión de caja: ¿cabe hoy?</h2>
+        <div class="meta">
+          <span><b>Ejecuta:</b> Tesora-i, semáforo diario (tesoreria/semaforo.py)</span>
+          <span><b>Tiempo:</b> &lt;1 min, automático</span>
+        </div>
+        <p class="detalle">El semáforo dice cuántas órdenes caben al contado: VERDE ≥2, AMARILLO 1, ROJO ninguna. En rojo, reglas_de_caja bloquea comprometer compra, licencia o garantía con terceros antes de cobrar — solo queda ofertar servicio propio.</p>
+        <div class="ejemplo">
+          <b>Ejemplo</b><br>
+          Semáforo AMARILLO — cabe 1 orden al contado · monto estimado $1.850.000 dentro del tope de la modalidad · comprometer_compra_a_proveedor = true (EJEMPLO)
+        </div>
+      </div>
+    </section>
+
+    <!-- ETAPA 4 -->
+    <section class="etapa pendiente" data-grupo="ambar" data-tiempo="~45 min">
+      <div class="nodo">4</div>
+      <div class="tarjeta">
+        <div class="cabecera-tarjeta">
+          <span class="tag-grupo">Transacción</span>
+          <span class="estado-pill">Pendiente</span>
+        </div>
+        <h2>Propuesta técnica y comercial</h2>
+        <div class="meta">
+          <span><b>Ejecuta:</b> GAIn (precio y margen) + redacción técnica</span>
+          <span><b>Tiempo:</b> ~45 min</span>
+        </div>
+        <p class="detalle">Se fija precio neto con margen objetivo, plazo de entrega y condiciones de pago. Si hay licencia o reventa de por medio, pasa primero por la lista blanca de distribuidores auditada por LAI-er.</p>
+        <div class="ejemplo">
+          <b>Ejemplo</b><br>
+          Oferta propuesta $1.790.000 neto · margen 14% · entrega 5 días hábiles · pago 30 días contra factura (EJEMPLO)
+        </div>
+      </div>
+    </section>
+
+    <!-- ETAPA 5 -->
+    <section class="etapa pendiente" data-grupo="ambar" data-tiempo="~10 min">
+      <div class="nodo">5</div>
+      <div class="tarjeta">
+        <div class="cabecera-tarjeta">
+          <span class="tag-grupo">Transacción</span>
+          <span class="estado-pill">Pendiente</span>
+        </div>
+        <h2>Oferta presentada, con hora límite</h2>
+        <div class="meta">
+          <span><b>Ejecuta:</b> Jun (ingreso al portal) + Sebastián (verificación final)</span>
+          <span><b>Tiempo:</b> ~10 min, antes del cierre</span>
+        </div>
+        <p class="detalle">Se sube la oferta al portal de Mercado Público. La compuerta de vigencia exige al menos 1 hora de margen antes del cierre para que alcance a pasar por todo el circuito anterior.</p>
+        <div class="ejemplo">
+          <b>Ejemplo</b><br>
+          Oferta ingresada 17:42 (EJEMPLO) · Cierre de recepción 18:00 (EJEMPLO) · 18 min de margen sobre el mínimo de 60 min
+        </div>
+      </div>
+    </section>
+
+    <!-- ETAPA 6 -->
+    <section class="etapa pendiente" data-grupo="ambar" data-tiempo="días hábiles">
+      <div class="nodo">6</div>
+      <div class="tarjeta">
+        <div class="cabecera-tarjeta">
+          <span class="tag-grupo">Transacción</span>
+          <span class="estado-pill">Pendiente</span>
+        </div>
+        <h2>Adjudicación → OC → entrega → recepción conforme</h2>
+        <div class="meta">
+          <span><b>Ejecuta:</b> Jun (seguimiento) + Oper (despacho) + Sebastián (recepción)</span>
+          <span><b>Tiempo:</b> típico 3-10 días hábiles</span>
+        </div>
+        <p class="detalle">Adjudicada la oferta, el organismo emite la Orden de Compra. Se despacha, el comprador firma la recepción conforme y recién ahí se emite la factura — el hito que de verdad abre el cobro.</p>
+        <div class="ejemplo">
+          <b>Ejemplo</b><br>
+          Adjudicada +3 días hábiles · OC N° EJEMPLO-000456 · Entrega conforme +5 días hábiles · Factura emitida tras la recepción (EJEMPLO)
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="pie">
+    <span><b>Ciclo completo de ejemplo:</b> ~1 h de trabajo propio + 3 a 10 días hábiles de espera del organismo, desde la detección hasta la recepción conforme.</span>
+    <span>Fuente del procedimiento real: <b>radar/filtros.py</b> (4 filtros) y <b>tesoreria/semaforo.py</b> (semáforo de caja). Las cifras de esta pantalla son de EJEMPLO.</span>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var etapas = Array.prototype.slice.call(document.querySelectorAll(".etapa"));
+  var btnPlay = document.getElementById("btnPlay");
+  var btnReset = document.getElementById("btnReset");
+  var barra = document.getElementById("progresoBarra");
+  var estadoLinea = document.getElementById("estadoLinea");
+  var jugando = false;
+  var timers = [];
+
+  function limpiarTimers(){
+    timers.forEach(function(t){ clearTimeout(t); });
+    timers = [];
+  }
+
+  function fijarEstadoEtapa(etapa, estado){
+    etapa.classList.remove("pendiente", "activo", "listo");
+    etapa.classList.add(estado);
+    var pill = etapa.querySelector(".estado-pill");
+    if (pill){
+      pill.textContent = estado === "activo" ? "En curso" : (estado === "listo" ? "Listo" : "Pendiente");
+    }
+  }
+
+  function reiniciar(){
+    limpiarTimers();
+    jugando = false;
+    etapas.forEach(function(e){ fijarEstadoEtapa(e, "pendiente"); });
+    barra.style.width = "0%";
+    estadoLinea.innerHTML = "Listo para reproducir. 6 etapas, ritmo de demo ~1,6 s por etapa.";
+    btnPlay.disabled = false;
+    btnPlay.textContent = "▶ Reproducir";
+  }
+
+  function reproducir(){
+    if (jugando) return;
+    jugando = true;
+    btnPlay.disabled = true;
+    btnPlay.textContent = "Reproduciendo…";
+    etapas.forEach(function(e){ fijarEstadoEtapa(e, "pendiente"); });
+    barra.style.width = "0%";
+
+    var PASO_MS = 1600;
+    etapas.forEach(function(etapa, i){
+      timers.push(setTimeout(function(){
+        if (i > 0) fijarEstadoEtapa(etapas[i - 1], "listo");
+        fijarEstadoEtapa(etapa, "activo");
+        barra.style.width = (((i + 1) / etapas.length) * 100).toFixed(1) + "%";
+        var titulo = etapa.querySelector("h2").textContent;
+        var tiempo = etapa.getAttribute("data-tiempo");
+        estadoLinea.innerHTML = "Paso " + (i + 1) + "/" + etapas.length + " · <b>" + titulo + "</b> · " + tiempo;
+      }, i * PASO_MS));
+    });
+
+    timers.push(setTimeout(function(){
+      fijarEstadoEtapa(etapas[etapas.length - 1], "listo");
+      estadoLinea.innerHTML = "Ciclo completo (EJEMPLO). De la detección a la recepción conforme — <b>Reiniciar</b> para repetir.";
+      btnPlay.disabled = false;
+      btnPlay.textContent = "▶ Reproducir de nuevo";
+      jugando = false;
+    }, etapas.length * PASO_MS));
+  }
+
+  btnPlay.addEventListener("click", reproducir);
+  btnReset.addEventListener("click", reiniciar);
+})();
+</script>
+</body>
+</html>
