@@ -255,11 +255,31 @@
   "titulo": "Servicios",
   "bajada": "Cuatro frentes. Uno basta para empezar.",
   "etiquetas": [
-   "L1 · Automatización",
-   "L2 · Especificación",
-   "L3 · Puesta en marcha"
+   "/pista",
+   "/nodo",
+   "/núcleo"
   ],
-  "_etiquetas": "Las tres lineas de venta de servicio propio. Antes decia /pista /nodo /nucleo, que es la linea PNN del catalogo de la intranet y tiene escrito «no va en compai.cl · se vende 1 a 1»."
+  "_etiquetas": "Los tres paquetes de desarrollo web para PyMEs (propuesta PC-2026-001). Van aca por decision de Sebastian del 05-10-2026 -«son un excelente enganche»-, aunque el catalogo de la intranet los marca «no va en compai.cl»: lo que no va es su PRECIO y su ficha comercial, que se venden uno a uno.",
+  "paquetes": [
+   {
+    "etiqueta": "/pista",
+    "verbo": "muestra",
+    "linea": "Una pagina que te encuentra quien te busca.",
+    "estado": 1
+   },
+   {
+    "etiqueta": "/nodo",
+    "verbo": "recibe",
+    "linea": "Y ademas te llega lo que esa persona escribe.",
+    "estado": 2
+   },
+   {
+    "etiqueta": "/núcleo",
+    "verbo": "guarda",
+    "linea": "Y ademas queda registrado quien, que y cuando.",
+    "estado": 3
+   }
+  ]
  },
  "inbox": {
   "codigo": "/ 05",

@@ -26,6 +26,10 @@
   --cian:#05f8f9;
   --azul:#1d6688;
   --grafito:#14181f;
+  /* El doble check de la marca como mascara, para pintarlo con el color
+     que toque sin repetir el SVG en cada vineta. */
+  --check:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 20" fill="none" stroke="%23000" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8.5 5 12.5 12 4"/><path d="M10 8.5 14 12.5 21 4"/></svg>');
+
 }
 
 /* ── armazon ───────────────────────────────────────────────────────────── */
@@ -255,16 +259,55 @@
 .ccirc{opacity:1}
 .cvelo{background:rgba(10,13,17,.96)}
 .cline{background:linear-gradient(#5b3a22,#c87941 35%,#c87941 65%,#5b3a22)}
-.serv-tit{display:block;font-family:Archivo,sans-serif;font-weight:700;font-size:calc(26*var(--u));
-  line-height:1.1;color:#fff;letter-spacing:-.01em}
-.serv-par{display:block;font-family:Archivo,sans-serif;font-weight:600;font-size:calc(11.5*var(--u));
-  line-height:1.5;color:#dfe3e7;text-align:justify;text-transform:uppercase;letter-spacing:.02em;
-  margin-top:calc(20*var(--u))}
-.serv-vin{list-style:none;margin:calc(118*var(--u)) 0 0;padding:0 0 0 calc(18*var(--u));display:grid;gap:calc(1*var(--u));
-  border-left:calc(2.4*var(--u)) solid var(--azul);
-  font-family:Archivo,sans-serif;font-size:calc(10.5*var(--u));line-height:1.6;color:#cfd4d9;
-  letter-spacing:.03em}
-.serv-vin.ambar{border-left-color:#c87941}
+/* ── La ficha de / 04, medida por Visu el 05-10-2026 ───────────────────
+   Encargo de Sebastian: «evitar mucho texto explicativo, si potenciar
+   conceptos e imagenes». Lo que cambia, con numeros:
+     · encabezado 26 -> 44 px de lienzo
+     · bajada 11,5 -> 24, y sale la CAJA ALTA JUSTIFICADA: una bajada
+       comercial en versalitas justificadas se lee como contrato, no como
+       promesa, y a 11,5 px medidos daba 9,1 px reales en pantalla
+     · cinco checks pasan a TRES; los otros dos viven en la lamina
+     · el check deja de ser un borde de 2,4 px y pasa a ser el doble check
+       de la marca, solido, uno por linea
+     · se suma un llamado, en ambar y uno solo por ficha */
+.serv-rot{display:block;font-family:var(--courier);font-size:calc(26*var(--u));
+  letter-spacing:.14em;color:rgba(245,240,228,.6);margin-bottom:calc(12*var(--u))}
+.serv-tit{display:block;font-family:Archivo,sans-serif;font-weight:700;font-size:calc(44*var(--u));
+  line-height:1.08;color:#F5F0E4;letter-spacing:-.018em;max-width:16ch}
+.serv-par{display:block;font-family:Archivo,sans-serif;font-weight:500;font-size:calc(24*var(--u));
+  line-height:1.42;color:#c3cad1;letter-spacing:0;max-width:24ch;
+  margin-top:calc(22*var(--u))}
+.serv-vin{list-style:none;margin:calc(40*var(--u)) 0 0;padding:0;display:grid;
+  gap:calc(14*var(--u));font-family:Archivo,sans-serif;font-size:calc(22*var(--u));
+  line-height:1.3;color:#dfe3e7;letter-spacing:.01em}
+.serv-vin li{display:grid;grid-template-columns:calc(26*var(--u)) minmax(0,1fr);
+  align-items:start;gap:calc(14*var(--u))}
+/* El doble check de la marca, dibujado en el ::before para no repetir el SVG
+   doce veces en el HTML. Solido y azul: es traza, no transaccion. */
+.serv-vin li::before{content:"";display:block;width:calc(22*var(--u));height:calc(20*var(--u));
+  margin-top:calc(4*var(--u));background:var(--azul);
+  -webkit-mask:var(--check) center/contain no-repeat;mask:var(--check) center/contain no-repeat}
+.serv-acc{display:inline-block;margin-top:calc(34*var(--u));font-family:var(--courier);
+  font-size:calc(22*var(--u));letter-spacing:.12em;color:#c87941}
+.servblock:hover .serv-acc{color:#e0944f}
+
+/* ── La placa: lo que reemplaza al mockup de dispositivo ───────────────
+   El icono solo no sostiene la columna -168 px dentro de 662 es el 8 % del
+   area que ocupaba el monitor-. La placa es el objeto; el icono es su
+   contenido. Marco de 1 px, el codigo abajo a la izquierda, la linea en
+   ambar abajo a la derecha, y el doble check mordiendo la esquina. */
+.placa{border:calc(1.4*var(--u)) solid rgba(46,143,181,.28);border-radius:calc(3*var(--u));
+  background:radial-gradient(120% 120% at 30% 20%,rgba(46,143,181,.09),transparent 62%);
+  display:grid;place-items:center;overflow:visible}
+.placa-ic{width:calc(168*var(--u));height:calc(168*var(--u));color:var(--azul);
+  grid-area:1/1;align-self:center}
+.placa-cod,.placa-lin{grid-area:1/1;font-family:var(--courier);font-size:calc(17*var(--u));
+  letter-spacing:.18em;align-self:end;margin-bottom:calc(22*var(--u))}
+.placa-cod{justify-self:start;margin-left:calc(26*var(--u));color:rgba(245,240,228,.5)}
+.placa-lin{justify-self:end;margin-right:calc(26*var(--u));color:#c87941}
+.placa-tick{grid-area:1/1;justify-self:end;align-self:start;
+  width:calc(46*var(--u));height:auto;margin:calc(-16*var(--u)) calc(-16*var(--u)) 0 0;
+  fill:none;stroke:var(--azul);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 
 /* Los mockups del Canva: carcasa neutra + un fondo de cielo y pasto. */
 .mk{position:absolute;left:calc(var(--x)*var(--u));top:calc(var(--y)*var(--u));
@@ -318,11 +361,11 @@
    De una sola linea no cabe: «L1 · AUTOMATIZACION E INTEGRACION DE SISTEMAS»
    a 81 px se sale del lienzo y se mete bajo la ficha. */
 .banda-sub{position:absolute;left:calc(141*var(--u));top:50%;
-  margin-top:calc(20*var(--u));font-family:var(--plex);font-weight:400;
-  font-size:calc(14*var(--u));letter-spacing:.15em;text-transform:uppercase;
+  margin-top:calc(34*var(--u));font-family:var(--plex);font-weight:400;
+  font-size:calc(15*var(--u));letter-spacing:.2em;text-transform:uppercase;
   color:rgba(245,240,228,.72);white-space:nowrap}
 .banda-mas{position:absolute;left:calc(137*var(--u));top:50%;
-  margin-top:calc(74*var(--u));width:calc(26*var(--u));height:calc(26*var(--u));
+  margin-top:calc(86*var(--u));width:calc(26*var(--u));height:calc(26*var(--u));
   transform:rotate(0deg);transition:transform .45s ease}
 .banda-mas::before,.banda-mas::after{content:"";position:absolute;background:#c87941;
   left:50%;top:50%}
@@ -340,6 +383,15 @@
   transition:transform .5s cubic-bezier(.22,.8,.3,1),visibility 0s linear .5s}
 .banda[open] .banda-ficha{transform:translateX(0);visibility:visible;
   transition:transform .5s cubic-bezier(.22,.8,.3,1),visibility 0s}
+/* El dibujo que abre cada banda. Azul lo que ya estaba en el nivel anterior,
+   ambar lo que ese nivel agrega: el ambar es lo unico que hay que mirar. */
+.esq{display:block;width:calc(400*var(--u));height:auto;max-width:100%}
+.esq .traza{stroke:var(--azul);color:var(--azul)}
+.esq .accion{stroke:#c87941;color:#c87941}
+.esq-pie{margin:calc(16*var(--u)) 0 0;font-family:var(--plex);font-weight:300;
+  font-size:calc(14*var(--u));line-height:1.5;color:#aeb8c0}
+.esq-pie b{font-weight:700;color:#c87941;text-transform:uppercase;
+  letter-spacing:.14em;font-size:calc(12.5*var(--u));margin-right:calc(8*var(--u))}
 .banda-ficha h3{margin:0;font-family:Archivo,sans-serif;font-weight:800;
   font-size:calc(26*var(--u));line-height:1.18;color:#fff;letter-spacing:-.01em}
 .banda-ficha p{margin:0;font-family:var(--clear);font-weight:300;
@@ -498,9 +550,19 @@
   .gcifras b{font-size:calc(64*var(--u))}
   .gcifras span{font-size:calc(24*var(--u))}
 
-  .serv-tit{font-size:calc(30*var(--u))}
-  .serv-par{font-size:calc(17*var(--u));text-align:left}
-  .serv-vin{margin-top:calc(26*var(--u));font-size:calc(16*var(--u))}
+  .serv-rot{font-size:calc(26*var(--u))}
+  .serv-tit{font-size:calc(52*var(--u))}
+  .serv-par{font-size:calc(30*var(--u));text-align:left;max-width:none}
+  .serv-vin{margin-top:calc(34*var(--u));font-size:calc(28*var(--u));gap:calc(20*var(--u))}
+  .serv-vin li{grid-template-columns:calc(34*var(--u)) minmax(0,1fr)}
+  .serv-vin li::before{width:calc(30*var(--u));height:calc(27*var(--u))}
+  .serv-acc{font-size:calc(28*var(--u))}
+  /* La placa sube sobre el texto y se achica: a ancho completo pesaria mas
+     que el servicio que anuncia. */
+  .cv .placa{order:-1;width:calc(300*var(--u));height:calc(300*var(--u));align-self:flex-start}
+  .placa-ic{width:calc(132*var(--u));height:calc(132*var(--u))}
+  .placa-cod,.placa-lin{font-size:calc(20*var(--u))}
+  .cv .placa-tick{width:calc(54*var(--u))}
   .mk{aspect-ratio:calc(var(--w) / var(--hh));height:auto;margin-inline:auto}
   .cv .mk.tel{width:min(210px,56%)}
   /* En telefono la banda es una fila apilada: el video de fondo ya esta
@@ -521,6 +583,9 @@
   .cv .banda-ficha{position:static;width:auto;transform:none;visibility:visible;
     background:none;border-left:0;border-top:1px solid rgba(200,121,65,.3);
     padding:calc(28*var(--u)) 0 0;gap:calc(20*var(--u))}
+  .cv .esq{max-height:none}
+  .esq-pie{font-size:calc(26*var(--u))}
+  .esq-pie b{font-size:calc(22*var(--u))}
   .cv .banda-ficha h3{font-size:calc(40*var(--u))}
   .cv .banda-ficha p{font-size:calc(28*var(--u))}
   .cv .banda-ficha li{font-size:calc(26*var(--u));padding-left:calc(30*var(--u))}

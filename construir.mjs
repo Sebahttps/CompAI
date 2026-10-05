@@ -275,12 +275,37 @@ const grace = (() => {
 
 /* Los cuatro servicios del Canva: texto a la izquierda, mockup a la derecha.
    La línea de las viñetas alterna azul y ámbar, igual que la referencia. */
+/* ── La ficha de servicio de / 04, segun Visu (05-10-2026) ─────────────
+   Encabezado 44 px, bajada 24, TRES checks de los cinco y un llamado. Lo que
+   sostiene la columna derecha no es el icono sino la PLACA: 400x400, marco de
+   1 px azul al 28 %, el icono de 168 dentro, y el doble check mordiendo la
+   esquina, que es la firma. Las otras dos vinetas no se pierden: estan en la
+   lamina que abre al tocar la ficha. */
+const ICONO = {
+  automatizacion: '<rect x="2.5" y="7" width="7" height="7" rx="1"/><rect x="14.5" y="7" width="7" height="7" rx="1"/><path d="M9.5 10.5h5"/><path d="M12.5 8.5 14.5 10.5 12.5 12.5"/>',
+  especificacion: '<path d="M5.5 2.5h8l5 5v14h-13z"/><path d="M13.5 2.5v5h5"/><path d="M8.5 12.5h7"/><path d="M8.5 16.5h4.5"/>',
+  continuidad: '<circle cx="7" cy="12" r="4"/><path d="M11 12h10"/><path d="M17.5 12v3.5"/><path d="M20.5 12v2.5"/>',
+  catalogo: '<path d="M12.5 2.5H21v8.5l-9.5 9.5a1.6 1.6 0 0 1-2.3 0l-6.2-6.2a1.6 1.6 0 0 1 0-2.3z"/><circle cx="17" cy="7" r="1.6"/><path d="M8 13.5l3 3"/>',
+};
+const ROT_LINEA = { automatizacion: 'L1', especificacion: 'L2', continuidad: 'L3', catalogo: 'CATÁLOGO' };
+
 const servTexto = (s, x, y) => `<button class="b servblock" type="button" data-slug="${esc(s.slug)}" aria-haspopup="dialog"
         style="--x:${x};--y:${y};--w:583;text-align:left;display:block">
+        <span class="serv-rot">${esc(s.codigo)} / ${esc(ROT_LINEA[s.slug] || '')}</span>
         <span class="serv-tit">${esc(s.titulo)}</span>
         <span class="serv-par">${esc(s.bajada)}</span>
-        <ul class="serv-vin${(s.codigo === '02' || s.codigo === '03') ? ' ambar' : ''}">${s.vinetas.map(v => `<li>${esc(v)}</li>`).join('')}</ul>
+        <ul class="serv-vin">${s.vinetas.slice(0, 3).map(v => `<li>${esc(v)}</li>`).join('')}</ul>
+        <span class="serv-acc">Ver precio &rarr;</span>
       </button>`;
+
+/* La placa reemplaza al mockup de telefono, monitor y notebook. */
+const placa = (s, x, y) => `<div class="b fh placa" style="--x:${x};--y:${y};--w:400;--hh:400" aria-hidden="true">
+        <svg class="placa-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">${ICONO[s.slug] || ''}</svg>
+        <span class="placa-cod">${esc(s.codigo)}</span>
+        <span class="placa-lin">${esc(ROT_LINEA[s.slug] || '')}</span>
+        ${TICKS('placa-tick', '')}
+      </div>`;
 
 const mkTel = (x, y, n) => `<div class="mk tel p${n}" style="--x:${x};--y:${y};--w:289;--hh:572" aria-hidden="true"><span class="muesca"></span><span class="pantalla"></span></div>`;
 const mkMon = (x, y, n) => `<div class="mk mon p${n}" style="--x:${x};--y:${y};--w:458;--hh:368;--mh:300" aria-hidden="true"><span class="marco"><span class="pantalla"></span></span><span class="cuello"></span><span class="base"></span></div>`;
@@ -293,43 +318,54 @@ const creative = `
       <div class="b fh cline" style="--x:657;--y:0;--w:7;--hh:2380" aria-hidden="true"></div>
       ${rot(S.creative, 62, 38)}
       ${servTexto(SERV[0], 79, 192)}
-      ${mkTel(902, 104, 1)}
-      ${servTexto(SERV[1], 75, 1000)}
-      ${mkMon(817, 912, 2)}
-      ${servTexto(SERV[2], 75, 1790)}
-      ${mkLap(804, 1690, 3)}
+      ${placa(SERV[0], 836, 152)}
+      ${servTexto(SERV[1], 79, 1000)}
+      ${placa(SERV[1], 836, 960)}
+      ${servTexto(SERV[2], 79, 1790)}
+      ${placa(SERV[2], 836, 1750)}
     </div>
 
     <div class="pg cvfondo" style="--h:2110">
       <div class="b fh ccirc" style="--x:704;--y:0;--w:662;--hh:896" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
       <div class="b fh cline" style="--x:659;--y:0;--w:9;--hh:902" aria-hidden="true"></div>
       ${servTexto(SERV[3], 79, 203)}
-      ${mkTel(902, 104, 4)}
-      ${/* Las tres bandas dejan de ser decorado: cada una abre hacia un lado y
-            muestra el servicio que le toca. Encargo de Sebastian, 04-10-2026.
-            Van en <details> y no en hover: en telefono no hay hover, y un
-            panel que solo existe con el cursor encima no existe para la mitad
-            de las visitas. */
-        ['pista', 'nodo', 'nucleo'].map((n, i) => {
+      ${placa(SERV[3], 836, 163)}
+      ${/* Las tres bandas abren con un DIBUJO, no con una ficha de texto:
+            la ficha repetia el servicio de arriba. Un solo dibujo en tres
+            estados —la diferencia entre los paquetes es acumulativa—, y lo
+            que entra nuevo en cada uno va en ambar. Visu, 05-10-2026. */
+        S.creative.paquetes.map((pq, i) => {
         const y = [896, 1278, 1704][i], h = [382, 426, 406][i];
-        /* Los archivos de video conservan su nombre de Canva; el ROTULO no.
-           /pista /nodo /nucleo es la linea PNN del catalogo de la intranet
-           —desarrollo web para PyMEs— y su propia ficha dice «no va en
-           compai.cl · se vende 1 a 1». Lo que se publica son L1, L2 y L3. */
-        const sv = SERV.find(x => x.linea === ['L1', 'L2', 'L3'][i]) || SERV[i];
+        const n = ['pista', 'nodo', 'nucleo'][i];
+        const e = pq.estado;
         return `<details class="b fh banda" style="--x:0;--y:${y};--w:1366;--hh:${h}">
         <summary>
           <span class="ccirc" aria-hidden="true">${fondoVid(`media/banda-${n}.mp4`, `media/banda-${n}.webp`)}</span>
           <span class="banda-velo" aria-hidden="true"></span>
-          <span class="banda-tx">${esc(sv.linea)}</span>
-          <span class="banda-sub">${esc(sv.linea_nombre)}</span>
+          <span class="banda-tx">${esc(pq.etiqueta)}</span>
+          <span class="banda-sub">${esc(pq.verbo)}</span>
           <span class="banda-mas" aria-hidden="true"></span>
         </summary>
         <div class="banda-ficha">
-          <h3>${esc(sv.titulo)}</h3>
-          <p>${esc(sv.bajada)}</p>
-          <ul>${sv.vinetas.map(v => `<li>${esc(v)}</li>`).join('')}</ul>
-          <a href="#inbox">${esc(sv.cta)}</a>
+          <svg class="esq" viewBox="0 0 300 150" fill="none" aria-hidden="true"
+               stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <g class="traza">
+              <rect x="18" y="26" width="104" height="78" rx="3"/>
+              <path d="M18 44h104"/><path d="M34 62h52"/><path d="M34 76h72"/>
+            </g>
+            <g class="traza"><path d="M130 50h58"/><path d="M178 42 190 50 178 58"/></g>
+            ${e >= 2 ? `<g class="accion">
+              <rect x="196" y="30" width="86" height="20" rx="3"/>
+              <rect x="196" y="58" width="86" height="20" rx="3" fill="currentColor" stroke="none" opacity=".9"/>
+              <path d="M188 92h-58"/><path d="M140 84 128 92 140 100"/>
+            </g>` : ''}
+            ${e >= 3 ? `<g class="accion">
+              <ellipse cx="239" cy="104" rx="30" ry="9"/>
+              <path d="M209 104v22c0 5 13.4 9 30 9s30-4 30-9v-22"/>
+              <path d="M209 118c0 5 13.4 9 30 9s30-4 30-9"/>
+            </g>` : ''}
+          </svg>
+          <p class="esq-pie"><b>${esc(pq.verbo)}</b> ${esc(pq.linea)}</p>
         </div>
       </details>`;
       }).join('')}
