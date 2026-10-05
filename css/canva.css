@@ -144,7 +144,7 @@
 .gldcha li::before{content:"";position:absolute;left:0;top:calc(.62em - 2px);
   width:calc(5*var(--u));height:calc(5*var(--u));border-radius:50%;background:var(--cian)}
 .gldcha b{font-weight:700;color:var(--cian);font-style:normal}
-.gldcha b.no{color:var(--petroleo2)}
+.gldcha b.no{color:#c87941}
 .glcierre{color:#aeb9c2}
 .gllock{display:flex;align-items:center;justify-content:center;gap:calc(10*var(--u));
   font-family:var(--plex);font-weight:700;color:var(--cian);text-transform:uppercase;
@@ -152,8 +152,9 @@
 /* El emblema es un sello de 30 px, no una lamina: sin el `.cv` delante,
    `.cv .b>img{width:100%}` lo estiraba a los 400 px de la caja y asomaba
    como un semicirculo cortado por el borde inferior. (04-10-2026) */
-.cv .gllock img{width:calc(30*var(--u));height:auto;flex:0 0 auto;object-fit:contain;
-  filter:drop-shadow(0 0 calc(7*var(--u)) rgba(5,248,249,.5))}
+/* Sin halo a proposito (04-10-2026): el emblema encendido queda solo en la
+   lamina 2, donde el halo dice «Grace conectada». Aqui es firma, no estado. */
+.cv .gllock img{width:calc(30*var(--u));height:auto;flex:0 0 auto;object-fit:contain}
 /* La traza: dos copias del patron y el conjunto se corre una copia entera en
    bucle. 26 s por vuelta es el «paneo lento» del encargo; a mas rapido se lee
    como una barra de carga y no como un circuito vivo. */
@@ -221,11 +222,11 @@
 /* El veredicto se lee de un vistazo: GO en azul de traza, NO-GO apagado.
    Tres NO-GO en ocho filas dicen que hay criterio y que sabe decir que no. */
 .glista li:has(.mkr:not(:empty)) .mkr{white-space:nowrap}
-.glista .mkr.no{color:#8a9299}
+.glista .mkr.no{color:#c87941}
 .glista .dt{min-width:0}
 /* rubro · licitacion · analisis. El rubro va primero porque es el filtro que
    Grace aplica antes de mirar nada mas. */
-.glista .dt b{display:block;font-weight:700;color:#c87941;font-size:calc(10*var(--u));
+.glista .dt b{display:block;font-weight:700;color:#7f8a93;font-size:calc(10*var(--u));
   letter-spacing:.14em;text-transform:uppercase}
 .glista .dt em{display:block;font-style:normal;font-weight:700;color:#e6eaee;
   font-size:calc(12*var(--u));letter-spacing:.06em;text-transform:uppercase;
