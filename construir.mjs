@@ -209,7 +209,7 @@ const grace = (() => {
   const L = S.grace.lamina;
   const fila = f => `<li>
             <span class="mkr${/^NO/.test(f.marca) ? ' no' : ''}">${esc(f.marca)}</span>
-            <span class="dt"><b>${esc(f.id)}</b><em>${esc(f.titulo)}</em></span>
+            <span class="dt"><b>${esc(f.rubro)}</b><em>${esc(f.id)}</em><i>${esc(f.titulo)}</i></span>
             <span class="ci">${esc(f.cierre)}</span>
           </li>`;
   return `
@@ -232,23 +232,21 @@ const grace = (() => {
       <p class="b gllock" style="--x:483;--y:772;--w:400"><img src="media/grace-logo.webp" alt="" width="512" height="512" loading="lazy" decoding="async"><span>${esc(L.lockup)}</span></p>
     </div>
 
-    <div class="pg" style="--h:850">
-      <div class="b fh" style="--x:0;--y:0;--w:1366;--hh:850" aria-hidden="true">
-        <img class="gcampo" src="${esc(S.grace.fondo_poster)}" alt="" loading="lazy" decoding="async">
+    <div class="pg gviva" style="--h:800">
+      <div class="b fh gvfilm" style="--x:62;--y:62;--w:380;--hh:676">
+        <video src="${esc(S.grace.envivo.video)}" poster="${esc(S.grace.envivo.video_poster)}"
+               muted loop playsinline autoplay preload="none"
+               disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
       </div>
-      <div class="b fh gvelo" style="--x:178;--y:0;--w:1033;--hh:850" aria-hidden="true"></div>
-      <div class="b fh gpanel" style="--x:415;--y:72;--w:786;--hh:646" aria-hidden="true"></div>
-      <figure class="b fh" style="--x:40;--y:60;--w:470;--hh:742;margin:0">
-        <canvas class="gcanvas" data-src="${esc(im[1].src)}" data-anclaje="cubrir" data-revelado="0.68" role="img" aria-label="${esc(im[1].alt)}"></canvas>
-      </figure>
-      <img class="b fh gemblema" style="--x:405;--y:90;--w:40;--hh:40" src="media/grace-logo.webp" alt="" width="512" height="512" loading="lazy" decoding="async">
-      <p class="b t gmarca" style="--x:455;--y:94;--w:300;--fs:26;--lh:1.1">${esc(S.grace.envivo.titulo)}</p>
-      <p class="b t gvivo fh" style="--x:712;--y:96;--w:112;--hh:30;--fs:12">(( ${esc(S.grace.envivo.estado)} ))</p>
-      <ul class="b glista" style="--x:432;--y:150;--w:752">
-        ${S.grace.envivo.filas.map(fila).join('\n        ')}
-      </ul>
-      <p class="b gpie" style="--x:432;--y:576;--w:752">${esc(S.grace.envivo.barrido)}</p>
-      <a class="b gcta" style="--x:432;--y:648;--w:752" href="#creative">${esc(S.grace.cta)}</a>
+      <img class="b fh gemblema" style="--x:500;--y:118;--w:40;--hh:40" src="media/grace-logo.webp" alt="" width="512" height="512" loading="lazy" decoding="async">
+      <p class="b t gmarca" style="--x:552;--y:122;--w:360;--fs:26;--lh:1.1">${esc(S.grace.envivo.titulo)}</p>
+      <p class="b t gvivo fh" style="--x:940;--y:124;--w:124;--hh:30;--fs:12">(( ${esc(S.grace.envivo.estado)} ))</p>
+      <div class="b fh gcaja" style="--x:500;--y:186;--w:804;--hh:428">
+        <ul class="glista">
+          ${S.grace.envivo.filas.map(fila).join('')}
+        </ul>
+      </div>
+      <p class="b gpie" style="--x:500;--y:642;--w:804">${esc(S.grace.envivo.pie)}</p>
     </div>
 
     <div class="pg" style="--h:1115">

@@ -149,7 +149,10 @@
 .gllock{display:flex;align-items:center;justify-content:center;gap:calc(10*var(--u));
   font-family:var(--plex);font-weight:700;color:var(--cian);text-transform:uppercase;
   letter-spacing:.055em;font-size:calc(15*var(--u));white-space:nowrap}
-.gllock img{width:calc(30*var(--u));height:auto;flex:0 0 auto;object-fit:contain;
+/* El emblema es un sello de 30 px, no una lamina: sin el `.cv` delante,
+   `.cv .b>img{width:100%}` lo estiraba a los 400 px de la caja y asomaba
+   como un semicirculo cortado por el borde inferior. (04-10-2026) */
+.cv .gllock img{width:calc(30*var(--u));height:auto;flex:0 0 auto;object-fit:contain;
   filter:drop-shadow(0 0 calc(7*var(--u)) rgba(5,248,249,.5))}
 /* La traza: dos copias del patron y el conjunto se corre una copia entera en
    bucle. 26 s por vuelta es el «paneo lento» del encargo; a mas rapido se lee
@@ -187,21 +190,48 @@
 /* El panel se lee, no se descifra: el cuerpo pasa de 8-10 px a 11-14 px
    y la columna del veredicto baja de 104 a 48 px de lienzo, que es lo que
    mide «NO-GO». Medido por Visu, 04-10-2026. */
+/* LAMINA 2 DE / 03, encargo de Sebastian del 04-10-2026: el video de Grace a
+   la izquierda, el barrido a la derecha bajo el rotulo GRACE EN VIVO, cada
+   fila con su rubro y la caja con desplazador para verlas todas. Salieron el
+   fondo de campo de codigo (el video ya trae su lluvia de glifos) y el boton
+   «Ver los servicios»: la seccion cierra con las cifras, no con un llamado. */
+.gviva{background:#000}
+.gvfilm{overflow:hidden}
+.gvfilm video{object-fit:cover;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent),
+                     linear-gradient(transparent,#000 8%,#000 90%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent),
+             linear-gradient(transparent,#000 8%,#000 90%,transparent);
+  -webkit-mask-composite:source-in;mask-composite:intersect}
+/* La caja del barrido: alto fijo y desplazador propio. Ocho filas no caben en
+   588 px de lienzo y recortarlas mentiria sobre cuanto barre Grace. */
+.gcaja{overflow-y:auto;
+  background:rgba(2,6,10,.72);border:1px solid rgba(5,248,249,.14);
+  border-radius:calc(3*var(--u));padding:0 calc(20*var(--u));
+  scrollbar-width:thin;scrollbar-color:#c87941 rgba(255,255,255,.06)}
+.gcaja::-webkit-scrollbar{width:calc(6*var(--u))}
+.gcaja::-webkit-scrollbar-track{background:rgba(255,255,255,.06)}
+.gcaja::-webkit-scrollbar-thumb{background:#c87941;border-radius:999px}
 .glista{list-style:none;padding:0;margin:0;display:grid}
 .glista li{display:grid;grid-template-columns:calc(48*var(--u)) minmax(0,1fr) calc(96*var(--u));
-  align-items:center;gap:calc(12*var(--u));
+  align-items:start;gap:calc(12*var(--u));
   font-family:var(--plex);font-size:calc(14*var(--u));line-height:1.35;color:#c3cad1;
   border-top:1px solid rgba(255,255,255,.07);padding:calc(7*var(--u)) 0}
-.glista .mkr{color:var(--petroleo2);font-weight:700;font-size:calc(11*var(--u));letter-spacing:.09em}
+.glista .mkr{color:var(--petroleo2);font-weight:700;font-size:calc(11*var(--u));letter-spacing:.09em;padding-top:calc(12*var(--u))}
 /* El veredicto se lee de un vistazo: GO en azul de traza, NO-GO apagado.
    Tres NO-GO en ocho filas dicen que hay criterio y que sabe decir que no. */
 .glista li:has(.mkr:not(:empty)) .mkr{white-space:nowrap}
 .glista .mkr.no{color:#8a9299}
 .glista .dt{min-width:0}
-.glista .dt b{display:block;font-weight:400;color:#8f98a0;font-size:calc(11*var(--u))}
-.glista .dt em{display:block;font-style:normal;color:#e6eaee;overflow:hidden;
-  text-overflow:ellipsis;white-space:nowrap}
-.glista .ci{color:#9aa3ab;text-align:right;white-space:nowrap;font-size:calc(11*var(--u))}
+/* rubro · licitacion · analisis. El rubro va primero porque es el filtro que
+   Grace aplica antes de mirar nada mas. */
+.glista .dt b{display:block;font-weight:700;color:#c87941;font-size:calc(10*var(--u));
+  letter-spacing:.14em;text-transform:uppercase}
+.glista .dt em{display:block;font-style:normal;font-weight:700;color:#e6eaee;
+  font-size:calc(12*var(--u));letter-spacing:.06em;text-transform:uppercase;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.glista .dt i{display:block;font-style:normal;color:#aeb8c0}
+.glista .ci{color:#9aa3ab;text-align:right;white-space:nowrap;font-size:calc(11*var(--u));padding-top:calc(13*var(--u))}
 .gpie{font-family:var(--plex);font-size:calc(12*var(--u));line-height:1.5;color:#8a9299;letter-spacing:.04em}
 /* El llamado a la accion de / 03, que el Canva no traia: la seccion cerraba
    sin decirle al visitante que hacer.
@@ -389,6 +419,11 @@
   .cv .gmarca{font-size:calc(34*var(--u))}
   .cv .gvivo{font-size:calc(22*var(--u));padding:calc(6*var(--u)) calc(16*var(--u));
     width:auto;align-self:flex-start}
+  .gcaja{max-height:none;overflow:visible;padding:calc(10*var(--u)) calc(24*var(--u))}
+  .gvfilm video{max-height:72vh}
+  .cv .dt b{font-size:calc(20*var(--u))}
+  .cv .dt em{font-size:calc(24*var(--u));white-space:normal}
+  .cv .dt i{white-space:normal}
   .glista li{grid-template-columns:1fr;gap:calc(4*var(--u));font-size:calc(28*var(--u))}
   .glista .mkr,.glista .dt b,.glista .ci{font-size:calc(23*var(--u))}
   .glista .ci{text-align:left}
