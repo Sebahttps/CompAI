@@ -11,6 +11,12 @@ const raiz = dirname(fileURLToPath(import.meta.url));
 const lee = f => JSON.parse(readFileSync(join(raiz, f), 'utf8'));
 
 const S = lee('contenido/sitio.json');
+/* El barrido de RAIdar, si esta. `contenido/barrido.json` lo deja
+   `traer_barrido.py` desde `radar/vitrina/ultimo.json`. Sin el archivo el
+   panel cae a las filas de EJEMPLO de sitio.json: la pagina no se cae por
+   un barrido que no corrio, pero tampoco finge que el dato es de hoy. */
+const BARRIDO = existsSync(join(raiz, 'contenido/barrido.json'))
+  ? lee('contenido/barrido.json') : null;
 const SERV = lee('contenido/servicios.json');
 const LOGO = readFileSync(join(raiz, 'media/logo-compai.svg'), 'utf8')
   .replace(/<\?xml[^>]*\?>\s*/, '').trim();
@@ -207,6 +213,13 @@ const grace = (() => {
          dentro de 19 px. Ahora los cuatro cierran en 62. */
   const im = S.grace.imagenes;
   const L = S.grace.lamina;
+  const vivo = BARRIDO && Array.isArray(BARRIDO.filas) && BARRIDO.filas.length
+    ? BARRIDO : null;
+  const filas = vivo ? vivo.filas : S.grace.envivo.filas;
+  const sello = vivo ? `BARRIDO DEL ${vivo.fecha}` : S.grace.envivo.estado;
+  const pie = vivo
+    ? `${vivo.barridas.toLocaleString('es-CL')} licitaciones activas barridas · ${vivo.fuente}. Clasificadas por rubro; se desplaza para verlas todas.`
+    : S.grace.envivo.pie;
   const fila = f => `<li>
             <span class="mkr${/^NO/.test(f.marca) ? ' no' : ''}">${esc(f.marca)}</span>
             <span class="dt"><b>${esc(f.rubro)}</b><em>${esc(f.id)}</em><i>${esc(f.titulo)}</i></span>
@@ -240,13 +253,13 @@ const grace = (() => {
       </div>
       <img class="b fh gemblema" style="--x:500;--y:118;--w:40;--hh:40" src="media/grace-logo.webp" alt="" width="512" height="512" loading="lazy" decoding="async">
       <p class="b t gmarca" style="--x:552;--y:122;--w:360;--fs:26;--lh:1.1">${esc(S.grace.envivo.titulo)}</p>
-      <p class="b t gvivo fh" style="--x:940;--y:124;--w:124;--hh:30;--fs:12">(( ${esc(S.grace.envivo.estado)} ))</p>
+      <p class="b t gvivo fh" style="--x:940;--y:124;--w:124;--hh:30;--fs:12">(( ${esc(sello)} ))</p>
       <div class="b fh gcaja" style="--x:500;--y:186;--w:804;--hh:428">
         <ul class="glista">
-          ${S.grace.envivo.filas.map(fila).join('')}
+          ${filas.map(fila).join('')}
         </ul>
       </div>
-      <p class="b gpie" style="--x:500;--y:642;--w:804">${esc(S.grace.envivo.pie)}</p>
+      <p class="b gpie" style="--x:500;--y:642;--w:804">${esc(pie)}</p>
     </div>
 
     <div class="pg" style="--h:1115">
@@ -292,12 +305,29 @@ const creative = `
       <div class="b fh cline" style="--x:659;--y:0;--w:9;--hh:902" aria-hidden="true"></div>
       ${servTexto(SERV[3], 79, 203)}
       ${mkTel(902, 104, 4)}
-      ${['pista', 'nodo', 'nucleo'].map((n, i) => {
-        const y = [896, 1278, 1704][i], h = [382, 426, 406][i], ty = [1040, 1420, 1850][i];
-        return `<div class="b fh ccirc" style="--x:0;--y:${y};--w:1366;--hh:${h}" aria-hidden="true">${fondoVid(`media/banda-${n}.mp4`, `media/banda-${n}.webp`)}</div>
-      <div class="b fh banda-velo" style="--x:0;--y:${y};--w:1366;--hh:${h}" aria-hidden="true"></div>
-      <p class="b t banda-tx" style="--x:137;--y:${ty};--w:500;--fs:81.1;--lh:1.1;--tr:0.054">/${n}</p>`;
-      }).join('\n      ')}
+      ${/* Las tres bandas dejan de ser decorado: cada una abre hacia un lado y
+            muestra el servicio que le toca. Encargo de Sebastian, 04-10-2026.
+            Van en <details> y no en hover: en telefono no hay hover, y un
+            panel que solo existe con el cursor encima no existe para la mitad
+            de las visitas. */
+        ['pista', 'nodo', 'nucleo'].map((n, i) => {
+        const y = [896, 1278, 1704][i], h = [382, 426, 406][i];
+        const sv = SERV.find(x => x.etiqueta === `/${n}`) || SERV[i];
+        return `<details class="b fh banda" style="--x:0;--y:${y};--w:1366;--hh:${h}">
+        <summary>
+          <span class="ccirc" aria-hidden="true">${fondoVid(`media/banda-${n}.mp4`, `media/banda-${n}.webp`)}</span>
+          <span class="banda-velo" aria-hidden="true"></span>
+          <span class="banda-tx">/${n}</span>
+          <span class="banda-mas" aria-hidden="true"></span>
+        </summary>
+        <div class="banda-ficha">
+          <h3>${esc(sv.titulo)}</h3>
+          <p>${esc(sv.bajada)}</p>
+          <ul>${sv.vinetas.map(v => `<li>${esc(v)}</li>`).join('')}</ul>
+          <a href="#inbox">${esc(sv.cta)}</a>
+        </div>
+      </details>`;
+      }).join('')}
     </div>
   </section>`;
 

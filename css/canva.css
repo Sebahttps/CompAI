@@ -294,10 +294,63 @@
 .mk.lap .base{position:absolute;left:0;right:0;bottom:0;height:calc(9*var(--u));
   background:linear-gradient(#e6e9ec,#b9bec4);border-radius:0 0 calc(6*var(--u)) calc(6*var(--u))}
 
-/* Las tres bandas /pista /nodo /nucleo */
-.banda-velo{background:rgba(0,0,0,.78)}
-.banda-tx{font-family:var(--courier);font-weight:700;color:var(--cian);opacity:.92;
+/* ── Las tres bandas /pista /nodo /nucleo ──────────────────────────────
+   Hasta el 04-10-2026 eran tres rectangulos con video y una palabra encima:
+   tres servicios anunciados y ninguno explicado. Ahora cada banda abre hacia
+   la derecha con su ficha. <details> y no :hover, porque en telefono no hay
+   cursor y la mitad de las visitas se quedaria sin saber que hay algo. */
+.banda{position:absolute;overflow:hidden;background:#0b0e12}
+.banda summary{position:absolute;inset:0;list-style:none;cursor:pointer;
+  display:block;-webkit-tap-highlight-color:transparent}
+.banda summary::-webkit-details-marker{display:none}
+.banda summary::marker{content:""}
+.banda .ccirc{position:absolute;inset:0;display:block}
+.banda-velo{position:absolute;inset:0;background:rgba(0,0,0,.78);
+  transition:background .45s ease}
+.banda[open] .banda-velo{background:rgba(0,0,0,.88)}
+.banda-tx{position:absolute;left:calc(137*var(--u));top:50%;transform:translateY(-50%);
+  font-family:var(--courier);font-weight:700;color:var(--cian);opacity:.92;
+  font-size:calc(81.1*var(--u));line-height:1.1;letter-spacing:.054em;
   white-space:nowrap;text-transform:uppercase}
+/* Cerrada es una cruz —«abreme»— y al abrir gira 45 grados y se lee como una
+   equis —«cierrame»—: el mismo elemento dice las dos cosas. */
+.banda-mas{position:absolute;left:calc(137*var(--u));top:50%;
+  margin-top:calc(58*var(--u));width:calc(26*var(--u));height:calc(26*var(--u));
+  transform:rotate(0deg);transition:transform .45s ease}
+.banda-mas::before,.banda-mas::after{content:"";position:absolute;background:#c87941;
+  left:50%;top:50%}
+.banda-mas::before{width:calc(26*var(--u));height:2px;transform:translate(-50%,-50%)}
+.banda-mas::after{width:2px;height:calc(26*var(--u));transform:translate(-50%,-50%)}
+.banda[open] .banda-mas{transform:rotate(45deg)}
+/* La ficha entra desde la derecha. `visibility` ademas de `transform` para que
+   los enlaces no sean pulsables mientras esta fuera de cuadro. */
+.banda-ficha{position:absolute;right:0;top:0;bottom:0;width:52%;
+  background:linear-gradient(90deg,rgba(11,14,18,0),rgba(11,14,18,.97) 14%,rgba(11,14,18,.97));
+  border-left:1px solid rgba(200,121,65,.45);
+  padding:calc(40*var(--u)) calc(62*var(--u)) calc(40*var(--u)) calc(74*var(--u));
+  display:flex;flex-direction:column;justify-content:center;gap:calc(14*var(--u));
+  transform:translateX(102%);visibility:hidden;
+  transition:transform .5s cubic-bezier(.22,.8,.3,1),visibility 0s linear .5s}
+.banda[open] .banda-ficha{transform:translateX(0);visibility:visible;
+  transition:transform .5s cubic-bezier(.22,.8,.3,1),visibility 0s}
+.banda-ficha h3{margin:0;font-family:Archivo,sans-serif;font-weight:800;
+  font-size:calc(26*var(--u));line-height:1.18;color:#fff;letter-spacing:-.01em}
+.banda-ficha p{margin:0;font-family:var(--clear);font-weight:300;
+  font-size:calc(14*var(--u));line-height:1.5;color:#c3cad1}
+.banda-ficha ul{list-style:none;margin:0;padding:0;display:grid;gap:calc(6*var(--u))}
+.banda-ficha li{position:relative;padding-left:calc(16*var(--u));
+  font-family:var(--plex);font-weight:300;font-size:calc(12.5*var(--u));
+  line-height:1.4;color:#aeb8c0}
+.banda-ficha li::before{content:"";position:absolute;left:0;top:calc(.55em - 1px);
+  width:calc(5*var(--u));height:calc(5*var(--u));background:#c87941}
+.banda-ficha a{align-self:flex-start;margin-top:calc(6*var(--u));
+  font-family:var(--plex);font-weight:700;font-size:calc(12*var(--u));
+  letter-spacing:.1em;text-transform:uppercase;color:#1a1208;background:#c87941;
+  padding:calc(11*var(--u)) calc(22*var(--u));border-radius:calc(3*var(--u));
+  text-decoration:none;transition:filter .2s}
+.banda-ficha a:hover{filter:brightness(1.1)}
+@media (prefers-reduced-motion:reduce){
+  .banda-ficha,.banda-mas,.banda-velo{transition:none}}
 
 /* ── / 05 Inbox ────────────────────────────────────────────────────────── */
 .icaja{background:#15181c;border:1px solid rgba(255,255,255,.07);
@@ -443,7 +496,29 @@
   .serv-vin{margin-top:calc(26*var(--u));font-size:calc(16*var(--u))}
   .mk{aspect-ratio:calc(var(--w) / var(--hh));height:auto;margin-inline:auto}
   .cv .mk.tel{width:min(210px,56%)}
-  .banda-tx{font-size:calc(64*var(--u));text-align:center}
+  /* En telefono la banda es una fila apilada: el video de fondo ya esta
+     apagado por `.ccirc{display:none}`, asi que la ficha baja en vez de
+     entrar por el costado. */
+  .cv .banda{position:static;height:auto;padding:calc(30*var(--u)) 0;
+    border-top:1px solid rgba(200,121,65,.3)}
+  .cv .banda summary{position:static;display:flex;align-items:center;
+    justify-content:space-between;gap:calc(20*var(--u))}
+  .cv .banda-velo{display:none}
+  .cv .banda-tx{position:static;transform:none;font-size:calc(64*var(--u))}
+  .cv .banda-mas{position:static;margin:0;flex:0 0 auto;
+    width:calc(40*var(--u));height:calc(40*var(--u))}
+  .cv .banda-mas::before{width:calc(40*var(--u))}
+  .cv .banda-mas::after{height:calc(40*var(--u))}
+  .cv .banda-ficha{position:static;width:auto;transform:none;visibility:visible;
+    background:none;border-left:0;border-top:1px solid rgba(200,121,65,.3);
+    padding:calc(28*var(--u)) 0 0;gap:calc(20*var(--u))}
+  .cv .banda-ficha h3{font-size:calc(40*var(--u))}
+  .cv .banda-ficha p{font-size:calc(28*var(--u))}
+  .cv .banda-ficha li{font-size:calc(26*var(--u));padding-left:calc(30*var(--u))}
+  .cv .banda-ficha li::before{width:calc(10*var(--u));height:calc(10*var(--u))}
+  .cv .banda-ficha a{font-size:calc(24*var(--u));padding:calc(20*var(--u)) calc(28*var(--u));
+    align-self:stretch;text-align:center}
+
 
   .icaja{padding:calc(44*var(--u)) calc(34*var(--u))}
   .ikick{font-size:calc(15*var(--u))}
