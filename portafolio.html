@@ -1746,6 +1746,16 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   color:rgba(245,240,228,.82);margin:0 0 16px;max-width:46ch}
 .tj .papel span{display:block;margin-top:5px;font-family:'Courier New',Courier,monospace;
   font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:rgba(245,240,228,.5)}
+/* El precio va antes del titular y no al final: la propuesta entera se llama
+   «con el precio a la vista», y esconderlo abajo seria la cotizacion de
+   siempre, la que llega con un numero y sin decir que se hace por el. */
+.tj .precio{font-family:'Courier New',Courier,monospace;font-size:clamp(17px,1.9vw,22px);
+  font-weight:700;line-height:1.5;color:#C87941;margin:0 0 20px;
+  padding:14px 0;border-top:1px solid rgba(200,121,65,.3);
+  border-bottom:1px solid rgba(200,121,65,.3)}
+.tj .precio em{display:block;font-style:normal;font-weight:400;font-size:11.5px;
+  letter-spacing:.14em;text-transform:uppercase;color:rgba(245,240,228,.55);
+  margin:1px 0 10px;line-height:1.3}
 #trabajos .tj h2{font-size:clamp(22px,3vw,34px);line-height:1.22;letter-spacing:-.015em;
   color:#F5F0E4;margin:0 0 16px;max-width:26ch;font-weight:700;text-transform:none}
 .tj p.cuerpo{font-size:clamp(14.5px,1.4vw,17px);line-height:1.62;
@@ -2326,77 +2336,90 @@ html.hdr-chico .brand .logo{transform:scale(.737);
     </div>
 </main>
 
-<!-- ================= TRES TRABAJOS CONSTRUIDOS ================= -->
+<!-- ================= LOS TRES PAQUETES, CONSTRUIDOS =================
+     Pista, Nodo y Nucleo son los tres paquetes de la propuesta comercial
+     PC-2026-001 del 11-09-2026, no tres nombres de linea: cada uno tiene su
+     alcance y su precio. La frontera entre ellos no es el precio sino si el
+     sitio GUARDA algo, y asi esta escrito en la propuesta. Cada paquete se
+     muestra con una pieza que existe y se puede abrir. -->
 <section id="trabajos" aria-labelledby="t-tit">
   <div class="caja">
-    <p class="ante">Trabajos construidos</p>
-    <h1 id="t-tit">Lo mismo que le cotizamos, ya construido y andando.</h1>
-    <p class="entrada">Tres papeles, no tres cat&aacute;logos: <b>/pista</b> es por donde se
-      entra, <b>/nodo</b> es lo que conecta y <b>/nucleo</b> es lo que se decide antes de
-      construir. Para cada uno, una cosa que existe y se puede abrir &mdash;no una maqueta ni
-      una referencia prestada&mdash;. Son proyectos del estudio y se dice: ninguno de estos
-      pies dice cliente.</p>
+    <p class="ante">Pista &middot; Nodo &middot; N&uacute;cleo</p>
+    <h1 id="t-tit">Tres formas de poner tu negocio en internet, con el precio a la vista.</h1>
+    <p class="entrada">La frontera entre los tres no es el precio: es si el sitio tiene que
+      <b>guardar</b> algo. Pista y Nodo muestran; N&uacute;cleo guarda. Por eso un Nodo grande puede
+      costar m&aacute;s que un N&uacute;cleo chico: son trabajos distintos, no tama&ntilde;os del mismo trabajo.
+      Abajo, cada paquete con una cosa que ya construimos y se puede abrir.</p>
 
     <article class="tj">
       <div class="texto">
-        <p class="et"><b>/ pista</b> &mdash; por donde se entra</p>
-        <p class="papel">El servicio m&aacute;s comprensible y el m&aacute;s barato de empezar: lo que ya
-          compr&oacute;, andando. <span>Puesta en marcha, migraci&oacute;n y continuidad.</span></p>
-        <h2>Lo que estaba en dos bandejas y un cuaderno, en una pantalla y andando el mismo d&iacute;a.</h2>
-        <p class="cuerpo">Dos plataformas de reserva que no se hablan entre s&iacute;, las respuestas
-          que alguien reescrib&iacute;a a mano cada vez, y el precio por temporada discutido de
-          memoria. Ahora es una pantalla sola: se abre en cualquier computador, no se instala
-          y no tiene servidor detr&aacute;s. Por eso no hay nada que mantenerle.</p>
-        <a class="alser" href="index.html#creative">Ver el servicio</a>
+        <p class="et"><b>01 / pista</b> &mdash; el camino inicial</p>
+        <p class="papel">Para ti si reci&eacute;n est&aacute;s partiendo y hoy quien te busca en Google no
+          encuentra nada tuyo. Una p&aacute;gina con tu nombre, tu rubro y lo que vendes; bot&oacute;n de
+          WhatsApp, tus redes enlazadas, y hecha primero para el celular.
+          <span>Muestra, no guarda &middot; sin base de datos</span></p>
+        <p class="precio">$250.000 &ndash; $500.000 <em>pago &uacute;nico, IVA incluido</em>
+          <br>$20.000 &ndash; $40.000 <em>soporte mensual</em></p>
+        <h2>As&iacute; se ve una Pista: una sola pantalla que se abre en cualquier computador.</h2>
+        <p class="cuerpo">Panel de operaci&oacute;n de un alojamiento. Dos plataformas de reserva que
+          no se hablaban entre s&iacute; y las respuestas que alguien reescrib&iacute;a a mano, en una sola
+          p&aacute;gina. No se instala, no tiene servidor detr&aacute;s y por eso no hay nada que mantenerle.</p>
       </div>
       <figure>
         <div class="passe"><img src="media/p-pista.webp" width="1040" height="440" loading="eager" decoding="async"
           alt="Panel de operaci&oacute;n de un alojamiento: pesta&ntilde;as de solicitudes, plantillas y traslados, con el estado de reservas."></div>
-        <figcaption>Panel de operaci&oacute;n de un alojamiento &middot; una sola p&aacute;gina, sin instalaci&oacute;n ni servidor</figcaption>
-      </figure>
-    </article>
-
-    <article class="tj oscura">
-      <div class="texto">
-        <p class="et"><b>/ nodo</b> &mdash; lo que conecta</p>
-        <p class="papel">Dos sistemas que hoy no se hablan, hablando; y el trabajo que alguien
-          rehace a mano, corriendo solo. <span>Automatizaci&oacute;n e integraci&oacute;n de sistemas.</span></p>
-        <h2>Lo que nadie alcanza a revisar a mano, revisado solo, todos los d&iacute;as a la misma hora.</h2>
-        <p class="cuerpo">Cada ma&ntilde;ana entra a un sistema que no es nuestro, lee las publicaciones
-          del d&iacute;a y la ficha de cada una, se queda con las del rubro y deja una lista corta.
-          Nadie abre nada, nadie copia nada a una planilla, y a nadie hay que record&aacute;rselo.</p>
-        <a class="alser" href="index.html#grace">Ver el servicio</a>
-      </div>
-      <figure>
-        <div class="passe"><img src="media/p-embudo.webp" width="1040" height="558" loading="eager" decoding="async"
-          alt="Embudo del barrido diario: 4.638 publicaciones del d&iacute;a, 4.637 fichas le&iacute;das, 234 del rubro, y la lista corta a la mesa."></div>
-        <figcaption>Barrido diario sobre la API de Mercado P&uacute;blico &middot; 4.638 publicaciones le&iacute;das el 04-10-2026</figcaption>
+        <figcaption>Revenue &middot; una sola p&aacute;gina, sin instalaci&oacute;n ni servidor</figcaption>
       </figure>
     </article>
 
     <article class="tj">
       <div class="texto">
-        <p class="et"><b>/ nucleo</b> &mdash; lo que se decide</p>
-        <p class="papel">Decisi&oacute;n, no ejecuci&oacute;n: qu&eacute; pedir, con qu&eacute; m&iacute;nimos y a qu&eacute; precio
-          deber&iacute;a salir, antes de publicar la compra. <span>Especificaci&oacute;n y asesor&iacute;a
-          t&eacute;cnica.</span></p>
-        <h2>Lo que hay que decidir antes de publicar la compra, decidido y escrito.</h2>
-        <p class="cuerpo">Un producto completo especificado hasta la &uacute;ltima pantalla: qu&eacute; hace,
-          qu&eacute; no hace, c&oacute;mo se cobra y qu&eacute; pasa cuando algo falla. Cada decisi&oacute;n qued&oacute;
-          escrita al lado de la alternativa que se descart&oacute; y del motivo. Con ese documento el
-          trabajo se encarga sin ambig&uuml;edad &mdash;y reci&eacute;n despu&eacute;s se construye.</p>
-        <a class="alser" href="index.html#creative">Ver el servicio</a>
+        <p class="et"><b>02 / nodo</b> &mdash; donde todo se conecta</p>
+        <p class="papel">Para ti si ya tienes clientes y la p&aacute;gina tiene que hacer trabajo:
+          varias p&aacute;ginas, cat&aacute;logo con foto, descripci&oacute;n y precio de cada cosa, y un formulario
+          cuyo contenido te llega al correo o al WhatsApp con el nombre y el tel&eacute;fono de quien
+          escribe. <span>Muestra y recibe &middot; todo lo de Pista, y adem&aacute;s</span></p>
+        <p class="precio">$1.000.000 &ndash; $2.000.000 <em>pago &uacute;nico, IVA incluido</em>
+          <br>$40.000 &ndash; $80.000 <em>soporte mensual</em></p>
+        <h2>As&iacute; se ve un Nodo: varias secciones, cat&aacute;logo con precio y el formulario andando.</h2>
+        <p class="cuerpo">Nuestro propio sitio es un Nodo: seis secciones, los nueve servicios con
+          su valor a la vista y el formulario conectado. Est&aacute; publicado, se puede recorrer entero
+          y lo que escribas ah&iacute; llega a un correo que contesta una persona.</p>
       </div>
       <figure>
-        <div class="passe"><img src="media/p-nucleo.webp" width="1140" height="822" loading="eager" decoding="async"
-          alt="Dos pantallas de la especificaci&oacute;n de Casero: elegir categor&iacute;a y frecuencia, y el detalle de la publicaci&oacute;n."></div>
-        <figcaption>Casero &middot; especificaci&oacute;n de producto, quince rondas de decisi&oacute;n antes de la primera l&iacute;nea de c&oacute;digo</figcaption>
+        <div class="passe"><img src="media/p-nodo.webp" width="1100" height="634" loading="eager" decoding="async"
+          alt="Portada de compai.cl: franjas de video y el logotipo de la marca."></div>
+        <figcaption>compai.cl &middot; seis secciones, nueve servicios con precio y formulario al correo</figcaption>
       </figure>
     </article>
 
-    <p class="nota">Los tres son proyectos del estudio, no encargos de terceros. Se muestran
-      porque son lo que hay construido y porque se pueden abrir: la ficha del Registro de
-      Proveedores dice las ventas que llevamos, y est&aacute; a un clic.</p>
+    <article class="tj">
+      <div class="texto">
+        <p class="et"><b>03 / nucleo</b> &mdash; el sistema completo</p>
+        <p class="papel">Para ti si tu negocio necesita guardar y consultar: qui&eacute;n reserv&oacute;, qu&eacute;
+          se vendi&oacute;, a qui&eacute;n y cu&aacute;ndo. Cada persona entra con su usuario y ve solamente lo suyo,
+          hay base de datos propia y una pantalla para el due&ntilde;o con las cifras del mes.
+          <span>Guarda &middot; todo lo de Nodo, y adem&aacute;s</span></p>
+        <p class="precio">$1.500.000 &ndash; $5.500.000 <em>pago &uacute;nico, IVA incluido</em>
+          <br>desde $80.000 <em>soporte mensual</em></p>
+        <h2>As&iacute; se ve un N&uacute;cleo: se entra con clave y cada quien ve s&oacute;lo lo suyo.</h2>
+        <p class="cuerpo">Casero es un mercado entre vecinos del mismo edificio. Se entra con
+          clave, se verifica que vives ah&iacute;, y el mapa mide de port&oacute;n a port&oacute;n &mdash;caminando, no en
+          l&iacute;nea recta&mdash; para decidir a qui&eacute;n le puedes pedir. Eso no se resuelve con una p&aacute;gina:
+          se resuelve con base de datos.</p>
+      </div>
+      <figure>
+        <div class="passe"><img src="media/p-nucleo.webp" width="780" height="674" loading="eager" decoding="async"
+          alt="Mapa de Casero: radios de 100 y 500 metros sobre el barrio, con los edificios que alcanzas en cada uno."></div>
+        <figcaption>Casero &middot; captura real, sin retocar &middot; entra con clave, mapa y verificaci&oacute;n</figcaption>
+      </figure>
+    </article>
+
+    <p class="nota">Valores referenciales en pesos, IVA incluido. El precio se cierra antes de
+      empezar y no sube si el trabajo nos toma m&aacute;s tiempo del previsto &mdash;ese riesgo lo corremos
+      nosotros&mdash;; s&oacute;lo cambia si pides algo que no estaba, y eso se cotiza aparte antes de hacerlo.
+      Las tres piezas de arriba son del estudio, no encargos de terceros: se muestran porque son
+      lo que hay construido y porque se pueden abrir.</p>
   </div>
 </section>
 
