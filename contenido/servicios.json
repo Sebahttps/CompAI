@@ -1,91 +1,93 @@
 [
-  {
-    "slug": "automatizacion",
-    "codigo": "01",
-    "etiqueta": "/nodo",
-    "titulo": "Automatización e integración de sistemas",
-    "bajada": "Lo que hoy se hace a mano —avisar, copiar, recordar— sale solo y a la hora, sin sumar un funcionario más.",
-    "vinetas": [
-      "Avisos y recordatorios por mensajería",
-      "Un proceso administrativo, hecho solo",
-      "Dos sistemas conectados, por hitos",
-      "Precio cerrado antes de empezar",
-      "Acta de puesta en marcha para la rendición"
-    ],
-    "lamina": [
-      "Las horas que hoy se confirman por teléfono se avisan solas: los recordatorios salen de su propia agenda, con el remitente registrado a nombre de la institución y no de un funcionario. El consumo de mensajería lo contrata usted directo al operador, y eso queda escrito antes de cotizar.",
-      "El reporte que alguien rehace a mano todos los meses queda andando solo, con tablero a la vista y aviso cuando algo se traba. Si el trabajo es largo se parte en hitos, y usted paga contra hito recibido conforme, nunca contra una promesa de avance.",
-      "Se cotiza por entregable y jamás por hora: usted no termina discutiendo cuántas horas fueron. Al cierre se entrega el acta de puesta en marcha y la documentación de operación de su equipo, que es exactamente lo que la rendición de la orden de compra necesita."
-    ],
-    "imagen": "media/circuitos.webp",
-    "imagen_alt": "Automatización e integración de sistemas",
-    "cta": "Solicitar cotización"
-  },
-  {
-    "slug": "especificacion",
-    "codigo": "02",
-    "etiqueta": "/nucleo",
-    "titulo": "Especificación y asesoría técnica",
-    "bajada": "Saber qué pedir y cuánto debería costar antes de publicar la compra, para que la oferta buena no llegue de casualidad.",
-    "vinetas": [
-      "Informe corto de especificación técnica",
-      "Anexo técnico para bases de licitación",
-      "Evaluación comparada de alternativas",
-      "Presupuesto referencial con su fuente",
-      "Matriz de evaluación lista para usar"
-    ],
-    "lamina": [
-      "Antes de publicar la compra: qué pedir, con qué características mínimas, cómo evaluarlo y qué presupuesto referencial corresponde, con la fuente pública de cada valor a la vista. Una compra mal especificada se adjudica igual, y después se arrastra el año fiscal completo con el dinero ya comprometido.",
-      "Se comparan de tres a cinco alternativas con criterios ponderados y el costo total a tres años, renovación de licencias incluida. Lo barato de comprar y caro de renovar es el error que más se repite, y es justamente el que esta comparación existe para detectar a tiempo.",
-      "Una línea que no se cruza: se especifica para el organismo que va a licitar, y no se redactan las bases de un proceso al que después se ofertaría. Si esa asesoría nos inhabilita para competir, queda inhabilitada, y se dice antes de tomar el trabajo y no después."
-    ],
-    "imagen": "media/grace-retrato.webp",
-    "imagen_alt": "Especificación y asesoría técnica",
-    "cta": "Solicitar cotización"
-  },
-  {
-    "slug": "continuidad",
-    "codigo": "03",
-    "etiqueta": "/pista",
-    "titulo": "Puesta en marcha, migración y continuidad",
-    "bajada": "Que lo que ya compró quede andando esta semana, y siga andando los doce meses siguientes sin que nadie lo vigile a mano.",
-    "vinetas": [
-      "Puesta en marcha de licencias y equipos",
-      "Migración de sitio, correo y dominio",
-      "Mantención de sistemas y plataformas",
-      "Vigilancia de cada vencimiento, al mes",
-      "Soporte con hora de respuesta escrita"
-    ],
-    "lamina": [
-      "Que llegue la clave no es que quede funcionando: hay que crear las cuentas, asignar los usuarios y dejar el equipo andando. Eso es la puesta en marcha, y se entrega con inventario por número de serie, el pliego de configuración escrito y el acta firmada.",
-      "Traslado del sitio, de los buzones, del dominio y del certificado con un solo responsable técnico para el corte y para lo que queda funcionando después. La ventana se coordina con usted y el plan de vuelta atrás se escribe antes de tocar una sola cosa.",
-      "El plan de doce meses mira cada mes lo que nadie mira hasta que falla: el vencimiento de cada licencia y certificado, los respaldos verificados y los parches aplicados. Llega un reporte mensual y el soporte tiene hora de respuesta comprometida por escrito, no de palabra."
-    ],
-    "imagen": "media/captura-portafolio.webp",
-    "imagen_alt": "Puesta en marcha, migración y continuidad",
-    "cta": "Solicitar cotización"
-  },
-  {
-    "slug": "catalogo",
-    "codigo": "04",
-    "etiqueta": "/nucleo",
-    "titulo": "Los nueve servicios, con el precio a la vista",
-    "bajada": "Nueve servicios con su valor neto publicado y lo que no entra. Ninguno pasa las 100 UTM: los nueve van por Compra Ágil.",
-    "vinetas": [
-      "Nueve servicios en tres líneas",
-      "El neto que va en la orden de compra",
-      "La lista de lo que no entra, completa",
-      "Glosa redactada para la orden de compra",
-      "La ficha del Estado, a dos clics"
-    ],
-    "lamina": [
-      "Nueve servicios repartidos en tres líneas, y cada ficha trae lo mismo: el valor, el neto que va en la orden de compra y las dos listas completas, la de lo que entra y la de lo que no entra. Las dos, antes de que usted pida la cotización.",
-      "El valor se cierra antes de empezar y no sube si el trabajo toma más tiempo del previsto. Sólo cambia si usted pide algo que no estaba, y eso se autoriza por escrito y se cotiza aparte antes de ejecutarlo. La glosa de la orden de compra va redactada.",
-      "La empresa es nueva y usted lo puede comprobar sin creernos: la ficha del Registro de Proveedores muestra, de cualquier proveedor, sus ventas en Mercado Público y los convenios marco adjudicados. Las nuestras están en cero, y esa ficha está a dos clics de aquí."
-    ],
-    "imagen": "media/captura-portafolio.webp",
-    "imagen_alt": "Catálogo de servicios y precios de CompAI",
-    "cta": "Ver los nueve, con precio",
-    "cta_url": "/portafolio.html#servicios"
-  }
+ {
+  "slug": "automatizacion",
+  "codigo": "01",
+  "titulo": "Automatización e integración de sistemas",
+  "bajada": "Lo que hoy se hace a mano —avisar, copiar, recordar— sale solo y a la hora, sin sumar un funcionario más.",
+  "vinetas": [
+   "Avisos y recordatorios por mensajería",
+   "Un proceso administrativo, hecho solo",
+   "Dos sistemas conectados, por hitos",
+   "Precio cerrado antes de empezar",
+   "Acta de puesta en marcha para la rendición"
+  ],
+  "lamina": [
+   "Las horas que hoy se confirman por teléfono se avisan solas: los recordatorios salen de su propia agenda, con el remitente registrado a nombre de la institución y no de un funcionario. El consumo de mensajería lo contrata usted directo al operador, y eso queda escrito antes de cotizar.",
+   "El reporte que alguien rehace a mano todos los meses queda andando solo, con tablero a la vista y aviso cuando algo se traba. Si el trabajo es largo se parte en hitos, y usted paga contra hito recibido conforme, nunca contra una promesa de avance.",
+   "Se cotiza por entregable y jamás por hora: usted no termina discutiendo cuántas horas fueron. Al cierre se entrega el acta de puesta en marcha y la documentación de operación de su equipo, que es exactamente lo que la rendición de la orden de compra necesita."
+  ],
+  "imagen": "media/circuitos.webp",
+  "imagen_alt": "Automatización e integración de sistemas",
+  "cta": "Solicitar cotización",
+  "linea": "L1",
+  "linea_nombre": "Automatización e integración de sistemas"
+ },
+ {
+  "slug": "especificacion",
+  "codigo": "02",
+  "titulo": "Especificación y asesoría técnica",
+  "bajada": "Saber qué pedir y cuánto debería costar antes de publicar la compra, para que la oferta buena no llegue de casualidad.",
+  "vinetas": [
+   "Informe corto de especificación técnica",
+   "Anexo técnico para bases de licitación",
+   "Evaluación comparada de alternativas",
+   "Presupuesto referencial con su fuente",
+   "Matriz de evaluación lista para usar"
+  ],
+  "lamina": [
+   "Antes de publicar la compra: qué pedir, con qué características mínimas, cómo evaluarlo y qué presupuesto referencial corresponde, con la fuente pública de cada valor a la vista. Una compra mal especificada se adjudica igual, y después se arrastra el año fiscal completo con el dinero ya comprometido.",
+   "Se comparan de tres a cinco alternativas con criterios ponderados y el costo total a tres años, renovación de licencias incluida. Lo barato de comprar y caro de renovar es el error que más se repite, y es justamente el que esta comparación existe para detectar a tiempo.",
+   "Una línea que no se cruza: se especifica para el organismo que va a licitar, y no se redactan las bases de un proceso al que después se ofertaría. Si esa asesoría nos inhabilita para competir, queda inhabilitada, y se dice antes de tomar el trabajo y no después."
+  ],
+  "imagen": "media/grace-retrato.webp",
+  "imagen_alt": "Especificación y asesoría técnica",
+  "cta": "Solicitar cotización",
+  "linea": "L2",
+  "linea_nombre": "Especificación y asesoría técnica"
+ },
+ {
+  "slug": "continuidad",
+  "codigo": "03",
+  "titulo": "Puesta en marcha, migración y continuidad",
+  "bajada": "Que lo que ya compró quede andando esta semana, y siga andando los doce meses siguientes sin que nadie lo vigile a mano.",
+  "vinetas": [
+   "Puesta en marcha de licencias y equipos",
+   "Migración de sitio, correo y dominio",
+   "Mantención de sistemas y plataformas",
+   "Vigilancia de cada vencimiento, al mes",
+   "Soporte con hora de respuesta escrita"
+  ],
+  "lamina": [
+   "Que llegue la clave no es que quede funcionando: hay que crear las cuentas, asignar los usuarios y dejar el equipo andando. Eso es la puesta en marcha, y se entrega con inventario por número de serie, el pliego de configuración escrito y el acta firmada.",
+   "Traslado del sitio, de los buzones, del dominio y del certificado con un solo responsable técnico para el corte y para lo que queda funcionando después. La ventana se coordina con usted y el plan de vuelta atrás se escribe antes de tocar una sola cosa.",
+   "El plan de doce meses mira cada mes lo que nadie mira hasta que falla: el vencimiento de cada licencia y certificado, los respaldos verificados y los parches aplicados. Llega un reporte mensual y el soporte tiene hora de respuesta comprometida por escrito, no de palabra."
+  ],
+  "imagen": "media/captura-portafolio.webp",
+  "imagen_alt": "Puesta en marcha, migración y continuidad",
+  "cta": "Solicitar cotización",
+  "linea": "L3",
+  "linea_nombre": "Puesta en marcha, migración y continuidad"
+ },
+ {
+  "slug": "catalogo",
+  "codigo": "04",
+  "titulo": "Los nueve servicios, con el precio a la vista",
+  "bajada": "Nueve servicios con su valor neto publicado y lo que no entra. Ninguno pasa las 100 UTM: los nueve van por Compra Ágil.",
+  "vinetas": [
+   "Nueve servicios en tres líneas",
+   "El neto que va en la orden de compra",
+   "La lista de lo que no entra, completa",
+   "Glosa redactada para la orden de compra",
+   "La ficha del Estado, a dos clics"
+  ],
+  "lamina": [
+   "Nueve servicios repartidos en tres líneas, y cada ficha trae lo mismo: el valor, el neto que va en la orden de compra y las dos listas completas, la de lo que entra y la de lo que no entra. Las dos, antes de que usted pida la cotización.",
+   "El valor se cierra antes de empezar y no sube si el trabajo toma más tiempo del previsto. Sólo cambia si usted pide algo que no estaba, y eso se autoriza por escrito y se cotiza aparte antes de ejecutarlo. La glosa de la orden de compra va redactada.",
+   "La empresa es nueva y usted lo puede comprobar sin creernos: la ficha del Registro de Proveedores muestra, de cualquier proveedor, sus ventas en Mercado Público y los convenios marco adjudicados. Las nuestras están en cero, y esa ficha está a dos clics de aquí."
+  ],
+  "imagen": "media/captura-portafolio.webp",
+  "imagen_alt": "Catálogo de servicios y precios de CompAI",
+  "cta": "Ver los nueve, con precio",
+  "cta_url": "/portafolio.html#servicios"
+ }
 ]

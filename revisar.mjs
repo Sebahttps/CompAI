@@ -74,12 +74,16 @@ for (const s of serv) {
 if (serv.length !== 4) mal(`servicios.json trae ${serv.length}; tienen que ser 4.`);
 const vistos = new Set();
 for (const s of serv) {
-  for (const k of ['slug', 'codigo', 'titulo', 'bajada', 'vinetas', 'lamina', 'etiqueta', 'cta'])
+  for (const k of ['slug', 'codigo', 'titulo', 'bajada', 'vinetas', 'lamina', 'cta'])
     if (!s[k]) mal(`al servicio «${s.slug || '?'}» le falta «${k}».`);
   if (vistos.has(s.slug)) mal(`slug repetido: ${s.slug}`); vistos.add(s.slug);
   if (s.vinetas && s.vinetas.length !== 5) mal(`«${s.slug}»: ${s.vinetas.length} viñetas, tienen que ser 5.`);
   if (s.lamina && s.lamina.length < 3) mal(`«${s.slug}»: la lamina tiene menos de 3 parrafos.`);
-  if (!['/pista', '/nodo', '/nucleo'].includes(s.etiqueta)) mal(`«${s.slug}»: etiqueta «${s.etiqueta}» no valida.`);
+  // PNN -/pista /nodo /nucleo- es la linea de desarrollo web PyME del catalogo
+  // de la intranet, y su ficha dice «no va en compai.cl · se vende 1 a 1». Lo que
+  // se publica son las tres lineas de servicio propio. (05-10-2026)
+  if (s.etiqueta) mal(`«${s.slug}»: trae «etiqueta» ${s.etiqueta}; PNN no se publica en compai.cl.`);
+  if (s.slug !== 'catalogo' && !['L1', 'L2', 'L3'].includes(s.linea)) mal(`«${s.slug}»: linea «${s.linea}» no es L1, L2 ni L3.`);
   if (/ta\s*rifa|\$\s*\d/.test(JSON.stringify(s))) mal(`«${s.slug}»: hay un precio en el texto publico.`);
 }
 if (!['franjas', 'nucleo'].includes(sitio.hero)) mal(`hero «${sitio.hero}» no es franjas ni nucleo.`);

@@ -255,10 +255,11 @@
   "titulo": "Servicios",
   "bajada": "Cuatro frentes. Uno basta para empezar.",
   "etiquetas": [
-   "/pista",
-   "/nodo",
-   "/nucleo"
-  ]
+   "L1 · Automatización",
+   "L2 · Especificación",
+   "L3 · Puesta en marcha"
+  ],
+  "_etiquetas": "Las tres lineas de venta de servicio propio. Antes decia /pista /nodo /nucleo, que es la linea PNN del catalogo de la intranet y tiene escrito «no va en compai.cl · se vende 1 a 1»."
  },
  "inbox": {
   "codigo": "/ 05",

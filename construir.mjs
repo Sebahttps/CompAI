@@ -312,12 +312,17 @@ const creative = `
             de las visitas. */
         ['pista', 'nodo', 'nucleo'].map((n, i) => {
         const y = [896, 1278, 1704][i], h = [382, 426, 406][i];
-        const sv = SERV.find(x => x.etiqueta === `/${n}`) || SERV[i];
+        /* Los archivos de video conservan su nombre de Canva; el ROTULO no.
+           /pista /nodo /nucleo es la linea PNN del catalogo de la intranet
+           —desarrollo web para PyMEs— y su propia ficha dice «no va en
+           compai.cl · se vende 1 a 1». Lo que se publica son L1, L2 y L3. */
+        const sv = SERV.find(x => x.linea === ['L1', 'L2', 'L3'][i]) || SERV[i];
         return `<details class="b fh banda" style="--x:0;--y:${y};--w:1366;--hh:${h}">
         <summary>
           <span class="ccirc" aria-hidden="true">${fondoVid(`media/banda-${n}.mp4`, `media/banda-${n}.webp`)}</span>
           <span class="banda-velo" aria-hidden="true"></span>
-          <span class="banda-tx">/${n}</span>
+          <span class="banda-tx">${esc(sv.linea)}</span>
+          <span class="banda-sub">${esc(sv.linea_nombre)}</span>
           <span class="banda-mas" aria-hidden="true"></span>
         </summary>
         <div class="banda-ficha">

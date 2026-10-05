@@ -314,8 +314,15 @@
   white-space:nowrap;text-transform:uppercase}
 /* Cerrada es una cruz —«abreme»— y al abrir gira 45 grados y se lee como una
    equis —«cierrame»—: el mismo elemento dice las dos cosas. */
+/* El rotulo de la banda es el codigo grande y el nombre de la linea debajo.
+   De una sola linea no cabe: «L1 · AUTOMATIZACION E INTEGRACION DE SISTEMAS»
+   a 81 px se sale del lienzo y se mete bajo la ficha. */
+.banda-sub{position:absolute;left:calc(141*var(--u));top:50%;
+  margin-top:calc(20*var(--u));font-family:var(--plex);font-weight:400;
+  font-size:calc(14*var(--u));letter-spacing:.15em;text-transform:uppercase;
+  color:rgba(245,240,228,.72);white-space:nowrap}
 .banda-mas{position:absolute;left:calc(137*var(--u));top:50%;
-  margin-top:calc(58*var(--u));width:calc(26*var(--u));height:calc(26*var(--u));
+  margin-top:calc(74*var(--u));width:calc(26*var(--u));height:calc(26*var(--u));
   transform:rotate(0deg);transition:transform .45s ease}
 .banda-mas::before,.banda-mas::after{content:"";position:absolute;background:#c87941;
   left:50%;top:50%}
@@ -501,10 +508,12 @@
      entrar por el costado. */
   .cv .banda{position:static;height:auto;padding:calc(30*var(--u)) 0;
     border-top:1px solid rgba(200,121,65,.3)}
-  .cv .banda summary{position:static;display:flex;align-items:center;
-    justify-content:space-between;gap:calc(20*var(--u))}
+  .cv .banda summary{position:static;display:grid;
+    grid-template-columns:1fr auto;align-items:center;gap:calc(8*var(--u)) calc(20*var(--u))}
+  .cv .banda-mas{grid-row:1 / span 2;grid-column:2;align-self:center}
   .cv .banda-velo{display:none}
   .cv .banda-tx{position:static;transform:none;font-size:calc(64*var(--u))}
+  .cv .banda-sub{position:static;margin:calc(6*var(--u)) 0 0;font-size:calc(24*var(--u));white-space:normal}
   .cv .banda-mas{position:static;margin:0;flex:0 0 auto;
     width:calc(40*var(--u));height:calc(40*var(--u))}
   .cv .banda-mas::before{width:calc(40*var(--u))}
