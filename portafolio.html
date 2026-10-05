@@ -1734,8 +1734,18 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   color:rgba(245,240,228,.72);margin:0 0 clamp(48px,6vw,80px);max-width:62ch}
 .tj{margin-top:clamp(56px,7vw,96px)}
 .tj:first-of-type{margin-top:0}
+/* La etiqueta es el PAPEL comercial, no el nombre del servicio. Las tres son
+   una escalera -se entra, se conecta, se decide- y asignarlas fue decision de
+   GAIn el 01-10-2026 por papel y no por precio. El nombre del servicio va
+   debajo y en gris: quien busca el catalogo lo encuentra, quien lee de corrido
+   recibe primero para que sirve. */
 .tj .et{font-family:'Courier New',Courier,monospace;font-size:13px;letter-spacing:.26em;
-  text-transform:uppercase;color:#2E8FB5;margin:0 0 12px}
+  text-transform:uppercase;color:#2E8FB5;margin:0 0 8px}
+.tj .et b{font-weight:700}
+.tj .papel{font-size:clamp(14px,1.35vw,16px);line-height:1.55;
+  color:rgba(245,240,228,.82);margin:0 0 16px;max-width:46ch}
+.tj .papel span{display:block;margin-top:5px;font-family:'Courier New',Courier,monospace;
+  font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:rgba(245,240,228,.5)}
 #trabajos .tj h2{font-size:clamp(22px,3vw,34px);line-height:1.22;letter-spacing:-.015em;
   color:#F5F0E4;margin:0 0 16px;max-width:26ch;font-weight:700;text-transform:none}
 .tj p.cuerpo{font-size:clamp(14.5px,1.4vw,17px);line-height:1.62;
@@ -2321,13 +2331,17 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   <div class="caja">
     <p class="ante">Trabajos construidos</p>
     <h1 id="t-tit">Lo mismo que le cotizamos, ya construido y andando.</h1>
-    <p class="entrada">Tres servicios, y para cada uno una cosa que existe: no una maqueta,
-      no una referencia prestada. Son proyectos del estudio y se dice; ninguno de estos
+    <p class="entrada">Tres papeles, no tres cat&aacute;logos: <b>/pista</b> es por donde se
+      entra, <b>/nodo</b> es lo que conecta y <b>/nucleo</b> es lo que se decide antes de
+      construir. Para cada uno, una cosa que existe y se puede abrir &mdash;no una maqueta ni
+      una referencia prestada&mdash;. Son proyectos del estudio y se dice: ninguno de estos
       pies dice cliente.</p>
 
     <article class="tj">
       <div class="texto">
-        <p class="et">/ pista &mdash; Puesta en marcha, migraci&oacute;n y continuidad</p>
+        <p class="et"><b>/ pista</b> &mdash; por donde se entra</p>
+        <p class="papel">El servicio m&aacute;s comprensible y el m&aacute;s barato de empezar: lo que ya
+          compr&oacute;, andando. <span>Puesta en marcha, migraci&oacute;n y continuidad.</span></p>
         <h2>Lo que estaba en dos bandejas y un cuaderno, en una pantalla y andando el mismo d&iacute;a.</h2>
         <p class="cuerpo">Dos plataformas de reserva que no se hablan entre s&iacute;, las respuestas
           que alguien reescrib&iacute;a a mano cada vez, y el precio por temporada discutido de
@@ -2344,7 +2358,9 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 
     <article class="tj oscura">
       <div class="texto">
-        <p class="et">/ nodo &mdash; Automatizaci&oacute;n e integraci&oacute;n de sistemas</p>
+        <p class="et"><b>/ nodo</b> &mdash; lo que conecta</p>
+        <p class="papel">Dos sistemas que hoy no se hablan, hablando; y el trabajo que alguien
+          rehace a mano, corriendo solo. <span>Automatizaci&oacute;n e integraci&oacute;n de sistemas.</span></p>
         <h2>Lo que nadie alcanza a revisar a mano, revisado solo, todos los d&iacute;as a la misma hora.</h2>
         <p class="cuerpo">Cada ma&ntilde;ana entra a un sistema que no es nuestro, lee las publicaciones
           del d&iacute;a y la ficha de cada una, se queda con las del rubro y deja una lista corta.
@@ -2360,7 +2376,10 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 
     <article class="tj">
       <div class="texto">
-        <p class="et">/ nucleo &mdash; Especificaci&oacute;n y asesor&iacute;a t&eacute;cnica</p>
+        <p class="et"><b>/ nucleo</b> &mdash; lo que se decide</p>
+        <p class="papel">Decisi&oacute;n, no ejecuci&oacute;n: qu&eacute; pedir, con qu&eacute; m&iacute;nimos y a qu&eacute; precio
+          deber&iacute;a salir, antes de publicar la compra. <span>Especificaci&oacute;n y asesor&iacute;a
+          t&eacute;cnica.</span></p>
         <h2>Lo que hay que decidir antes de publicar la compra, decidido y escrito.</h2>
         <p class="cuerpo">Un producto completo especificado hasta la &uacute;ltima pantalla: qu&eacute; hace,
           qu&eacute; no hace, c&oacute;mo se cobra y qu&eacute; pasa cuando algo falla. Cada decisi&oacute;n qued&oacute;
