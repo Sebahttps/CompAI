@@ -10,7 +10,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Portafolio — CompAI · registros cine (CinemAI)</title>
+<title>Trabajos construidos — CompAI</title>
+<meta name="description" content="Cada servicio de CompAI con el trabajo ya construido que lo prueba: un proceso que corre solo todos los dias, una especificacion completa y un panel que opera en una sola pantalla.">
 <meta name="theme-color" content="#08090C">
 <script>window.__err=[];addEventListener('error',function(e){window.__err.push(String(e.message||e))});</script>
 <style>
@@ -1710,6 +1711,62 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 }
 
 </style>
+
+<style>
+/* =========================================================================
+   TRES TRABAJOS CONSTRUIDOS - 05-10-2026
+   El encargo de Sebastian: «no es ningun portafolio realmente, no muestra
+   nada como tal». Lo que faltaba no era copy: era ver una cosa hecha.
+   Concepto y copy de Visu; la hoja esta en
+   kri-eit/CompAI/Dir. Arte, Comunicacion & Prod. Audiovisual/2026-10-05-portafolio-concepto.md
+   La direccion es «el trabajo, enmarcado»: cada pieza se muestra TAL COMO ES,
+   con su propia paleta, dentro de un marco nuestro. A sangre se leeria como
+   que el sitio se despaletizo; enmarcada se lee como obra que hicimos.
+   ========================================================================= */
+#trabajos{padding:clamp(72px,9vw,132px) 0 clamp(60px,7vw,96px);
+  border-top:1px solid rgba(245,240,228,.08)}
+#trabajos .caja{max-width:var(--shell);margin:0 auto;padding:0 clamp(20px,5vw,48px)}
+#trabajos .ante{font-family:'Courier New',Courier,monospace;font-size:12px;
+  letter-spacing:.3em;text-transform:uppercase;color:rgba(245,240,228,.6);margin:0 0 18px}
+#trabajos h1{font-size:clamp(30px,5.2vw,52px);line-height:1.1;letter-spacing:-.02em;
+  color:#F5F0E4;margin:0 0 20px;max-width:17ch;font-weight:700}
+#trabajos .entrada{font-size:clamp(15px,1.5vw,18px);line-height:1.6;
+  color:rgba(245,240,228,.72);margin:0 0 clamp(48px,6vw,80px);max-width:62ch}
+.tj{margin-top:clamp(56px,7vw,96px)}
+.tj:first-of-type{margin-top:0}
+.tj .et{font-family:'Courier New',Courier,monospace;font-size:13px;letter-spacing:.26em;
+  text-transform:uppercase;color:#2E8FB5;margin:0 0 12px}
+#trabajos .tj h2{font-size:clamp(22px,3vw,34px);line-height:1.22;letter-spacing:-.015em;
+  color:#F5F0E4;margin:0 0 16px;max-width:26ch;font-weight:700;text-transform:none}
+.tj p.cuerpo{font-size:clamp(14.5px,1.4vw,17px);line-height:1.62;
+  color:rgba(245,240,228,.72);margin:0 0 28px;max-width:58ch}
+/* El paspartu: el marco es nuestro, la pieza de adentro no. */
+.tj figure{margin:0}
+.tj .passe{background:#F5F0E4;padding:clamp(10px,1.3vw,16px);border-radius:8px;
+  box-shadow:0 24px 60px rgba(0,0,0,.55);overflow:hidden}
+.tj .passe img{display:block;width:100%;height:auto;border-radius:3px}
+/* El embudo ya viene sobre negro: enmarcarlo en crema lo pelearia. */
+.tj.oscura .passe{background:#11161A;border:1px solid rgba(46,143,181,.22)}
+.tj figcaption{font-family:'Courier New',Courier,monospace;font-size:12.5px;
+  line-height:1.5;letter-spacing:.11em;text-transform:uppercase;
+  color:rgba(245,240,228,.6);margin-top:14px}
+.tj .alser{display:inline-block;margin-top:18px;font-family:'Courier New',Courier,monospace;
+  font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:#2E8FB5;
+  text-decoration:none;border-bottom:1px solid rgba(46,143,181,.4);padding-bottom:3px}
+.tj .alser:hover{color:#5BB4D6;border-bottom-color:#5BB4D6}
+#trabajos .nota{margin-top:clamp(56px,7vw,88px);padding-top:26px;
+  border-top:1px solid rgba(245,240,228,.1);font-size:14px;line-height:1.6;
+  color:rgba(245,240,228,.52);max-width:60ch}
+@media (min-width:900px){
+  .tj{display:grid;grid-template-columns:minmax(0,.86fr) minmax(0,1.4fr);
+    gap:clamp(32px,3.6vw,52px);align-items:center}
+  /* En las filas pares el texto se va a la derecha, asi que la columna ancha
+     tiene que cambiar de lado con el. Sin esto la imagen caia en la columna
+     angosta y la captura quedaba ilegible. */
+  .tj:nth-of-type(even){grid-template-columns:minmax(0,1.4fr) minmax(0,.86fr)}
+  .tj:nth-of-type(even) .texto{order:2}
+}
+</style>
 </head>
 <body>
 
@@ -1829,7 +1886,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
       </div></div>
       <div class="pieplaca">
         <p class="linea">Dónde pasa · compra de licencias de software</p>
-        <h1>«La licencia venció el martes»</h1>
+        <h2 class="h-escena">«La licencia venció el martes»</h2>
         <p>El fabricante cobra con tarjeta y no emite factura chilena: no hay contra quién emitir la orden de compra. La licencia es la misma; lo que cambia es contra quién se paga.</p>
       </div>
     </div>
@@ -1855,7 +1912,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
       </div></div>
       <div class="pieplaca">
         <p class="linea">Dónde pasa · compra de hospedaje y procesamiento de datos</p>
-        <h1>«El respaldo no estaba en el precio»</h1>
+        <h2 class="h-escena">«El respaldo no estaba en el precio»</h2>
         <p>Los respaldos automáticos vienen activados de fábrica y casi nunca están en el precio publicado. Aparecen después de emitida la orden de compra, cuando corregirla es otro trámite.</p>
       </div>
     </div>
@@ -1876,7 +1933,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
       </div></div>
       <div class="pieplaca">
         <p class="linea">Dónde pasa · especificación, instalación y puesta en marcha</p>
-        <h1>«Llegó, se recibió, y ahí quedó»</h1>
+        <h2 class="h-escena">«Llegó, se recibió, y ahí quedó»</h2>
         <p>Que llegue la clave no es que quede funcionando. Entre la recepción conforme y el equipo andando hay un trabajo que nadie cotizó, y es el que decide si el presupuesto sirvió de algo.</p>
       </div>
     </div>
@@ -1896,7 +1953,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
       </div></div>
       <div class="pieplaca">
         <p class="linea">Dónde pasa · compra de equipamiento e insumos</p>
-        <h1>«La recepción abierta y el pago detrás»</h1>
+        <h2 class="h-escena">«La recepción abierta y el pago detrás»</h2>
         <p>Mientras la recepción conforme no se cierre, el pago no avanza — y quien responde por eso es el comprador. Por eso las líneas que no podemos cumplir se devuelven al cotizar, con el motivo escrito, y no en la recepción.</p>
       </div>
     </div>
@@ -1941,7 +1998,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
       </div></div>
       <div class="pieplaca">
         <p class="linea">La credencial · los traspasos ▢ los da el organismo</p>
-        <h1>«No estaba hábil y la compra se rehace»</h1>
+        <h2 class="h-escena">«No estaba hábil y la compra se rehace»</h2>
         <p>Si el proveedor resulta no estar hábil, la compra se rehace desde el requerimiento — y el plazo sigue corriendo por debajo, sin devolverse. Verificar la ficha es el trámite; que esté verificada de antemano es lo que se compra.</p>
       </div>
     </div>
@@ -1972,7 +2029,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
       </div></div>
       <div class="pieplaca">
         <p class="linea">Producto propio · no es un trabajo para el Estado</p>
-        <h1>Casero — marketplace vecinal por edificio</h1>
+        <h2 class="h-escena">Casero — marketplace vecinal por edificio</h2>
         <p>Comprar y vender entre vecinos de la misma torre: comida casera, oficios, servicios.</p>
       </div>
     </div>
@@ -2258,6 +2315,72 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 </section>
     </div>
 </main>
+
+<!-- ================= TRES TRABAJOS CONSTRUIDOS ================= -->
+<section id="trabajos" aria-labelledby="t-tit">
+  <div class="caja">
+    <p class="ante">Trabajos construidos</p>
+    <h1 id="t-tit">Lo mismo que le cotizamos, ya construido y andando.</h1>
+    <p class="entrada">Tres servicios, y para cada uno una cosa que existe: no una maqueta,
+      no una referencia prestada. Son proyectos del estudio y se dice; ninguno de estos
+      pies dice cliente.</p>
+
+    <article class="tj">
+      <div class="texto">
+        <p class="et">/ pista &mdash; Puesta en marcha, migraci&oacute;n y continuidad</p>
+        <h2>Lo que estaba en dos bandejas y un cuaderno, en una pantalla y andando el mismo d&iacute;a.</h2>
+        <p class="cuerpo">Dos plataformas de reserva que no se hablan entre s&iacute;, las respuestas
+          que alguien reescrib&iacute;a a mano cada vez, y el precio por temporada discutido de
+          memoria. Ahora es una pantalla sola: se abre en cualquier computador, no se instala
+          y no tiene servidor detr&aacute;s. Por eso no hay nada que mantenerle.</p>
+        <a class="alser" href="index.html#creative">Ver el servicio</a>
+      </div>
+      <figure>
+        <div class="passe"><img src="media/p-pista.webp" width="1040" height="440" loading="eager" decoding="async"
+          alt="Panel de operaci&oacute;n de un alojamiento: pesta&ntilde;as de solicitudes, plantillas y traslados, con el estado de reservas."></div>
+        <figcaption>Panel de operaci&oacute;n de un alojamiento &middot; una sola p&aacute;gina, sin instalaci&oacute;n ni servidor</figcaption>
+      </figure>
+    </article>
+
+    <article class="tj oscura">
+      <div class="texto">
+        <p class="et">/ nodo &mdash; Automatizaci&oacute;n e integraci&oacute;n de sistemas</p>
+        <h2>Lo que nadie alcanza a revisar a mano, revisado solo, todos los d&iacute;as a la misma hora.</h2>
+        <p class="cuerpo">Cada ma&ntilde;ana entra a un sistema que no es nuestro, lee las publicaciones
+          del d&iacute;a y la ficha de cada una, se queda con las del rubro y deja una lista corta.
+          Nadie abre nada, nadie copia nada a una planilla, y a nadie hay que record&aacute;rselo.</p>
+        <a class="alser" href="index.html#grace">Ver el servicio</a>
+      </div>
+      <figure>
+        <div class="passe"><img src="media/p-embudo.webp" width="1040" height="558" loading="eager" decoding="async"
+          alt="Embudo del barrido diario: 4.638 publicaciones del d&iacute;a, 4.637 fichas le&iacute;das, 234 del rubro, y la lista corta a la mesa."></div>
+        <figcaption>Barrido diario sobre la API de Mercado P&uacute;blico &middot; 4.638 publicaciones le&iacute;das el 04-10-2026</figcaption>
+      </figure>
+    </article>
+
+    <article class="tj">
+      <div class="texto">
+        <p class="et">/ nucleo &mdash; Especificaci&oacute;n y asesor&iacute;a t&eacute;cnica</p>
+        <h2>Lo que hay que decidir antes de publicar la compra, decidido y escrito.</h2>
+        <p class="cuerpo">Un producto completo especificado hasta la &uacute;ltima pantalla: qu&eacute; hace,
+          qu&eacute; no hace, c&oacute;mo se cobra y qu&eacute; pasa cuando algo falla. Cada decisi&oacute;n qued&oacute;
+          escrita al lado de la alternativa que se descart&oacute; y del motivo. Con ese documento el
+          trabajo se encarga sin ambig&uuml;edad &mdash;y reci&eacute;n despu&eacute;s se construye.</p>
+        <a class="alser" href="index.html#creative">Ver el servicio</a>
+      </div>
+      <figure>
+        <div class="passe"><img src="media/p-nucleo.webp" width="1140" height="822" loading="eager" decoding="async"
+          alt="Dos pantallas de la especificaci&oacute;n de Casero: elegir categor&iacute;a y frecuencia, y el detalle de la publicaci&oacute;n."></div>
+        <figcaption>Casero &middot; especificaci&oacute;n de producto, quince rondas de decisi&oacute;n antes de la primera l&iacute;nea de c&oacute;digo</figcaption>
+      </figure>
+    </article>
+
+    <p class="nota">Los tres son proyectos del estudio, no encargos de terceros. Se muestran
+      porque son lo que hay construido y porque se pueden abrir: la ficha del Registro de
+      Proveedores dice las ventas que llevamos, y est&aacute; a un clic.</p>
+  </div>
+</section>
+
 
 <script>
 /* --- MENU: el hover lo resuelve el CSS; esto es SOLO para tactil, donde el
