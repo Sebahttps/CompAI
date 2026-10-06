@@ -351,6 +351,13 @@
 .banda-velo{position:absolute;inset:0;background:rgba(0,0,0,.78);
   transition:background .45s ease}
 .banda[open] .banda-velo{background:rgba(0,0,0,.88)}
+/* 06-10-2026 · LAS BANDAS SON COMIC Y EL COMIC SE TIENE QUE VER. Con el velo
+   al 78 %, el velo del video y brightness(.85) el dibujo de la panadera
+   quedaba a ~10 % de luz. El velo pasa a degradado: oscuro bajo el rotulo
+   (izquierda), claro a la derecha, donde esta el chiste. Medido en captura. */
+.banda .velo-vid{display:none}
+.banda-velo{background:linear-gradient(90deg,rgba(8,6,4,.82) 0%,rgba(8,6,4,.66) 36%,rgba(8,6,4,.2) 70%,rgba(8,6,4,.1) 100%)}
+.banda .ccirc video{filter:none}
 .banda-tx{position:absolute;left:calc(137*var(--u));top:50%;transform:translateY(-50%);
   font-family:var(--courier);font-weight:700;color:var(--cian);opacity:.92;
   font-size:calc(81.1*var(--u));line-height:1.1;letter-spacing:.054em;
@@ -388,6 +395,11 @@
 .esq{display:block;width:calc(400*var(--u));height:auto;max-width:100%}
 .esq .traza{stroke:var(--azul);color:var(--azul)}
 .esq .accion{stroke:#c87941;color:#c87941}
+/* Llamado para la PyME bajo las bandas (veto de ClAI-nte, 06-10-2026). */
+.banda-llamado{margin:0;font-family:var(--plex);font-weight:300;font-size:calc(26*var(--u));
+  line-height:1.4;color:#e8e2d6}
+.banda-llamado a{color:#c87941;font-weight:700;text-decoration:none;border-bottom:2px solid rgba(200,121,65,.5)}
+.banda-llamado a:hover{color:#e09a63;border-bottom-color:#e09a63}
 .esq-pie{margin:calc(16*var(--u)) 0 0;font-family:var(--plex);font-weight:300;
   font-size:calc(14*var(--u));line-height:1.5;color:#aeb8c0}
 .esq-pie b{font-weight:700;color:#c87941;text-transform:uppercase;
@@ -574,6 +586,19 @@
     grid-template-columns:1fr auto;align-items:center;gap:calc(8*var(--u)) calc(20*var(--u))}
   .cv .banda-mas{grid-row:1 / span 2;grid-column:2;align-self:center}
   .cv .banda-velo{display:none}
+  /* 06-10-2026 · EL COMIC DE LA PANADERA TAMBIEN EN TELEFONO. Antes la
+     intencion era apagar el video aca, pero `.banda .ccirc{display:block}`
+     le ganaba por especificidad a `.ccirc{display:none}`: los tres videos
+     quedaban absolutos contra la seccion, apilados, y solo se veia el
+     ultimo. Ahora el cuadro va entero, en su proporcion, sobre el rotulo. */
+  .cv .banda .ccirc{display:block;position:relative;inset:auto;
+    aspect-ratio:1200 / 676;margin:0 0 calc(18*var(--u));border-radius:4px;overflow:hidden}
+  .cv .banda .ccirc video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .cv .banda summary{grid-template-columns:1fr auto}
+  .cv .banda .ccirc{grid-column:1 / -1;grid-row:1}
+  .cv .banda .banda-tx{grid-column:1;grid-row:2}
+  .cv .banda .banda-sub{grid-column:1;grid-row:3}
+  .cv .banda .banda-mas{grid-column:2;grid-row:2 / span 2}
   .cv .banda-tx{position:static;transform:none;font-size:calc(64*var(--u))}
   .cv .banda-sub{position:static;margin:calc(6*var(--u)) 0 0;font-size:calc(24*var(--u));white-space:normal}
   .cv .banda-mas{position:static;margin:0;flex:0 0 auto;

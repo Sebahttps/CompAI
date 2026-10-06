@@ -263,23 +263,30 @@
   "paquetes": [
    {
     "etiqueta": "/pista",
-    "verbo": "muestra",
-    "linea": "Una pagina que te encuentra quien te busca.",
+    "verbo": "apareces",
+    "linea": "La vecina busca tu panadería en el celular y te encuentra.",
     "estado": 1
    },
    {
     "etiqueta": "/nodo",
-    "verbo": "recibe",
-    "linea": "Y ademas te llega lo que esa persona escribe.",
+    "verbo": "apareces y recibes",
+    "linea": "El pedido te llega escrito, no perdido entre audios de WhatsApp.",
     "estado": 2
    },
    {
     "etiqueta": "/núcleo",
-    "verbo": "guarda",
-    "linea": "Y ademas queda registrado quien, que y cuando.",
+    "verbo": "apareces, recibes y ordenas",
+    "linea": "Cada pedido queda guardado: quién, qué y para cuándo. Se acabó el cuaderno.",
     "estado": 3
    }
-  ]
+  ],
+  "llamado": {
+   "antes": "¿Cuál es la tuya?",
+   "enlace": "Escríbenos a hola@compai.cl",
+   "despues": "y te decimos cuál y cuánto.",
+   "url": "mailto:hola@compai.cl?subject=Pista%2C%20Nodo%20o%20N%C3%BAcleo%20%E2%80%94%20mi%20negocio"
+  },
+  "_llamado": "Llamado para la PyME bajo las tres bandas (veto de ClAI-nte del 06-10-2026: no tenia a quien escribir). Correo y no WhatsApp: el movil va oculto a proposito."
  },
  "inbox": {
   "codigo": "/ 05",
