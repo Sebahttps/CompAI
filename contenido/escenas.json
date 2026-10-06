@@ -1,0 +1,342 @@
+{
+  "_nota": "Fuente unica de las escenas de portafolio.html. Se edita ACA y se corre `node construir.mjs`, que reescribe el bloque entre <!-- ESCENAS:INICIO --> y <!-- ESCENAS:FIN -->. Precios de servicio: los del catalogo SP-01..SP-09 (GAIn). Licencias: SIN precio, se cotizan; Gerencia dejo la reventa de licencias en NO por caja (05-10-2026): esto capta demanda, no compromete compra. Copy: Visu, CompAI/Dir. Arte.../2026-10-05-escenas-selector/.",
+  "promesa": "De la licencia que vence al reporte hecho a mano: le decimos qué pedir y lo dejamos andando.",
+  "tope": "¿Cuál le pasó este año?",
+  "confianza": {
+    "texto": "Antes de emitir la orden de compra, revise si estamos hábiles. La ficha es pública.",
+    "enlace": "Ver la ficha de CompAI en Mercado Público →",
+    "url": "https://proveedor.mercadopublico.cl/ficha/78.491.451-8"
+  },
+  "formulario": {
+    "titulo_quien": "¿A quién le enviamos la cotización?",
+    "cta": "Pedir cotización",
+    "nota": "Le respondemos al correo que deje aquí.",
+    "exito": "Listo, nos llegó. Le respondemos a {correo}. Si quiere adjuntar bases u orden de compra, se abrió su correo.",
+    "error": "No quedó registrado, pero le abrimos su correo con el requerimiento escrito: envíelo desde ahí.",
+    "vacio": "Marque al menos una.",
+    "sin_institucion": "Falta la institución.",
+    "faltan": "Falta el nombre o el correo.",
+    "plazo": {
+      "etiqueta": "¿Para cuándo?",
+      "placeholder": "Ej.: antes del 30 de octubre",
+      "obligatorio": false,
+      "tipo": "texto libre, no selector de fecha"
+    },
+    "institucion": {
+      "etiqueta": "Institución",
+      "placeholder": "Ej.: Municipalidad de …",
+      "obligatorio": true
+    },
+    "respaldo": {
+      "linea": "¿No se abrió su correo? Escríbanos a hola@compai.cl",
+      "boton_copiar": "Copiar el requerimiento",
+      "copiado": "Copiado. Péguelo en un correo a hola@compai.cl"
+    },
+    "cuerpo": "Estimados:\n\nDesde {institucion} solicitamos cotización por:\n\n{items}\n\nLo necesitamos {plazo}.\n\nCódigo de la compra: {codigo}\n\nPor favor indicar valor neto, IVA y la glosa para la orden de compra.\n\nSaludos cordiales,\n\n\n— Enviado desde compai.cl/portafolio · {escena}",
+    "codigo": {
+      "etiqueta": "Código de Compra Ágil, si ya la publicó",
+      "placeholder": "Ej.: 1234-56-COT26"
+    },
+    "correo_malo": "Revise el correo: así no le llega la respuesta."
+  },
+  "escenas": [
+    {
+      "id": "01",
+      "carrete": "La licencia venció el martes",
+      "video": "media/escena-01.mp4",
+      "poster": "media/escena-01.webp",
+      "alt": "Cómic animado: lunes a las 9, la fila crece y el computador del funcionario dice «Producto sin licencia»; sus compañeros se miran: «¿Quién compraba esto?».",
+      "linea": "Renovación y compra de licencias",
+      "titulo": "«La licencia venció el martes»",
+      "bajada": "El lunes las planillas se abrieron en solo lectura. La renovación estaba en el presupuesto; nadie alcanzó a pedirla.",
+      "asunto": "Solicitud de cotización · Licencias · {institucion}",
+      "vigencia": {
+        "etiqueta": "Por cuánto tiempo",
+        "opciones": [
+          "12 meses",
+          "24 meses",
+          "36 meses"
+        ],
+        "defecto": "12 meses",
+        "aplica_a": "items"
+      },
+      "grupos": [
+        {
+          "pregunta": "¿Cuáles vencen?",
+          "items": [
+            {
+              "id": "lic-ofimatica",
+              "nombre": "Ofimática y correo institucional",
+              "detalle": "Documentos, planillas y correo, por usuario",
+              "cantidad": true,
+              "unidad": "usuarios",
+              "vigencia": true,
+              "campo_texto": "Marca (opcional)"
+            },
+            {
+              "id": "lic-proteccion",
+              "nombre": "Antivirus y protección de equipos",
+              "detalle": "Computadores y servidores, por equipo",
+              "cantidad": true,
+              "unidad": "equipos",
+              "vigencia": true,
+              "campo_texto": "Marca (opcional)"
+            },
+            {
+              "id": "lic-diseno",
+              "nombre": "Diseño, imagen y documentos PDF",
+              "detalle": "Diagramación, fotografía y edición de PDF",
+              "cantidad": true,
+              "unidad": "usuarios",
+              "vigencia": true,
+              "campo_texto": "Marca (opcional)"
+            },
+            {
+              "id": "lic-cad",
+              "nombre": "Diseño asistido (CAD) y modelado",
+              "detalle": "Planos, obras y modelado en 3D",
+              "cantidad": true,
+              "unidad": "usuarios",
+              "vigencia": true,
+              "campo_texto": "Marca (opcional)"
+            },
+            {
+              "id": "lic-servidor",
+              "nombre": "Servidor y accesos de usuarios",
+              "detalle": "Sistema operativo de servidor y sus accesos",
+              "cantidad": true,
+              "unidad": "accesos",
+              "vigencia": true,
+              "campo_texto": "Marca (opcional)"
+            },
+            {
+              "id": "lic-respaldo",
+              "nombre": "Respaldo en la nube",
+              "detalle": "Copias automáticas de equipos y servidores",
+              "cantidad": true,
+              "unidad": "equipos",
+              "vigencia": true,
+              "campo_texto": "Marca (opcional)"
+            },
+            {
+              "id": "lic-video",
+              "nombre": "Videoconferencia",
+              "detalle": "Reuniones en línea, por anfitrión",
+              "cantidad": true,
+              "unidad": "anfitriones",
+              "vigencia": true,
+              "campo_texto": "Marca (opcional)"
+            },
+            {
+              "id": "lic-firma",
+              "nombre": "Firma electrónica avanzada",
+              "detalle": "Por funcionario que firma documentos",
+              "cantidad": true,
+              "unidad": "funcionarios",
+              "vigencia": true,
+              "campo_texto": "Marca (opcional)"
+            },
+            {
+              "id": "lic-tableros",
+              "nombre": "Tableros y análisis de datos",
+              "detalle": "Reportes que se actualizan solos, por usuario",
+              "cantidad": true,
+              "unidad": "usuarios",
+              "vigencia": true,
+              "campo_texto": "Marca (opcional)"
+            },
+            {
+              "id": "lic-otra",
+              "nombre": "Otra licencia",
+              "detalle": "Escriba cuál y la sumamos a la cotización",
+              "cantidad": true,
+              "unidad": "usuarios",
+              "campo_texto": "¿Cuál?",
+              "vigencia": true
+            }
+          ]
+        },
+        {
+          "pregunta": "¿Y quién las deja instaladas?",
+          "items": [
+            {
+              "id": "sp07-lic",
+              "nombre": "Dejarlas instaladas y funcionando",
+              "detalle": "Cuentas creadas, usuarios asignados y acta de puesta en marcha",
+              "cantidad": true,
+              "unidad": "usuarios",
+              "sp": "SP-07"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "02",
+      "carrete": "El respaldo no estaba en el precio",
+      "video": "media/escena-02.mp4",
+      "poster": "media/escena-02.webp",
+      "alt": "Cómic animado: se cae el sistema, el jefe pregunta «¿Y el respaldo?» y con lupa sobre la orden de compra solo aparece un sello de «Cobro adicional».",
+      "linea": "Especificación antes de comprar",
+      "titulo": "«El respaldo no estaba en el precio»",
+      "bajada": "El precio publicado era el de la caja vacía. El respaldo apareció después de la orden de compra, cuando corregirla ya era otro trámite.",
+      "asunto": "Solicitud de cotización · Especificación · {institucion}",
+      "grupos": [
+        {
+          "pregunta": "¿Qué necesita tener escrito antes de comprar?",
+          "items": [
+            {
+              "id": "sp04",
+              "nombre": "Informe corto de especificación",
+              "detalle": "Qué pedir, cómo evaluarlo y cuánto vale hoy",
+              "cantidad": false,
+              "sp": "SP-04",
+              "vigencia": false
+            },
+            {
+              "id": "sp05",
+              "nombre": "Anexo técnico para su licitación",
+              "detalle": "Requisitos, matriz de evaluación y presupuesto referencial",
+              "cantidad": false,
+              "sp": "SP-05",
+              "vigencia": false
+            },
+            {
+              "id": "sp06",
+              "nombre": "Comparación de alternativas",
+              "detalle": "De tres a cinco opciones, con costo a tres años",
+              "cantidad": false,
+              "sp": "SP-06",
+              "vigencia": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "03",
+      "carrete": "Llegó, se recibió, y ahí quedó",
+      "video": "media/escena-03.mp4",
+      "poster": "media/escena-03.webp",
+      "alt": "Cómic animado: las cajas de equipos llegan en agosto con recepción conforme, en septiembre son la mesa del té y de diciembre a marzo siguen sin abrir.",
+      "linea": "Puesta en marcha, migración y mantención",
+      "titulo": "«Llegó, se recibió, y ahí quedó»",
+      "bajada": "La clave llegó por correo y los equipos siguen en caja. La recepción conforme está firmada y nadie los ha prendido.",
+      "asunto": "Solicitud de cotización · Puesta en marcha · {institucion}",
+      "grupos": [
+        {
+          "pregunta": "¿Qué quedó a medias?",
+          "items": [
+            {
+              "id": "sp07",
+              "nombre": "Puesta en marcha de lo comprado",
+              "detalle": "Instalado, configurado, con inventario y acta firmada",
+              "cantidad": true,
+              "unidad": "equipos",
+              "sp": "SP-07",
+              "vigencia": false
+            },
+            {
+              "id": "sp08",
+              "nombre": "Migración de sitio y correo",
+              "detalle": "Cambiar de proveedor sin perder el correo ni el sitio",
+              "cantidad": true,
+              "unidad": "buzones",
+              "sp": "SP-08",
+              "vigencia": false
+            },
+            {
+              "id": "sp09",
+              "nombre": "Mantención por 12 meses",
+              "detalle": "Vencimientos, respaldos y parches revisados cada mes",
+              "cantidad": false,
+              "sp": "SP-09",
+              "vigencia": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "04",
+      "carrete": "El reporte que se arma a mano cada mes",
+      "video": "media/escena-04.mp4",
+      "poster": "media/escena-04.webp",
+      "alt": "Cómic animado: una funcionaria arma a mano el reporte mensual hasta casi medianoche y el guardia la encuentra otra vez: «¿Otra vez el reporte?».",
+      "linea": "Automatización de procesos",
+      "titulo": "«El reporte que se arma a mano cada mes»",
+      "bajada": "A fin de mes alguien copia del sistema a una planilla, y de la planilla a un correo. Si esa persona sale de vacaciones, el reporte también.",
+      "asunto": "Solicitud de cotización · Automatización · {institucion}",
+      "grupos": [
+        {
+          "pregunta": "¿Qué se sigue haciendo a mano?",
+          "items": [
+            {
+              "id": "sp01",
+              "nombre": "Avisos y recordatorios automáticos",
+              "detalle": "La hora o el trámite se avisa solo",
+              "cantidad": false,
+              "sp": "SP-01",
+              "vigencia": false
+            },
+            {
+              "id": "sp02",
+              "nombre": "Un proceso administrativo, hecho solo",
+              "detalle": "Ese reporte mensual, armado sin copiar y pegar",
+              "cantidad": false,
+              "sp": "SP-02",
+              "vigencia": false
+            },
+            {
+              "id": "sp03",
+              "nombre": "Dos sistemas conectados, por etapas",
+              "detalle": "Desarrollo a medida, pagado contra cada etapa recibida",
+              "cantidad": false,
+              "sp": "SP-03",
+              "precio_sufijo": "por etapas",
+              "vigencia": false
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "servicios": {
+    "SP-01": {
+      "bruto": "$599.760",
+      "cond": "desde"
+    },
+    "SP-02": {
+      "bruto": "$1.071.000",
+      "cond": "desde"
+    },
+    "SP-03": {
+      "bruto": "$2.713.200",
+      "cond": "desde"
+    },
+    "SP-04": {
+      "bruto": "$571.200",
+      "cond": "precio cerrado"
+    },
+    "SP-05": {
+      "bruto": "$1.428.000",
+      "cond": "precio cerrado"
+    },
+    "SP-06": {
+      "bruto": "$856.800",
+      "cond": "precio cerrado"
+    },
+    "SP-07": {
+      "bruto": "$428.400",
+      "cond": "desde"
+    },
+    "SP-08": {
+      "bruto": "$856.800",
+      "cond": "desde"
+    },
+    "SP-09": {
+      "bruto": "$2.570.400",
+      "cond": "al año, en 12 cuotas de $214.200"
+    }
+  }
+}

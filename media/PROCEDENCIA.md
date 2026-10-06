@@ -16,6 +16,7 @@ preguntando. Se escribe acá para que nadie lo vuelva a discutir de memoria.
 | `captura-portafolio.webp` | captura de `CompAI/portafolio.html` | propia |
 | `logo-compai.svg` | `marca/canva-sitio/prototipo-hero/` | vector de marca, en curvas |
 | `og.jpg` | compuesta acá con los de arriba | — |
+| `escena-01..04.mp4` · `.webp` (desde el 06-10-2026) | `CompAI/Dir. Arte, Comunicacion & Prod. Audiovisual/2026-10-06-comic-escena-01..04/` | Estilo cómic aprobado por Sebastián el 06-10-2026 («MUY BUENO»). 12 ilustraciones **generadas en Canva** (3 por escena, sin texto; las de 02-04 bajadas de su Drive «Canva-sitio»), sin XMP ni C2PA. Texto, globos, onomatopeyas, marcos, trama y movimiento propios de Cínema; render HyperFrames 0.8.134. Bangers y Comic Neue, OFL-1.1, vendorizadas. Reemplazan a la versión plana del 05-10 (SVG+GSAP), que queda en `2026-10-05-videos-escenas/` y en la historia de git |
 
 ## La regla que importa, y es de futuro
 

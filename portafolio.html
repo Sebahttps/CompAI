@@ -1,9 +1,9 @@
 <!-- =========================================================================
-     GENERADO POR `integrar.py`. NO SE EDITA A MANO.
-     La estructura, la tipografia, el copy y la composicion vienen de
-     `../_v16-visuai/index.html` (VisuAI) y se copian sin retipear.
-     El encabezado viene de `_cabecera.html` (CinemAI, fuente unica).
-     Para cambiar algo: se cambia el origen y se vuelve a correr el script.
+     PORTAFOLIO · cuatro escenas del comprador publico, cada una con su video
+     y lo que se puede pedir debajo (05-10-2026).
+     El bloque entre ESCENAS:INICIO y ESCENAS:FIN lo arma `construir.mjs`
+     desde `contenido/escenas.json`: un texto, un item o un precio se cambia
+     en el JSON. El resto de la pagina (encabezado, trabajos) se edita aca.
      ========================================================================= -->
 <!doctype html>
 <html lang="es">
@@ -16,36 +16,13 @@
 <script>window.__err=[];addEventListener('error',function(e){window.__err.push(String(e.message||e))});</script>
 <style>
 /* =========================================================================
-   PORTAFOLIO · seis registros cine
-   -------------------------------------------------------------------------
-   EL ENCARGO, TEXTUAL: «el portafolio es la unica pagina que NO corre dentro
-   del scroll y cada uno de ellos es un registro cine o conjunto de fotos
-   animadas». Y la instruccion de fondo: «no es inventar cosas, es tener
-   conocimiento del oficio. Saber que es lo que solucionamos al Estado y eso
-   hacerlo video corto».
-
-   COMO SE LEE ESO, Y ES LA DECISION QUE MANDA SOBRE TODAS LAS DEMAS:
-   cada pieza tiene que nombrar UN dolor concreto del comprador publico con el
-   vocabulario exacto del tramite. Una animacion bonita que no nombre un dolor
-   real no sirve. Las seis salen de material del estudio, no de mi cabeza:
-   `sitio/CINE-DOLOR-DE-ESTADO.md`, `sitio/LINEAS.md`, `sitio/CATALOGO.md`,
-   `radar/MERCADO-PUBLICO-COMO-SE-OPERA.md` y los barridos reales de RAIdar.
-
-   EL PIPELINE QUE ORDENA TODO, y es el del COMPRADOR, no el nuestro:
-     Requerimiento -> Cotizacion -> Orden de compra -> Recepcion conforme -> Pago
-   Los dos traspasos marcados son actos del organismo. CompAI no los da.
-
-   CERO DATOS FALSOS: no hay ni un folio, ni un RUT, ni un organismo, ni una
-   cifra de rendimiento inventada. Donde hay un numero, esta medido y dice de
-   donde salio. Reproducir la FORMA de un documento del rubro es legitimo;
-   falsificar su contenido, no.
-
-   NO CORRE DENTRO DEL SCROLL: la pagina mide exactamente un visor
-   (`height:100dvh; overflow:hidden`). Se cambia de pieza por el carrete de la
-   izquierda, no bajando. Sin un byte de JavaScript: seis `<input type=radio>`
-   y `:checked ~`. La pieza que no esta elegida va en `display:none`, asi que
-   sus animaciones NO CORREN — un tablero con seis bucles a la vez es ruido y
-   es gasto.
+   PORTAFOLIO · escenas del comprador publico
+   Cada escena nombra UN dolor concreto con el vocabulario del comprador, lo
+   muestra en un video corto tragicomico (Cinema) y debajo deja marcar lo que
+   se necesita para pedirlo cotizado. Hasta el 05-10-2026 eran seis registros
+   de cine en CSS puro dentro de un visor sin scroll; el encargo de ese dia
+   (video + lo que se pide debajo) no cabe en un visor y la pagina corre.
+   CERO DATOS FALSOS: ni folio, ni RUT, ni organismo, ni cifra inventada.
    ========================================================================= */
 :root{
   --ink-900:#08090C; --ink-850:#0B0D12; --ink-800:#0E1015;
@@ -69,10 +46,9 @@
   --anticipa:cubic-bezier(.36,-.55,.24,1);
 }
 *{box-sizing:border-box}
-html,body{height:100%}
 body{margin:0; background:var(--ink-900); color:var(--crema);
   font-family:var(--font-body); font-size:16px; line-height:1.6;
-  -webkit-font-smoothing:antialiased; overflow:hidden}
+  -webkit-font-smoothing:antialiased; overflow-x:clip}
 
 /* el plexus, mas apagado que en la portada: aqui el sujeto son las piezas */
 #bg{position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; background:var(--ink-900)}
@@ -535,1181 +511,162 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   html.hdr-chico .brand .logo{transform:none}
 }
 
-/* ========================= LA SALA ===================================== */
-.sala{position:relative; z-index:2; height:100dvh; max-width:var(--shell);
-  margin:0 auto; padding:var(--hdr) var(--s5) var(--s4);
-  display:grid; grid-template-columns:318px 1fr; gap:var(--s7); align-items:center}
+/* ========================= LA SALA =====================================
+   05-10-2026 · ESCENA + VIDEO + LO QUE SE PIDE DEBAJO.
+   El encargo de Sebastian, textual: «en el caso 01 La licencia vencio el
+   martes se muestra el video [...] tragicomico [...] Entonces abajo del
+   video, las licencias disponibles, para seleccionar y ordenar. Y asi con
+   cada caso». Decidido el mismo dia: cuatro escenas (Casero fuera, «no estaba
+   habil» baja a la franja de confianza), animacion de Cinema, y lo que se
+   marca se envia como SOLICITUD DE COTIZACION, no como compra.
+   La pagina deja de medir un visor: una escena con selector debajo no cabe
+   en 900 px, y la seccion de trabajos que va despues era inalcanzable con
+   `overflow:hidden` en el <body> (medido: scrollHeight 4317 contra 900).
+   El carrete queda pegado a la izquierda y la escena corre a su lado.
+   ========================================================================= */
+.sala{position:relative; z-index:2; max-width:var(--shell); min-height:100dvh;
+  margin:0 auto; padding:calc(var(--hdr) + var(--s6)) var(--s5) var(--s7);
+  display:grid; grid-template-columns:300px minmax(0,1fr); gap:var(--s7); align-items:start}
 
 /* ---- EL CARRETE ---- */
-.carrete{list-style:none; margin:0; padding:0}
+.carrete{position:sticky; top:calc(var(--hdr) + var(--s5))}
 .carrete .tope{font-family:var(--font-data); font-size:9.5px; letter-spacing:.22em;
-  text-transform:uppercase; color:var(--crema-28); margin-bottom:var(--s4)}
+  text-transform:uppercase; color:var(--crema-60); margin-bottom:var(--s4)}
+.carrete ul{list-style:none; margin:0; padding:0}
 .carrete label{display:flex; gap:12px; align-items:baseline; cursor:pointer;
-  padding:9px 0 9px 0; border-top:1px solid var(--crema-12); position:relative;
+  padding:11px 0; border-top:1px solid var(--crema-12); position:relative;
   transition:padding-left .22s var(--micro)}
 .carrete li:last-child label{border-bottom:1px solid var(--crema-12)}
 .carrete .n{font-family:var(--font-data); font-size:10.5px; letter-spacing:.1em;
-  color:var(--crema-28); flex:0 0 auto; transition:color .22s var(--micro)}
+  color:var(--crema-60); flex:0 0 auto; transition:color .22s var(--micro)}
 .carrete .tt{font-family:var(--font-data); font-size:12.5px; line-height:1.45;
-  color:var(--crema-60); transition:color .22s var(--micro)}
-.carrete label:hover .tt{color:var(--crema-75)}
+  color:var(--crema-75); transition:color .22s var(--micro)}
+.carrete label:hover .tt{color:var(--crema)}
 .carrete label:hover{padding-left:5px}
-/* la marca de la pieza elegida: una regla verde que crece desde la izquierda,
-   del mismo estilo que la linea del encabezado. Un solo elemento, un solo
-   `transform`. */
 .carrete label::before{content:""; position:absolute; left:-14px; top:calc(50% - 1.1px);
   width:8px; height:2.2px; border-radius:1.1px; background:var(--azul);
-  transform:scaleX(0); transform-origin:0 50%;
-  transition:transform .26s var(--micro)}
-.carrete label{padding:11px 0}
-/* LA PROMESA — 17-sep-2026. Es la primera linea de la columna y la unica de la
-   pagina que dice QUE VENDEMOS: ClAI-nte paso mas de un minuto creyendo que
-   CompAI vende licencias (informe del 14-09). Por eso NO va en tipografia de
-   maquina ni en gris: sans a 15 px y crema plena, el tono mas claro que tiene
-   la pagina. No lleva filete ni color de acento — el azul es la traza y el
-   ambar la transaccion, y esta linea no es ninguna de las dos: se distingue
-   por ser lo unico NO monoespaciado de la columna.
-   Reemplaza a `.carrete .nota`, que quedo sin uso al borrarse los dos parrafos
-   grises del carrete (doctrina II.9: la pieza no habla de si misma). */
+  transform:scaleX(0); transform-origin:0 50%; transition:transform .26s var(--micro)}
 .carrete .promesa{font-family:var(--font-body); font-size:15px; line-height:1.5;
   color:var(--crema); margin:0 0 var(--s5)}
-.carrete input{position:absolute; width:1px; height:1px; opacity:0; pointer-events:none}
-/* LOS SEIS RADIOS SALEN DEL FLUJO. Estaban como hijos directos del <body> y
-   sumaban 26 px: `scrollHeight` daba 926 contra un visor de 900 y la pagina
-   SI corria dentro del scroll —justo lo que el encargo prohibe—. 26 px no se
-   ven; se miden. `carrete.py` los comprueba en cada pasada. */
 .sel{position:absolute; top:0; left:0; width:1px; height:1px; opacity:0; pointer-events:none}
-.carrete input:focus-visible + label{outline:2px solid var(--azul); outline-offset:3px}
+#p1:focus-visible ~ .sala label[for="p1"], #p2:focus-visible ~ .sala label[for="p2"],
+#p3:focus-visible ~ .sala label[for="p3"], #p4:focus-visible ~ .sala label[for="p4"]{
+  outline:2px solid var(--azul); outline-offset:3px}
+/* LA FRANJA DE CONFIANZA: lo que era la escena 05. Verificar la ficha es el
+   tramite, no el motivo; por eso es una linea y no una escena. */
+.confianza{margin:var(--s5) 0 0; font-size:13px; line-height:1.55; color:var(--crema-75)}
+.confianza a{color:var(--azul-300); text-decoration:none; border-bottom:1px solid rgba(120,197,227,.4)}
+.confianza a:hover{color:var(--crema); border-bottom-color:var(--crema)}
 
-/* ---- EL ESCENARIO ---- */
-.escenario{position:relative; display:flex; flex-direction:column;
-  align-items:center; justify-content:center; height:100%; min-height:0}
-.marco{position:relative; width:660px; height:392px; flex:0 0 auto;
-  transform:scale(var(--k,1)); transform-origin:50% 50%;
-  border:1px solid var(--crema-12); border-radius:var(--radio-caja);
-  background:linear-gradient(180deg, rgba(14,16,21,.82), rgba(8,9,12,.9));
-  overflow:hidden}
-/* el pie de la pieza: el dolor dicho con el vocabulario del tramite */
-.pieplaca{width:660px; max-width:100%; transform:scale(var(--k,1)); transform-origin:50% 0;
-  margin-top:var(--s5)}
-.pieplaca h1{font-family:var(--font-data); font-size:19px; line-height:1.35;
-  font-weight:600; margin:0 0 6px; color:var(--crema); letter-spacing:-.01em}
-.pieplaca p{margin:0; font-size:14px; line-height:1.6; color:var(--crema-75); max-width:62ch}
-.pieplaca .linea{font-family:var(--font-data); font-size:9.5px; letter-spacing:.2em;
-  text-transform:uppercase; color:var(--azul-300); margin:0 0 10px;
-  /* el antetitulo NO hereda la medida de 62ch del cuerpo: en versalitas
-     monoespaciadas con .2em de espaciado, 62ch son 353 px y partia la frase en
-     dos renglones dentro de un marco de 660. */
-  max-width:none}
-.pieplaca .fuente{margin-top:9px; font-family:var(--font-data); font-size:10px;
-  color:var(--crema-28); letter-spacing:.04em}
-@media (max-height:860px){ .escenario{--k:.86} .pieplaca{--k:.86} }
-@media (max-height:780px){ .escenario{--k:.78} .pieplaca{--k:.78} }
-@media (max-width:1160px){ .escenario{--k:.74} .pieplaca{--k:.74} }
-
-/* LO QUE HACE QUE ESTO NO CORRA DENTRO DEL SCROLL Y ADEMAS NO GASTE: la pieza
-   que no esta elegida no esta oculta, esta FUERA. Con `display:none` el
-   navegador no corre sus animaciones — seis bucles simultaneos serian ruido
-   visual y trabajo tirado. */
+/* LA ESCENA ELEGIDA. Las otras van en `display:none`: su video no se ve y el
+   script lo pausa, asi que no hay cuatro bucles decodificando a la vez. */
 .pieza{display:none}
 #p1:checked ~ .sala .pieza[data-p="1"], #p2:checked ~ .sala .pieza[data-p="2"],
-#p3:checked ~ .sala .pieza[data-p="3"], #p4:checked ~ .sala .pieza[data-p="4"],
-#p5:checked ~ .sala .pieza[data-p="5"], #p6:checked ~ .sala .pieza[data-p="6"]{display:block}
+#p3:checked ~ .sala .pieza[data-p="3"], #p4:checked ~ .sala .pieza[data-p="4"]{display:block}
 #p1:checked ~ .sala label[for="p1"] .tt, #p2:checked ~ .sala label[for="p2"] .tt,
-#p3:checked ~ .sala label[for="p3"] .tt, #p4:checked ~ .sala label[for="p4"] .tt,
-#p5:checked ~ .sala label[for="p5"] .tt, #p6:checked ~ .sala label[for="p6"] .tt{color:var(--crema)}
+#p3:checked ~ .sala label[for="p3"] .tt, #p4:checked ~ .sala label[for="p4"] .tt{color:var(--crema)}
 #p1:checked ~ .sala label[for="p1"] .n, #p2:checked ~ .sala label[for="p2"] .n,
-#p3:checked ~ .sala label[for="p3"] .n, #p4:checked ~ .sala label[for="p4"] .n,
-#p5:checked ~ .sala label[for="p5"] .n, #p6:checked ~ .sala label[for="p6"] .n{color:var(--azul)}
+#p3:checked ~ .sala label[for="p3"] .n, #p4:checked ~ .sala label[for="p4"] .n{color:var(--azul)}
 #p1:checked ~ .sala label[for="p1"]::before, #p2:checked ~ .sala label[for="p2"]::before,
-#p3:checked ~ .sala label[for="p3"]::before, #p4:checked ~ .sala label[for="p4"]::before,
-#p5:checked ~ .sala label[for="p5"]::before, #p6:checked ~ .sala label[for="p6"]::before{transform:scaleX(1)}
+#p3:checked ~ .sala label[for="p3"]::before, #p4:checked ~ .sala label[for="p4"]::before{transform:scaleX(1)}
 
-/* ==================== VOCABULARIO COMUN DE LAS ESCENAS ================== */
-.esc{position:absolute; inset:0; font-family:var(--font-data)}
-.rot{position:absolute; font-size:9px; letter-spacing:.16em; text-transform:uppercase;
-  color:var(--crema-28)}
-.caja{position:absolute; border:1px solid var(--crema-12); border-radius:var(--radio);
-  background:rgba(22,26,33,.72)}
-.dato{font-size:11px; color:var(--crema-75); letter-spacing:.02em}
-.chapa{position:absolute; font-size:9.5px; letter-spacing:.14em; text-transform:uppercase;
-  padding:3px 7px; border-radius:2px; border:1px solid currentColor}
-/* la banda de estados del expediente: la lleva media pieza y es el reloj de
-   todas. Cinco rotulos y una regla que avanza. */
-.banda{position:absolute; left:22px; right:22px; top:20px; display:flex;
-  justify-content:space-between; font-size:8.5px; letter-spacing:.13em;
-  text-transform:uppercase; color:var(--crema-28)}
-.banda i{font-style:normal; transition:color .2s}
-/* «PAGO» SALIA CORTADO POR EL CANTO DEL MARCO, y la causa no es el ancho: el
-   `letter-spacing` mete su espacio TAMBIEN DESPUES de la ultima letra, asi que
-   con `space-between` el ultimo rotulo empuja sus glifos fuera de la caja. Se
-   devuelve ese espacio sobrante y ni un pixel mas. */
-.banda i:last-child{margin-right:-.13em}
-.riel{position:absolute; left:22px; right:22px; top:42px; height:1px; background:var(--crema-12)}
-.riel b{position:absolute; inset:0 auto 0 0; background:var(--azul); width:100%;
-  transform-origin:0 50%; display:block}
+/* ---- EL VIDEO ---- */
+.escenario{min-width:0}
+.marco{position:relative; margin:0; aspect-ratio:1320/784; width:100%;
+  border:1px solid var(--crema-12); border-radius:var(--radio-caja); overflow:hidden;
+  background:var(--ink-800)}
+.marco video, .marco img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block}
 
-/* =========================================================================
-   PIEZA 1 · «La licencia vencio el martes»                LICENCIAS
-   La barra de vigencia se vacia en `linear` — es lo unico lineal de la pieza,
-   porque un plazo no acelera ni frena. El rotulo cae de VIGENTE a VENCIDA en
-   `steps(1)`: un estado administrativo no se desvanece, se cae de un cuadro
-   al otro; un fundido ahi seria una mentira de oficio. La orden de compra se
-   pierde por el canto ABIERTO del proveedor extranjero acelerando (curva de
-   salida) y el proveedor con RUT chileno sube y la recibe frenando (curva de
-   entrada, con 3 px de sobrepaso). El contraste entre una muerte lineal y una
-   llegada frenada es todo el golpe de la pieza.
-   ========================================================================= */
-.e1 .lic{left:40px; top:96px; width:250px; height:116px; padding:12px 14px}
-.e1 .lic .tit{font-size:11.5px; color:var(--crema); letter-spacing:.02em}
-.e1 .lic .sub{font-size:9.5px; color:var(--crema-28); letter-spacing:.13em;
-  text-transform:uppercase; margin-top:3px}
-.e1 .vig{position:absolute; left:14px; right:14px; bottom:30px; height:4px;
-  background:var(--crema-12); border-radius:2px; overflow:hidden}
-.e1 .vig i{position:absolute; inset:0; background:var(--azul); transform-origin:0 50%;
-  animation:e1vence 11s linear infinite}
-.e1 .est{position:absolute; left:14px; bottom:11px; font-size:9.5px; letter-spacing:.14em}
-.e1 .est .v{color:var(--azul); animation:e1vig 11s steps(1) infinite}
-.e1 .est .x{color:var(--alerta); position:absolute; left:0; top:0; opacity:0;
-  animation:e1venc 11s steps(1) infinite}
-/* EL RECUADRO DEL PROVEEDOR EXTRANJERO NO TIENE CANTO INFERIOR: la orden de
-   compra lo atraviesa y se pierde. No es un adorno — es el dibujo del problema. */
-.e1 .ext{left:352px; top:112px; width:268px; height:96px; border-bottom:0;
-  border-bottom-left-radius:0; border-bottom-right-radius:0; padding:20px 13px 11px}
-.e1 .loc{left:352px; top:262px; width:268px; height:96px; padding:30px 13px 11px;
-  opacity:0; transform:translateY(24px); animation:e1sube 11s var(--entra) infinite}
-/* la OC se posa SOBRE el canto de arriba de cada recuadro, como un documento
-   que alguien deja encima de una carpeta. Asi no tapa ni una linea de texto:
-   defecto real, la primera version la puso encima de dos. */
-.e1 .oc{position:absolute; left:392px; top:98px; width:150px; padding:6px 9px;
-  border:1px solid var(--terracota); color:var(--terracota-300); font-size:9.5px;
-  letter-spacing:.1em; text-transform:uppercase; border-radius:2px;
-  background:rgba(8,9,12,.9); animation:e1cae 11s infinite}
-@keyframes e1vence{0%{transform:scaleX(1)} 34%{transform:scaleX(1)}
-  56%{transform:scaleX(0)} 100%{transform:scaleX(0)}}
-@keyframes e1vig{0%,55%{opacity:1} 56%,100%{opacity:0}}
-@keyframes e1venc{0%,55%{opacity:0} 56%,100%{opacity:1}}
-/* la OC cae y se pierde por el canto abierto; despues vuelve a entrar y se
-   posa en el proveedor local */
-@keyframes e1cae{
-  0%,54%{transform:translateY(0); opacity:1}
-  56%{transform:translateY(0); opacity:1; animation-timing-function:cubic-bezier(.7,0,.84,0)}
-  66%{transform:translateY(268px); opacity:0}   /* se pierde por el canto abierto */
-  67%{transform:translateY(-52px); opacity:0}
-  70%{transform:translateY(-52px); opacity:0; animation-timing-function:cubic-bezier(.16,1,.3,1)}
-  84%{transform:translateY(153px); opacity:1}
-  88%{transform:translateY(147px); opacity:1}   /* 3 px de sobrepaso, y vuelve */
-  100%{transform:translateY(150px); opacity:1}}
-@keyframes e1sube{
-  0%,58%{opacity:0; transform:translateY(24px)}
-  74%{opacity:1; transform:translateY(0)}
-  100%{opacity:1; transform:translateY(0)}}
+/* ---- EL PIE: el dolor dicho con el vocabulario del comprador ---- */
+.pieplaca{margin-top:var(--s5)}
+.pieplaca .linea{font-family:var(--font-data); font-size:9.5px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--azul-300); margin:0 0 10px}
+.pieplaca h2{font-family:var(--font-data); font-size:clamp(18px,2vw,22px); line-height:1.35;
+  font-weight:600; margin:0 0 8px; color:var(--crema); letter-spacing:-.01em}
+.pieplaca p{margin:0; font-size:15px; line-height:1.6; color:var(--crema-75); max-width:62ch}
 
-/* =========================================================================
-   PIEZA 2 · «El respaldo no estaba en el precio»          HOSPEDAJE
-   Dos filas del MISMO largo total. Arriba: un tramo verde y, pasada la
-   compuerta de la orden de compra, dos tramos ambar que crecen CON SOBREPASO
-   del 7 %. Sobrepasar es un tic de micro-gesto y aqui dice exactamente lo que
-   tiene que decir: eso se metio a empujones y despues de que usted firmo.
-   Abajo: un solo tramo, dibujado de una vez y detenido en su marca.
-   ========================================================================= */
-/* LAS DOS FILAS MIDEN LO MISMO, Y LA PISTA TAMBIEN: 442 px, que es lo que
-   suman los tramos. Con `right:46px` la pista media 568 y sobraban 126 px de
-   carril vacio a la derecha — o sea el dibujo desmentia la frase «el mismo
-   alcance y el mismo largo total», que es todo el argumento de la pieza. */
-.e2 .fila{position:absolute; left:46px; width:442px; height:16px}
-.e2 .f1{top:132px} .e2 .f2{top:220px}
-.e2 .fila .pista{position:absolute; inset:0; border:1px dashed var(--crema-12); border-radius:2px}
-.e2 seg,.e2 .seg{position:absolute; top:2px; bottom:2px; border-radius:1px; transform-origin:0 50%}
-.e2 .s-base{left:2px; width:210px; background:var(--azul-600); animation:e2base 9s var(--entra) infinite}
-.e2 .s-a1{left:212px; width:132px; background:var(--ambar); animation:e2extra 9s var(--micro) infinite}
-.e2 .s-a2{left:344px; width:96px; background:var(--ambar); opacity:.8; animation:e2extra 9s var(--micro) infinite; animation-delay:.54s}
-.e2 .s-uno{left:2px; width:438px; background:var(--azul-600); animation:e2uno 9s var(--entra) infinite}
-.e2 .hito{position:absolute; top:-9px; bottom:-9px; width:1px; border-left:1px dashed var(--crema-28)}
-.e2 .compuerta{position:absolute; left:258px; top:104px; bottom:96px; width:1px;
-  background:var(--crema-28); opacity:.5}
-.e2 .cotiz{position:absolute; font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:var(--crema-28)}
-@keyframes e2base{0%,6%{transform:scaleX(0)} 26%,100%{transform:scaleX(1)}}
-@keyframes e2extra{0%,42%{transform:scaleX(0)} 62%{transform:scaleX(1.07)} 70%,100%{transform:scaleX(1)}}
-@keyframes e2uno{0%,10%{transform:scaleX(0)} 34%,100%{transform:scaleX(1)}}
+/* ---- LO QUE SE PIDE ---- */
+.pide{margin-top:var(--s6); padding:var(--s5); border:1px solid var(--crema-12);
+  border-radius:var(--radio-caja); background:rgba(14,16,21,.78)}
+.pide fieldset{border:0; margin:0; padding:0; min-width:0}
+.pide legend{font-family:var(--font-data); font-size:11px; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--crema); padding:0; margin:0 0 var(--s4)}
+.items{list-style:none; margin:0; padding:0; display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:var(--s2)}
+.it{display:flex; align-items:center; gap:var(--s3); padding:10px 12px; height:100%;
+  border:1px solid var(--crema-12); border-radius:var(--radio); background:rgba(22,26,33,.6);
+  transition:border-color .18s, background-color .18s}
+.it:hover{border-color:var(--crema-28)}
+.it:has(input[type=checkbox]:checked){border-color:var(--azul); background:rgba(46,143,181,.10)}
+.it input[type=checkbox]{flex:0 0 auto; width:18px; height:18px; margin:0; accent-color:var(--azul); cursor:pointer}
+.it .tx{flex:1 1 auto; min-width:0; cursor:pointer}
+.it .nm{display:block; font-size:14px; line-height:1.35; color:var(--crema)}
+.it .dt{display:block; font-size:12px; line-height:1.4; color:var(--crema-60); margin-top:2px}
+.it .px{display:block; font-family:var(--font-data); font-size:11px; color:var(--terracota-300); margin-top:4px}
+.it .cant{flex:0 0 auto; width:96px; padding:6px 8px; font:inherit; font-size:13px;
+  color:var(--crema); background:var(--ink-900); border:1px solid var(--crema-12); border-radius:var(--radio)}
+.it .cant:disabled{display:none}
+.it .cant:focus-visible, .quien input:focus-visible, .quien select:focus-visible{outline:2px solid var(--azul); outline-offset:1px}
+.quien{display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:var(--s3);
+  margin-top:var(--s5); padding-top:var(--s5); border-top:1px solid var(--crema-12)}
+.quien .tq{grid-column:1/-1; margin:0; font-size:13px; color:var(--crema-75)}
+.quien label{display:flex; flex-direction:column; gap:5px; font-family:var(--font-data);
+  font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--crema-60)}
+.quien input, .quien select{font:inherit; font-family:var(--font-body); font-size:14px; letter-spacing:0;
+  text-transform:none; color:var(--crema); background:var(--ink-900); padding:9px 10px;
+  border:1px solid var(--crema-12); border-radius:var(--radio)}
+.quien .trampa{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden}
+.envia{display:flex; flex-wrap:wrap; align-items:center; gap:var(--s4); margin-top:var(--s5)}
+.envia button{font-family:var(--font-data); font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--ink-900); background:var(--terracota); border:0; border-radius:var(--radio);
+  padding:13px 20px; cursor:pointer; transition:background-color .18s}
+.envia button:hover{background:var(--terracota-300)}
+.envia button:disabled{opacity:.6; cursor:default}
+.envia .cuenta{font-family:var(--font-data); font-size:11px; color:var(--crema-60)}
+.envia .nota{flex-basis:100%; margin:0; font-size:12px; color:var(--crema-60)}
+.pide fieldset + fieldset{margin-top:var(--s5)}
+.it:has(.cual){flex-wrap:wrap}
+.it:has(.cual) .tx{flex:1 1 0}
+.it .cual{flex:1 1 100%; margin-left:30px; width:auto; padding:6px 8px; font:inherit; font-size:13px; color:var(--crema);
+  background:var(--ink-900); border:1px solid var(--crema-12); border-radius:var(--radio)}
+.it .cual:disabled{display:none}
+.pide .vig{display:flex; align-items:center; gap:var(--s3); margin:var(--s4) 0 var(--s5); font-family:var(--font-data);
+  font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--crema-60)}
+.pide .vig select{font:inherit; font-family:var(--font-body); font-size:14px; letter-spacing:0; text-transform:none;
+  color:var(--crema); background:var(--ink-900); padding:7px 9px; border:1px solid var(--crema-12); border-radius:var(--radio)}
+.respaldo{margin:var(--s3) 0 0; font-size:13px; color:var(--crema-75)}
+.respaldo .copia{margin-left:var(--s2); font:inherit; font-size:12.5px; color:var(--azul-300); background:none;
+  border:1px solid rgba(120,197,227,.4); border-radius:var(--radio); padding:5px 10px; cursor:pointer}
+.aviso{margin:var(--s3) 0 0; font-size:13.5px; color:var(--azul-300)}
+.aviso.mal{color:var(--alerta-300)}
 
-/* =========================================================================
-   PIEZA 3 · «Llego, se recibio, y ahi quedo»              PUESTA EN MARCHA
-   AQUI NO SE MUEVE NADA DURANTE UN TERCIO DE LA PIEZA, Y ESE ES EL PUNTO.
-   Entran dos cajas escalonadas y despues, entre el 34 y el 62 % del bucle, no
-   se mueve absolutamente nada salvo el reloj de arriba. Es la unica pieza del
-   estudio donde la AUSENCIA de movimiento es la actuacion: asi se siente una
-   compra cerrada con el requerimiento abierto. Para que el silencio no se lea
-   como una pagina rota, a mitad del vacio entra una sola linea.
-   Al final el hilo se dibuja con `stroke-dashoffset` y a velocidad `linear`:
-   el trazo no vale hasta que llega al otro lado.
-   ========================================================================= */
-/* EL RELOJ DEL SILENCIO. Entre el 34 y el 62 % de esta pieza no se mueve
-   NADA, y eso es deliberado: asi se siente una compra cerrada con el
-   requerimiento abierto. Pero un tercio de pieza sin un solo pixel en
-   movimiento se lee como una pagina rota, asi que queda esto —una regla de
-   plazo que avanza en `linear` durante todo el bucle— como prueba de que el
-   reloj sigue corriendo. Es el mismo oficio que los tres puntitos de
-   «escribiendo» de Pliego, dicho con nuestro vocabulario. */
-.e3 .plazo{position:absolute; left:58px; right:58px; top:52px; height:2px; background:var(--crema-12)}
-.e3 .plazo i{position:absolute; inset:0; background:var(--terracota); transform-origin:0 50%;
-  animation:e3plazo 12s linear infinite}
-@keyframes e3plazo{0%{transform:scaleX(0)} 100%{transform:scaleX(1)}}
-.e3 .cj{width:186px; height:78px; padding:11px 13px; opacity:0;
-  animation:e3entra 12s var(--entra) infinite}
-.e3 .c1{left:58px; top:112px}
-.e3 .c2{left:58px; top:216px; animation-delay:.34s}   /* escalonado de 340 ms */
-.e3 .cj .tit{font-size:11px; color:var(--crema); letter-spacing:.02em}
-.e3 .cj .sub{font-size:9px; color:var(--crema-28); letter-spacing:.12em;
-  text-transform:uppercase; margin-top:4px}
-.e3 .silencio{position:absolute; left:58px; right:58px; top:322px; text-align:left;
-  font-size:12px; color:var(--crema-60); opacity:0; animation:e3silencio 12s var(--entra) infinite}
-.e3 .hilo{position:absolute; inset:0}
-.e3 .hilo path{fill:none; stroke:var(--azul); stroke-width:1.4; stroke-linecap:round;
-  stroke-dasharray:var(--L); stroke-dashoffset:var(--L); animation:e3hilo 12s linear infinite}
-.e3 .andando{position:absolute; left:452px; top:186px; width:152px; padding:10px 12px;
-  border:1px solid var(--azul-600); border-radius:var(--radio); opacity:0;
-  animation:e3and 12s var(--entra) infinite}
-.e3 .andando .tit{font-size:11px; color:var(--azul-300); letter-spacing:.02em}
-@keyframes e3entra{0%{opacity:0; transform:translateX(-16px)} 9%{opacity:1; transform:none}
-  92%{opacity:1; transform:none} 100%{opacity:0; transform:none}}
-@keyframes e3silencio{0%,40%{opacity:0} 48%,88%{opacity:1} 100%{opacity:0}}
-@keyframes e3hilo{0%,62%{stroke-dashoffset:var(--L)} 84%,100%{stroke-dashoffset:0}}
-@keyframes e3and{0%,80%{opacity:0} 88%,100%{opacity:1}}
+/* TELEFONO: una sola columna; el carrete se vuelve una fila que se arrastra */
+@media (max-width:860px){
+  .sala{grid-template-columns:minmax(0,1fr); gap:var(--s5);
+    padding:calc(var(--hdr) + var(--s3)) var(--s4) var(--s6)}
+  .carrete{position:static}
+  .carrete .promesa{margin-bottom:var(--s4)}
+  .carrete ul{display:flex; gap:var(--s2); overflow-x:auto; scrollbar-width:none; padding-bottom:2px}
+  .carrete ul::-webkit-scrollbar{display:none}
+  .carrete li{flex:0 0 auto}
+  .carrete label, .carrete li:last-child label{border:1px solid var(--crema-12); border-radius:var(--radio); padding:8px 11px}
+  .carrete label::before{display:none}
+  .carrete label:hover{padding-left:11px}
+  #p1:checked ~ .sala label[for="p1"], #p2:checked ~ .sala label[for="p2"],
+  #p3:checked ~ .sala label[for="p3"], #p4:checked ~ .sala label[for="p4"]{border-color:var(--azul)}
+  .confianza{display:none}
+  .confianza.abajo{display:block}
+  .pide{padding:var(--s4)}
+  .items{grid-template-columns:minmax(0,1fr)}
+}
+@media (min-width:861px){ .confianza.abajo{display:none} }
 
-/* =========================================================================
-   PIEZA 4 · «La recepcion abierta y el pago detras»       EQUIPAMIENTO
-   Cuatro lineas de un requerimiento. Dos ENTRAN desde la izquierda con 4 % de
-   desfase y se fijan con borde verde; dos SE DEVUELVEN a una canaleta abierta
-   a la derecha con la curva de salida, bajan a 52 % de opacidad y quedan
-   estacionadas y LEGIBLES, con el motivo escrito al lado. No se borran ni se
-   marcan en rojo: un error en rojo diria «falla»; una fila estacionada dice
-   «triaje», y un rechazo tranquilo y explicado es lo mas creible que puede
-   hacer un proveedor sin adjudicaciones.
-   ========================================================================= */
-/* LAS FILAS SE ACORTAN A 352 PX Y EL MOTIVO SE CORRE A 458. En la primera
-   version las devueltas se corrian 52 px y terminaban EN x=488, encima de su
-   propio motivo: «MEJOR CON BODEGA PROPIA» quedaba medio tapado. Es el mismo
-   defecto que ya cace el 26-ago en el capitulo 4 del scroll-cine —una fila
-   empujada contra el texto que la explica— y ahora la canaleta deja hueco. */
-.e4 .lin{position:absolute; left:44px; width:352px; height:38px; padding:9px 12px;
-  border:1px solid var(--crema-12); border-radius:var(--radio);
-  background:rgba(22,26,33,.72); font-size:11px; color:var(--crema-75);
-  display:flex; justify-content:space-between; align-items:center;
-  opacity:0; transform:translateX(-26px)}
-.e4 .l1{top:104px; animation:e4entra 10s var(--entra) infinite}
-.e4 .l2{top:152px; animation:e4entra 10s var(--entra) infinite; animation-delay:.4s}
-.e4 .l3{top:212px; animation:e4vuelve 10s infinite}
-.e4 .l4{top:260px; animation:e4vuelve 10s infinite; animation-delay:.4s}
-.e4 .motivo{position:absolute; left:458px; width:174px; font-size:9.5px; letter-spacing:.1em;
-  text-transform:uppercase; color:var(--crema-28); opacity:0; animation:e4motivo 10s var(--entra) infinite}
-.e4 .m3{top:222px} .e4 .m4{top:270px; animation-delay:.4s}
-.e4 .canaleta{position:absolute; left:406px; right:16px; top:196px; height:112px;
-  border-top:1px dashed var(--crema-12); border-bottom:1px dashed var(--crema-12);
-  border-left:1px dashed var(--crema-12); border-radius:var(--radio) 0 0 var(--radio)}
-@keyframes e4entra{
-  0%{opacity:0; transform:translateX(-26px); border-color:var(--crema-12)}
-  16%{opacity:1; transform:translateX(0); border-color:var(--crema-12)}
-  26%,100%{opacity:1; transform:translateX(0); border-color:var(--azul-600)}}
-@keyframes e4vuelve{
-  0%{opacity:0; transform:translateX(-26px)}
-  14%{opacity:1; transform:translateX(0); animation-timing-function:cubic-bezier(.16,1,.3,1)}
-  40%{opacity:1; transform:translateX(0); animation-timing-function:cubic-bezier(.7,0,.84,0)}
-  56%,100%{opacity:.52; transform:translateX(52px)}}
-@keyframes e4motivo{0%,54%{opacity:0} 66%,100%{opacity:1}}
-
-/* =========================================================================
-   PIEZA 5 · «El proveedor no estaba habil y la compra se rehace»
-   El expediente avanza por los cinco estados. En la orden de compra cae un
-   sello en `steps(1)` —un estado administrativo no se desvanece— y el
-   expediente RETROCEDE acelerando hasta el requerimiento. Lo unico que NO
-   retrocede es el reloj de arriba, que sigue en `linear`: el plazo no se
-   devuelve. Despues el expediente vuelve a subir, esta vez entero.
-   Es la unica pieza cuyo remate es la credencial, y por eso cierra el set.
-   ========================================================================= */
-/* LA BANDA SE ENCIENDE POR SUPERPOSICION, no rotulo a rotulo. Hay DOS copias
-   de los cinco rotulos: una apagada y otra en azul recortada por el MISMO
-   avance del expediente. Un elemento y un `clip-path` en vez de cinco
-   animaciones con cinco pares de tiempos que ademas habria que invertir en el
-   retroceso. Cuando el expediente se rehace, la banda se apaga sola. */
-.e5 .banda{top:36px}
-.e5 .banda i{font-size:8.5px}
-.e5 .banda.on{color:var(--azul); clip-path:inset(0 100% 0 0); animation:e5clip 12s infinite}
-.e5 .riel{top:62px}
-.e5 .riel b{animation:e5avanza 12s infinite}
-.e5 .plazo{position:absolute; left:22px; right:22px; top:92px; height:2px; background:var(--crema-12)}
-.e5 .plazo i{position:absolute; inset:0; background:var(--terracota); transform-origin:0 50%;
-  animation:e5plazo 12s linear infinite}
-.e5 .plazorot{position:absolute; left:22px; top:100px; font-size:8.5px; letter-spacing:.13em;
-  text-transform:uppercase; color:var(--crema-28)}
-/* EL DOCUMENTO. Reproducir la FORMA de una orden de compra es legitimo;
-   inventarle folio, RUT, organismo o monto, no. Por eso las lineas del cuerpo
-   son REGLAS, no cifras: se lee como el documento que es sin afirmar un dato
-   que no existe. */
-.e5 .doc{position:absolute; left:120px; top:146px; width:420px; padding:14px 18px 16px;
-  border:1px solid var(--crema-12); border-radius:var(--radio-caja);
-  background:rgba(20,24,30,.94)}
-.e5 .doc .k{font-size:9px; letter-spacing:.16em; text-transform:uppercase; color:var(--crema-28)}
-.e5 .doc .v{font-size:13.5px; color:var(--crema); margin-top:4px; letter-spacing:.01em}
-.e5 .doc .reglas{margin-top:13px; display:flex; flex-direction:column; gap:7px}
-.e5 .doc .reglas u{display:block; height:5px; border-radius:2px; background:var(--crema-12); text-decoration:none}
-.e5 .doc .reglas u:nth-child(1){width:76%} .e5 .doc .reglas u:nth-child(2){width:88%}
-.e5 .doc .reglas u:nth-child(3){width:54%}
-.e5 .doc .pie{margin-top:15px; padding-top:11px; border-top:1px solid var(--crema-12);
-  display:flex; justify-content:space-between; align-items:flex-end; gap:16px}
-.e5 .doc .hab{font-size:12px; letter-spacing:.16em; text-transform:uppercase}
-.e5 .d1{animation:e5doc1 12s infinite}
-.e5 .d2{opacity:0; animation:e5doc2 12s infinite}
-.e5 .d1 .hab{color:var(--alerta)}
-.e5 .d2{border-color:var(--azul-600)}
-.e5 .d2 .hab{color:var(--azul)}
-/* EL SELLO CAE EN `steps(1)`: un estado administrativo no se desvanece, se cae
-   de un cuadro al otro. Un fundido aqui seria una mentira de oficio. Y dura
-   1,9 s de los 12 —el 16 %—, porque en la primera version duraba 1,2 s y en
-   seis capturas repartidas por el bucle NO SALIO EN NINGUNA: si no lo caza el
-   muestreo, tampoco lo caza el visitante. */
-.e5 .sello{position:absolute; left:352px; top:196px; color:var(--alerta);
-  font-size:11.5px; letter-spacing:.17em; text-transform:uppercase; padding:7px 12px;
-  border:1.5px solid var(--alerta); border-radius:2px; background:rgba(8,9,12,.86);
-  opacity:0; transform:rotate(-7deg); animation:e5sello 12s steps(1) infinite}
-.e5 .rehace{position:absolute; left:22px; top:346px; font-size:11px; color:var(--crema-60);
-  letter-spacing:0; text-transform:none; opacity:0; animation:e5rehace 12s var(--entra) infinite}
-@keyframes e5avanza{
-  0%{transform:scaleX(0)}
-  20%{transform:scaleX(.60)}                                    /* llega a la OC */
-  30%{transform:scaleX(.60); animation-timing-function:cubic-bezier(.7,0,.84,0)}
-  38%{transform:scaleX(0)}                                      /* se rehace */
-  46%{transform:scaleX(0); animation-timing-function:cubic-bezier(.16,1,.3,1)}
-  76%,100%{transform:scaleX(1)}}
-@keyframes e5clip{
-  0%{clip-path:inset(0 100% 0 0)}
-  /* 40 %, y no 48 %: con 48 el corte caia A MITAD de «ORDEN DE COMPRA» y se
-     leia como un fallo de pintado, no como un estado alcanzado. El rotulo se
-     enciende entero o no se enciende. */
-  20%{clip-path:inset(0 40% 0 0)}
-  30%{clip-path:inset(0 40% 0 0); animation-timing-function:cubic-bezier(.7,0,.84,0)}
-  38%{clip-path:inset(0 100% 0 0)}
-  46%{clip-path:inset(0 100% 0 0); animation-timing-function:cubic-bezier(.16,1,.3,1)}
-  76%,100%{clip-path:inset(0 0 0 0)}}
-/* EL PLAZO NO SE DEVUELVE. Es lo unico lineal de la pieza y no tiene ni un
-   solo tramo hacia atras: ahi esta dicho el dolor entero. */
-@keyframes e5plazo{0%{transform:scaleX(0)} 100%{transform:scaleX(1)}}
-@keyframes e5sello{0%,22%{opacity:0} 24%,40%{opacity:1} 42%,100%{opacity:0}}
-@keyframes e5doc1{
-  0%{opacity:0; transform:translateX(-30px)}
-  8%,30%{opacity:1; transform:translateX(0); animation-timing-function:cubic-bezier(.7,0,.84,0)}
-  42%,100%{opacity:0; transform:translateX(-120px)}}
-@keyframes e5doc2{
-  0%,44%{opacity:0; transform:translateX(-30px)}
-  58%{opacity:1; transform:translateX(0)}
-  100%{opacity:1; transform:translateX(0)}}
-@keyframes e5rehace{0%,26%{opacity:0} 34%,46%{opacity:1} 54%,100%{opacity:0}}
-
-/* =========================================================================
-   PIEZA 6 · CASERO — previo. Producto propio, en desarrollo.
-   Encargo textual: «alli pondria algo de la app Casero, un previo nada mas».
-   Es repo PRIVADO: aqui no entra ni un dato de su economia —ni planes, ni
-   comisiones, ni precios—. Solo las tres reglas de producto que la definen y
-   que ya estan escritas en su handoff: la unidad de confianza es el edificio,
-   las fichas duran 24 horas y se apagan solas a las 00:00, y la valoracion se
-   cuenta en marraquetas. Su paleta es la SUYA, no la de CompAI, y eso es
-   deliberado: se lee como otro producto, que es lo que es.
-   ========================================================================= */
-.e6{background:#EDEAE3}
-.e6 .tel{position:absolute; left:60px; top:26px; width:206px; height:340px;
-  border:2px solid #0E3D2C; border-radius:22px; background:#F6F1E6; overflow:hidden}
-.e6 .barra{position:absolute; left:0; right:0; top:0; height:38px; background:#0E3D2C;
-  color:#F6F1E6; font-size:10px; letter-spacing:.14em; text-transform:uppercase;
-  display:flex; align-items:center; padding:0 12px}
-.e6 .fich{position:absolute; left:10px; right:10px; height:74px; border-radius:11px;
-  background:#fff; border:1px solid rgba(14,61,44,.14); padding:9px 10px;
-  opacity:0; transform:translateY(12px); animation:e6ficha 11s var(--entra) infinite}
-.e6 .fA{top:50px} .e6 .fB{top:134px; animation-delay:.32s} .e6 .fC{top:218px; animation-delay:.64s}
-/* el toldo del rubro vive arriba a la derecha, asi que el titulo le deja su
-   hueco: sin este `padding-right` el toldo se comia la ultima palabra. */
-.e6 .fich .t{font-size:11px; color:#1A2620; font-weight:600; padding-right:34px; line-height:1.3}
-.e6 .fich .m{font-size:9px; color:rgba(26,38,32,.6); margin-top:3px; letter-spacing:.04em}
-.e6 .toldo{position:absolute; right:9px; top:9px; width:26px; height:16px;
-  background:#F5B818; border-radius:3px}
-.e6 .cuenta{position:absolute; right:10px; bottom:8px; font-size:9px; color:#A32519;
-  letter-spacing:.08em}
-/* la ficha C se APAGA sola: es la regla de las 24 h, dicha con movimiento */
-.e6 .fC{animation:e6apaga 11s var(--entra) infinite}
-.e6 .reglas{position:absolute; left:300px; top:52px; right:34px; color:#1A2620}
-.e6 .reglas .tp{font-size:9px; letter-spacing:.19em; text-transform:uppercase;
-  color:rgba(26,38,32,.5); margin-bottom:12px}
-.e6 .reglas li{list-style:none; margin:0 0 15px; font-size:12.5px; line-height:1.5;
-  opacity:0; transform:translateY(8px); animation:e6regla 11s var(--entra) infinite;
-  font-family:var(--font-body)}
-.e6 .reglas li:nth-child(2){animation-delay:.42s}
-.e6 .reglas li:nth-child(3){animation-delay:.48s}
-.e6 .reglas li:nth-child(4){animation-delay:.54s}
-.e6 .marr{display:inline-flex; gap:3px; vertical-align:-2px; margin-left:5px}
-.e6 .marr i{width:9px; height:9px; border-radius:50% 50% 40% 40%; background:#957C23; display:block}
-.e6 .marr i:nth-child(4),.e6 .marr i:nth-child(5){background:rgba(149,124,35,.24)}
-.e6 .previo{position:absolute; right:16px; bottom:12px; font-size:9px; letter-spacing:.16em;
-  text-transform:uppercase; color:rgba(26,38,32,.42)}
-@keyframes e6ficha{0%{opacity:0; transform:translateY(12px)} 12%,100%{opacity:1; transform:translateY(0)}}
-@keyframes e6apaga{0%{opacity:0; transform:translateY(12px)} 12%{opacity:1; transform:translateY(0)}
-  58%{opacity:1} 70%,100%{opacity:.16}}
-@keyframes e6regla{0%,26%{opacity:0; transform:translateY(8px)} 40%,100%{opacity:1; transform:translateY(0)}}
-
-/* =========================================================================
-   EL `fill-mode` DE TODAS LAS ESCENAS, Y VA AL FINAL POR UNA RAZON MEDIDA.
-   -------------------------------------------------------------------------
-   EL DEFECTO, que la tira de fotogramas caza y el CSS no: durante su
-   `animation-delay` un elemento NO muestra el cuadro 0 % de su animacion,
-   muestra su estilo normal. El tramo ambar de la pieza 2 lleva 540 ms de
-   retardo y su estilo normal es `scaleX(1)`: durante ese medio segundo se
-   veia ENTERO, o sea el sobreprecio aparecia ANTES de la orden de compra —
-   exactamente lo contrario de lo que la pieza afirma. Un escalonado sin
-   `fill-mode` es un escalonado que miente.
-
-   Y EL SEGUNDO DEFECTO, que es el que obliga a escribirlo asi: la primera
-   correccion fue `.esc *{animation-fill-mode:both}` puesta arriba, y NO
-   SIRVIO — el ambar seguia entero en el mismo cuadro. La forma abreviada
-   `animation:` REINICIA `animation-fill-mode` a `none`, y `.e2 .s-a2` (0,2,0)
-   le gana a `.esc *` (0,1,1). Se arregla con especificidad y orden, no con
-   `!important`: `.esc.esc *` vale (0,2,1) y ademas va la ultima, asi que gana
-   tambien los empates. Una correccion que no se vuelve a mirar renderizada no
-   es una correccion.
-   ========================================================================= */
-.esc.esc, .esc.esc *, .esc.esc *::before, .esc.esc *::after{animation-fill-mode:both}
-
-/* =========================================================================
-   MOVIMIENTO REDUCIDO — todo quieto Y VISIBLE. `animation:none` congela el
-   estado INICIAL, no el final, asi que aqui se restituye a mano cada
-   propiedad que el bucle dejaba puesta. Es el bug del 24-ago y no se repite.
-   ========================================================================= */
+/* MOVIMIENTO REDUCIDO: los videos no corren solos (el script los deja en su
+   poster) y la marca del carrete aparece sin trayecto. */
 @media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation:none !important; transition:none !important}
+  .carrete label, .carrete label::before, .it{transition:none}
   #bg video{display:none}
-  .carrete label::before{transform:scaleX(0)}
-  #p1:checked ~ .sala label[for="p1"]::before, #p2:checked ~ .sala label[for="p2"]::before,
-  #p3:checked ~ .sala label[for="p3"]::before, #p4:checked ~ .sala label[for="p4"]::before,
-  #p5:checked ~ .sala label[for="p5"]::before, #p6:checked ~ .sala label[for="p6"]::before{transform:scaleX(1)}
-  .e1 .vig i{transform:scaleX(0)}                 /* la licencia, VENCIDA */
-  .e1 .est .v{opacity:0} .e1 .est .x{opacity:1}
-  .e1 .oc{transform:translateY(150px); opacity:1} /* posada en el local */
-  .e1 .loc{opacity:1; transform:none}
-  .e2 .s-base,.e2 .s-a1,.e2 .s-a2,.e2 .s-uno{transform:scaleX(1)}
-  .e3 .plazo i{transform:scaleX(1)}
-  .e3 .cj{opacity:1; transform:none}
-  .e3 .silencio{opacity:1}
-  .e3 .hilo path{stroke-dashoffset:0}
-  .e3 .andando{opacity:1}
-  .e4 .lin{opacity:1; transform:none}
-  .e4 .l1,.e4 .l2{border-color:var(--azul-600)}
-  .e4 .l3,.e4 .l4{opacity:.52; transform:translateX(52px)}
-  .e4 .motivo{opacity:1}
-  .e5 .riel b{transform:scaleX(1)}
-  .e5 .banda.on{clip-path:inset(0 0 0 0)}
-  .e5 .plazo i{transform:scaleX(1)}
-  .e5 .sello{opacity:0}                           /* el sello es un TRANSITO */
-  .e5 .rehace{opacity:0}                          /* y su leyenda, tambien   */
-  .e5 .d1{opacity:0}
-  .e5 .d2{opacity:1; transform:none}
-  .e6 .fich{opacity:1; transform:none} .e6 .fC{opacity:.16}
-  .e6 .reglas li{opacity:1; transform:none}
 }
-/* ============================ CARRUSEL · CSS INICIO ======================
-   CARRUSEL 3D DE SERVICIOS — CinemAI, 13-sep-2026.
-
-   LO QUE MANDA SOBRE EL DISENO, escrito porque no se ve en el codigo:
-
-   1) EL ANCLA NO SE MUEVE. Titulo, pestanas de linea, flechas, puntos y
-      contador estan fijos; lo unico que viaja son las tarjetas. Es la ley del
-      blueprint `fixed-anchor-cycle` de HyperFrames —«the stillness of the
-      anchor IS the claim»— y su regla de geometria: la region que cicla NUNCA
-      toca ni desplaza al ancla. Por eso la escena tiene alto propio y los
-      mandos viven fuera de ella.
-
-   2) EL VIAJE ES `inOut`, NO `.out`. CORRECCION a mi primer borrador. Mi
-      doctrina §3 asigna `--entra` (expo.out) a «algo aparece» y yo lo habia
-      puesto en las tarjetas. Pero una tarjeta del carrusel no aparece: se
-      MUEVE ENTRE DOS POSICIONES, y para eso la regla de direccion de
-      `hyperframes-creative/motion-principles` pide `inOut`. Con `.out` el
-      anillo arranca disparado y se lee como resorte. Lo que si usa `.out` es
-      el contenido que se revela en la tarjeta que llega: eso si sale del reposo.
-
-   3) CINCO CURVAS Y CINCO DURACIONES DISTINTAS. La misma fuente prohibe
-      repetir ease («no more than 2 independent tweens with the same ease») y
-      pide que la mas lenta sea 3x la mas rapida: viaje 640 ms contra hundido
-      del boton 150 ms = 4,3x.
-
-   4) NADA ARRANCA EN t=0. El realce de la tarjeta que llega entra a los
-      140-180 ms. Retardo cero se lee como corte, no como llegada.
-
-   5) LA PROFUNDIDAD ES REAL, NO ESCALA. `perspective` en un padre estable,
-      `preserve-3d` en la pista y en cada tarjeta, viaje en Z, giro en Y y
-      OCLUSION: la vecina se mete POR DEBAJO de la central y queda tapada en un
-      42 % de su ancho. `hyperframes-keyframes` §3D: «Scale alone is fake depth».
-
-   6) EL GIRO TIENE TECHO Y SE SATURA. `split-tilt-cards` mide el limite: sobre
-      18 grados la tarjeta «folds shut and copy blurs». El paso es --tilt por
-      vecino y JavaScript satura el factor en 1,2.
-
-   7) LA SOMBRA SIGUE AL GIRO. Misma fuente: «Shadow direction matches tilt —
-      wrong sign reads as broken 3D». Un solo `box-shadow` con desplazamiento
-      X = `calc(var(--dx) * -16px)`: cambia de lado solo.
-
-   8) JAVASCRIPT ESCRIBE CUATRO NUMEROS, EL CSS HACE LA COREOGRAFIA. Por
-      tarjeta: `--dx` (lateral con signo, saturado), `--dz` (hundimiento),
-      `--dr` (giro, saturado) y `--o` (opacidad, curva quebrada que llega a
-      cero). Ni un `transform` armado en JavaScript. Tres consecuencias que no
-      son de estilo: el modo grilla puede anular el `transform` desde la hoja
-      —contra un `style` en linea seria imposible—, el cambio a plano en
-      telefono es una media query de cinco numeros y no una rama de codigo, y
-      el paquete de JS baja a ~2,5 KB.
-
-   9) LO QUE NO SE VE NO SE PINTA. Pasada la ventana la tarjeta queda en
-      `visibility:hidden` y pierde `will-change`. Puesto en las nueve, agota
-      memoria y empeora lo que venia a arreglar (doctrina CinemAI §6).
-
-   10) LA TARJETA ES ANCHA Y NO ALTA, Y ESO LO DECIDIO EL TEXTO REAL. Con los
-      textos de GAIn hay servicios de 5 «incluye» y 4 «no incluye», con items
-      de hasta 103 caracteres. En una tarjeta de 372 px eso son ~880 px de
-      alto: no cabe en pantalla y obliga a cortar texto, que es justo lo que el
-      encargo prohibe. A 560 px de ancho las dos listas caben LADO A LADO —dos
-      columnas del mismo ancho— y la tarjeta baja a ~570. La composicion no es
-      un gusto: es la unica que deja entrar el contenido entero.
-   ========================================================================= */
-.cw{
-  position:relative; z-index:2; max-width:var(--shell); margin:0 auto;
-  --pad-x:var(--s5);   /* EL CANAL LATERAL VIVE EN UNA SOLA VARIABLE.
-        La escena lo descuenta con margen negativo para sangrar hasta el canto;
-        con dos numeros distintos -24 en la escena, 16 en la seccion- el
-        documento desbordaba 8 px a lo ancho en telefono. Medido, no supuesto. */
-  --pad-c:24px;        /* el padding interior de la tarjeta, que el bloque
-        «no incluye» necesita conocer para sangrar hasta el canto */
-  padding:var(--s6) var(--pad-x) var(--s6);
-  display:flex; flex-direction:column;
-  /* --- geometria --- */
-  --tar-w:560px; --tar-h:auto;
-  /* --- coreografia: los numeros que cambian por pantalla --- */
-  --paso:56%;      /* desplazamiento lateral por vecino, en anchos de tarjeta */
-  --zpaso:300px;   /* hundimiento en Z por vecino                              */
-  --tilt:26deg;    /* giro por vecino                                          */
-  --dec:.09;       /* caida de escala por vecino                               */
-  --dof:2.2px;     /* desenfoque de profundidad por vecino, sobre el CONTENIDO */
-  /* POR QUE 26 Y NO LOS 18 QUE PONE DE TECHO `split-tilt-cards`, y esta es una
-     desviacion consciente de la regla, no un descuido. Medi el render v3 por
-     CDP antes de tocar nada: el `matrix3d` estaba bien puesto -sin(17°)=0,2924
-     exacto, translateZ -300- y el escorzo REAL era de 454,3 px aparentes sobre
-     560, o sea la tarjeta si giraba. Lo que no hacia era LEERSE: entre el canto
-     cercano y el lejano la altura aparente cambiaba 50 px sobre 555, un 9 %, y
-     nueve por ciento no se ve. A 26 grados son 75 px, un 13,5 %, y ahi el
-     anillo aparece.
-     La regla de los 18 grados protege la LEGIBILIDAD DEL TEXTO de una tarjeta
-     que hay que leer: en `split-tilt-cards` las dos tarjetas tilteadas son el
-     contenido. Aqui la vecina NO es contenido, es senal de profundidad, y que
-     su texto se difumine es justamente lo que se busca. La tarjeta que hay que
-     leer esta a rotateY 0 exacto. La regla se respeta donde aplica. */
-  /* PERSPECTIVA CORTA A PROPOSITO. `split-tilt-cards` da 1000-2400 px y avisa
-     que «lower exaggerates the tilt; higher reads near-isometric». En el render
-     v2, con 1700 px sobre una tarjeta de 560 de ancho, las vecinas se leian
-     como tres tarjetas EN FILA y no como un anillo: el giro existia y no se
-     veia. A 1150 aparece el escorzo y la oclusion se lee. */
-  --persp:1150px;
-  /* --- tiempo: cinco curvas, cinco duraciones --- */
-  --viaje:cubic-bezier(.62,.02,.28,1);    /* inOut  · mover ENTRE posiciones     */
-  --entra:cubic-bezier(.16,1,.3,1);       /* out    · algo aparece desde reposo  */
-  --sale:cubic-bezier(.7,0,.84,0);        /* in     · algo se va                 */
-  --micro:cubic-bezier(.34,1.56,.64,1);   /* sobrepaso · micro-gesto             */
-  --asienta:cubic-bezier(.33,.72,.4,1);   /* llegada corta y firme               */
-  --t-viaje:640ms; --t-esc:560ms; --t-cont:500ms; --t-filo:420ms;
-  --t-apaga:260ms; --t-punto:220ms; --t-press:150ms;
-}
-
-/* ---------- ENCABEZADO (ancla: no se mueve nunca) ---------------------- */
-.cw-cab{display:flex; align-items:flex-end; justify-content:space-between;
-  gap:var(--s6); flex-wrap:wrap; margin-bottom:var(--s4)}
-.cw-ante{font-family:var(--font-data); font-size:9.5px; letter-spacing:.22em;
-  text-transform:uppercase; color:var(--azul-300); margin:0 0 9px}
-.cw-tit{font-family:var(--font-data); font-size:20px; line-height:1.3; font-weight:600;
-  letter-spacing:-.01em; margin:0 0 7px; color:var(--crema)}
-.cw-baja{margin:0; font-size:13.5px; line-height:1.6; color:var(--crema-75); max-width:56ch}
-.cw-baja strong{color:var(--crema); font-weight:600}
-/* la promesa de la linea elegida: cambia con las pestanas y es el unico texto
-   del ancla que se refresca. Alto fijo para que el ancla no salte (§1). */
-.cw-lprom{font-family:var(--font-data); font-size:11px; line-height:1.5;
-  color:var(--crema-60); margin:0; max-width:34ch; min-height:33px;
-  padding-left:13px; border-left:1px solid var(--azul-600)}
-.cw-lineas{display:flex; flex-wrap:wrap; gap:var(--s2); margin-bottom:var(--s4)}
-.cw-lin{appearance:none; cursor:pointer; font-family:var(--font-data);
-  font-size:10.5px; letter-spacing:.12em; text-transform:uppercase;
-  padding:9px 14px; border-radius:2px; color:var(--crema-60);
-  border:1px solid var(--crema-12); background:rgba(22,26,33,.5);
-  transition:color var(--t-punto) var(--asienta),
-             border-color var(--t-punto) var(--asienta),
-             transform var(--t-press) var(--micro)}
-.cw-lin:hover{color:var(--crema-75); border-color:var(--crema-28)}
-.cw-lin:active{transform:translateY(1px) scale(.985)}
-.cw-lin[aria-pressed="true"]{color:var(--azul-300); border-color:var(--azul-600);
-  background:rgba(19,116,154,.12)}
-.cw-lin:focus-visible,.cw-fl:focus-visible,.cw-punto:focus-visible,
-.cw-todo:focus-visible,.cw-cta:focus-visible,.cw-tar:focus-visible{
-  outline:2px solid var(--azul); outline-offset:3px}
-
-/* ---------- LA ESCENA: el unico sitio con perspectiva ------------------ */
-.cw-escena{position:relative; height:var(--tar-h); perspective:var(--persp);
-  perspective-origin:50% 44%;
-  /* recorta: la tarjeta que hace la vuelta del anillo viaja invisible y no
-     puede asomar por el canto */
-  overflow:hidden; margin:0 calc(var(--pad-x) * -1); padding:0 var(--pad-x)}
-.cw-pista{position:absolute; inset:0; transform-style:preserve-3d}
-
-/* ---------- LA TARJETA ------------------------------------------------- */
-.cw-tar{
-  position:absolute; top:50%; left:50%; width:var(--tar-w); height:var(--tar-h);
-  margin:0; --dx:0; --dz:0; --dr:0; --o:1;
-  transform-style:preserve-3d; backface-visibility:hidden;
-  transform:
-    translate(-50%,-50%)
-    translateX(calc(var(--dx) * var(--paso)))
-    translateZ(calc(var(--dz) * var(--zpaso) * -1))
-    rotateY(calc(var(--dr) * var(--tilt) * -1));
-  opacity:var(--o);
-  /* la que se va se apaga RAPIDO (`in`); la que llega se enciende con el
-     viaje. La asimetria es doctrina: las entradas duran mas que las salidas. */
-  transition:transform var(--t-viaje) var(--viaje),
-             opacity var(--t-apaga) var(--sale);
-  transition-delay:calc(var(--dz) * 48ms), 0ms;
-  cursor:pointer}
-.cw-tar.foco{cursor:default;
-  transition:transform var(--t-viaje) var(--viaje),
-             opacity var(--t-cont) var(--entra) 90ms}
-.cw-tar:not(.fuera){will-change:transform}
-.cw-tar.fuera{visibility:hidden; pointer-events:none}
-
-/* el cuerpo lleva la ESCALA en su propia curva y su propio tiempo: dos gestos
-   encadenados, no uno sincronizado (doctrina CinemAI §3) */
-.cw-cuerpo{position:absolute; inset:0; display:flex; flex-direction:column;
-  padding:20px var(--pad-c) 19px; border-radius:var(--radio-caja); overflow:hidden;
-  border:1px solid var(--crema-12);
-  background:linear-gradient(176deg, rgba(24,28,36,.97) 0%, rgba(12,14,19,.98) 58%, rgba(8,9,12,.99) 100%);
-  transform:scale(calc(1 - var(--dz) * var(--dec)));
-  /* la sombra cae DEL LADO AL QUE MIRA LA TARJETA: el signo sale de --dx */
-  box-shadow:calc(var(--dx) * -16px) 20px 48px rgba(4,5,7,calc(.32 + var(--dz) * .20));
-  transition:transform var(--t-esc) var(--micro) 60ms,
-             border-color var(--t-filo) var(--asienta)}
-.cw-tar.foco .cw-cuerpo{border-color:var(--crema-28)}
-
-/* =========================================================================
-   DESENFOQUE DE PROFUNDIDAD — regla `depth-of-field-blur` de HyperFrames: los
-   planos que no son el focal se desenfocan, y eso es lo que separa una camara
-   de un collage. Resuelve el defecto del render v3, donde el texto de la
-   vecina competia con el de la central y su chapa «Recomendado» brillaba mas
-   que nada en pantalla.
-
-   VA AL CONTENIDO Y NO A LA CAJA, Y ESA ES UNA CORRECCION DE LA VERSION
-   ANTERIOR, mirada renderizada: con el `filter` puesto en `.cw-cuerpo` se
-   difuminaba tambien el CANTO de la tarjeta, y con el canto borroso la
-   convergencia del `rotateY` deja de verse — o sea el desenfoque se comia
-   justo el 3D que yo acababa de subir a 26 grados. Aplicado a los hijos, la
-   FORMA queda nitida (se lee el escorzo) y el CONTENIDO se va (no compite).
-   El filete queda fuera a proposito: es canto, no contenido.
-
-   NO viola la doctrina §6, que prohibe `filter` EN BUCLE: esto es un estado,
-   no una animacion por cuadro, y solo se recalcula durante los 560 ms del
-   viaje. En telefono `--dof` va a 0: alli no hay profundidad que simular y el
-   coste no se paga con nada.
-   ========================================================================= */
-.cw-tar:not(.foco) .cw-cuerpo > *:not(.cw-filo){
-  filter:blur(calc(var(--dz) * var(--dof)));
-  transition:filter var(--t-esc) var(--viaje) 60ms}
-.cw-tar[data-dest="1"].foco .cw-cuerpo{border-color:rgba(200,121,65,.45)}
-
-/* el filete de canto: `motion-principles` — un componente iluminado por el
-   canto se lee mas disenado que un arco flotando. Crece desde el centro y
-   llega 180 ms DESPUES de que la tarjeta se poso: encadenar, no sincronizar */
-.cw-filo{position:absolute; left:0; right:0; top:0; height:2px; background:var(--azul);
-  transform:scaleX(0); transform-origin:50% 50%;
-  transition:transform var(--t-filo) var(--asienta)}
-.cw-tar.foco .cw-filo{transform:scaleX(1); transition-delay:180ms}
-.cw-tar[data-dest="1"] .cw-filo{height:3px;
-  background:linear-gradient(90deg,var(--azul) 0%,var(--terracota) 58%,var(--terracota-300) 100%)}
-
-.cw-tcab{display:flex; align-items:center; justify-content:space-between; gap:var(--s3);
-  font-family:var(--font-data); margin-bottom:11px; min-height:20px}
-/* SUBIO DE `--crema-28` A `--crema-60` POR MEDICION: daba 2,24:1 contra el
-   4,5 que pide WCAG AA. El resto del portafolio usa crema-28 para rotulos
-   DECORATIVOS; el codigo del servicio y su linea son informacion. */
-.cw-cod{font-size:9.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--crema-60)}
-.cw-marcas{display:flex; align-items:center; gap:10px}
-.cw-niv{display:flex; align-items:center; gap:5px; font-size:9px; letter-spacing:.14em;
-  text-transform:uppercase; color:var(--crema-60); font-style:normal}
-.cw-niv i{width:5px; height:5px; border-radius:1px; background:var(--crema-12)}
-.cw-niv[data-n="basico"] i:nth-child(1),
-.cw-niv[data-n="core"] i:nth-child(-n+2),
-.cw-niv[data-n="premium"] i{background:var(--azul-600)}
-/* la chapa del destacado: ambar NO, porque no es una transaccion — es el
-   consejo del estudio. Va en terracota, que en este sistema es el acento
-   editorial, y con el mismo grosor de trazo que el filete. */
-.cw-dest{font-size:9px; letter-spacing:.16em; text-transform:uppercase;
-  color:var(--terracota-300); border:1px solid rgba(200,121,65,.45);
-  padding:3px 8px; border-radius:2px; background:rgba(200,121,65,.10)}
-
-.cw-nom{font-family:var(--font-data); font-size:18px; line-height:1.3; font-weight:600;
-  letter-spacing:-.012em; margin:0 0 8px; color:var(--crema)}
-.cw-pro{margin:0 0 13px; font-size:13.5px; line-height:1.5; color:var(--crema-75)}
-
-/* =========================================================================
-   EL PRECIO — y aqui hay TRES decisiones que no son de composicion:
-
-   a) EL «VALOR DESDE» ES PROTECCION DE PRECIO, NO UN ROTULO. Un precio
-      publicado es el techo de lo que se le puede cobrar a quien lo vio, y
-      cinco de los nueve servicios tienen alcance que depende del sistema del
-      cliente. Si esa condicion se pierde —por gris, por chica o por caerse en
-      celular— se cae el techo de precio de cinco servicios. Por eso NO va en
-      `--crema-28` como los demas rotulos: va en una chapa con borde, en
-      ambar (contraste 7,4:1 medido contra el fondo de la tarjeta), pegada
-      ARRIBA del numero y en el mismo sitio en todos los anchos. Es el unico
-      rotulo de la tarjeta que no se achica en telefono.
-
-   b) EL BRUTO VA GRANDE Y EL NETO SIEMPRE DEBAJO. El bruto contesta «me
-      alcanza»; el neto es el que va en la orden de compra y decide si cabe en
-      Compra Agil. Los dos, no uno: el neto no es letra chica, lleva su propia
-      linea y dice para que sirve.
-
-   c) AMBAR PORQUE ES TRANSACCION. Regla de marca v2: azul = traza,
-      ambar = transaccion. El check del «incluye» es azul petroleo, no verde.
-   ========================================================================= */
-.cw-plata{padding:11px 0 12px; border-top:1px solid var(--crema-12);
-  border-bottom:1px solid var(--crema-12); margin-bottom:13px}
-.cw-alcance{display:flex; align-items:center; gap:9px; flex-wrap:wrap; margin-bottom:7px}
-.cw-uni{font-family:var(--font-data); font-size:9.5px; letter-spacing:.17em;
-  text-transform:uppercase; color:var(--crema-60)}
-.cw-cond{font-family:var(--font-data); font-size:9.5px; letter-spacing:.15em;
-  text-transform:uppercase; color:var(--ambar); border:1px solid rgba(200,154,65,.5);
-  background:rgba(200,154,65,.10); padding:3px 8px; border-radius:2px; white-space:nowrap}
-.cw-bruto{display:flex; align-items:baseline; gap:9px; font-family:var(--font-data)}
-.cw-bruto b{font-size:27px; line-height:1.08; font-weight:600; letter-spacing:-.025em;
-  color:var(--ambar)}
-.cw-bruto span{font-size:10.5px; letter-spacing:.13em; text-transform:uppercase;
-  color:var(--crema-60)}
-.cw-neto{margin:7px 0 0; font-family:var(--font-data); font-size:11.5px; line-height:1.5;
-  color:var(--crema-75)}
-.cw-neto b{color:var(--crema); font-weight:600}
-.cw-neto span{color:var(--crema-28)}
-
-/* =========================================================================
-   EL DETALLE — «que NO incluye» con el MISMO PESO, y eso es literal: la misma
-   columna, el mismo ancho, el mismo cuerpo de letra y el mismo interlineado
-   que «incluye», lado a lado. Lo unico que cambia es la tinta y la vineta:
-   doble visto azul para lo que entra, raya para lo que no. El bloque de la
-   derecha ademas lleva canto y fondo propios, que es lo que lo vuelve una
-   afirmacion y no una nota al pie.
-   ========================================================================= */
-/* EL AIRE SOBRANTE VA ABAJO DEL DETALLE, NO ARRIBA. Todas las tarjetas
-   comparten el alto de la mas alta, asi que en las cortas sobra espacio y hay
-   que decidir donde ponerlo. Estaba en `.cw-det{margin-top:auto}` y en la
-   captura de SP-02 se veia un hueco de 80 px entre el precio y las listas: el
-   contenido partido en dos islas. Ahora el bloque se apila compacto y es el
-   BOTON el que se ancla abajo -`margin-top:auto` en `.cw-cta`-, de modo que
-   «Pedir cotizacion» cae SIEMPRE en el mismo pixel al cambiar de tarjeta.
-   Esa es la ley del ancla (§1) aplicada al elemento que mas importa que no
-   se mueva. El `margin-bottom` del detalle es el piso de separacion para la
-   tarjeta mas alta, donde no sobra aire que repartir. */
-.cw-det{display:grid; grid-template-columns:1fr 1fr; gap:var(--s4); margin-bottom:14px}
-.cw-rot{font-family:var(--font-data); font-size:9px; letter-spacing:.2em;
-  text-transform:uppercase; margin:0 0 8px}
-.cw-inc .cw-rot{color:var(--azul-300)}
-.cw-exc .cw-rot{color:var(--alerta-300)}
-.cw-det ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:5px}
-.cw-det li{position:relative; padding-left:18px; font-size:11.5px; line-height:1.4;
-  color:var(--crema-75)}
-/* el doble visto de la marca dibujado en CSS: dos angulos girados 42 grados.
-   Cero bytes de SVG y el mismo gesto del logotipo. */
-.cw-inc li::before,.cw-inc li::after{content:""; position:absolute; top:3px;
-  width:4px; height:8px; border:1.6px solid var(--azul); border-top:0; border-left:0;
-  transform:rotate(42deg)}
-.cw-inc li::before{left:0} .cw-inc li::after{left:6px; opacity:.45}
-.cw-exc{padding:11px 13px 12px; margin:-11px calc(var(--pad-c) * -1) -19px 0;
-  border-left:2px solid rgba(214,84,84,.5);
-  background:rgba(214,84,84,.05); border-radius:0 2px 2px 0}
-.cw-exc li{color:var(--crema-60)}
-.cw-exc li::before{content:""; position:absolute; left:0; top:8px;
-  width:11px; height:1.5px; border-radius:1px; background:var(--alerta); opacity:.8}
-
-/* ---------- EL CTA: uno solo, el mismo en las nueve -------------------- */
-.cw-cta{display:inline-flex; align-items:center; gap:9px; align-self:flex-start;
-  margin-top:auto; padding:10px 16px; border-radius:2px; text-decoration:none;
-  font-family:var(--font-data); font-size:11px; letter-spacing:.14em;
-  text-transform:uppercase; color:var(--ink-900); background:var(--terracota-400);
-  transition:background var(--t-punto) var(--asienta),
-             transform var(--t-press) var(--micro)}
-.cw-cta:hover{background:var(--terracota-300)}
-.cw-cta:active{transform:translateY(1px) scale(.985)}
-.cw-cta svg{width:13px; height:13px; fill:none; stroke:currentColor; stroke-width:2;
-  stroke-linecap:round; stroke-linejoin:round}
-
-/* el realce del contenido de la tarjeta que llega: `.out`, escalonado 55 ms,
-   y NO todo desde la misma direccion (`motion-principles`). Cabecera desde
-   arriba, nombre y promesa desde abajo, precio por escala, listas por
-   opacidad, CTA con sobrepaso. Escalonado total 330 ms, bajo los 500 de la regla. */
-@media (prefers-reduced-motion:no-preference){
-  .cw-tar.foco .cw-tcab,.cw-tar.foco .cw-nom,.cw-tar.foco .cw-pro,
-  .cw-tar.foco .cw-plata,.cw-tar.foco .cw-inc,.cw-tar.foco .cw-exc,
-  .cw-tar.foco .cw-cta{animation:cwEntra var(--t-cont) var(--entra) both}
-  .cw-tar.foco .cw-tcab {animation-name:cwBaja;  animation-delay:140ms}
-  .cw-tar.foco .cw-nom  {animation-delay:195ms}
-  .cw-tar.foco .cw-pro  {animation-delay:250ms}
-  .cw-tar.foco .cw-plata{animation-name:cwCrece; animation-delay:305ms}
-  .cw-tar.foco .cw-inc  {animation-name:cwSolo;  animation-delay:360ms}
-  .cw-tar.foco .cw-exc  {animation-name:cwSolo;  animation-delay:415ms}
-  .cw-tar.foco .cw-cta  {animation-name:cwPone;  animation-delay:470ms;
-                         animation-timing-function:var(--micro)}
-}
-@keyframes cwEntra{from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none}}
-@keyframes cwBaja {from{opacity:0; transform:translateY(-9px)} to{opacity:1; transform:none}}
-@keyframes cwCrece{from{opacity:0; transform:scale(.94)}       to{opacity:1; transform:none}}
-@keyframes cwSolo {from{opacity:0}                             to{opacity:1}}
-@keyframes cwPone {from{opacity:0; transform:scale(.86)}       to{opacity:1; transform:none}}
-
-/* ---------- LOS MANDOS (tambien ancla: fuera de la escena) ------------- */
-.cw-mando{display:flex; align-items:center; justify-content:center; gap:var(--s5);
-  margin-top:var(--s4)}
-.cw-fl{appearance:none; cursor:pointer; width:44px; height:44px; flex:0 0 auto;
-  border-radius:50%; border:1px solid var(--crema-12); background:rgba(22,26,33,.6);
-  color:var(--crema-60); display:grid; place-items:center;
-  transition:color var(--t-punto) var(--asienta), border-color var(--t-punto) var(--asienta),
-             transform var(--t-press) var(--micro)}
-.cw-fl:hover{color:var(--crema); border-color:var(--crema-28)}
-.cw-fl:active{transform:scale(.9)}          /* el hundido: 150 ms, con sobrepaso */
-.cw-fl svg{width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:1.7;
-  stroke-linecap:round; stroke-linejoin:round}
-.cw-puntos{display:flex; align-items:center; gap:7px}
-.cw-punto{appearance:none; cursor:pointer; padding:0; border:0; background:var(--crema-12);
-  width:7px; height:7px; border-radius:4px;
-  transition:width var(--t-punto) var(--asienta), background var(--t-punto) var(--asienta)}
-.cw-punto[data-dest="1"]{background:var(--crema-28)}
-.cw-punto[aria-current="true"]{width:24px; background:var(--azul)}
-.cw-pie{display:flex; align-items:baseline; justify-content:space-between; gap:var(--s4);
-  margin-top:var(--s3); font-family:var(--font-data); font-size:10px; letter-spacing:.12em;
-  text-transform:uppercase; color:var(--crema-60)}
-.cw-cuenta b{color:var(--crema); font-weight:600}
-.cw-todo{appearance:none; cursor:pointer; background:none; border:0; padding:0;
-  font-family:var(--font-data); font-size:10px; letter-spacing:.12em; text-transform:uppercase;
-  color:var(--azul-300); border-bottom:1px solid var(--azul-600);
-  transition:color var(--t-punto) var(--asienta)}
-.cw-todo:hover{color:var(--crema)}
-.cw-vivo{position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%);
-  white-space:nowrap}
-
-/* =========================================================================
-   MODO GRILLA — es UN solo modo con TRES entradas: el boton «Ver los nueve»,
-   `prefers-reduced-motion` y la ausencia de JavaScript. Que las tres caigan en
-   el mismo estado es la razon de que no haya tres degradaciones distintas.
-   Las tarjetas vuelven al flujo, sin perspectiva, sin giro y sin recorte.
-   ========================================================================= */
-.cw.grilla .cw-escena,.cw-sin-js .cw-escena{height:auto; perspective:none; overflow:visible;
-  margin:0; padding:0}
-.cw.grilla .cw-pista,.cw-sin-js .cw-pista{position:static; transform-style:flat;
-  display:grid; grid-template-columns:repeat(auto-fill,minmax(400px,1fr)); gap:var(--s4)}
-.cw.grilla .cw-tar,.cw-sin-js .cw-tar{position:static; width:auto; height:auto;
-  transform:none; opacity:1; visibility:visible; will-change:auto; cursor:default}
-.cw.grilla .cw-cuerpo,.cw-sin-js .cw-cuerpo{position:static; transform:none;
-  box-shadow:0 14px 34px rgba(4,5,7,.30); min-height:100%}
-/* EL DESENFOQUE SE APAGA CON EL TOKEN, NO CON UN RESET — y esto es una
-   correccion de un defecto REAL que solo aparecio en la captura del modo
-   grilla: ocho de las nueve tarjetas salian desenfocadas. La causa es
-   especificidad: `.cw-tar:not(.foco) .cw-cuerpo > *:not(.cw-filo)` pesa
-   (0,4,0) y mi reset `.cw.grilla .cw-cuerpo > *` pesaba (0,2,0), asi que
-   perdia. Se podia ganar agregando clases al selector; no se hace, porque una
-   cadena que solo existe para ganar un empate se vuelve a romper al siguiente
-   cambio. Se apaga el INSUMO: `--dof:0` y el `calc` da blur(0px). Declarativo
-   y sin empate posible. Es la misma leccion del `animation-fill-mode` del
-   portafolio, y por eso se escribe otra vez. */
-.cw.grilla,.cw-sin-js,.cw.midiendo{--dof:0px}
-.cw.grilla .cw-filo,.cw-sin-js .cw-filo{transform:scaleX(1)}
-.cw.grilla .cw-mando,.cw-sin-js .cw-mando{display:none}
-.cw.grilla .cw-lprom,.cw-sin-js .cw-lprom{display:none}
-
-/* =========================================================================
-   LA CLASE CON LA QUE SE MIDE EL ALTO — y es distinta de `grilla` por una
-   razon medida. El alto se media poniendo la seccion en grilla, donde las
-   tarjetas estan en el flujo; pero en grilla la columna mide 588 px y en el
-   carrusel la tarjeta mide 560, asi que el texto envolvia menos y el alto
-   salia 10,4 px CORTO: el boton de cotizacion se salia de la tarjeta por
-   abajo. No se veia en la captura y si en la sonda. Aqui el ancho es
-   exactamente `--tar-w`, que es el unico ancho que importa.
-   ========================================================================= */
-.cw.midiendo .cw-escena{height:auto; perspective:none; overflow:visible; margin:0; padding:0}
-.cw.midiendo .cw-pista{position:static; transform-style:flat; display:block}
-.cw.midiendo .cw-tar{position:static; width:var(--tar-w); height:auto;
-  transform:none; opacity:1; visibility:visible}
-.cw.midiendo .cw-cuerpo{position:static; transform:none}
-
-/* =========================================================================
-   MOVIMIENTO REDUCIDO — quieto Y VISIBLE. `animation:none` congela el estado
-   INICIAL, no el final, asi que cada propiedad que el realce dejaba puesta se
-   restituye a mano. Es el defecto del 24-ago y no se repite.
-   ========================================================================= */
-@media (prefers-reduced-motion:reduce){
-  .cw *,.cw *::before,.cw *::after{animation:none !important; transition:none !important}
-  .cw .cw-filo{transform:scaleX(1)}
-  .cw{--dof:0px}
-  .cw .cw-tcab,.cw .cw-nom,.cw .cw-pro,.cw .cw-plata,.cw .cw-inc,.cw .cw-exc,
-  .cw .cw-cta{opacity:1; transform:none}
-}
-
-/* =========================================================================
-   RESPONSIVO — y aqui esta la trampa que el encargo nombra: un carrusel con
-   `perspective` en un telefono corta texto o lo desenfoca. No se arregla
-   achicando. A LOS 780 px SE APAGA LA TERCERA DIMENSION: `--zpaso` y `--tilt`
-   van a cero, `--paso` sube a 94 % y el carrusel pasa a ser un deslizador
-   plano de una tarjeta a la vez, con el filo de la siguiente asomando como
-   pista de que hay mas. La coreografia, el teclado, el arrastre y el modo
-   grilla son EXACTAMENTE los mismos: lo unico que cambia son cinco numeros.
-   Esa es toda la razon de que el transform se arme en CSS y no en JS.
-
-   Y LOS MANDOS SE VAN ARRIBA. En telefono la tarjeta mide mas que el visor,
-   asi que unas flechas puestas debajo quedan fuera de pantalla y el carrusel
-   parece no tener control. `order:-1` las sube bajo el titulo, donde se ven
-   sin scrollear. Lo mismo el contador.
-   ========================================================================= */
-@media (max-width:1240px){ .cw{--tar-w:min(560px,calc(100vw - 96px)); --paso:54%} }
-@media (max-width:980px){  .cw{--tar-w:min(520px,calc(100vw - 80px)); --zpaso:200px;
-                                 --tilt:22deg; --dof:1.7px} }
-@media (max-width:780px){
-  .cw{--tar-w:min(430px,90vw); --paso:94%; --zpaso:0px; --tilt:0deg; --dec:.02;
-      --dof:0px;
-      --persp:none; --pad-x:var(--s4); --pad-c:18px;
-      padding:var(--s6) var(--pad-x) var(--s5)}
-  /* EL ORDEN EN TELEFONO, y esto se corrigio mirando la captura: con
-     `order:-1` en los mandos y `-2` en el pie, el contador y las flechas
-     quedaban ARRIBA DEL TITULO — lo primero que se veia de la seccion era
-     «01 / 9». `order` es global al contenedor flex, asi que se declara el
-     orden ENTERO o no se declara ninguno. Queda: titulo, pestanas, mandos,
-     contador, tarjetas. Los mandos siguen subiendo -que era el objetivo, la
-     tarjeta mide mas que el visor y unas flechas al pie quedan fuera de
-     pantalla- pero debajo de su encabezado. */
-  .cw-cab{display:block; order:1}
-  .cw-lineas{order:2;
-    /* una sola fila que se arrastra: apiladas, los tres rotulos de linea
-       gastan 3 renglones y empujan la tarjeta 90 px fuera del visor */
-    flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none;
-    margin:0 calc(var(--pad-x) * -1) var(--s4); padding:0 var(--pad-x)}
-  .cw-lineas::-webkit-scrollbar{display:none}
-  .cw-lin{white-space:nowrap; flex:0 0 auto}
-  /* la promesa de la linea se va: en telefono el espacio vertical es el
-     recurso escaso y la tarjeta ya nombra su linea en la cabecera */
-  .cw-lprom{display:none}
-  .cw-mando{order:3; justify-content:space-between; margin:0 0 var(--s3)}
-  .cw-pie{order:4; margin:0 0 var(--s3)}
-  .cw-escena{order:5}
-  .cw-tit{font-size:18px}
-  .cw-baja{font-size:13px}
-  .cw-cuerpo{padding:18px var(--pad-c) 17px}
-  .cw-nom{font-size:16.5px}
-  .cw-pro{font-size:13px}
-  .cw-bruto b{font-size:26px}
-  /* las dos listas se apilan: a 430 px dos columnas dejarian 18 caracteres por
-     linea y eso no es «responsivo», es texto roto en dos pedazos */
-  .cw-det{grid-template-columns:1fr; gap:var(--s3)}
-  .cw-exc{margin:0 calc(var(--pad-c) * -1) -17px 0}
-  .cw.grilla .cw-pista{grid-template-columns:1fr}
-}
-@media (max-width:420px){
-  .cw{--tar-w:min(430px,92vw); --pad-c:15px}
-  .cw-cuerpo{padding:17px var(--pad-c) 15px}
-  .cw-nom{font-size:15.5px}
-  .cw-bruto b{font-size:24px}
-  /* EL «VALOR DESDE» NO SE ACHICA NI AQUI: es lo unico que sostiene el techo
-     de precio de cinco servicios. Todo lo demas puede encoger; esto no. */
-  .cw-cond{font-size:9.5px}
-}
-/* EL ALTO DE LA ESCENA LO MIDE EL CONTENIDO, NO UN NUMERO MIO. Con un alto
-   inventado, un servicio de cinco «incluye» de dos lineas se corta por abajo.
-   JS mide la tarjeta mas alta una vez por ancho y lo escribe en `--tar-h`:
-   todas comparten alto y ninguna se corta. */
-/* ============================= CARRUSEL · CSS FIN ======================= */
-
-/* =========================================================================
-   LA SEPTIMA PIEZA — EL CATALOGO. CinemAI, 13-sep-2026.
-
-   EL ENCARGO, de Sebastian: el carrusel de los nueve servicios es la pieza
-   FINAL del recorrido. Se ven las seis escenas del dolor y se aterriza en las
-   nueve tarjetas con precio. «Esto es lo que te pasa -> esto cuesta
-   arreglarlo». El orden no se invierte.
-
-   EL PROBLEMA QUE RESUELVE ESTE BLOQUE, con el numero que lo obliga: la
-   pagina mide un visor (`height:100dvh; overflow:hidden`) y la seccion de
-   servicios mide 894 px a 1440x900. A 900 px de visor, descontando el
-   encabezado de 78 y el pie de 16, quedan 806 px utiles. NO CABE, y no hay
-   forma de que quepa: la tarjeta mas alta lleva cinco «incluye» y cuatro «no
-   incluye» con items de hasta 103 caracteres, y ya esta comprimida al limite
-   legible. Recortar texto es justo lo que el encargo prohibe.
-
-   LA SALIDA: el scroll vive DENTRO de la septima pieza y solo ahi. El <body>
-   sigue sin correr —se mide, no se promete: `revisar_portafolio.py` reprueba
-   si `scrollHeight - clientHeight` del documento pasa de cero con cualquiera
-   de las siete elegida—. Las seis escenas de cine siguen sin scroll porque
-   una escena de cine se mira entera; un catalogo de precios se recorre, y el
-   comprador que compara nueve precios ya viene con ese gesto en la mano.
-
-   Y LOS MANDOS SUBEN. Con el orden natural, las flechas y el contador quedan
-   al pie de una seccion de 894 px dentro de una caja de 806: el visitante
-   llega a un carrusel sin controles a la vista. Es el mismo defecto que ya
-   corregi en telefono y con la misma solucion —`order`, que es global al
-   contenedor flex y por eso se declara ENTERO—: titulo, pestanas, mandos,
-   contador, tarjetas. Lo que queda bajo el corte es el pie de la tarjeta, no
-   el control.
-
-   NADA DE ESTO TOCA LAS SEIS ESCENAS: o va despues del ultimo `}` del CSS que
-   ya estaba, o vive dentro de una regla que empieza por `#p7:checked`.
-   ========================================================================= */
-#p7:checked ~ .sala .pieza[data-p="7"]{display:block}
-#p7:checked ~ .sala label[for="p7"] .tt{color:var(--crema)}
-#p7:checked ~ .sala label[for="p7"] .n{color:var(--azul)}
-#p7:checked ~ .sala label[for="p7"]::before{transform:scaleX(1)}
-/* con movimiento reducido la marca del carrete se restituye a mano, igual que
-   las seis: `animation:none` congela el estado INICIAL. La regla de arriba
-   pierde contra `.carrete label::before{transform:scaleX(0)}` de ese bloque
-   solo por orden, asi que se repite DESPUES y dentro del mismo media query. */
-@media (prefers-reduced-motion:reduce){
-  #p7:checked ~ .sala label[for="p7"]::before{transform:scaleX(1)}
-}
-
-/* EL SEGUNDO GRUPO DEL CARRETE. No se agrega un septimo renglon a la lista de
-   los seis: el rotulo dice «seis cosas que pasan en una compra» y el
-   catalogo es OTRA COSA y se anuncia como tal, que ademas es el relato del
-   encargo puesto en el indice. */
-.carrete .tope.cat{margin-top:var(--s5)}
-.carrete .cat-lista{list-style:none; margin:0; padding:0}
-
-/* LA PIEZA 7 ES HIJA DIRECTA DE `.sala`, NO DEL `.escenario`, y eso es una
-   decision y no un descuido: el escenario es el foso de las seis escenas
-   —centrado, con su factor `--k` de escala y su marco de 660x392— y un
-   catalogo que se recorre no se compone con las reglas de una toma de cine.
-   Ocupa la MISMA celda de la rejilla que el escenario (columna 2, fila 1), que
-   con la pieza 7 elegida esta vacio. */
-.pieza[data-p="7"]{grid-column:2; grid-row:1; align-self:stretch;
-  min-width:0; min-height:0; max-height:100%;
-  overflow-y:auto; overscroll-behavior:contain}
-#p7:checked ~ .sala .escenario{display:none}
-.pieza[data-p="7"]:focus-visible{outline:2px solid var(--azul); outline-offset:2px}
-/* una barra que se vea: una region que se desplaza y no lo declara se lee como
-   contenido cortado. 6 px, del color de los filetes del portafolio. */
-.pieza[data-p="7"]{scrollbar-width:thin; scrollbar-color:var(--crema-28) transparent}
-.pieza[data-p="7"]::-webkit-scrollbar{width:6px}
-.pieza[data-p="7"]::-webkit-scrollbar-thumb{background:var(--crema-28); border-radius:3px}
-.pieza[data-p="7"]::-webkit-scrollbar-track{background:transparent}
-
-/* el componente dentro del portafolio: su canal lateral ya lo pone `.sala`, y
-   su aire superior lo pone el encabezado de 78 px. Se le quita el suyo para no
-   pagar dos veces el mismo margen — 56 px recuperados de los 88 que faltaban. */
-.pieza[data-p="7"] .cw{padding-top:0; padding-bottom:var(--s4); padding-left:0;
-  padding-right:0; --pad-x:0px;
-  /* y se centra en lo que sobra: la seccion mide 737 px en una caja de 806 y
-     con `flex-start` los 69 px de resto quedaban TODOS abajo, con la tarjeta
-     colgando del borde superior. Las seis escenas de esta pagina estan
-     centradas en su foso; la septima tambien. */
-  min-height:100%; justify-content:center}
-/* ...y con `--pad-x:0` la escena ya no necesita sangrar con margen negativo */
-.pieza[data-p="7"] .cw-escena{margin:0; padding:0}
-/* EL ORDEN ENTERO, por la razon escrita arriba. `order` es global al
-   contenedor flex: se declara completo o no se declara ninguno. */
-.pieza[data-p="7"] .cw-cab{order:1}
-.pieza[data-p="7"] .cw-lineas{order:2}
-.pieza[data-p="7"] .cw-mando{order:3; margin:0 0 var(--s3)}
-.pieza[data-p="7"] .cw-pie{order:4; margin:0 0 var(--s3)}
-.pieza[data-p="7"] .cw-escena{order:5}
-
-/* =========================================================================
-   DE DONDE SALEN LOS 77 PX QUE FALTABAN. Esto no se dedujo del CSS: se midio
-   el render. La primera captura integrada (`INT-p7-escritorio_1440x900.png`,
-   antes de este bloque) mostraba la seccion en 883 px dentro de una caja de
-   806, y lo que quedaba bajo el corte era el BOTON DE COTIZACION — o sea,
-   justo lo unico que esta seccion existe para que se apriete. Un catalogo que
-   esconde su CTA es un catalogo roto, por bonito que se vea el anillo.
-
-   Los tres renglones que se recuperan, y por que ninguno cuesta contenido:
-
-   a) LA BAJADA DE LA SECCION SE VA (-65 px). Decia lo mismo que la nota que el
-      carrete ya trae a la izquierda: en el portafolio el indice ES el
-      encabezado de la pieza, y decirlo dos veces en el mismo cuadro es ruido.
-      El texto sigue en el HTML —se audita igual con `probar_copy.py`— y sigue
-      a la vista en `carrusel.html`, donde no hay carrete que lo diga.
-   b) LAS TRES PESTANAS EN UNA FILA (-41 px). A 826 px de columna la tercera se
-      iba sola a un segundo renglon. Es la misma solucion que ya usa el
-      componente en telefono: una fila que se arrastra.
-   c) EL CONTADOR Y «VER LOS 9» SUBEN A LA FILA DE LAS FLECHAS (-42 px). Son
-      los dos extremos de una linea que las flechas solo ocupan por el centro;
-      gastaban un renglon entero para no tocarse.
-
-   Van dentro de `min-width:781px` a proposito: de 780 para abajo manda la
-   media query del propio componente, que ya resolvio esto de otra manera, y
-   dos soluciones al mismo problema son una que se va a romper.
-   ========================================================================= */
-@media (min-width:781px){
-  .pieza[data-p="7"] .cw-baja{display:none}
-  .pieza[data-p="7"] .cw-cab{margin-bottom:var(--s3)}
-  .pieza[data-p="7"] .cw-lineas{flex-wrap:nowrap; overflow-x:auto;
-    scrollbar-width:none; margin-bottom:var(--s3)}
-  .pieza[data-p="7"] .cw-lineas::-webkit-scrollbar{display:none}
-  /* 9,5 px y .08em NO es «achicar hasta que quepa»: es el numero que hace que
-     los tres rotulos midan 771 px en una columna de 826, medido. A 10,5 px y
-     .12em median 834 y el tercero se cortaba a media palabra contra el canto
-     —«PUESTA EN MARCHA, MIGRACION Y CONTINU»—, que es peor que cualquiera de
-     las dos alternativas: un rotulo truncado se lee como pagina rota. El alto
-     del blanco se sostiene subiendo el relleno vertical, no bajandolo. */
-  .pieza[data-p="7"] .cw-lin{white-space:nowrap; flex:0 0 auto;
-    font-size:9.5px; padding:9px 10px; letter-spacing:.08em}
-  /* -30 px centra un renglon de ~14 px sobre la fila de 44 de las flechas.
-     `pointer-events` se apaga en la caja y se devuelve a los hijos: la banda
-     vacia del medio queda superpuesta a las flechas y no puede robarles el
-     clic. Un solapamiento que se traga un mando es un defecto invisible. */
-  .pieza[data-p="7"] .cw-pie{margin:-30px 0 var(--s3); align-items:center;
-    pointer-events:none}
-  .pieza[data-p="7"] .cw-pie > *{pointer-events:auto}
-  /* ...Y EN MODO GRILLA EL RENGLON VUELVE, porque ahi no hay flechas sobre las
-     que montarse: `.cw.grilla .cw-mando{display:none}`, asi que los -30 px
-     subian el contador y «Ver como carrusel» ENCIMA de las pestanas de linea.
-     Defecto real, visto en `INT-p7-grilla_1440x900.png` y no en el codigo: un
-     margen negativo que depende de un elemento que otro modo apaga tiene que
-     apagarse con el. Las dos entradas de la grilla —el boton y la ausencia de
-     JavaScript— se nombran las dos: son un solo modo con tres puertas. */
-  .pieza[data-p="7"] .cw.grilla .cw-pie,
-  .pieza[data-p="7"] .cw.cw-sin-js .cw-pie{margin:0 0 var(--s3)}
-}
-
-/* TELEFONO. Y aqui hay que decir una cosa medida que no es mia y no la
-   arreglo: a 390 px esta pagina YA no muestra ninguna de las seis escenas
-   —la rejilla de `.sala` mantiene su primera columna de 318 px y el escenario
-   se va fuera del visor, que `overflow:hidden` recorta—. Esta en la captura
-   `_capturas/BASE-movil_390x844_0_0.png`, tomada ANTES de tocar el archivo.
-   Es un defecto anterior a esta integracion y corregirlo obliga a recomponer
-   las seis escenas, que es justo lo que el encargo prohibe: queda dicho.
-   Lo que SI esta en mi mano es que la septima pieza no herede el defecto, y
-   se resuelve sin tocar a las otras seis: la regla entera cuelga de
-   `#p7:checked`, asi que con cualquiera de las seis elegida el CSS de la
-   pagina es, literalmente, el de antes. */
-@media (max-width:780px){
-  #p7:checked ~ .sala{grid-template-columns:1fr; align-items:start;
-    overflow-y:auto; overscroll-behavior:contain}
-  #p7:checked ~ .sala .pieza[data-p="7"]{grid-column:1; grid-row:2;
-    max-height:none; overflow:visible}
-  /* EL VELO BAJO EL ENCABEZADO, y sale de mirar la captura, no del CSS: el
-     `.hdr` es fijo, transparente y sin fondo a proposito (decision de Visu,
-     `background:none`), y esta pagina nunca habia tenido nada que se
-     desplazara por debajo. Con la pieza 7 en telefono si lo hay, y la fila de
-     pestanas subia a chocar con el logotipo — se leian las dos encima.
-     NO se le pone fondo al encabezado: eso es de Visu y ademas cambiaria la
-     portada. El velo es de la REGION QUE SE DESPLAZA, que es mia, existe solo
-     con `#p7:checked` y solo bajo 780 px, y se apaga a transparente en los
-     mismos 78 px que la sala ya reservaba. z-index 50 va DEBAJO del 60 del
-     encabezado: vela lo que pasa, no lo que esta quieto. */
-  #p7:checked ~ .sala::before{content:""; position:fixed; top:0; left:0; right:0;
-    height:var(--hdr); z-index:50; pointer-events:none;
-    background:linear-gradient(180deg, var(--ink-900) 0%, var(--ink-900) 46%,
-      rgba(8,9,12,.72) 74%, rgba(8,9,12,0) 100%)}
-  /* el orden en telefono ya lo declara el componente en su propia media query
-     de 780; no se repite aqui para no tener dos versiones del mismo numero */
-  .pieza[data-p="7"] .cw{padding-bottom:var(--s6)}
-}
-
 </style>
 
 <style>
@@ -1723,7 +680,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
    con su propia paleta, dentro de un marco nuestro. A sangre se leeria como
    que el sitio se despaletizo; enmarcada se lee como obra que hicimos.
    ========================================================================= */
-#trabajos{padding:clamp(72px,9vw,132px) 0 clamp(60px,7vw,96px);
+#trabajos{position:relative; z-index:2; padding:clamp(72px,9vw,132px) 0 clamp(60px,7vw,96px);
   border-top:1px solid rgba(245,240,228,.08)}
 #trabajos .caja{max-width:var(--shell);margin:0 auto;padding:0 clamp(20px,5vw,48px)}
 #trabajos .ante{font-family:'Courier New',Courier,monospace;font-size:12px;
@@ -1846,495 +803,213 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   </div>
 </header>
 
+<!-- ESCENAS:INICIO · lo arma construir.mjs desde contenido/escenas.json — NO SE EDITA A MANO -->
 <input type="radio" name="pieza" id="p1" class="sel" checked>
 <input type="radio" name="pieza" id="p2" class="sel">
 <input type="radio" name="pieza" id="p3" class="sel">
 <input type="radio" name="pieza" id="p4" class="sel">
-<input type="radio" name="pieza" id="p5" class="sel">
-<input type="radio" name="pieza" id="p6" class="sel">
-<input type="radio" name="pieza" id="p7" class="sel">
 
-<main class="sala">
+<main class="sala" id="servicios">
 
   <!-- ================= EL CARRETE ================= -->
   <div>
     <div class="carrete">
-      <p class="promesa">Especificamos, instalamos y mantenemos la informática que su institución compra.</p>
-      <div class="tope">Seis cosas que pasan en una compra</div>
-      <ul style="list-style:none;margin:0;padding:0">
+      <p class="promesa">De la licencia que vence al reporte hecho a mano: le decimos qué pedir y lo dejamos andando.</p>
+      <div class="tope">¿Cuál le pasó este año?</div>
+      <ul>
         <li><label for="p1"><span class="n">01</span><span class="tt">La licencia venció el martes</span></label></li>
         <li><label for="p2"><span class="n">02</span><span class="tt">El respaldo no estaba en el precio</span></label></li>
         <li><label for="p3"><span class="n">03</span><span class="tt">Llegó, se recibió, y ahí quedó</span></label></li>
-        <li><label for="p4"><span class="n">04</span><span class="tt">La recepción abierta y el pago detrás</span></label></li>
-        <li><label for="p5"><span class="n">05</span><span class="tt">No estaba hábil y la compra se rehace</span></label></li>
-        <li><label for="p6"><span class="n">06</span><span class="tt">Casero — producto propio, previo</span></label></li>
+        <li><label for="p4"><span class="n">04</span><span class="tt">El reporte que se arma a mano cada mes</span></label></li>
       </ul>
-      <!-- EL SEPTIMO RENGLON VA APARTE, y el corte es el relato: los seis de
-           arriba son el dolor, este es lo que cuesta arreglarlo. Por eso no se
-           mete en la lista de las seis escenas: el rotulo dice «seis cosas que
-           pasan en una compra» y el catalogo no es una de ellas. -->
-      <div class="tope cat">Y lo que cuesta arreglarlo</div>
-      <ul class="cat-lista">
-        <li><label for="p7"><span class="n">07</span><span class="tt">Nueve servicios, con precio</span></label></li>
-      </ul>
+      <p class="confianza">Antes de emitir la orden de compra, revise si estamos hábiles. La ficha es pública. <a href="https://proveedor.mercadopublico.cl/ficha/78.491.451-8" target="_blank" rel="noopener">Ver la ficha de CompAI en Mercado Público →</a></p>
     </div>
   </div>
 
   <!-- ================= EL ESCENARIO ================= -->
   <div class="escenario">
-
     <!-- ---------- 01 ---------- -->
     <div class="pieza" data-p="1">
-      <div class="marco"><div class="esc e1">
-        <div class="rot" style="left:40px;top:74px">Requerimiento · licencia por vencer</div>
-        <div class="caja lic">
-          <div class="tit">Suscripción — 12 meses</div>
-          <div class="sub">Renovación anual</div>
-          <div class="vig"><i></i></div>
-          <div class="est"><span class="v">VIGENTE</span><span class="x">VENCIDA</span></div>
-        </div>
-        <div class="rot" style="left:352px;top:74px">Contra quién se emite la orden de compra</div>
-        <div class="caja ext">
-          <div class="dato" style="color:var(--crema-60)">Fabricante, sin RUT chileno</div>
-          <div class="dato" style="color:var(--crema-28);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;margin-top:7px">Cobra con tarjeta · no emite factura</div>
-        </div>
-        <div class="caja loc">
-          <div class="dato" style="color:var(--crema)">Proveedor con RUT chileno</div>
-          <div class="dato" style="color:var(--azul-300);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;margin-top:7px">Factura electrónica contra orden de compra</div>
-        </div>
-        <div class="oc">Orden de compra</div>
-      </div></div>
+      <figure class="marco"><video muted loop playsinline autoplay preload="metadata" poster="media/escena-01.webp" aria-label="Cómic animado: lunes a las 9, la fila crece y el computador del funcionario dice «Producto sin licencia»; sus compañeros se miran: «¿Quién compraba esto?»."><source src="media/escena-01.mp4" type="video/mp4"></video></figure>
       <div class="pieplaca">
-        <p class="linea">Dónde pasa · compra de licencias de software</p>
-        <h2 class="h-escena">«La licencia venció el martes»</h2>
-        <p>El fabricante cobra con tarjeta y no emite factura chilena: no hay contra quién emitir la orden de compra. La licencia es la misma; lo que cambia es contra quién se paga.</p>
+        <p class="linea">Renovación y compra de licencias</p>
+        <h2>«La licencia venció el martes»</h2>
+        <p>El lunes las planillas se abrieron en solo lectura. La renovación estaba en el presupuesto; nadie alcanzó a pedirla.</p>
       </div>
+      <form class="pide" data-titulo="La licencia venció el martes" data-asunto="Solicitud de cotización · Licencias · {institucion}" action="mailto:hola@compai.cl" method="post" enctype="text/plain">
+        <fieldset>
+          <legend>¿Cuáles vencen?</legend>
+          <ul class="items">
+          <li><div class="it"><input type="checkbox" id="i01-lic-ofimatica" name="item" value="lic-ofimatica" data-nombre="Ofimática y correo institucional" data-vigencia="1">
+            <label class="tx" for="i01-lic-ofimatica"><span class="nm">Ofimática y correo institucional</span><span class="dt">Documentos, planillas y correo, por usuario</span></label><input class="cant" type="number" name="cant-lic-ofimatica" min="1" step="1" inputmode="numeric" placeholder="usuarios" data-unidad="usuarios" aria-label="Cantidad de usuarios · Ofimática y correo institucional"><input class="cual" type="text" name="cual-lic-ofimatica" maxlength="80" placeholder="Marca (opcional)" aria-label="Marca (opcional) · Ofimática y correo institucional"></div></li>
+          <li><div class="it"><input type="checkbox" id="i01-lic-proteccion" name="item" value="lic-proteccion" data-nombre="Antivirus y protección de equipos" data-vigencia="1">
+            <label class="tx" for="i01-lic-proteccion"><span class="nm">Antivirus y protección de equipos</span><span class="dt">Computadores y servidores, por equipo</span></label><input class="cant" type="number" name="cant-lic-proteccion" min="1" step="1" inputmode="numeric" placeholder="equipos" data-unidad="equipos" aria-label="Cantidad de equipos · Antivirus y protección de equipos"><input class="cual" type="text" name="cual-lic-proteccion" maxlength="80" placeholder="Marca (opcional)" aria-label="Marca (opcional) · Antivirus y protección de equipos"></div></li>
+          <li><div class="it"><input type="checkbox" id="i01-lic-diseno" name="item" value="lic-diseno" data-nombre="Diseño, imagen y documentos PDF" data-vigencia="1">
+            <label class="tx" for="i01-lic-diseno"><span class="nm">Diseño, imagen y documentos PDF</span><span class="dt">Diagramación, fotografía y edición de PDF</span></label><input class="cant" type="number" name="cant-lic-diseno" min="1" step="1" inputmode="numeric" placeholder="usuarios" data-unidad="usuarios" aria-label="Cantidad de usuarios · Diseño, imagen y documentos PDF"><input class="cual" type="text" name="cual-lic-diseno" maxlength="80" placeholder="Marca (opcional)" aria-label="Marca (opcional) · Diseño, imagen y documentos PDF"></div></li>
+          <li><div class="it"><input type="checkbox" id="i01-lic-cad" name="item" value="lic-cad" data-nombre="Diseño asistido (CAD) y modelado" data-vigencia="1">
+            <label class="tx" for="i01-lic-cad"><span class="nm">Diseño asistido (CAD) y modelado</span><span class="dt">Planos, obras y modelado en 3D</span></label><input class="cant" type="number" name="cant-lic-cad" min="1" step="1" inputmode="numeric" placeholder="usuarios" data-unidad="usuarios" aria-label="Cantidad de usuarios · Diseño asistido (CAD) y modelado"><input class="cual" type="text" name="cual-lic-cad" maxlength="80" placeholder="Marca (opcional)" aria-label="Marca (opcional) · Diseño asistido (CAD) y modelado"></div></li>
+          <li><div class="it"><input type="checkbox" id="i01-lic-servidor" name="item" value="lic-servidor" data-nombre="Servidor y accesos de usuarios" data-vigencia="1">
+            <label class="tx" for="i01-lic-servidor"><span class="nm">Servidor y accesos de usuarios</span><span class="dt">Sistema operativo de servidor y sus accesos</span></label><input class="cant" type="number" name="cant-lic-servidor" min="1" step="1" inputmode="numeric" placeholder="accesos" data-unidad="accesos" aria-label="Cantidad de accesos · Servidor y accesos de usuarios"><input class="cual" type="text" name="cual-lic-servidor" maxlength="80" placeholder="Marca (opcional)" aria-label="Marca (opcional) · Servidor y accesos de usuarios"></div></li>
+          <li><div class="it"><input type="checkbox" id="i01-lic-respaldo" name="item" value="lic-respaldo" data-nombre="Respaldo en la nube" data-vigencia="1">
+            <label class="tx" for="i01-lic-respaldo"><span class="nm">Respaldo en la nube</span><span class="dt">Copias automáticas de equipos y servidores</span></label><input class="cant" type="number" name="cant-lic-respaldo" min="1" step="1" inputmode="numeric" placeholder="equipos" data-unidad="equipos" aria-label="Cantidad de equipos · Respaldo en la nube"><input class="cual" type="text" name="cual-lic-respaldo" maxlength="80" placeholder="Marca (opcional)" aria-label="Marca (opcional) · Respaldo en la nube"></div></li>
+          <li><div class="it"><input type="checkbox" id="i01-lic-video" name="item" value="lic-video" data-nombre="Videoconferencia" data-vigencia="1">
+            <label class="tx" for="i01-lic-video"><span class="nm">Videoconferencia</span><span class="dt">Reuniones en línea, por anfitrión</span></label><input class="cant" type="number" name="cant-lic-video" min="1" step="1" inputmode="numeric" placeholder="anfitriones" data-unidad="anfitriones" aria-label="Cantidad de anfitriones · Videoconferencia"><input class="cual" type="text" name="cual-lic-video" maxlength="80" placeholder="Marca (opcional)" aria-label="Marca (opcional) · Videoconferencia"></div></li>
+          <li><div class="it"><input type="checkbox" id="i01-lic-firma" name="item" value="lic-firma" data-nombre="Firma electrónica avanzada" data-vigencia="1">
+            <label class="tx" for="i01-lic-firma"><span class="nm">Firma electrónica avanzada</span><span class="dt">Por funcionario que firma documentos</span></label><input class="cant" type="number" name="cant-lic-firma" min="1" step="1" inputmode="numeric" placeholder="funcionarios" data-unidad="funcionarios" aria-label="Cantidad de funcionarios · Firma electrónica avanzada"><input class="cual" type="text" name="cual-lic-firma" maxlength="80" placeholder="Marca (opcional)" aria-label="Marca (opcional) · Firma electrónica avanzada"></div></li>
+          <li><div class="it"><input type="checkbox" id="i01-lic-tableros" name="item" value="lic-tableros" data-nombre="Tableros y análisis de datos" data-vigencia="1">
+            <label class="tx" for="i01-lic-tableros"><span class="nm">Tableros y análisis de datos</span><span class="dt">Reportes que se actualizan solos, por usuario</span></label><input class="cant" type="number" name="cant-lic-tableros" min="1" step="1" inputmode="numeric" placeholder="usuarios" data-unidad="usuarios" aria-label="Cantidad de usuarios · Tableros y análisis de datos"><input class="cual" type="text" name="cual-lic-tableros" maxlength="80" placeholder="Marca (opcional)" aria-label="Marca (opcional) · Tableros y análisis de datos"></div></li>
+          <li><div class="it"><input type="checkbox" id="i01-lic-otra" name="item" value="lic-otra" data-nombre="Otra licencia" data-vigencia="1">
+            <label class="tx" for="i01-lic-otra"><span class="nm">Otra licencia</span><span class="dt">Escriba cuál y la sumamos a la cotización</span></label><input class="cant" type="number" name="cant-lic-otra" min="1" step="1" inputmode="numeric" placeholder="usuarios" data-unidad="usuarios" aria-label="Cantidad de usuarios · Otra licencia"><input class="cual" type="text" name="cual-lic-otra" maxlength="80" placeholder="¿Cuál?" aria-label="¿Cuál? · Otra licencia"></div></li>
+          </ul>
+        </fieldset>
+        <label class="vig">Por cuánto tiempo<select name="vigencia"><option selected>12 meses</option><option>24 meses</option><option>36 meses</option></select></label>
+        <fieldset>
+          <legend>¿Y quién las deja instaladas?</legend>
+          <ul class="items">
+          <li><div class="it"><input type="checkbox" id="i01-sp07-lic" name="item" value="sp07-lic" data-nombre="Dejarlas instaladas y funcionando" data-sp="SP-07">
+            <label class="tx" for="i01-sp07-lic"><span class="nm">Dejarlas instaladas y funcionando</span><span class="dt">Cuentas creadas, usuarios asignados y acta de puesta en marcha</span><span class="px">desde $428.400 con IVA</span></label><input class="cant" type="number" name="cant-sp07-lic" min="1" step="1" inputmode="numeric" placeholder="usuarios" data-unidad="usuarios" aria-label="Cantidad de usuarios · Dejarlas instaladas y funcionando"></div></li>
+          </ul>
+        </fieldset>
+        <div class="quien">
+          <p class="tq">¿A quién le enviamos la cotización?</p>
+          <label>Institución<input name="organismo" autocomplete="organization" required maxlength="120" placeholder="Ej.: Municipalidad de …"></label>
+          <label>Nombre<input name="nombre" autocomplete="name" required maxlength="80"></label>
+          <label>Correo<input name="correo" type="email" autocomplete="email" required maxlength="120"></label>
+          <label>Teléfono<input name="telefono" type="tel" autocomplete="tel" maxlength="30"></label>
+          <label>¿Para cuándo?<input name="plazo" maxlength="60" placeholder="Ej.: antes del 30 de octubre"></label>
+          <label>Código de Compra Ágil, si ya la publicó<input name="codigo" maxlength="40" placeholder="Ej.: 1234-56-COT26"></label>
+          <span class="trampa" aria-hidden="true"><input name="sitioweb" tabindex="-1" autocomplete="off"></span>
+        </div>
+        <div class="envia">
+          <button type="submit">Pedir cotización</button><span class="cuenta" aria-live="polite"></span>
+          <p class="nota">Le respondemos al correo que deje aquí.</p>
+        </div>
+        <p class="aviso" role="status" hidden></p>
+        <p class="respaldo" hidden>¿No se abrió su correo? Escríbanos a hola@compai.cl <button type="button" class="copia">Copiar el requerimiento</button></p>
+      </form>
     </div>
 
     <!-- ---------- 02 ---------- -->
     <div class="pieza" data-p="2">
-      <div class="marco"><div class="esc e2">
-        <div class="rot" style="left:46px;top:64px">Lo cotizado y lo que llegó · mismo alcance</div>
-        <div class="compuerta"></div>
-        <div class="cotiz" style="left:264px;top:88px">Orden de compra emitida</div>
-        <div class="cotiz" style="left:46px;top:112px">Cotización de mercado</div>
-        <div class="fila f1">
-          <div class="pista"></div>
-          <div class="seg s-base"></div><div class="seg s-a1"></div><div class="seg s-a2"></div>
-          <div class="hito" style="left:212px"></div>
-        </div>
-        <div class="cotiz" style="left:46px;top:160px;color:var(--ambar)">Respaldo automático · monitoreo — aparecen después</div>
-        <div class="cotiz" style="left:46px;top:200px">Cotización CompAI</div>
-        <div class="fila f2"><div class="pista"></div><div class="seg s-uno"></div></div>
-        <div class="cotiz" style="left:46px;top:248px;color:var(--azul-300)">Un solo tramo, con los respaldos dentro</div>
-        <div class="rot" style="left:46px;top:322px;font-size:11px;letter-spacing:0;text-transform:none;color:var(--crema-60)">
-          El mismo valor. La diferencia es cuándo se lo dijeron.</div>
-      </div></div>
+      <figure class="marco"><video muted loop playsinline preload="none" poster="media/escena-02.webp" aria-label="Cómic animado: se cae el sistema, el jefe pregunta «¿Y el respaldo?» y con lupa sobre la orden de compra solo aparece un sello de «Cobro adicional»."><source src="media/escena-02.mp4" type="video/mp4"></video></figure>
       <div class="pieplaca">
-        <p class="linea">Dónde pasa · compra de hospedaje y procesamiento de datos</p>
-        <h2 class="h-escena">«El respaldo no estaba en el precio»</h2>
-        <p>Los respaldos automáticos vienen activados de fábrica y casi nunca están en el precio publicado. Aparecen después de emitida la orden de compra, cuando corregirla es otro trámite.</p>
+        <p class="linea">Especificación antes de comprar</p>
+        <h2>«El respaldo no estaba en el precio»</h2>
+        <p>El precio publicado era el de la caja vacía. El respaldo apareció después de la orden de compra, cuando corregirla ya era otro trámite.</p>
       </div>
+      <form class="pide" data-titulo="El respaldo no estaba en el precio" data-asunto="Solicitud de cotización · Especificación · {institucion}" action="mailto:hola@compai.cl" method="post" enctype="text/plain">
+        <fieldset>
+          <legend>¿Qué necesita tener escrito antes de comprar?</legend>
+          <ul class="items">
+          <li><div class="it"><input type="checkbox" id="i02-sp04" name="item" value="sp04" data-nombre="Informe corto de especificación" data-sp="SP-04">
+            <label class="tx" for="i02-sp04"><span class="nm">Informe corto de especificación</span><span class="dt">Qué pedir, cómo evaluarlo y cuánto vale hoy</span><span class="px">$571.200 con IVA · precio cerrado</span></label></div></li>
+          <li><div class="it"><input type="checkbox" id="i02-sp05" name="item" value="sp05" data-nombre="Anexo técnico para su licitación" data-sp="SP-05">
+            <label class="tx" for="i02-sp05"><span class="nm">Anexo técnico para su licitación</span><span class="dt">Requisitos, matriz de evaluación y presupuesto referencial</span><span class="px">$1.428.000 con IVA · precio cerrado</span></label></div></li>
+          <li><div class="it"><input type="checkbox" id="i02-sp06" name="item" value="sp06" data-nombre="Comparación de alternativas" data-sp="SP-06">
+            <label class="tx" for="i02-sp06"><span class="nm">Comparación de alternativas</span><span class="dt">De tres a cinco opciones, con costo a tres años</span><span class="px">$856.800 con IVA · precio cerrado</span></label></div></li>
+          </ul>
+        </fieldset>
+        <div class="quien">
+          <p class="tq">¿A quién le enviamos la cotización?</p>
+          <label>Institución<input name="organismo" autocomplete="organization" required maxlength="120" placeholder="Ej.: Municipalidad de …"></label>
+          <label>Nombre<input name="nombre" autocomplete="name" required maxlength="80"></label>
+          <label>Correo<input name="correo" type="email" autocomplete="email" required maxlength="120"></label>
+          <label>Teléfono<input name="telefono" type="tel" autocomplete="tel" maxlength="30"></label>
+          <label>¿Para cuándo?<input name="plazo" maxlength="60" placeholder="Ej.: antes del 30 de octubre"></label>
+          <label>Código de Compra Ágil, si ya la publicó<input name="codigo" maxlength="40" placeholder="Ej.: 1234-56-COT26"></label>
+          <span class="trampa" aria-hidden="true"><input name="sitioweb" tabindex="-1" autocomplete="off"></span>
+        </div>
+        <div class="envia">
+          <button type="submit">Pedir cotización</button><span class="cuenta" aria-live="polite"></span>
+          <p class="nota">Le respondemos al correo que deje aquí.</p>
+        </div>
+        <p class="aviso" role="status" hidden></p>
+        <p class="respaldo" hidden>¿No se abrió su correo? Escríbanos a hola@compai.cl <button type="button" class="copia">Copiar el requerimiento</button></p>
+      </form>
     </div>
 
     <!-- ---------- 03 ---------- -->
     <div class="pieza" data-p="3">
-      <div class="marco"><div class="esc e3">
-        <div class="plazo"><i></i></div>
-        <div class="rot" style="left:58px;top:60px">Recepción conforme dada · requerimiento abierto</div>
-        <div class="caja cj c1"><div class="tit">Licencia entregada</div><div class="sub">Clave por correo</div></div>
-        <div class="caja cj c2"><div class="tit">Equipo recibido</div><div class="sub">Guía de despacho firmada</div></div>
-        <svg class="hilo" viewBox="0 0 660 392" aria-hidden="true" style="--L:520">
-          <path d="M244 151 C 330 151, 340 196, 396 196 M244 255 C 330 255, 340 196, 396 196 M396 196 H 452"/>
-        </svg>
-        <div class="andando"><div class="tit">Andando</div>
-          <div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--crema-28);margin-top:4px">Configurado y en uso</div></div>
-        <div class="silencio">La compra está cerrada. El requerimiento, no.</div>
-      </div></div>
+      <figure class="marco"><video muted loop playsinline preload="none" poster="media/escena-03.webp" aria-label="Cómic animado: las cajas de equipos llegan en agosto con recepción conforme, en septiembre son la mesa del té y de diciembre a marzo siguen sin abrir."><source src="media/escena-03.mp4" type="video/mp4"></video></figure>
       <div class="pieplaca">
-        <p class="linea">Dónde pasa · especificación, instalación y puesta en marcha</p>
-        <h2 class="h-escena">«Llegó, se recibió, y ahí quedó»</h2>
-        <p>Que llegue la clave no es que quede funcionando. Entre la recepción conforme y el equipo andando hay un trabajo que nadie cotizó, y es el que decide si el presupuesto sirvió de algo.</p>
+        <p class="linea">Puesta en marcha, migración y mantención</p>
+        <h2>«Llegó, se recibió, y ahí quedó»</h2>
+        <p>La clave llegó por correo y los equipos siguen en caja. La recepción conforme está firmada y nadie los ha prendido.</p>
       </div>
+      <form class="pide" data-titulo="Llegó, se recibió, y ahí quedó" data-asunto="Solicitud de cotización · Puesta en marcha · {institucion}" action="mailto:hola@compai.cl" method="post" enctype="text/plain">
+        <fieldset>
+          <legend>¿Qué quedó a medias?</legend>
+          <ul class="items">
+          <li><div class="it"><input type="checkbox" id="i03-sp07" name="item" value="sp07" data-nombre="Puesta en marcha de lo comprado" data-sp="SP-07">
+            <label class="tx" for="i03-sp07"><span class="nm">Puesta en marcha de lo comprado</span><span class="dt">Instalado, configurado, con inventario y acta firmada</span><span class="px">desde $428.400 con IVA</span></label><input class="cant" type="number" name="cant-sp07" min="1" step="1" inputmode="numeric" placeholder="equipos" data-unidad="equipos" aria-label="Cantidad de equipos · Puesta en marcha de lo comprado"></div></li>
+          <li><div class="it"><input type="checkbox" id="i03-sp08" name="item" value="sp08" data-nombre="Migración de sitio y correo" data-sp="SP-08">
+            <label class="tx" for="i03-sp08"><span class="nm">Migración de sitio y correo</span><span class="dt">Cambiar de proveedor sin perder el correo ni el sitio</span><span class="px">desde $856.800 con IVA</span></label><input class="cant" type="number" name="cant-sp08" min="1" step="1" inputmode="numeric" placeholder="buzones" data-unidad="buzones" aria-label="Cantidad de buzones · Migración de sitio y correo"></div></li>
+          <li><div class="it"><input type="checkbox" id="i03-sp09" name="item" value="sp09" data-nombre="Mantención por 12 meses" data-sp="SP-09">
+            <label class="tx" for="i03-sp09"><span class="nm">Mantención por 12 meses</span><span class="dt">Vencimientos, respaldos y parches revisados cada mes</span><span class="px">$2.570.400 con IVA · al año, en 12 cuotas de $214.200</span></label></div></li>
+          </ul>
+        </fieldset>
+        <div class="quien">
+          <p class="tq">¿A quién le enviamos la cotización?</p>
+          <label>Institución<input name="organismo" autocomplete="organization" required maxlength="120" placeholder="Ej.: Municipalidad de …"></label>
+          <label>Nombre<input name="nombre" autocomplete="name" required maxlength="80"></label>
+          <label>Correo<input name="correo" type="email" autocomplete="email" required maxlength="120"></label>
+          <label>Teléfono<input name="telefono" type="tel" autocomplete="tel" maxlength="30"></label>
+          <label>¿Para cuándo?<input name="plazo" maxlength="60" placeholder="Ej.: antes del 30 de octubre"></label>
+          <label>Código de Compra Ágil, si ya la publicó<input name="codigo" maxlength="40" placeholder="Ej.: 1234-56-COT26"></label>
+          <span class="trampa" aria-hidden="true"><input name="sitioweb" tabindex="-1" autocomplete="off"></span>
+        </div>
+        <div class="envia">
+          <button type="submit">Pedir cotización</button><span class="cuenta" aria-live="polite"></span>
+          <p class="nota">Le respondemos al correo que deje aquí.</p>
+        </div>
+        <p class="aviso" role="status" hidden></p>
+        <p class="respaldo" hidden>¿No se abrió su correo? Escríbanos a hola@compai.cl <button type="button" class="copia">Copiar el requerimiento</button></p>
+      </form>
     </div>
 
     <!-- ---------- 04 ---------- -->
     <div class="pieza" data-p="4">
-      <div class="marco"><div class="esc e4">
-        <div class="rot" style="left:44px;top:68px">Requerimiento · cuatro líneas</div>
-        <div class="rot" style="left:458px;top:176px">Se devuelven, con motivo</div>
-        <div class="canaleta"></div>
-        <div class="lin l1"><span>Computadores de escritorio</span><span style="color:var(--crema-28)">se toma</span></div>
-        <div class="lin l2"><span>Servidor y equipos de red</span><span style="color:var(--crema-28)">se toma</span></div>
-        <div class="lin l3"><span>Tóner e insumos</span><span style="color:var(--crema-28)">se devuelve</span></div>
-        <div class="lin l4"><span>Retiro en tres comunas</span><span style="color:var(--crema-28)">se devuelve</span></div>
-        <div class="motivo m3">Mejor con bodega propia</div>
-        <div class="motivo m4">Fuera de la Región Metropolitana</div>
-      </div></div>
+      <figure class="marco"><video muted loop playsinline preload="none" poster="media/escena-04.webp" aria-label="Cómic animado: una funcionaria arma a mano el reporte mensual hasta casi medianoche y el guardia la encuentra otra vez: «¿Otra vez el reporte?»."><source src="media/escena-04.mp4" type="video/mp4"></video></figure>
       <div class="pieplaca">
-        <p class="linea">Dónde pasa · compra de equipamiento e insumos</p>
-        <h2 class="h-escena">«La recepción abierta y el pago detrás»</h2>
-        <p>Mientras la recepción conforme no se cierre, el pago no avanza — y quien responde por eso es el comprador. Por eso las líneas que no podemos cumplir se devuelven al cotizar, con el motivo escrito, y no en la recepción.</p>
+        <p class="linea">Automatización de procesos</p>
+        <h2>«El reporte que se arma a mano cada mes»</h2>
+        <p>A fin de mes alguien copia del sistema a una planilla, y de la planilla a un correo. Si esa persona sale de vacaciones, el reporte también.</p>
       </div>
-    </div>
-
-    <!-- ---------- 05 ---------- -->
-    <div class="pieza" data-p="5">
-      <div class="marco"><div class="esc e5">
-        <div class="banda">
-          <i>Requerimiento</i><i>Cotización</i><i>▢ Orden de compra</i><i>▢ Recepción conforme</i><i>Pago</i>
-        </div>
-        <div class="banda on" aria-hidden="true">
-          <i>Requerimiento</i><i>Cotización</i><i>▢ Orden de compra</i><i>▢ Recepción conforme</i><i>Pago</i>
-        </div>
-        <div class="riel"><b></b></div>
-        <div class="plazo"><i></i></div>
-        <div class="plazorot">El plazo no se devuelve</div>
-
-        <div class="doc d1">
-          <div class="k">Orden de compra · en emisión</div>
-          <div class="v">Equipamiento y licencias</div>
-          <div class="reglas"><u></u><u></u><u></u></div>
-          <div class="pie">
-            <div><div class="k">Registro de Proveedores del Estado</div>
-                 <div class="v" style="font-size:11.5px">Estado de habilidad</div></div>
-            <div class="hab">No hábil</div>
-          </div>
-        </div>
-
-        <div class="doc d2">
-          <div class="k">Orden de compra · emitida</div>
-          <div class="v">Equipamiento y licencias</div>
-          <div class="reglas"><u></u><u></u><u></u></div>
-          <div class="pie">
-            <div><div class="k">Registro de Proveedores del Estado</div>
-                 <div class="v" style="font-size:11.5px">Estado de habilidad</div></div>
-            <div class="hab">Hábil</div>
-          </div>
-        </div>
-
-        <div class="sello">Proveedor no hábil</div>
-        <div class="rehace">La compra vuelve al requerimiento. El plazo, no.</div>
-      </div></div>
-      <div class="pieplaca">
-        <p class="linea">La credencial · los traspasos ▢ los da el organismo</p>
-        <h2 class="h-escena">«No estaba hábil y la compra se rehace»</h2>
-        <p>Si el proveedor resulta no estar hábil, la compra se rehace desde el requerimiento — y el plazo sigue corriendo por debajo, sin devolverse. Verificar la ficha es el trámite; que esté verificada de antemano es lo que se compra.</p>
-      </div>
-    </div>
-
-    <!-- ---------- 06 ---------- -->
-    <div class="pieza" data-p="6">
-      <div class="marco"><div class="esc e6">
-        <div class="tel">
-          <div class="barra">Torre B · hoy</div>
-          <div class="fich fA"><div class="toldo"></div><div class="t">Pan amasado, 6 unidades</div>
-            <div class="m">Depto 704 · a 1 piso</div><div class="cuenta">quedan 6 h</div></div>
-          <div class="fich fB"><div class="toldo"></div><div class="t">Reparación de persianas</div>
-            <div class="m">Depto 302 · a 4 pisos</div><div class="cuenta">quedan 11 h</div></div>
-          <div class="fich fC"><div class="toldo"></div><div class="t">Empanadas de pino</div>
-            <div class="m">Depto 1105 · a 7 pisos</div><div class="cuenta">se apaga a las 00:00</div></div>
-        </div>
-        <div class="reglas">
-          <div class="tp">Casero · reglas de producto</div>
-          <ul style="margin:0;padding:0">
-            <li>La unidad de confianza es <b>el edificio</b>, no el usuario.</li>
-            <li>Las fichas duran <b>24 horas</b> y se apagan solas a las 00:00.</li>
-            <li>La distancia se mide <b>de portón a portón</b>, caminando.</li>
-            <li>La valoración se cuenta en <b>marraquetas</b>
-              <span class="marr"><i></i><i></i><i></i><i></i><i></i></span></li>
+      <form class="pide" data-titulo="El reporte que se arma a mano cada mes" data-asunto="Solicitud de cotización · Automatización · {institucion}" action="mailto:hola@compai.cl" method="post" enctype="text/plain">
+        <fieldset>
+          <legend>¿Qué se sigue haciendo a mano?</legend>
+          <ul class="items">
+          <li><div class="it"><input type="checkbox" id="i04-sp01" name="item" value="sp01" data-nombre="Avisos y recordatorios automáticos" data-sp="SP-01">
+            <label class="tx" for="i04-sp01"><span class="nm">Avisos y recordatorios automáticos</span><span class="dt">La hora o el trámite se avisa solo</span><span class="px">desde $599.760 con IVA</span></label></div></li>
+          <li><div class="it"><input type="checkbox" id="i04-sp02" name="item" value="sp02" data-nombre="Un proceso administrativo, hecho solo" data-sp="SP-02">
+            <label class="tx" for="i04-sp02"><span class="nm">Un proceso administrativo, hecho solo</span><span class="dt">Ese reporte mensual, armado sin copiar y pegar</span><span class="px">desde $1.071.000 con IVA</span></label></div></li>
+          <li><div class="it"><input type="checkbox" id="i04-sp03" name="item" value="sp03" data-nombre="Dos sistemas conectados, por etapas" data-sp="SP-03">
+            <label class="tx" for="i04-sp03"><span class="nm">Dos sistemas conectados, por etapas</span><span class="dt">Desarrollo a medida, pagado contra cada etapa recibida</span><span class="px">desde $2.713.200 con IVA, por etapas</span></label></div></li>
           </ul>
+        </fieldset>
+        <div class="quien">
+          <p class="tq">¿A quién le enviamos la cotización?</p>
+          <label>Institución<input name="organismo" autocomplete="organization" required maxlength="120" placeholder="Ej.: Municipalidad de …"></label>
+          <label>Nombre<input name="nombre" autocomplete="name" required maxlength="80"></label>
+          <label>Correo<input name="correo" type="email" autocomplete="email" required maxlength="120"></label>
+          <label>Teléfono<input name="telefono" type="tel" autocomplete="tel" maxlength="30"></label>
+          <label>¿Para cuándo?<input name="plazo" maxlength="60" placeholder="Ej.: antes del 30 de octubre"></label>
+          <label>Código de Compra Ágil, si ya la publicó<input name="codigo" maxlength="40" placeholder="Ej.: 1234-56-COT26"></label>
+          <span class="trampa" aria-hidden="true"><input name="sitioweb" tabindex="-1" autocomplete="off"></span>
         </div>
-        <div class="previo">En desarrollo · previo</div>
-      </div></div>
-      <div class="pieplaca">
-        <p class="linea">Producto propio · no es un trabajo para el Estado</p>
-        <h2 class="h-escena">Casero — marketplace vecinal por edificio</h2>
-        <p>Comprar y vender entre vecinos de la misma torre: comida casera, oficios, servicios.</p>
-      </div>
+        <div class="envia">
+          <button type="submit">Pedir cotización</button><span class="cuenta" aria-live="polite"></span>
+          <p class="nota">Le respondemos al correo que deje aquí.</p>
+        </div>
+        <p class="aviso" role="status" hidden></p>
+        <p class="respaldo" hidden>¿No se abrió su correo? Escríbanos a hola@compai.cl <button type="button" class="copia">Copiar el requerimiento</button></p>
+      </form>
     </div>
-
+    <p class="confianza abajo">Antes de emitir la orden de compra, revise si estamos hábiles. La ficha es pública. <a href="https://proveedor.mercadopublico.cl/ficha/78.491.451-8" target="_blank" rel="noopener">Ver la ficha de CompAI en Mercado Público →</a></p>
   </div>
-
-    <!-- ---------- 07 · EL CATALOGO ---------- -->
-    <div class="pieza" data-p="7" tabindex="0" role="region"
-         aria-label="Servicios con precio">
-<!-- =========================================================================
-     CARRUSEL 3D DE SERVICIOS. GENERADO POR
-     `asistente-creativo/portafolio-carrusel/construir.py` desde
-     `asistente-comercial/portafolio/servicios.json`. NO SE EDITA A MANO:
-     se cambia el JSON de GAIn y se vuelve a construir.
-     ========================================================================= -->
-<section class="cw cw-sin-js" id="servicios" aria-roledescription="carrusel"
-         aria-label="Servicios y precios de CompAI">
-
-  <div class="cw-cab">
-    <div>
-      <p class="cw-ante">Servicios &middot; 9 en 3 l&iacute;neas</p>
-      <h2 class="cw-tit">Con precio, y con lo que no incluye</h2>
-      <p class="cw-baja">Cada tarjeta trae el valor con IVA, el neto que va en la orden de
-        compra y las dos listas completas. Lo que <strong>no</strong> entra est&aacute;
-        escrito del mismo tama&ntilde;o que lo que s&iacute;.</p>
-    </div>
-    <p class="cw-lprom"></p>
-  </div>
-
-  <div class="cw-lineas">
-        <button class="cw-lin" type="button" data-linea="L1" data-promesa="Lo que hoy se hace a mano, hecho solo y a la hora." aria-pressed="false">Automatización e integración de sistemas</button>
-        <button class="cw-lin" type="button" data-linea="L2" data-promesa="Saber qué pedir y cuánto debería costar, antes de publicar la compra." aria-pressed="false">Especificación y asesoría técnica</button>
-        <button class="cw-lin" type="button" data-linea="L3" data-promesa="Que lo que ya compró quede andando, y siga andando todo el año." aria-pressed="false">Puesta en marcha, migración y continuidad</button>
-  </div>
-
-  <div class="cw-escena">
-    <div class="cw-pista">
-      <article class="cw-tar" data-i="0" data-linea="L1" data-dest="0"
-               aria-roledescription="tarjeta de servicio" aria-label="SP-01: Avisos y recordatorios por WhatsApp conectados a su sistema">
-        <div class="cw-cuerpo">
-          <span class="cw-filo" aria-hidden="true"></span>
-          <div class="cw-tcab">
-            <span class="cw-cod">SP-01 &middot; Automatización e integración de sistemas</span>
-            <span class="cw-marcas"><i class="cw-niv" data-n="basico"><i></i><i></i><i></i>Básico</i></span>
-          </div>
-          <h3 class="cw-nom">Avisos y recordatorios por WhatsApp conectados a su sistema</h3>
-          <p class="cw-pro">La hora que se avisa sola: recordatorios que salen de su propia agenda.</p>
-          <div class="cw-plata">
-            <p class="cw-alcance"><span class="cw-uni">Proyecto</span><span class="cw-cond">valor desde</span></p>
-            <p class="cw-bruto"><b>$599.760</b><span>con IVA</span></p>
-            <p class="cw-neto">Neto <b>$504.000</b> <span>&middot; el que va en la orden de compra</span></p>
-          </div>
-          <div class="cw-det">
-            <div class="cw-inc"><p class="cw-rot">Incluye</p><ul><li>Cuenta y remitente registrados a nombre de su institución</li><li>Conexión con su base de citas o de contactos</li><li>Plantillas de mensaje aprobadas y envío programado</li><li>Reporte de entrega y acta de puesta en marcha</li><li>30 días de acompañamiento remoto</li></ul></div>
-            <div class="cw-exc"><p class="cw-rot">No incluye</p><ul><li>El consumo de mensajería: lo contrata y paga su institución directamente al operador</li><li>Operación telefónica humana ni call center</li><li>Horas adicionales: si el alcance cambia, se autorizan por escrito y se cotizan antes de ejecutarse</li></ul></div>
-          </div>
-          <a class="cw-cta" href="mailto:hola@compai.cl?subject=Cotizaci%C3%B3n%20SP-01%20%E2%80%94%20Avisos%20y%20recordatorios%20por%20WhatsApp%20conectados%20a%20su%20sistema">Pedir cotizaci&oacute;n
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
-          </a>
-        </div>
-      </article>
-      <article class="cw-tar" data-i="1" data-linea="L1" data-dest="1"
-               aria-roledescription="tarjeta de servicio" aria-label="SP-02: Automatización de un proceso administrativo">
-        <div class="cw-cuerpo">
-          <span class="cw-filo" aria-hidden="true"></span>
-          <div class="cw-tcab">
-            <span class="cw-cod">SP-02 &middot; Automatización e integración de sistemas</span>
-            <span class="cw-marcas"><span class="cw-dest">Recomendado</span><i class="cw-niv" data-n="core"><i></i><i></i><i></i>Core</i></span>
-          </div>
-          <h3 class="cw-nom">Automatización de un proceso administrativo</h3>
-          <p class="cw-pro">Ese reporte que alguien arma a mano todos los meses, armado solo.</p>
-          <div class="cw-plata">
-            <p class="cw-alcance"><span class="cw-uni">Proyecto</span><span class="cw-cond">valor desde</span></p>
-            <p class="cw-bruto"><b>$1.071.000</b><span>con IVA</span></p>
-            <p class="cw-neto">Neto <b>$900.000</b> <span>&middot; el que va en la orden de compra</span></p>
-          </div>
-          <div class="cw-det">
-            <div class="cw-inc"><p class="cw-rot">Incluye</p><ul><li>Un proceso definido y acotado: extraer, transformar, cargar o reportar</li><li>Documentación de operación para su equipo</li><li>Acta de puesta en marcha</li><li>30 días de acompañamiento remoto</li></ul></div>
-            <div class="cw-exc"><p class="cw-rot">No incluye</p><ul><li>Rediseño del proceso interno de su institución</li><li>Migración de datos históricos</li><li>Licencias de terceros</li><li>Horas adicionales: si el alcance cambia, se autorizan por escrito y se cotizan antes de ejecutarse</li></ul></div>
-          </div>
-          <a class="cw-cta" href="mailto:hola@compai.cl?subject=Cotizaci%C3%B3n%20SP-02%20%E2%80%94%20Automatizaci%C3%B3n%20de%20un%20proceso%20administrativo">Pedir cotizaci&oacute;n
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
-          </a>
-        </div>
-      </article>
-      <article class="cw-tar" data-i="2" data-linea="L1" data-dest="0"
-               aria-roledescription="tarjeta de servicio" aria-label="SP-03: Desarrollo a medida o integración entre sistemas, por hitos">
-        <div class="cw-cuerpo">
-          <span class="cw-filo" aria-hidden="true"></span>
-          <div class="cw-tcab">
-            <span class="cw-cod">SP-03 &middot; Automatización e integración de sistemas</span>
-            <span class="cw-marcas"><i class="cw-niv" data-n="premium"><i></i><i></i><i></i>Premium</i></span>
-          </div>
-          <h3 class="cw-nom">Desarrollo a medida o integración entre sistemas, por hitos</h3>
-          <p class="cw-pro">Dos sistemas que no se hablan, conectados y entregados por etapas.</p>
-          <div class="cw-plata">
-            <p class="cw-alcance"><span class="cw-uni">Proyecto por hitos</span><span class="cw-cond">valor desde</span></p>
-            <p class="cw-bruto"><b>$2.713.200</b><span>con IVA</span></p>
-            <p class="cw-neto">Neto <b>$2.280.000</b> <span>&middot; el que va en la orden de compra</span></p>
-          </div>
-          <div class="cw-det">
-            <div class="cw-inc"><p class="cw-rot">Incluye</p><ul><li>Levantamiento, construcción, pruebas y traspaso</li><li>Pago en tres hitos: 30 / 40 / 30</li><li>Código y documentación entregados a su institución</li><li>Acta de cierre</li></ul></div>
-            <div class="cw-exc"><p class="cw-rot">No incluye</p><ul><li>Hospedaje de la solución</li><li>Soporte posterior: va en el plan de mantención</li><li>Licencias de terceros</li><li>Horas adicionales: si el alcance cambia, se autorizan por escrito y se cotizan antes de ejecutarse</li></ul></div>
-          </div>
-          <a class="cw-cta" href="mailto:hola@compai.cl?subject=Cotizaci%C3%B3n%20SP-03%20%E2%80%94%20Desarrollo%20a%20medida%20o%20integraci%C3%B3n%20entre%20sistemas%2C%20por%20hitos">Pedir cotizaci&oacute;n
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
-          </a>
-        </div>
-      </article>
-      <article class="cw-tar" data-i="3" data-linea="L2" data-dest="0"
-               aria-roledescription="tarjeta de servicio" aria-label="SP-04: Informe corto de especificación técnica">
-        <div class="cw-cuerpo">
-          <span class="cw-filo" aria-hidden="true"></span>
-          <div class="cw-tcab">
-            <span class="cw-cod">SP-04 &middot; Especificación y asesoría técnica</span>
-            <span class="cw-marcas"><i class="cw-niv" data-n="basico"><i></i><i></i><i></i>Básico</i></span>
-          </div>
-          <h3 class="cw-nom">Informe corto de especificación técnica</h3>
-          <p class="cw-pro">Qué pedir, cómo evaluarlo y cuánto vale hoy, en un informe corto.</p>
-          <div class="cw-plata">
-            <p class="cw-alcance"><span class="cw-uni">Un informe</span><span class="cw-cond">precio cerrado</span></p>
-            <p class="cw-bruto"><b>$571.200</b><span>con IVA</span></p>
-            <p class="cw-neto">Neto <b>$480.000</b> <span>&middot; el que va en la orden de compra</span></p>
-          </div>
-          <div class="cw-det">
-            <div class="cw-inc"><p class="cw-rot">Incluye</p><ul><li>Requerimientos mínimos escritos</li><li>Criterios de evaluación sugeridos</li><li>Rango de precio de mercado, con su fuente</li><li>Una reunión de presentación remota</li></ul></div>
-            <div class="cw-exc"><p class="cw-rot">No incluye</p><ul><li>Redacción de las bases administrativas</li><li>Acompañamiento del proceso de compra</li><li>Visita a terreno</li></ul></div>
-          </div>
-          <a class="cw-cta" href="mailto:hola@compai.cl?subject=Cotizaci%C3%B3n%20SP-04%20%E2%80%94%20Informe%20corto%20de%20especificaci%C3%B3n%20t%C3%A9cnica">Pedir cotizaci&oacute;n
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
-          </a>
-        </div>
-      </article>
-      <article class="cw-tar" data-i="4" data-linea="L2" data-dest="0"
-               aria-roledescription="tarjeta de servicio" aria-label="SP-05: Especificación técnica para bases de licitación">
-        <div class="cw-cuerpo">
-          <span class="cw-filo" aria-hidden="true"></span>
-          <div class="cw-tcab">
-            <span class="cw-cod">SP-05 &middot; Especificación y asesoría técnica</span>
-            <span class="cw-marcas"><i class="cw-niv" data-n="premium"><i></i><i></i><i></i>Premium</i></span>
-          </div>
-          <h3 class="cw-nom">Especificación técnica para bases de licitación</h3>
-          <p class="cw-pro">El anexo técnico de su compra grande, escrito y con valor de referencia.</p>
-          <div class="cw-plata">
-            <p class="cw-alcance"><span class="cw-uni">Un informe</span><span class="cw-cond">precio cerrado</span></p>
-            <p class="cw-bruto"><b>$1.428.000</b><span>con IVA</span></p>
-            <p class="cw-neto">Neto <b>$1.200.000</b> <span>&middot; el que va en la orden de compra</span></p>
-          </div>
-          <div class="cw-det">
-            <div class="cw-inc"><p class="cw-rot">Incluye</p><ul><li>Requerimientos funcionales y técnicos redactados para anexo de bases</li><li>Matriz de evaluación</li><li>Presupuesto referencial con fuente pública</li><li>Hasta dos rondas de corrección</li></ul></div>
-            <div class="cw-exc"><p class="cw-rot">No incluye</p><ul><li>Bases administrativas: son de su institución</li><li>Asesoría jurídica ni representación ante ChileCompra</li><li>Ofertar después en la compra que especificamos: se elige una de las dos antes de cotizar</li></ul></div>
-          </div>
-          <a class="cw-cta" href="mailto:hola@compai.cl?subject=Cotizaci%C3%B3n%20SP-05%20%E2%80%94%20Especificaci%C3%B3n%20t%C3%A9cnica%20para%20bases%20de%20licitaci%C3%B3n">Pedir cotizaci&oacute;n
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
-          </a>
-        </div>
-      </article>
-      <article class="cw-tar" data-i="5" data-linea="L2" data-dest="1"
-               aria-roledescription="tarjeta de servicio" aria-label="SP-06: Evaluación comparada de alternativas">
-        <div class="cw-cuerpo">
-          <span class="cw-filo" aria-hidden="true"></span>
-          <div class="cw-tcab">
-            <span class="cw-cod">SP-06 &middot; Especificación y asesoría técnica</span>
-            <span class="cw-marcas"><span class="cw-dest">Recomendado</span><i class="cw-niv" data-n="core"><i></i><i></i><i></i>Core</i></span>
-          </div>
-          <h3 class="cw-nom">Evaluación comparada de alternativas</h3>
-          <p class="cw-pro">Tres a cinco opciones comparadas, con lo que cuesta cada una a 3 años.</p>
-          <div class="cw-plata">
-            <p class="cw-alcance"><span class="cw-uni">Un informe</span><span class="cw-cond">precio cerrado</span></p>
-            <p class="cw-bruto"><b>$856.800</b><span>con IVA</span></p>
-            <p class="cw-neto">Neto <b>$720.000</b> <span>&middot; el que va en la orden de compra</span></p>
-          </div>
-          <div class="cw-det">
-            <div class="cw-inc"><p class="cw-rot">Incluye</p><ul><li>Comparación documentada de 3 a 5 alternativas</li><li>Matriz de criterios ponderados</li><li>Costo total a tres años, licencias y renovación incluidas</li><li>Recomendación fundada y una reunión de presentación remota</li></ul></div>
-            <div class="cw-exc"><p class="cw-rot">No incluye</p><ul><li>Pruebas de concepto</li><li>Instalación de las alternativas evaluadas</li><li>Negociación con los proveedores</li></ul></div>
-          </div>
-          <a class="cw-cta" href="mailto:hola@compai.cl?subject=Cotizaci%C3%B3n%20SP-06%20%E2%80%94%20Evaluaci%C3%B3n%20comparada%20de%20alternativas">Pedir cotizaci&oacute;n
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
-          </a>
-        </div>
-      </article>
-      <article class="cw-tar" data-i="6" data-linea="L3" data-dest="0"
-               aria-roledescription="tarjeta de servicio" aria-label="SP-07: Puesta en marcha de licencias y equipos ya comprados">
-        <div class="cw-cuerpo">
-          <span class="cw-filo" aria-hidden="true"></span>
-          <div class="cw-tcab">
-            <span class="cw-cod">SP-07 &middot; Puesta en marcha, migración y continuidad</span>
-            <span class="cw-marcas"><i class="cw-niv" data-n="basico"><i></i><i></i><i></i>Básico</i></span>
-          </div>
-          <h3 class="cw-nom">Puesta en marcha de licencias y equipos ya comprados</h3>
-          <p class="cw-pro">Eso que ya compró y sigue en la caja, instalado y funcionando.</p>
-          <div class="cw-plata">
-            <p class="cw-alcance"><span class="cw-uni">Proyecto</span><span class="cw-cond">valor desde</span></p>
-            <p class="cw-bruto"><b>$428.400</b><span>con IVA</span></p>
-            <p class="cw-neto">Neto <b>$360.000</b> <span>&middot; el que va en la orden de compra</span></p>
-          </div>
-          <div class="cw-det">
-            <div class="cw-inc"><p class="cw-rot">Incluye</p><ul><li>Instalación, configuración y cuentas de usuario</li><li>Políticas base y pliego de configuración escrito</li><li>Inventario con números de serie</li><li>Acta de puesta en marcha</li><li>30 días de acompañamiento remoto</li></ul></div>
-            <div class="cw-exc"><p class="cw-rot">No incluye</p><ul><li>La compra de la licencia o del equipo</li><li>Reparación, servicio técnico, garantía o RMA</li><li>Traslado: si se requiere presencia física, se cotiza aparte</li></ul></div>
-          </div>
-          <a class="cw-cta" href="mailto:hola@compai.cl?subject=Cotizaci%C3%B3n%20SP-07%20%E2%80%94%20Puesta%20en%20marcha%20de%20licencias%20y%20equipos%20ya%20comprados">Pedir cotizaci&oacute;n
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
-          </a>
-        </div>
-      </article>
-      <article class="cw-tar" data-i="7" data-linea="L3" data-dest="1"
-               aria-roledescription="tarjeta de servicio" aria-label="SP-08: Migración de sitio, correo, dominio y certificado">
-        <div class="cw-cuerpo">
-          <span class="cw-filo" aria-hidden="true"></span>
-          <div class="cw-tcab">
-            <span class="cw-cod">SP-08 &middot; Puesta en marcha, migración y continuidad</span>
-            <span class="cw-marcas"><span class="cw-dest">Recomendado</span><i class="cw-niv" data-n="core"><i></i><i></i><i></i>Core</i></span>
-          </div>
-          <h3 class="cw-nom">Migración de sitio, correo, dominio y certificado</h3>
-          <p class="cw-pro">Cambiar de proveedor sin que el correo se caiga ni el sitio desaparezca.</p>
-          <div class="cw-plata">
-            <p class="cw-alcance"><span class="cw-uni">Proyecto</span><span class="cw-cond">valor desde</span></p>
-            <p class="cw-bruto"><b>$856.800</b><span>con IVA</span></p>
-            <p class="cw-neto">Neto <b>$720.000</b> <span>&middot; el que va en la orden de compra</span></p>
-          </div>
-          <div class="cw-det">
-            <div class="cw-inc"><p class="cw-rot">Incluye</p><ul><li>Traslado del sitio y de hasta 20 buzones</li><li>Apuntamiento de DNS</li><li>Instalación y validación del certificado</li><li>Ventana de corte coordinada y plan de vuelta atrás</li></ul></div>
-            <div class="cw-exc"><p class="cw-rot">No incluye</p><ul><li>El costo del hospedaje de destino, del dominio y del certificado</li><li>Rediseño del sitio</li><li>Las claves del proveedor de origen: las entrega su institución</li><li>Horas adicionales: si el alcance cambia, se autorizan por escrito y se cotizan antes de ejecutarse</li></ul></div>
-          </div>
-          <a class="cw-cta" href="mailto:hola@compai.cl?subject=Cotizaci%C3%B3n%20SP-08%20%E2%80%94%20Migraci%C3%B3n%20de%20sitio%2C%20correo%2C%20dominio%20y%20certificado">Pedir cotizaci&oacute;n
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
-          </a>
-        </div>
-      </article>
-      <article class="cw-tar" data-i="8" data-linea="L3" data-dest="0"
-               aria-roledescription="tarjeta de servicio" aria-label="SP-09: Plan de mantención de sistemas, 12 meses">
-        <div class="cw-cuerpo">
-          <span class="cw-filo" aria-hidden="true"></span>
-          <div class="cw-tcab">
-            <span class="cw-cod">SP-09 &middot; Puesta en marcha, migración y continuidad</span>
-            <span class="cw-marcas"><i class="cw-niv" data-n="premium"><i></i><i></i><i></i>Premium</i></span>
-          </div>
-          <h3 class="cw-nom">Plan de mantención de sistemas, 12 meses</h3>
-          <p class="cw-pro">Nadie mira los vencimientos hasta que uno vence. Acá se miran cada mes.</p>
-          <div class="cw-plata">
-            <p class="cw-alcance"><span class="cw-uni">Plan anual</span><span class="cw-cond">12 cuotas iguales</span></p>
-            <p class="cw-bruto"><b>$2.570.400</b><span>con IVA</span></p>
-            <p class="cw-neto">Neto <b>$2.160.000</b> <span>&middot; el que va en la orden de compra</span></p>
-          </div>
-          <div class="cw-det">
-            <div class="cw-inc"><p class="cw-rot">Incluye</p><ul><li>Cupo de 4 atenciones remotas al mes, en horario hábil</li><li>Parches y actualizaciones</li><li>Monitoreo y verificación de respaldos</li><li>Vigilancia de vencimientos de licencias y certificados</li><li>Reporte mensual</li></ul></div>
-            <div class="cw-exc"><p class="cw-rot">No incluye</p><ul><li>Atención en terreno</li><li>Hardware ni mantención de equipos: se mantienen sistemas</li><li>Atenciones sobre el cupo: se autorizan por escrito y se cotizan aparte</li></ul></div>
-          </div>
-          <a class="cw-cta" href="mailto:hola@compai.cl?subject=Cotizaci%C3%B3n%20SP-09%20%E2%80%94%20Plan%20de%20mantenci%C3%B3n%20de%20sistemas%2C%2012%20meses">Pedir cotizaci&oacute;n
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
-          </a>
-        </div>
-      </article>
-    </div>
-  </div>
-
-  <div class="cw-mando">
-    <button class="cw-fl" type="button" data-ir="-1" aria-label="Servicio anterior">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 L8 12 L15 19"/></svg>
-    </button>
-    <div class="cw-puntos">
-        <button class="cw-punto" type="button" data-a="0" data-dest="0" aria-current="true" aria-label="Ir a SP-01: Avisos y recordatorios por WhatsApp conectados a su sistema"></button>
-        <button class="cw-punto" type="button" data-a="1" data-dest="1" aria-current="false" aria-label="Ir a SP-02: Automatización de un proceso administrativo"></button>
-        <button class="cw-punto" type="button" data-a="2" data-dest="0" aria-current="false" aria-label="Ir a SP-03: Desarrollo a medida o integración entre sistemas, por hitos"></button>
-        <button class="cw-punto" type="button" data-a="3" data-dest="0" aria-current="false" aria-label="Ir a SP-04: Informe corto de especificación técnica"></button>
-        <button class="cw-punto" type="button" data-a="4" data-dest="0" aria-current="false" aria-label="Ir a SP-05: Especificación técnica para bases de licitación"></button>
-        <button class="cw-punto" type="button" data-a="5" data-dest="1" aria-current="false" aria-label="Ir a SP-06: Evaluación comparada de alternativas"></button>
-        <button class="cw-punto" type="button" data-a="6" data-dest="0" aria-current="false" aria-label="Ir a SP-07: Puesta en marcha de licencias y equipos ya comprados"></button>
-        <button class="cw-punto" type="button" data-a="7" data-dest="1" aria-current="false" aria-label="Ir a SP-08: Migración de sitio, correo, dominio y certificado"></button>
-        <button class="cw-punto" type="button" data-a="8" data-dest="0" aria-current="false" aria-label="Ir a SP-09: Plan de mantención de sistemas, 12 meses"></button>
-    </div>
-    <button class="cw-fl" type="button" data-ir="1" aria-label="Servicio siguiente">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5 L16 12 L9 19"/></svg>
-    </button>
-  </div>
-
-  <div class="cw-pie">
-    <span class="cw-cuenta"><b>01</b> / 9</span>
-    <button class="cw-todo" type="button" aria-pressed="false">Ver los 9 a la vez</button>
-  </div>
-
-  <p class="cw-vivo" aria-live="polite" role="status"></p>
-</section>
-    </div>
 </main>
+<script>window.ESCENAS={"formulario":{"titulo_quien":"¿A quién le enviamos la cotización?","cta":"Pedir cotización","nota":"Le respondemos al correo que deje aquí.","exito":"Listo, nos llegó. Le respondemos a {correo}. Si quiere adjuntar bases u orden de compra, se abrió su correo.","error":"No quedó registrado, pero le abrimos su correo con el requerimiento escrito: envíelo desde ahí.","vacio":"Marque al menos una.","sin_institucion":"Falta la institución.","faltan":"Falta el nombre o el correo.","plazo":{"etiqueta":"¿Para cuándo?","placeholder":"Ej.: antes del 30 de octubre","obligatorio":false,"tipo":"texto libre, no selector de fecha"},"institucion":{"etiqueta":"Institución","placeholder":"Ej.: Municipalidad de …","obligatorio":true},"respaldo":{"linea":"¿No se abrió su correo? Escríbanos a hola@compai.cl","boton_copiar":"Copiar el requerimiento","copiado":"Copiado. Péguelo en un correo a hola@compai.cl"},"cuerpo":"Estimados:\n\nDesde {institucion} solicitamos cotización por:\n\n{items}\n\nLo necesitamos {plazo}.\n\nCódigo de la compra: {codigo}\n\nPor favor indicar valor neto, IVA y la glosa para la orden de compra.\n\nSaludos cordiales,\n\n\n— Enviado desde compai.cl/portafolio · {escena}","codigo":{"etiqueta":"Código de Compra Ágil, si ya la publicó","placeholder":"Ej.: 1234-56-COT26"},"correo_malo":"Revise el correo: así no le llega la respuesta."},"endpoint":"https://script.google.com/macros/s/AKfycbxiRLWaLHDVNm99KXKboz7DxslZeUtbl8Rq36MJ3FFuiRfNqpACklvcp7pfX-y5F-M8/exec"};</script>
+<!-- ESCENAS:FIN -->
 
 <!-- ================= LAS TRES LINEAS, CONSTRUIDAS =================
      Lo que compai.cl publica son las tres lineas de venta de servicio propio
@@ -2347,10 +1022,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   <div class="caja">
     <p class="ante">Trabajos construidos</p>
     <h1 id="t-tit">Lo mismo que le cotizamos, ya construido y andando.</h1>
-    <p class="entrada">Las tres l&iacute;neas que publicamos, cada una con una cosa que existe
-      y se puede abrir: no una maqueta ni una referencia prestada. Son proyectos del estudio
-      y se dice &mdash;ninguno de estos pies dice cliente&mdash;, porque es lo que hay
-      construido y porque se puede mirar entero.</p>
+    <p class="entrada">Las tres l&iacute;neas que cotizamos, cada una con una pieza que ya est&aacute; construida.</p>
 
     <article class="tj">
       <div class="texto">
@@ -2361,7 +1033,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
         <p class="cuerpo">Cada ma&ntilde;ana entra a un sistema que no es nuestro, lee las publicaciones
           del d&iacute;a y la ficha de cada una, se queda con las del rubro y deja una lista corta.
           Nadie abre nada, nadie copia nada a una planilla, y a nadie hay que record&aacute;rselo.</p>
-        <a class="alser" href="index.html#creative">Ver la l&iacute;nea</a>
+        <a class="alser" href="#servicios">Pedir cotizaci&oacute;n</a>
       </div>
       <figure>
         <div class="passe oscura"><img src="media/p-l1.webp" width="1040" height="558" loading="eager" decoding="async"
@@ -2380,7 +1052,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
           qu&eacute; no hace, c&oacute;mo se cobra y qu&eacute; pasa cuando algo falla. Cada decisi&oacute;n qued&oacute;
           escrita al lado de la alternativa que se descart&oacute; y del motivo. Con ese documento el
           trabajo se encarga sin ambig&uuml;edad &mdash;y reci&eacute;n despu&eacute;s se construye.</p>
-        <a class="alser" href="index.html#creative">Ver la l&iacute;nea</a>
+        <a class="alser" href="#servicios">Pedir cotizaci&oacute;n</a>
       </div>
       <figure>
         <div class="passe"><img src="media/p-l2.webp" width="780" height="674" loading="eager" decoding="async"
@@ -2398,7 +1070,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
         <p class="cuerpo">Dos plataformas que no se hablaban entre s&iacute; y las respuestas que alguien
           reescrib&iacute;a a mano cada vez, en una sola pantalla. Se abre en cualquier computador, no se
           instala y no tiene servidor detr&aacute;s: por eso no hay nada que mantenerle.</p>
-        <a class="alser" href="index.html#creative">Ver la l&iacute;nea</a>
+        <a class="alser" href="#servicios">Pedir cotizaci&oacute;n</a>
       </div>
       <figure>
         <div class="passe"><img src="media/p-l3.webp" width="1040" height="440" loading="eager" decoding="async"
@@ -2407,9 +1079,6 @@ html.hdr-chico .brand .logo{transform:scale(.737);
       </figure>
     </article>
 
-    <p class="nota">Los nueve servicios de estas tres l&iacute;neas, con su valor a la vista y lo que
-      no entra, est&aacute;n m&aacute;s abajo. Las tres piezas de arriba son del estudio y no encargos de
-      terceros: se muestran porque son lo que hay construido y porque se pueden abrir.</p>
   </div>
 </section>
 
@@ -2476,198 +1145,108 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   var v=document.querySelector('#bg video'); if(v){ try{ v.pause(); }catch(e){} }
 })();
 
-/* ============================ CARRUSEL · JS INICIO =======================
-   NO arma transforms: escribe CUATRO numeros por tarjeta y deja que el CSS
-   haga la coreografia. De ahi salen tres cosas que no son de estilo: (1) el
-   modo grilla puede anular el `transform` desde la hoja de estilo, cosa
-   imposible contra un `style` en linea; (2) el cambio a plano en telefono es
-   una media query de cinco numeros y no una rama de codigo; y (3) esto pesa
-   lo que pesa.
-
-   SIN ESTE ARCHIVO LA SECCION SIGUE COMPLETA: las nueve tarjetas estan en el
-   HTML con su texto y su precio, y `.cw-sin-js` las deja en grilla. Nada
-   esencial vive dentro del JavaScript.
+/* ============================ ESCENAS · JS INICIO ========================
+   Dos cosas y nada mas:
+   1. EL VIDEO DE LA ESCENA ELEGIDA corre; los otros tres se pausan. Con
+      movimiento reducido ninguno corre solo: queda el poster y los controles.
+   2. EL SELECTOR arma el requerimiento. Se registra en el mismo Apps Script
+      del formulario del home (hoja + aviso a hola@compai.cl) y despues se abre
+      el correo del visitante con el texto listo, porque ahi es donde adjunta
+      las bases o la orden de compra. Si el correo no se abre, queda el boton
+      «Copiar el requerimiento». Formato del correo: Visu, 05-10-2026.
    ========================================================================= */
 (function(){
-  var cw = document.querySelector(".cw"); if(!cw) return;
-  var pista = cw.querySelector(".cw-pista");
-  var tars  = [].slice.call(pista.querySelectorAll(".cw-tar"));
-  var n = tars.length; if(!n) return;
+  var D = window.ESCENAS || {}, F = D.formulario || {};
+  var quieto = matchMedia("(prefers-reduced-motion:reduce)").matches;
 
-  cw.classList.remove("cw-sin-js");     /* sin JS la seccion ya era una grilla */
-
-  var VENT = 1.8;   /* ventana visible, en tarjetas: fuera de esto no se pinta */
-  var SATX = 1.55;  /* techo del desplazamiento lateral                        */
-  var SATR = 1.0;   /* techo del giro: un solo paso. Mas alla la tarjeta ya
-                       esta en opacidad 0 y girarla mas solo cuesta pintura.  */
-  var act = 0, arrastre = null;
-  var vivo   = cw.querySelector(".cw-vivo");
-  var cuenta = cw.querySelector(".cw-cuenta b");
-  var lprom  = cw.querySelector(".cw-lprom");
-  var puntos = [].slice.call(cw.querySelectorAll(".cw-punto"));
-  var lineas = [].slice.call(cw.querySelectorAll(".cw-lin"));
-
-  /* distancia circular mas corta: el anillo nunca da la vuelta larga */
-  function dist(i){ var d = ((i - act) % n + n) % n; if(d > n/2) d -= n; return d; }
-  function tope(v,m){ return Math.max(-m, Math.min(m, v)); }
-
-  function pintar(){
-    var grilla = cw.classList.contains("grilla");
-    tars.forEach(function(t,i){
-      var d = dist(i), ad = Math.abs(d), foco = (d === 0);
-      /* la opacidad es una curva QUEBRADA, no lineal: cae suave hasta la
-         primera vecina y se desploma despues, para llegar a cero DENTRO de la
-         ventana. Con una recta, la tarjeta que sale de cuadro todavia tenia
-         tinta y se veia el salto del anillo al dar la vuelta. */
-      var o = Math.max(0, 1 - ad * 0.50 - Math.max(0, ad - 1) * 0.36);
-      t.style.setProperty("--dx", tope(d, SATX));
-      t.style.setProperty("--dz", Math.min(ad, SATX));
-      t.style.setProperty("--dr", tope(d, SATR));
-      t.style.setProperty("--o",  o.toFixed(3));
-      t.style.zIndex = String(40 - Math.round(ad * 10));
-      t.classList.toggle("foco",  foco);
-      t.classList.toggle("fuera", ad > VENT);
-      t.setAttribute("aria-hidden", (foco || grilla) ? "false" : "true");
-      t.tabIndex = (foco || grilla) ? 0 : -1;
-      /* un enlace dentro de algo `aria-hidden` que siga siendo tabulable es un
-         defecto de accesibilidad, no un detalle: el foco entra en algo que el
-         lector de pantalla dice que no existe. */
-      var cta = t.querySelector(".cw-cta");
-      if(cta) cta.tabIndex = (foco || grilla) ? 0 : -1;
+  function sincroniza(){
+    document.querySelectorAll(".pieza").forEach(function(p){
+      var v = p.querySelector("video"); if(!v) return;
+      if(p.offsetParent !== null && !quieto){ v.preload = "auto"; var r = v.play(); if(r && r.catch) r.catch(function(){}); }
+      else { try{ v.pause(); }catch(e){} }
     });
-    puntos.forEach(function(p,i){ p.setAttribute("aria-current", i === act ? "true" : "false"); });
-    var l = tars[act].getAttribute("data-linea");
-    lineas.forEach(function(b){
-      var on = b.getAttribute("data-linea") === l;
-      b.setAttribute("aria-pressed", on ? "true" : "false");
-      if(on && lprom) lprom.textContent = b.getAttribute("data-promesa") || "";
+  }
+  document.querySelectorAll(".sel").forEach(function(r){ r.addEventListener("change", sincroniza); });
+  if(quieto) document.querySelectorAll(".pieza video").forEach(function(v){ v.removeAttribute("autoplay"); v.controls = true; });
+  sincroniza();
+
+  /* la cantidad y el «¿cual?» solo se habilitan con su casilla marcada */
+  document.querySelectorAll(".it").forEach(function(it){
+    var c = it.querySelector("input[type=checkbox]"), extra = it.querySelectorAll(".cant,.cual");
+    var al = function(){
+      extra.forEach(function(n){ n.disabled = !c.checked; });
+      var n = it.querySelector(".cant");
+      var q = it.querySelector(".cual"); if(c.checked && q) q.focus();
+    };
+    c.addEventListener("change", al); extra.forEach(function(n){ n.disabled = !c.checked; });
+  });
+
+  function rellena(t, d){ return String(t || "").replace(/\{(\w+)\}/g, function(_, k){ return d[k] != null ? d[k] : ""; }); }
+
+  document.querySelectorAll("form.pide").forEach(function(f){
+    var aviso = f.querySelector(".aviso"), btn = f.querySelector("button[type=submit]"),
+        cuenta = f.querySelector(".cuenta"), resp = f.querySelector(".respaldo"), texto = "";
+    f.noValidate = true;   /* valida el script, con mensajes propios; sin JS valida el navegador */
+    function muestra(msg, mal){ aviso.textContent = msg; aviso.classList.toggle("mal", !!mal); aviso.hidden = false; }
+    f.addEventListener("change", function(){
+      var k = f.querySelectorAll(".items input[type=checkbox]:checked").length;
+      cuenta.textContent = k ? (k === 1 ? "1 marcado" : k + " marcados") : "";
     });
-    if(cuenta) cuenta.textContent = ("0" + (act+1)).slice(-2);
-    if(vivo) vivo.textContent = (act+1) + " de " + n + ". " +
-      tars[act].querySelector(".cw-nom").textContent.trim();
-  }
+    resp.querySelector(".copia").addEventListener("click", function(){
+      var ok = function(){ muestra((F.respaldo || {}).copiado || "Copiado."); };
+      if(navigator.clipboard) navigator.clipboard.writeText(texto).then(ok, function(){ prompt("Copie el requerimiento:", texto); });
+      else prompt("Copie el requerimiento:", texto);
+    });
 
-  function ir(i, foco){
-    act = ((i % n) + n) % n;
-    pintar();
-    if(foco) tars[act].focus({preventScroll:true});
-  }
+    f.addEventListener("submit", function(e){
+      e.preventDefault();
+      var marcados = [].slice.call(f.querySelectorAll(".items input[type=checkbox]:checked"));
+      if(!marcados.length){ muestra(F.vacio, true); return; }
+      var d = Object.fromEntries(new FormData(f).entries());
+      if(d.sitioweb) return;
+      if(!d.organismo){ muestra(F.sin_institucion, true); return; }
+      if(!d.nombre || !d.correo){ muestra(F.faltan, true); return; }
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.correo)){ muestra(F.correo_malo, true); return; }
 
-  /* --- EL ALTO LO MIDE EL CONTENIDO, una vez por ancho. Se mide en modo
-         grilla, que es donde las tarjetas estan en el flujo y tienen su alto
-         natural; despues se devuelve el modo que habia. */
-  var anchoMedido = 0;
-  function medir(){
-    if(innerWidth === anchoMedido) return;
-    cw.style.setProperty("--tar-h", "auto");
-    cw.classList.add("midiendo");
-    var alto = 0;
-    tars.forEach(function(t){ alto = Math.max(alto, t.offsetHeight); });
-    cw.classList.remove("midiendo");
-    /* MEDIR CON LA SECCION OCULTA DA CERO, Y ESO NO SE ESCRIBE. Defecto real
-       de la integracion en `portafolio.html`, 13-sep: alli el carrusel es la
-       septima pieza y nace en `display:none` —el visitante todavia no la
-       eligio—, asi que `offsetHeight` daba 0 y el alto de tarjeta quedaba en
-       1 px. El ancho tampoco se da por medido: se vuelve a intentar cuando la
-       seccion aparezca. Una medida imposible no se guarda, se descarta —y
-       `anchoMedido` se BORRA, que es el segundo medio paso: si se dejara el
-       ancho anterior, un cambio de tamano con la seccion oculta y vuelta al
-       mismo ancho dejaba `--tar-h` quitado y la guarda de arriba cortaba la
-       proxima medicion por «ya medido». Una medida descartada tiene que
-       descartar tambien la marca de que se midio. */
-    if(alto < 1){ anchoMedido = 0; cw.style.removeProperty("--tar-h"); return; }
-    anchoMedido = innerWidth;
-    /* 1 px de holgura: `offsetHeight` redondea a entero y el sub-pixel del
-       interlineado puede dejar la ultima linea rozando el canto. */
-    cw.style.setProperty("--tar-h", (Math.ceil(alto) + 1) + "px");
-  }
-  /* y el disparo: `ResizeObserver` avisa cuando la seccion pasa de oculta a
-     visible (de 0 a su tamano). No es un sondeo por cuadro: solo corre cuando
-     la caja cambia. Sin esto, la pieza 7 entra con las nueve tarjetas de 1 px.
-
-     NO SE DESCONECTA, y esa fue la correccion: desconectarlo al primer exito
-     deja la seccion sin instrumento para el resto de la sesion, y el visitante
-     de esta pagina entra y sale de la pieza 7 por el carrete tantas veces como
-     quiera. Un observador que se apaga despues de la primera vez solo sirve si
-     la primera vez es la unica. */
-  function visible(){ return cw.offsetParent !== null || cw.getClientRects().length > 0; }
-  if("ResizeObserver" in window){
-    /* LA MEDICION SE APLAZA UN CUADRO, Y NO ES UN ADORNO: medir escribe
-       `--tar-h`, o sea cambia el tamano de lo mismo que se esta observando.
-       Hacerlo DENTRO del callback dispara «ResizeObserver loop completed with
-       undelivered notifications», que es un error de ejecucion de verdad y la
-       sonda lo caza. Aplazado a `requestAnimationFrame`, el callback no
-       escribe nada y el ciclo se corta. El pestillo evita encolar dos. */
-    var pend = false;
-    new ResizeObserver(function(){
-      if(pend || !visible() || innerWidth === anchoMedido) return;
-      pend = true;
-      requestAnimationFrame(function(){ pend = false; medir(); pintar(); });
-    }).observe(cw);
-  }
-
-  /* --- mandos --- */
-  cw.addEventListener("click", function(e){
-    if(e.target.closest(".cw-cta")) return;          /* el CTA es un enlace */
-    var b = e.target.closest("[data-ir],[data-a],[data-linea],.cw-todo,.cw-tar");
-    if(!b) return;
-    if(b.classList.contains("cw-todo")){
-      var g = cw.classList.toggle("grilla");
-      b.textContent = g ? "Ver como carrusel" : "Ver los " + n + " a la vez";
-      b.setAttribute("aria-pressed", g ? "true" : "false");
-      pintar();
-      return;
-    }
-    if(cw.classList.contains("grilla")) return;
-    if(b.hasAttribute("data-ir"))  return ir(act + (+b.getAttribute("data-ir")));
-    if(b.hasAttribute("data-a"))   return ir(+b.getAttribute("data-a"));
-    if(b.hasAttribute("data-linea")){
-      for(var i=0;i<n;i++) if(tars[i].getAttribute("data-linea") === b.getAttribute("data-linea")) return ir(i);
-      return;
-    }
-    if(b.classList.contains("cw-tar")) return ir(tars.indexOf(b));
-  });
-
-  /* --- teclado: flechas, Inicio y Fin --- */
-  cw.addEventListener("keydown", function(e){
-    if(cw.classList.contains("grilla")) return;
-    if(e.target.closest(".cw-cta")) return;
-    var k = e.key, d = (k === "ArrowRight") ? 1 : (k === "ArrowLeft") ? -1 : 0;
-    if(d){ e.preventDefault(); return ir(act + d, true); }
-    if(k === "Home"){ e.preventDefault(); return ir(0, true); }
-    if(k === "End"){  e.preventDefault(); return ir(n-1, true); }
-  });
-
-  /* --- arrastre y deslizamiento tactil: 44 px de umbral, el mismo que el
-         blanco minimo de un boton. Bajo eso es un toque, no un gesto. */
-  pista.addEventListener("pointerdown", function(e){
-    if(cw.classList.contains("grilla") || e.button || e.target.closest(".cw-cta")) return;
-    arrastre = {x:e.clientX, id:e.pointerId, mov:false};
-  });
-  addEventListener("pointermove", function(e){
-    if(!arrastre || e.pointerId !== arrastre.id) return;
-    var dx = e.clientX - arrastre.x;
-    if(Math.abs(dx) > 44 && !arrastre.mov){ arrastre.mov = true; ir(act + (dx < 0 ? 1 : -1)); }
-  });
-  addEventListener("pointerup",     function(){ arrastre = null; });
-  addEventListener("pointercancel", function(){ arrastre = null; });
-
-  /* --- arranque. Con movimiento reducido entra DIRECTO en grilla: quien pidio
-         menos movimiento no recibe un carrusel apagado, recibe la lista
-         completa y legible. */
-  medir();
-  if(matchMedia("(prefers-reduced-motion:reduce)").matches){
-    cw.classList.add("grilla");
-    var t = cw.querySelector(".cw-todo");
-    if(t){ t.textContent = "Ver como carrusel"; t.setAttribute("aria-pressed","true"); }
-  }
-  pintar();
-
-  var tmr; addEventListener("resize", function(){
-    clearTimeout(tmr); tmr = setTimeout(function(){ medir(); pintar(); }, 160);
+      var items = marcados.map(function(c){
+        var it = c.closest(".it"), n = it.querySelector(".cant"), q = it.querySelector(".cual");
+        /* «Otra licencia: cual» va pegado al nombre; en las demas, la marca y
+           edicion que usan hoy va al final: sin ella no se cotiza (GAIn). */
+        var otra = /-otra$/.test(c.value);
+        var partes = [(c.dataset.sp ? c.dataset.sp + " " : "") + (otra && q && q.value ? c.dataset.nombre + ": " + q.value : c.dataset.nombre)];
+        if(n && n.value) partes.push(n.value + " " + (n.dataset.unidad || ""));
+        if(!otra && q && q.value) partes.push("hoy usan: " + q.value);
+        if(c.dataset.vigencia && d.vigencia) partes.push(d.vigencia);
+        return "· " + partes.join(" — ");
+      }).join("\n");
+      var datos = { escena: f.dataset.titulo, institucion: d.organismo, items: items, plazo: d.plazo || "", codigo: d.codigo || "" };
+      var asunto = rellena(f.dataset.asunto, datos);
+      /* la linea de un dato que no vino se borra entera, no queda «Lo necesitamos .» */
+      var plantilla = String(F.cuerpo);
+      ["plazo","codigo"].forEach(function(k){ if(!datos[k]) plantilla = plantilla.replace(new RegExp("^.*\\{" + k + "\\}.*\\n\\n?", "m"), ""); });
+      var cuerpo = rellena(plantilla, datos)
+        + "\n\nContacto: " + d.nombre + " · " + d.correo + (d.telefono ? " · " + d.telefono : "");
+      texto = "Para: hola@compai.cl\nAsunto: " + asunto + "\n\n" + cuerpo;
+      var abreCorreo = function(){
+        resp.hidden = false;
+        location.href = "mailto:hola@compai.cl?subject=" + encodeURIComponent(asunto) + "&body=" + encodeURIComponent(cuerpo);
+      };
+      if(!D.endpoint){ abreCorreo(); muestra(rellena(F.exito, d)); return; }
+      btn.disabled = true;
+      fetch(D.endpoint, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" },
+        body: JSON.stringify({ nombre:d.nombre, correo:d.correo, telefono:d.telefono || "",
+          organismo:d.organismo, mensaje: asunto + "\n\n" + cuerpo, origen:"compai.cl/portafolio" }) })
+        /* «llego» solo si el Apps Script contesto ok; cualquier otra cosa
+           (error, respuesta ilegible) cae al aviso de error, y el correo se
+           abre igual para que el pedido no se pierda */
+        .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+        .then(function(j){ if(!j || !j.ok) throw 0; abreCorreo(); muestra(rellena(F.exito, d)); })
+        .catch(function(){ abreCorreo(); muestra(F.error, true); })
+        .then(function(){ btn.disabled = false; });
+    });
   });
 })();
-/* ============================= CARRUSEL · JS FIN ======================== */
+/* ============================= ESCENAS · JS FIN ========================= */
 </script>
 <!-- CONTADOR GOATCOUNTER - lo instala sitio/poner-contador.py -->
 <!-- Sin cookies y sin identificar a nadie: cuenta visitas, no personas.

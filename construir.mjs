@@ -585,3 +585,100 @@ writeFileSync(join(raiz, 'robots.txt'),
 const kb = n => Math.round(n / 102.4) / 10;
 console.log(`index.html  ${kb(Buffer.byteLength(html))} KB · ${SERV.length} servicios · hero "${S.hero}" · formEndpoint ${S.formEndpoint ? 'configurado' : 'VACÍO (mailto de respaldo)'}`);
 if (!existsSync(join(raiz, 'media/og.jpg'))) console.warn('AVISO: falta media/og.jpg (Open Graph 1200×630)');
+
+/* ── portafolio.html: las escenas ─────────────────────────────────────────
+   05-10-2026. Escena = video + lo que se pide debajo. La fuente es
+   `contenido/escenas.json` (copy de Visu) y se reescribe SOLO lo que hay
+   entre las marcas ESCENAS:INICIO / ESCENAS:FIN; el resto del portafolio
+   sigue a mano. Las licencias van SIN precio: se cotizan. */
+{
+  const PORT = join(raiz, 'portafolio.html');
+  const E = lee('contenido/escenas.json');
+  const F = E.formulario;
+  const precio = it => {
+    const s = E.servicios[it.sp]; if (!s) return '';
+    const base = s.cond === 'desde' ? `desde ${s.bruto} con IVA` : `${s.bruto} con IVA · ${s.cond}`;
+    return it.precio_sufijo ? `${base}, ${it.precio_sufijo}` : base;
+  };
+  const item = (e, it) => {
+    const idc = `i${e.id}-${it.id}`.replace(/[^a-zA-Z0-9_-]/g, '');
+    const px = it.sp ? `<span class="px">${esc(precio(it))}</span>` : '';
+    const cant = it.cantidad
+      ? `<input class="cant" type="number" name="cant-${esc(it.id)}" min="1" step="1" inputmode="numeric" placeholder="${esc(it.unidad || 'cant.')}" data-unidad="${esc(it.unidad || '')}" aria-label="Cantidad de ${esc(it.unidad || 'unidades')} · ${esc(it.nombre)}">`
+      : '';
+    const cual = it.campo_texto
+      ? `<input class="cual" type="text" name="cual-${esc(it.id)}" maxlength="80" placeholder="${esc(it.campo_texto)}" aria-label="${esc(it.campo_texto)} · ${esc(it.nombre)}">`
+      : '';
+    return `          <li><div class="it"><input type="checkbox" id="${idc}" name="item" value="${esc(it.id)}" data-nombre="${esc(it.nombre)}"${it.sp ? ` data-sp="${esc(it.sp)}"` : ''}${it.vigencia ? ' data-vigencia="1"' : ''}>
+            <label class="tx" for="${idc}"><span class="nm">${esc(it.nombre)}</span><span class="dt">${esc(it.detalle)}</span>${px}</label>${cant}${cual}</div></li>`;
+  };
+  const grupo = (e, g) => `        <fieldset>
+          <legend>${esc(g.pregunta)}</legend>
+          <ul class="items">
+${g.items.map(it => item(e, it)).join('\n')}
+          </ul>
+        </fieldset>`;
+  const vig = e => e.vigencia ? `
+        <label class="vig">${esc(e.vigencia.etiqueta)}<select name="vigencia">${e.vigencia.opciones.map(o => `<option${o === e.vigencia.defecto ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select></label>` : '';
+  const pieza = (e, i) => `    <!-- ---------- ${e.id} ---------- -->
+    <div class="pieza" data-p="${i + 1}">
+      <figure class="marco"><video muted loop playsinline ${i === 0 ? 'autoplay preload="metadata"' : 'preload="none"'} poster="${esc(e.poster)}" aria-label="${esc(e.alt)}"><source src="${esc(e.video)}" type="video/mp4"></video></figure>
+      <div class="pieplaca">
+        <p class="linea">${esc(e.linea)}</p>
+        <h2>${esc(e.titulo)}</h2>
+        <p>${esc(e.bajada)}</p>
+      </div>
+      <form class="pide" data-titulo="${esc(e.carrete)}" data-asunto="${esc(e.asunto)}" action="mailto:hola@compai.cl" method="post" enctype="text/plain">
+${e.grupos.map((g, k) => grupo(e, g) + (k === 0 ? vig(e) : '')).join('\n')}
+        <div class="quien">
+          <p class="tq">${esc(F.titulo_quien)}</p>
+          <label>${esc(F.institucion.etiqueta)}<input name="organismo" autocomplete="organization" required maxlength="120" placeholder="${esc(F.institucion.placeholder)}"></label>
+          <label>Nombre<input name="nombre" autocomplete="name" required maxlength="80"></label>
+          <label>Correo<input name="correo" type="email" autocomplete="email" required maxlength="120"></label>
+          <label>Teléfono<input name="telefono" type="tel" autocomplete="tel" maxlength="30"></label>
+          <label>${esc(F.plazo.etiqueta)}<input name="plazo" maxlength="60" placeholder="${esc(F.plazo.placeholder)}"></label>
+          <label>${esc(F.codigo.etiqueta)}<input name="codigo" maxlength="40" placeholder="${esc(F.codigo.placeholder)}"></label>
+          <span class="trampa" aria-hidden="true"><input name="sitioweb" tabindex="-1" autocomplete="off"></span>
+        </div>
+        <div class="envia">
+          <button type="submit">${esc(F.cta)}</button><span class="cuenta" aria-live="polite"></span>
+          <p class="nota">${esc(F.nota)}</p>
+        </div>
+        <p class="aviso" role="status" hidden></p>
+        <p class="respaldo" hidden>${esc(F.respaldo.linea)} <button type="button" class="copia">${esc(F.respaldo.boton_copiar)}</button></p>
+      </form>
+    </div>`;
+  const conf = c => `<p class="confianza${c ? ' ' + c : ''}">${esc(E.confianza.texto)} <a href="${esc(E.confianza.url)}" target="_blank" rel="noopener">${esc(E.confianza.enlace)}</a></p>`;
+  const bloque = `<!-- ESCENAS:INICIO · lo arma construir.mjs desde contenido/escenas.json — NO SE EDITA A MANO -->
+${E.escenas.map((e, i) => `<input type="radio" name="pieza" id="p${i + 1}" class="sel"${i === 0 ? ' checked' : ''}>`).join('\n')}
+
+<main class="sala" id="servicios">
+
+  <!-- ================= EL CARRETE ================= -->
+  <div>
+    <div class="carrete">
+      <p class="promesa">${esc(E.promesa)}</p>
+      <div class="tope">${esc(E.tope)}</div>
+      <ul>
+${E.escenas.map((e, i) => `        <li><label for="p${i + 1}"><span class="n">${esc(e.id)}</span><span class="tt">${esc(e.carrete)}</span></label></li>`).join('\n')}
+      </ul>
+      ${conf('')}
+    </div>
+  </div>
+
+  <!-- ================= EL ESCENARIO ================= -->
+  <div class="escenario">
+${E.escenas.map(pieza).join('\n\n')}
+    ${conf('abajo')}
+  </div>
+</main>
+<script>window.ESCENAS=${JSON.stringify({ formulario: F, endpoint: S.formEndpoint || '' }).replace(/</g, '\\u003c')};</script>
+<!-- ESCENAS:FIN -->`;
+  const t = readFileSync(PORT, 'utf8');
+  const re = /<!-- ESCENAS:INICIO[\s\S]*?<!-- ESCENAS:FIN -->/;
+  if (re.test(t)) {
+    writeFileSync(PORT, t.replace(re, () => bloque), 'utf8');
+    const n = E.escenas.reduce((a, e) => a + e.grupos.reduce((b, g) => b + g.items.length, 0), 0);
+    console.log(`portafolio.html · ${E.escenas.length} escenas · ${n} cosas para pedir`);
+  } else console.warn('AVISO: portafolio.html no tiene las marcas ESCENAS:INICIO/FIN — no se tocaron las escenas');
+}
