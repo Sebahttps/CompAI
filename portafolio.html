@@ -602,6 +602,24 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   font-weight:600; margin:0 0 8px; color:var(--crema); letter-spacing:-.01em}
 .pieplaca p{margin:0; font-size:15px; line-height:1.6; color:var(--crema-75); max-width:62ch}
 
+/* ---- MUESTRAS: el sitio de ejemplo de la escena, uno por plan ---- */
+.muestras{margin-top:var(--s5)}
+.muestras .mu-t{font-family:var(--font-data); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--crema); margin:0 0 6px}
+.muestras .mu-b{margin:0 0 var(--s4); font-size:15px; line-height:1.6; color:var(--crema-75); max-width:62ch}
+.muestras ul{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px}
+.muestras a{display:flex; flex-direction:column; gap:4px; height:100%; padding:8px 8px 12px; border:1px solid var(--crema-12);
+  border-radius:var(--radio-caja); background:rgba(14,16,21,.78); color:var(--crema); text-decoration:none; transition:border-color .2s, transform .2s}
+.muestras a:hover, .muestras a:focus-visible{border-color:var(--azul); transform:translateY(-2px)}
+.muestras img{width:100%; height:auto; aspect-ratio:16/10; object-fit:cover; border-radius:4px; display:block; margin-bottom:6px}
+.muestras .mu-p{font-family:var(--font-data); font-size:14px; font-weight:600}
+.muestras .mu-q{font-size:13px; color:var(--crema-75); line-height:1.4}
+.muestras .mu-v{margin-top:auto; padding-top:6px; font-size:13px; color:var(--azul-300)}
+.muestras .mu-n{margin:8px 0 0; font-size:12px; color:var(--crema-60)}
+@media (max-width:640px){.muestras ul{grid-template-columns:1fr}
+  .muestras a{display:grid; grid-template-columns:44% 1fr; grid-template-rows:auto auto 1fr; column-gap:12px; row-gap:2px; align-content:start}
+  .muestras img{grid-row:1 / 4; margin:0}.muestras .mu-v{margin-top:0; align-self:end}}
+@media (prefers-reduced-motion:reduce){.muestras a{transition:none}.muestras a:hover{transform:none}}
+
 /* ---- LO QUE SE PIDE ---- */
 .pide{margin-top:var(--s6); padding:var(--s5); border:1px solid var(--crema-12);
   border-radius:var(--radio-caja); background:rgba(14,16,21,.78)}
@@ -1077,6 +1095,16 @@ html.hdr-chico .brand .logo{transform:scale(.737);
         <h2>«Nadie encuentra la panadería»</h2>
         <p>El pan sale bueno. Lo que falla es lo de afuera: la vecina te busca en el celular y no apareces, y los pedidos se te pierden entre audios.</p>
       </div>
+      <section class="muestras" aria-label="Pruébala antes de pedirla">
+        <p class="mu-t">Pruébala antes de pedirla</p>
+        <p class="mu-b">La panadería de María, en los tres planes. En Pista y Nodo eres la vecina que la busca y le encarga; en Núcleo, eres María.</p>
+        <ul>
+          <li><a href="muestras/maria-tapia/pista.html"><img src="media/muestra-pista.webp" width="640" height="400" loading="lazy" alt="Muestra Pista: la página de la panadería con su horario, sus panes y cómo llegar"><span class="mu-p">Pista</span><span class="mu-q">Apareces</span><span class="mu-v">Ver la muestra →</span></a></li>
+          <li><a href="muestras/maria-tapia/nodo.html"><img src="media/muestra-nodo.webp" width="640" height="400" loading="lazy" alt="Muestra Nodo: la vecina arma su encargo en la página y elige a qué hora pasa"><span class="mu-p">Nodo</span><span class="mu-q">Apareces y recibes</span><span class="mu-v">Ver la muestra →</span></a></li>
+          <li><a href="muestras/maria-tapia/nucleo.html"><img src="media/muestra-nucleo.webp" width="640" height="400" loading="lazy" alt="Muestra Núcleo: el panel de María con los pedidos de hoy, el inventario y la semana"><span class="mu-p">Núcleo</span><span class="mu-q">Apareces, recibes y ordenas</span><span class="mu-v">Ver la muestra →</span></a></li>
+        </ul>
+        <p class="mu-n">María y su panadería son inventadas: es una muestra.</p>
+      </section>
       <form class="pide" data-id="05" data-titulo="Nadie encuentra la panadería" data-asunto="Pista, Nodo o Núcleo · {institucion}" action="mailto:hola@compai.cl" method="post" enctype="text/plain">
         <fieldset>
           <legend>¿Qué necesita tu negocio?</legend>

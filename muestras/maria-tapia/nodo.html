@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>María Tapia · Panadería del barrio (muestra Nodo)</title>
+<meta name="description" content="Sitio de muestra, plan Nodo: la panadería del barrio recibe pedidos en línea. Datos ficticios.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--papel:#F3E6C4;--crema:#FFF8E8;--tinta:#1F2A1F;--verde:#2F5D3A;--tomate:#C2412D;--mostaza:#E0A32E;--display:'Alfa Slab One',Georgia,serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:'Work Sans',system-ui,sans-serif;color:var(--tinta);background-color:var(--papel);background-image:radial-gradient(rgba(31,42,31,.13) 1.2px,transparent 1.4px);background-size:9px 9px}
+a{color:var(--verde)}a:hover{color:var(--tinta)}
+img{max-width:100%;display:block}
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0}
+p{margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-left:24px;padding-right:24px}
+.planes{background:var(--tinta);color:var(--papel);padding:10px 24px;display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;justify-content:center;font-size:14px}
+.planes span{opacity:.75}
+.planes a{color:var(--papel);padding:6px 14px;text-decoration:none;border-radius:999px}
+.planes a[aria-current]{background:var(--mostaza);color:var(--tinta);font-weight:700}
+.cabecera{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;padding-top:24px;padding-bottom:24px}
+.marca{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.sello{width:52px;height:52px;border-radius:50%;background:var(--tomate);border:3px solid var(--tinta);display:flex;align-items:center;justify-content:center;color:var(--papel);font-family:var(--display);font-size:22px}
+.marca b{display:block;font-family:var(--display);font-weight:400;font-size:24px;line-height:1}
+.marca small{font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+.menu{display:flex;flex-wrap:wrap;gap:4px 24px;font-weight:500}
+.menu a{padding:10px 0}
+.btn{display:inline-block;border:3px solid var(--tinta);box-shadow:5px 5px 0 var(--tinta);padding:14px 26px;font-weight:700;font-size:18px;text-decoration:none;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--tinta)}
+.btn-rojo{background:var(--tomate);color:var(--crema)}.btn-rojo:hover{color:var(--crema)}
+.btn-crema{background:var(--crema);color:var(--tinta)}
+.hero{display:flex;flex-wrap:wrap;gap:48px;align-items:center;padding-top:24px;padding-bottom:64px}
+.hero-texto{flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:24px}
+.etiqueta{align-self:flex-start;background:var(--mostaza);border:3px solid var(--tinta);padding:6px 14px;font-weight:700;font-size:14px;transform:rotate(-2deg)}
+.hero h1{font-size:clamp(40px,6vw,72px);line-height:1.02}
+.hero p{font-size:20px;line-height:1.5;max-width:34ch}
+.acciones{display:flex;flex-wrap:wrap;gap:14px}
+.hero-img{flex:1 1 480px;min-width:0;border:4px solid var(--tinta);box-shadow:10px 10px 0 var(--verde);background:var(--tinta)}
+.franja-verde{background:var(--verde);color:var(--papel);border-top:4px solid var(--tinta);border-bottom:4px solid var(--tinta)}
+.horario{display:flex;flex-wrap:wrap;gap:32px;align-items:center;justify-content:space-between;padding-top:48px;padding-bottom:48px}
+.horario h2{font-size:40px;line-height:1.1;flex:1 1 300px}
+.horas{display:flex;flex-wrap:wrap;gap:20px;flex:2 1 520px}
+.hora{flex:1 1 200px;background:var(--papel);color:var(--tinta);border:3px solid var(--tinta);padding:20px}
+.hora.destacada{background:var(--mostaza)}
+.hora small{display:block;font-size:14px;text-transform:uppercase;letter-spacing:.1em;font-weight:700}
+.hora strong{display:block;font-family:var(--display);font-weight:400;font-size:36px}
+.hora strong.chico{font-size:26px;line-height:1.2}
+.canasto{padding-top:72px;padding-bottom:72px}
+.canasto h2{font-size:44px;margin-bottom:8px}
+.canasto>p{font-size:18px;margin-bottom:36px}
+.grilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px}
+.pan{background:var(--crema);border:3px solid var(--tinta);box-shadow:6px 6px 0 var(--tinta);padding:22px;display:flex;flex-direction:column;gap:10px}
+.pan i{display:block;height:8px;border:2px solid var(--tinta)}
+.pan h3{font-size:26px;margin-top:4px}
+.pan p{line-height:1.45;flex-grow:1}
+.pan b{font-size:18px}
+.cita{display:flex;flex-wrap:wrap;gap:32px;align-items:center;background:var(--crema);border:4px solid var(--tinta);padding:32px;margin-bottom:72px}
+.cita img{flex:1 1 360px;min-width:0;width:100%;max-width:520px;border:3px solid var(--tinta)}
+.cita blockquote{flex:1 1 340px;margin:0;display:flex;flex-direction:column;gap:14px}
+.cita blockquote p{font-family:var(--display);font-size:30px;line-height:1.25}
+.donde-fondo{background:var(--tomate);color:var(--crema);border-top:4px solid var(--tinta)}
+.donde{display:flex;flex-wrap:wrap;gap:40px;align-items:stretch;padding-top:64px;padding-bottom:64px}
+.donde-texto{flex:1 1 340px;display:flex;flex-direction:column;gap:16px}
+.donde h2{font-size:44px}
+.donde a{color:var(--crema);font-weight:700}
+.direccion{font-size:22px;font-weight:700}
+.donde-texto p{font-size:18px;line-height:1.5}
+.mapa{flex:1 1 420px;min-height:300px;position:relative;overflow:hidden;background:#EFE2BD;color:var(--tinta);border:4px solid var(--tinta);box-shadow:8px 8px 0 var(--tinta)}
+.mapa div{position:absolute}
+.m-av{left:0;right:0;top:58%;height:34px;background:var(--crema);border-top:3px solid var(--tinta);border-bottom:3px solid var(--tinta)}
+.m-pasaje{top:0;bottom:0;left:46%;width:24px;background:var(--crema);border-left:3px solid var(--tinta);border-right:3px solid var(--tinta)}
+.m-calle{top:0;bottom:0;left:82%;width:18px;background:var(--crema);border-left:3px solid var(--tinta);border-right:3px solid var(--tinta)}
+.m-rotulo{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.m-plaza{left:8%;top:14%;width:30%;height:32%;background:var(--verde);border:3px solid var(--tinta);display:flex;align-items:center;justify-content:center;color:var(--papel);font-weight:700;font-size:14px;text-align:center}
+.m-cuadra{left:8%;top:76%;width:22%;height:16%;background:#E7D3A0;border:2px solid var(--tinta)}
+.m-paradero{left:58%;top:74%;padding:4px 8px;background:var(--papel);border:2px solid var(--tinta);font-size:12px;font-weight:700}
+.m-pin{left:50%;top:18%;display:flex;flex-direction:column;align-items:flex-start}
+.m-pin span{position:static;background:var(--tomate);color:var(--crema);border:3px solid var(--tinta);box-shadow:4px 4px 0 var(--tinta);padding:6px 10px;font-weight:700;font-size:14px;white-space:nowrap}
+.m-pin em{width:0;height:0;margin-left:14px;border-left:10px solid transparent;border-right:10px solid transparent;border-top:14px solid var(--tinta)}
+.m-nota{right:8px;bottom:6px;font-size:11px;background:var(--crema);border:2px solid var(--tinta);padding:2px 6px}
+.pie{background:var(--tinta);color:var(--papel);padding:28px 24px;text-align:center;font-size:14px}
+@media (max-width:560px){.m-pin span{font-size:12px}.hero-img{box-shadow:6px 6px 0 var(--verde)}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+.menu{align-items:center}
+.menu .btn{padding:10px 18px;font-size:16px;box-shadow:4px 4px 0 var(--tinta)}
+.portada{position:relative;border:4px solid var(--tinta);box-shadow:10px 10px 0 var(--verde);background:#0F140F;overflow:hidden;margin:16px 0 56px}
+.portada-texto{position:absolute;left:0;top:0;bottom:0;width:46%;padding:clamp(20px,4vw,56px);display:flex;flex-direction:column;justify-content:center;gap:18px;color:var(--crema)}
+.portada h1{font-size:clamp(30px,4.6vw,62px);line-height:1.04}
+.portada p{font-size:clamp(16px,1.6vw,20px);line-height:1.5;max-width:30ch}
+.portada .btn{align-self:flex-start;background:var(--mostaza);color:var(--tinta)}
+.pasos-fila{display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;padding-top:40px;padding-bottom:40px}
+.pasos-fila h2{font-size:34px;flex:1 1 280px}
+.pasos{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:16px;flex:3 1 640px}
+.pasos li{flex:1 1 180px;background:var(--papel);color:var(--tinta);border:3px solid var(--tinta);padding:16px}
+.pasos li:last-child{background:var(--mostaza)}
+.pasos b{display:block;font-family:var(--display);font-weight:400;font-size:26px;color:var(--tomate)}
+.pasos li:last-child b{color:var(--tinta)}
+.pedido{display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start;padding-top:72px;padding-bottom:72px}
+.lista{flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:20px}
+.lista h2{font-size:44px}
+.item{background:var(--crema);border:3px solid var(--tinta);box-shadow:5px 5px 0 var(--tinta);padding:16px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.item-nombre{flex:1 1 220px}
+.item-nombre b{display:block;font-family:var(--display);font-weight:400;font-size:22px}
+.item-nombre small{font-size:15px}
+.contador{display:flex;align-items:center;gap:10px}
+.contador button{width:44px;height:44px;border:3px solid var(--tinta);background:var(--papel);font-size:24px;font-weight:700;cursor:pointer;color:var(--tinta);font-family:inherit}
+.contador button.mas{background:var(--mostaza)}
+.contador output{min-width:44px;text-align:center;font-family:var(--display);font-size:24px}
+.ficha{flex:1 1 340px;min-width:0;background:var(--crema);border:4px solid var(--tinta);box-shadow:10px 10px 0 var(--tomate);padding:24px;display:flex;flex-direction:column;gap:16px}
+.ficha h3{font-size:26px}
+.campo{display:flex;flex-direction:column;gap:6px}
+.campo label{font-weight:700}
+.campo input,.campo select,.campo textarea{font:inherit;padding:12px;border:3px solid var(--tinta);background:#fff;min-height:44px;color:var(--tinta)}
+.campo textarea{resize:vertical}
+.resumen{border-top:3px dashed var(--tinta);padding-top:14px}
+.resumen-fila{display:flex;justify-content:space-between}
+.resumen small{display:block;font-size:14px;margin-top:8px}
+.error{background:var(--tomate);color:var(--crema);padding:10px 12px;font-weight:700}
+.enviar{background:var(--tomate);color:var(--crema);border:3px solid var(--tinta);box-shadow:5px 5px 0 var(--tinta);padding:16px;font:inherit;font-weight:700;font-size:18px;cursor:pointer;min-height:48px}
+.listo{display:flex;flex-direction:column;gap:14px;text-align:center;padding:24px 0}
+.listo strong{font-family:var(--display);font-weight:400;font-size:34px;color:var(--verde)}
+.listo p{font-size:18px;line-height:1.5}
+.otro{align-self:center;background:var(--papel);color:var(--tinta);border:3px solid var(--tinta);padding:12px 20px;font:inherit;font-weight:700;cursor:pointer;min-height:44px}
+[hidden]{display:none!important}
+@media (max-width:760px){.portada-texto{position:static;width:auto;background:var(--tinta)}}
+</style>
+</head>
+<body>
+
+<nav class="planes" aria-label="Planes">
+<span>Estás viendo el plan</span>
+<a href="pista.html">Pista</a>
+<a href="nodo.html" aria-current="page">Nodo</a>
+<a href="nucleo.html">Núcleo</a>
+<a href="../../portafolio.html#escena-05" style="margin-left:12px;text-decoration:underline">← Volver a CompAI</a>
+</nav>
+
+<header class="wrap cabecera">
+<a class="marca" href="#inicio">
+<span class="sello" aria-hidden="true">MT</span>
+<span><b>María Tapia</b><small>Panadería del barrio</small></span>
+</a>
+<nav class="menu" aria-label="Secciones">
+<a href="#como">Cómo funciona</a>
+<a href="#donde">Dónde estamos</a>
+<a class="btn btn-rojo" href="#pedido">Haz tu pedido</a>
+</nav>
+</header>
+
+<main id="inicio">
+<section class="wrap">
+<div class="portada">
+<img src="img/mostrador.webp" width="1280" height="646" alt="La señora María mira, de brazos cruzados, los pedidos ordenados en tarjetas sobre su mostrador">
+<div class="portada-texto">
+<h1>Encarga hoy. Retira calientito.</h1>
+<p>Deja tu pedido aquí y la señora María te lo tiene listo, con tu nombre, a la hora que digas.</p>
+<a class="btn" href="#pedido">Armar mi pedido</a>
+</div>
+</div>
+</section>
+
+<section id="como" class="franja-verde">
+<div class="wrap pasos-fila">
+<h2>Así funciona</h2>
+<ol class="pasos">
+<li><b>1</b>Elige tu pan y cuánto</li>
+<li><b>2</b>Dinos a qué hora pasas</li>
+<li><b>3</b>Te confirma por WhatsApp</li>
+</ol>
+</div>
+</section>
+
+<section id="pedido" class="wrap pedido">
+<div class="lista">
+<h2>Tu pedido</h2>
+<div id="productos"></div>
+</div>
+
+<form class="ficha" id="ficha" novalidate>
+<div id="paso-datos" style="display:flex;flex-direction:column;gap:16px">
+<h3>Tus datos</h3>
+<div class="campo"><label for="n-nombre">Nombre</label><input id="n-nombre" name="nombre" type="text" autocomplete="given-name" placeholder="Ej: Carmen"></div>
+<div class="campo"><label for="n-fono">WhatsApp</label><input id="n-fono" name="fono" type="tel" autocomplete="tel" placeholder="+56 9 ..."></div>
+<div class="campo"><label for="n-hora">¿Cuándo pasas?</label>
+<select id="n-hora" name="hora">
+<option value="mañana">En la mañana</option>
+<option value="hora de almuerzo">A mediodía</option>
+<option value="tarde">En la tarde, para la once</option>
+</select></div>
+<div class="campo"><label for="n-nota">Algo más (opcional)</label><textarea id="n-nota" name="nota" rows="2" placeholder="Ej: la marraqueta bien tostadita"></textarea></div>
+<div class="resumen">
+<b style="display:block;margin-bottom:6px">Resumen</b>
+<div id="resumen"></div>
+<small>La señora María te confirma el total por WhatsApp.</small>
+</div>
+<p class="error" id="error" role="alert" hidden></p>
+<button class="enviar" type="submit">Enviar pedido</button>
+</div>
+<div class="listo" id="paso-listo" hidden>
+<strong id="listo-titulo">¡Listo!</strong>
+<p id="listo-texto"></p>
+<button class="otro" type="button" id="otro">Hacer otro pedido</button>
+</div>
+</form>
+</section>
+
+<section id="donde" class="donde-fondo">
+<div class="wrap donde">
+<div class="donde-texto">
+<h2>Dónde retiras</h2>
+<p class="direccion">Pasaje Los Aromos 482, La Florida</p>
+<p>Abierto lunes a sábado, 7:00 a 21:00 · domingo hasta las 14:00</p>
+<p>WhatsApp: <a href="#donde">+56 9 5555 0182</a></p>
+</div>
+<div class="mapa" role="img" aria-label="Mapa ficticio: la panadería está en Pasaje Los Aromos, a media cuadra de Avenida Los Pinos, frente a la plaza">
+<div class="m-av"></div>
+<div class="m-rotulo" style="left:6px;top:58%;margin-top:8px">Av. Los Pinos</div>
+<div class="m-pasaje"></div>
+<div class="m-rotulo" style="top:10px;left:46%;margin-left:30px">Psje. Los Aromos</div>
+<div class="m-calle"></div>
+<div class="m-plaza">Plaza El Trigal</div>
+<div class="m-paradero">Paradero</div>
+<div class="m-cuadra"></div>
+<div class="m-pin"><span>Panadería María Tapia</span><em></em></div>
+<div class="m-nota">Ubicación ficticia</div>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="pie">Panadería María Tapia · La Florida · Sitio de muestra, plan Nodo · Datos ficticios</footer>
+
+<script>
+(function () {
+  var catalogo = [
+    { id: 'marraqueta', nombre: 'Marraqueta', unidad: 'por kilo', precio: '$2.400' },
+    { id: 'hallulla', nombre: 'Hallulla', unidad: 'por kilo', precio: '$2.400' },
+    { id: 'amasado', nombre: 'Pan amasado', unidad: 'por unidad', precio: '$350' },
+    { id: 'dobladitas', nombre: 'Dobladitas', unidad: 'por unidad', precio: '$300' },
+    { id: 'kuchen', nombre: 'Kuchen del día', unidad: 'por trozo', precio: '$1.500' }
+  ];
+  var cant = {};
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; };
+
+  $('productos').style.cssText = 'display:flex;flex-direction:column;gap:20px';
+  $('productos').innerHTML = catalogo.map(function (p) {
+    return '<div class="item"><div class="item-nombre"><b>' + p.nombre + '</b><small>' + p.unidad + ' · ' + p.precio + '</small></div>' +
+      '<div class="contador"><button type="button" data-id="' + p.id + '" data-d="-1" aria-label="Quitar ' + p.nombre + '">−</button>' +
+      '<output id="c-' + p.id + '" aria-live="polite">0</output>' +
+      '<button type="button" class="mas" data-id="' + p.id + '" data-d="1" aria-label="Agregar ' + p.nombre + '">+</button></div></div>';
+  }).join('');
+
+  function pintarResumen() {
+    var items = catalogo.filter(function (p) { return cant[p.id] > 0; });
+    $('resumen').innerHTML = items.length
+      ? items.map(function (p) { return '<div class="resumen-fila"><span>' + p.nombre + '</span><b>× ' + cant[p.id] + '</b></div>'; }).join('')
+      : '<div style="font-size:15px">Todavía no eliges pan.</div>';
+    return items;
+  }
+  function error(t) { $('error').textContent = t; $('error').hidden = !t; }
+
+  $('productos').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-id]'); if (!b) return;
+    var id = b.getAttribute('data-id');
+    cant[id] = Math.max(0, (cant[id] || 0) + Number(b.getAttribute('data-d')));
+    $('c-' + id).textContent = cant[id];
+    error(''); pintarResumen();
+  });
+
+  $('ficha').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var nombre = $('n-nombre').value.trim(), fono = $('n-fono').value.trim();
+    if (!pintarResumen().length) return error('Elige al menos un pan.');
+    if (!nombre) return error('Falta tu nombre.');
+    if (!fono) return error('Falta tu WhatsApp para confirmarte.');
+    error('');
+    $('listo-titulo').textContent = '¡Listo, ' + nombre + '!';
+    $('listo-texto').innerHTML = 'Tu pedido quedó anotado para la <b>' + esc($('n-hora').value) + '</b>. La señora María te escribe al ' + esc(fono) + ' para confirmar.';
+    $('paso-datos').hidden = true; $('paso-listo').hidden = false;
+  });
+
+  $('otro').addEventListener('click', function () {
+    cant = {};
+    catalogo.forEach(function (p) { $('c-' + p.id).textContent = '0'; });
+    $('n-nota').value = '';
+    pintarResumen();
+    $('paso-listo').hidden = true; $('paso-datos').hidden = false;
+  });
+
+  pintarResumen();
+})();
+</script>
+</body>
+</html>
