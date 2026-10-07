@@ -568,6 +568,9 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 /* la linea de la ficha de Mercado Publico es para el Estado y en usted: en la
    escena de la panadera no le dice nada (Visu, 07-10-2026) */
 #p5:checked ~ .sala .confianza{display:none !important}
+/* el enlace a la agenda de 30 min, bajo el boton de la escena PyME */
+.envia .agenda{flex-basis:100%;font-size:13px;color:var(--azul-300);text-decoration:none;border-bottom:1px solid rgba(120,197,227,.4);width:max-content}
+.envia .agenda:hover{color:var(--crema)}
 /* y la promesa de licencias tampoco la recibe (ClAI-nte, 07-10-2026) */
 #p5:checked ~ .sala .carrete .promesa, #p5:checked ~ .sala .carrete .tope{display:none}
 #p1:checked ~ .sala label[for="p1"] .tt, #p2:checked ~ .sala label[for="p2"] .tt,
@@ -896,6 +899,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
         <div class="envia">
           <button type="submit">Pedir cotización</button><span class="cuenta" aria-live="polite"></span>
           <p class="nota">Le respondemos al correo que deje aquí.</p>
+          
         </div>
         <p class="aviso" role="status" hidden></p>
         <p class="respaldo" hidden>¿No se abrió su correo? Escríbanos a hola@compai.cl <button type="button" class="copia">Copiar el requerimiento</button></p>
@@ -935,6 +939,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
         <div class="envia">
           <button type="submit">Pedir cotización</button><span class="cuenta" aria-live="polite"></span>
           <p class="nota">Le respondemos al correo que deje aquí.</p>
+          
         </div>
         <p class="aviso" role="status" hidden></p>
         <p class="respaldo" hidden>¿No se abrió su correo? Escríbanos a hola@compai.cl <button type="button" class="copia">Copiar el requerimiento</button></p>
@@ -974,6 +979,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
         <div class="envia">
           <button type="submit">Pedir cotización</button><span class="cuenta" aria-live="polite"></span>
           <p class="nota">Le respondemos al correo que deje aquí.</p>
+          
         </div>
         <p class="aviso" role="status" hidden></p>
         <p class="respaldo" hidden>¿No se abrió su correo? Escríbanos a hola@compai.cl <button type="button" class="copia">Copiar el requerimiento</button></p>
@@ -1013,6 +1019,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
         <div class="envia">
           <button type="submit">Pedir cotización</button><span class="cuenta" aria-live="polite"></span>
           <p class="nota">Le respondemos al correo que deje aquí.</p>
+          
         </div>
         <p class="aviso" role="status" hidden></p>
         <p class="respaldo" hidden>¿No se abrió su correo? Escríbanos a hola@compai.cl <button type="button" class="copia">Copiar el requerimiento</button></p>
@@ -1032,11 +1039,11 @@ html.hdr-chico .brand .logo{transform:scale(.737);
           <legend>¿Qué necesita tu negocio?</legend>
           <ul class="items">
           <li><div class="it"><input type="checkbox" id="i05-pista" name="item" value="pista" data-nombre="Pista: apareces">
-            <label class="tx" for="i05-pista"><span class="nm">Pista: apareces</span><span class="dt">Una página con tu nombre, lo que vendes y botón de WhatsApp</span></label></div></li>
+            <label class="tx" for="i05-pista"><span class="nm">Pista: apareces</span><span class="dt">Una página con tu nombre, lo que vendes y botón de WhatsApp</span><span class="px">desde $500.000 con IVA</span></label></div></li>
           <li><div class="it"><input type="checkbox" id="i05-nodo" name="item" value="nodo" data-nombre="Nodo: apareces y recibes">
-            <label class="tx" for="i05-nodo"><span class="nm">Nodo: apareces y recibes</span><span class="dt">Catálogo con fotos, y el pedido te llega escrito a un solo lugar</span></label></div></li>
+            <label class="tx" for="i05-nodo"><span class="nm">Nodo: apareces y recibes</span><span class="dt">Catálogo con fotos, y el pedido te llega escrito a un solo lugar</span><span class="px">desde $1.000.000 con IVA</span></label></div></li>
           <li><div class="it"><input type="checkbox" id="i05-nucleo" name="item" value="nucleo" data-nombre="Núcleo: apareces, recibes y ordenas">
-            <label class="tx" for="i05-nucleo"><span class="nm">Núcleo: apareces, recibes y ordenas</span><span class="dt">Cada pedido queda guardado: quién, qué y para cuándo</span></label></div></li>
+            <label class="tx" for="i05-nucleo"><span class="nm">Núcleo: apareces, recibes y ordenas</span><span class="dt">Cada pedido queda guardado: quién, qué y para cuándo</span><span class="px">desde $2.713.200 con IVA</span></label></div></li>
           </ul>
         </fieldset>
         <div class="quien">
@@ -1044,23 +1051,24 @@ html.hdr-chico .brand .logo{transform:scale(.737);
           <label>Tu negocio<input name="organismo" autocomplete="organization" required maxlength="120" placeholder="Ej.: Panadería La Espiga"></label>
           <label>Nombre<input name="nombre" autocomplete="name" required maxlength="80"></label>
           <label>Correo<input name="correo" type="email" autocomplete="email" required maxlength="120"></label>
-          <label>Teléfono<input name="telefono" type="tel" autocomplete="tel" maxlength="30"></label>
+          <label>WhatsApp<input name="telefono" type="tel" autocomplete="tel" maxlength="30" required placeholder="+56 9 …"></label>
           <label>¿Para cuándo?<input name="plazo" maxlength="60" placeholder="Ej.: antes de diciembre"></label>
           
           <span class="trampa" aria-hidden="true"><input name="sitioweb" tabindex="-1" autocomplete="off"></span>
         </div>
         <div class="envia">
           <button type="submit">Pedir cotización</button><span class="cuenta" aria-live="polite"></span>
-          <p class="nota">Te respondemos al correo que dejes aquí.</p>
+          <p class="nota">Te contestamos por WhatsApp. La mantención mensual va aparte y es opcional.</p>
+          
         </div>
         <p class="aviso" role="status" hidden></p>
-        <p class="respaldo" hidden>¿No se abrió tu correo? Escríbenos a hola@compai.cl <button type="button" class="copia">Copiar el pedido</button></p>
+        <p class="respaldo" hidden>¿No se abrió WhatsApp? Escríbenos al +56 9 6246 9977 <button type="button" class="copia">Copiar el pedido</button></p>
       </form>
     </div>
     <p class="confianza abajo">Antes de emitir la orden de compra, revise si estamos hábiles. La ficha es pública. <a href="https://proveedor.mercadopublico.cl/ficha/78.491.451-8" target="_blank" rel="noopener">Ver la ficha de CompAI en Mercado Público →</a></p>
   </div>
 </main>
-<script>window.ESCENAS={"formulario":{"titulo_quien":"¿A quién le enviamos la cotización?","cta":"Pedir cotización","nota":"Le respondemos al correo que deje aquí.","exito":"Listo, nos llegó. Le respondemos a {correo}. Si quiere adjuntar bases u orden de compra, se abrió su correo.","error":"No quedó registrado, pero le abrimos su correo con el requerimiento escrito: envíelo desde ahí.","vacio":"Marque al menos una.","sin_institucion":"Falta la institución.","faltan":"Falta el nombre o el correo.","plazo":{"etiqueta":"¿Para cuándo?","placeholder":"Ej.: antes del 30 de octubre","obligatorio":false,"tipo":"texto libre, no selector de fecha"},"institucion":{"etiqueta":"Institución","placeholder":"Ej.: Municipalidad de …","obligatorio":true},"respaldo":{"linea":"¿No se abrió su correo? Escríbanos a hola@compai.cl","boton_copiar":"Copiar el requerimiento","copiado":"Copiado. Péguelo en un correo a hola@compai.cl"},"cuerpo":"Estimados:\n\nDesde {institucion} solicitamos cotización por:\n\n{items}\n\nLo necesitamos {plazo}.\n\nCódigo de la compra: {codigo}\n\nPor favor indicar valor neto, IVA y la glosa para la orden de compra.\n\nSaludos cordiales,\n\n\n— Enviado desde compai.cl/portafolio · {escena}","codigo":{"etiqueta":"Código de Compra Ágil, si ya la publicó","placeholder":"Ej.: 1234-56-COT26"},"correo_malo":"Revise el correo: así no le llega la respuesta."},"por":{"05":{"titulo_quien":"¿A quién le escribimos?","cta":"Pedir cotización","nota":"Te respondemos al correo que dejes aquí.","exito":"Listo, nos llegó. Te respondemos a {correo}.","error":"No quedó registrado, pero te abrimos tu correo con el pedido escrito: envíalo desde ahí.","vacio":"Marca al menos uno.","sin_institucion":"Falta el nombre de tu negocio.","faltan":"Falta tu nombre o tu correo.","plazo":{"etiqueta":"¿Para cuándo?","placeholder":"Ej.: antes de diciembre","obligatorio":false,"tipo":"texto libre, no selector de fecha"},"institucion":{"etiqueta":"Tu negocio","placeholder":"Ej.: Panadería La Espiga","obligatorio":true},"respaldo":{"linea":"¿No se abrió tu correo? Escríbenos a hola@compai.cl","boton_copiar":"Copiar el pedido","copiado":"Copiado. Pégalo en un correo a hola@compai.cl"},"cuerpo":"Hola:\n\nTengo {institucion} y me interesa:\n\n{items}\n\nLo necesito {plazo}.\n\nSaludos,\n\n\n— Enviado desde compai.cl/portafolio · {escena}","codigo":null,"correo_malo":"Revisa el correo: así no te llega la respuesta."}},"endpoint":"https://script.google.com/macros/s/AKfycbxiRLWaLHDVNm99KXKboz7DxslZeUtbl8Rq36MJ3FFuiRfNqpACklvcp7pfX-y5F-M8/exec"};</script>
+<script>window.ESCENAS={"formulario":{"titulo_quien":"¿A quién le enviamos la cotización?","cta":"Pedir cotización","nota":"Le respondemos al correo que deje aquí.","exito":"Listo, nos llegó. Le respondemos a {correo}. Si quiere adjuntar bases u orden de compra, se abrió su correo.","error":"No quedó registrado, pero le abrimos su correo con el requerimiento escrito: envíelo desde ahí.","vacio":"Marque al menos una.","sin_institucion":"Falta la institución.","faltan":"Falta el nombre o el correo.","plazo":{"etiqueta":"¿Para cuándo?","placeholder":"Ej.: antes del 30 de octubre","obligatorio":false,"tipo":"texto libre, no selector de fecha"},"institucion":{"etiqueta":"Institución","placeholder":"Ej.: Municipalidad de …","obligatorio":true},"respaldo":{"linea":"¿No se abrió su correo? Escríbanos a hola@compai.cl","boton_copiar":"Copiar el requerimiento","copiado":"Copiado. Péguelo en un correo a hola@compai.cl"},"cuerpo":"Estimados:\n\nDesde {institucion} solicitamos cotización por:\n\n{items}\n\nLo necesitamos {plazo}.\n\nCódigo de la compra: {codigo}\n\nPor favor indicar valor neto, IVA y la glosa para la orden de compra.\n\nSaludos cordiales,\n\n\n— Enviado desde compai.cl/portafolio · {escena}","codigo":{"etiqueta":"Código de Compra Ágil, si ya la publicó","placeholder":"Ej.: 1234-56-COT26"},"correo_malo":"Revise el correo: así no le llega la respuesta."},"por":{"05":{"titulo_quien":"¿A quién le escribimos?","cta":"Pedir cotización","nota":"Te contestamos por WhatsApp. La mantención mensual va aparte y es opcional.","exito":"Listo, nos llegó. Se abrió WhatsApp con tu pedido escrito: envíalo y te contestamos por ahí.","error":"No quedó registrado, pero se abrió WhatsApp con tu pedido escrito: envíalo desde ahí.","vacio":"Marca al menos uno.","sin_institucion":"Falta el nombre de tu negocio.","faltan":"Falta tu nombre o tu WhatsApp.","plazo":{"etiqueta":"¿Para cuándo?","placeholder":"Ej.: antes de diciembre","obligatorio":false,"tipo":"texto libre, no selector de fecha"},"institucion":{"etiqueta":"Tu negocio","placeholder":"Ej.: Panadería La Espiga","obligatorio":true},"respaldo":{"linea":"¿No se abrió WhatsApp? Escríbenos al +56 9 6246 9977","boton_copiar":"Copiar el pedido","copiado":"Copiado. Pégalo en un WhatsApp al +56 9 6246 9977"},"cuerpo":"Hola:\n\nTengo {institucion} y me interesa:\n\n{items}\n\nLo necesito {plazo}.\n\nSaludos,\n\n\n— Enviado desde compai.cl/portafolio · {escena}","codigo":null,"correo_malo":"Revisa el correo: así no te llega la respuesta.","canal":"whatsapp","whatsapp":"https://wa.me/56962469977","telefono":{"etiqueta":"WhatsApp","placeholder":"+56 9 …","obligatorio":true},"agenda_cta":"O agenda 30 min de asesoría, sin costo →"}},"endpoint":"https://script.google.com/macros/s/AKfycbxiRLWaLHDVNm99KXKboz7DxslZeUtbl8Rq36MJ3FFuiRfNqpACklvcp7pfX-y5F-M8/exec"};</script>
 <!-- ESCENAS:FIN -->
 
 <!-- ================= LAS TRES LINEAS, CONSTRUIDAS =================
@@ -1269,6 +1277,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
       if(d.sitioweb) return;
       if(!d.organismo && (F.institucion || {}).obligatorio !== false){ muestra(F.sin_institucion, true); return; }
       if(!d.nombre || !d.correo){ muestra(F.faltan, true); return; }
+      if((F.telefono || {}).obligatorio && !d.telefono){ muestra(F.faltan, true); return; }
       if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.correo)){ muestra(F.correo_malo, true); return; }
 
       var items = marcados.map(function(c){
@@ -1292,7 +1301,10 @@ html.hdr-chico .brand .logo{transform:scale(.737);
       texto = "Para: hola@compai.cl\nAsunto: " + asunto + "\n\n" + cuerpo;
       var abreCorreo = function(){
         resp.hidden = false;
-        location.href = "mailto:hola@compai.cl?subject=" + encodeURIComponent(asunto) + "&body=" + encodeURIComponent(cuerpo);
+        /* la panadera vive en WhatsApp: su escena abre WhatsApp con el pedido
+           escrito, no el correo (Sebastian, 07-10-2026) */
+        if(F.canal === "whatsapp" && F.whatsapp) location.href = F.whatsapp + "?text=" + encodeURIComponent(cuerpo);
+        else location.href = "mailto:hola@compai.cl?subject=" + encodeURIComponent(asunto) + "&body=" + encodeURIComponent(cuerpo);
       };
       if(!D.endpoint){ abreCorreo(); muestra(rellena(F.exito, d)); return; }
       btn.disabled = true;

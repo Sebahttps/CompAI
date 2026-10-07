@@ -454,3 +454,10 @@ h2.t{font-family:var(--display);font-variation-settings:"wdth" 112;font-weight:7
 }
 @media (prefers-reduced-motion:reduce){.lamina{transition:none}}
 .hoja .h-fila .h-alc .h-barras{display:flex;margin-top:0}
+
+/* PyME con precio «desde» y agenda (07-10-2026) */
+.hoja .h-fila.b4{grid-template-columns:minmax(0,1fr) 92px minmax(0,1.2fr) 108px}
+.hoja .h-desde{font-family:var(--h-cour);font-size:15px;color:var(--h-terra);white-space:nowrap;text-align:right}
+.hoja .h-cab.b4 span:last-child{text-align:right}
+.hoja .h-agenda{display:inline-block;margin:16px 0 0 18px;color:var(--h-azul);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+@media (max-width:640px){.hoja .h-fila.b4{grid-template-columns:1fr}.hoja .h-desde{text-align:left}.hoja .h-agenda{margin-left:0;display:block}}

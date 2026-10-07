@@ -306,13 +306,15 @@
       const h = s.hoja || {};
       $('#lamCod').textContent = `/ ${s.codigo} — ${s.titulo}`;
       const tb = h.tabla || { cols: [], filas: [] };
-      const conBarras = !!tb.barras;
-      const filas = (tb.filas || []).map(f => `<div class="h-fila${conBarras ? ' b3' : ''}">
+      const conBarras = !!tb.barras, conDesde = (tb.filas || []).some(f => f.desde);
+      const cls = conBarras ? (conDesde ? ' b4' : ' b3') : '';
+      const filas = (tb.filas || []).map(f => `<div class="h-fila${cls}">
           <div><b>${esc(f.nombre)}</b><span>${esc(f.para)}</span></div>
           ${conBarras ? `<div class="h-alc">${barras(f.n || 0)}</div>` : ''}
           <div class="h-rec">${esc(f.recibe)}</div>
+          ${conDesde ? `<div class="h-desde">${esc(f.desde || '')}</div>` : ''}
         </div>`).join('');
-      const cab = `<div class="h-fila h-cab${conBarras ? ' b3' : ''}">${(tb.cols || []).map(c => `<span>${esc(c)}</span>`).join('')}</div>`;
+      const cab = `<div class="h-fila h-cab${cls}">${(tb.cols || []).map(c => `<span>${esc(c)}</span>`).join('')}</div>`;
       const pasos = (h.pasos || []).map((p, i) => `<li><b>${String(i + 1).padStart(2, '0')}</b><span>${esc(p)}</span></li>`).join('');
       const sig = h.siguiente || {};
       $('#lamHoja').innerHTML = `
@@ -324,7 +326,8 @@
         ${h.nota ? `<p class="h-nota">${fuerte(h.nota)}</p>` : ''}
         ${pasos ? `<p class="h-rot">CÓMO AVANZA</p><ol class="h-pasos">${pasos}</ol>` : ''}
         <div class="h-como h-sig"><p class="h-rot azul">EL SIGUIENTE PASO</p><p>${esc(sig.texto)}</p>
-          <a class="lam-cta" id="lamCta" href="${esc(sig.url || '#inbox')}">${esc(sig.cta || s.cta || 'Cotizar')} &rarr;</a></div>
+          <a class="lam-cta" id="lamCta" href="${esc(sig.url || '#inbox')}"${/^https?:/.test(sig.url || '') ? ' target="_blank" rel="noopener"' : ''}>${esc(sig.cta || s.cta || 'Cotizar')} &rarr;</a>
+          ${sig.agenda_cta && sig.agenda_url ? `<a class="h-agenda" href="${esc(sig.agenda_url)}" target="_blank" rel="noopener">${esc(sig.agenda_cta)} &rarr;</a>` : ''}</div>
         <p class="h-pie">COMPAI GLOBAL SOLUTIONS SpA &middot; compai.cl &middot; Santiago, Chile</p>`;
       // el boton que manda al formulario de la misma pagina cierra la lamina
       const cta = $('#lamCta');
