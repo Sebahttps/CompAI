@@ -402,3 +402,55 @@ h2.t{font-family:var(--display);font-variation-settings:"wdth" 112;font-weight:7
   .ap{opacity:1;transform:none}
   .ofit .cur{display:none}
 }
+
+/* LA LAMINA COMO HOJA DE PROPUESTA (07-10-2026)
+   Sebastian: al tocar el titular o el icono de / 04, la lamina que se
+   despliega hacia un lado trae informacion acotada y con la forma de la
+   propuesta comercial PC-2026-001. Entra desde la derecha y lo que hay
+   adentro es una hoja: papel claro, rotulos en Courier, titular en negrita,
+   bloque con filete azul, tabla de tres y el siguiente paso. Sin precios. */
+.lamina{left:auto;width:min(920px,100vw);transform:translateX(100%);
+  box-shadow:0 0 0 100vmax rgba(0,0,0,0);transition:transform .52s cubic-bezier(.16,.84,.26,1),box-shadow .52s}
+.lamina.viva{box-shadow:0 0 0 100vmax rgba(0,0,0,.62)}
+.lam-cuerpo{max-width:none;padding:8px clamp(14px,3vw,40px) clamp(48px,10vh,96px)}
+.hoja{--h-azul:#0F5C7A;--h-terra:#95521F;--h-gris:#6B7370;--h-tinta:#1A1D1B;--h-linea:#E2E5E3;
+  --h-cour:'Courier New',Courier,var(--mono),monospace;
+  background:#FBFAF7;color:var(--h-tinta);border-radius:4px;box-shadow:0 18px 60px rgba(0,0,0,.45);
+  padding:clamp(26px,5vw,60px) clamp(20px,5.4vw,64px);font-family:Arial,Helvetica,sans-serif}
+.hoja .h-kick,.hoja .h-rot,.hoja .h-pie{font-family:var(--h-cour);font-size:12px;letter-spacing:.11em;color:var(--h-gris);margin:0}
+.hoja h2{font-family:Arial,Helvetica,sans-serif;font-variation-settings:normal;font-weight:700;color:var(--h-tinta);
+  font-size:clamp(24px,3.4vw,32px);line-height:1.22;letter-spacing:0;margin:10px 0 14px;text-wrap:balance}
+.hoja .h-lead{font-size:clamp(17px,2vw,20px);line-height:1.45;margin:0 0 26px;color:var(--h-tinta);max-width:58ch}
+.hoja .h-como{border-left:4px solid var(--h-azul);padding-left:20px;margin:0 0 30px}
+.hoja .h-como p:last-of-type{margin:6px 0 0;font-size:17px;line-height:1.5}
+.hoja .h-rot.azul{color:var(--h-azul)}
+.hoja strong{font-weight:700}
+.hoja .h-tabla{margin:10px 0 0;font-size:15px}
+.hoja .h-fila{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:18px;
+  padding:12px 0;border-top:1px solid var(--h-linea)}
+.hoja .h-fila.b3{grid-template-columns:minmax(0,1fr) 92px minmax(0,1.2fr)}
+.hoja .h-cab{border-top:0;padding:0 0 6px}
+.hoja .h-cab span{font-family:var(--h-cour);font-size:11px;letter-spacing:.11em;color:var(--h-gris)}
+.hoja .h-fila b{display:block;font-size:16px;line-height:1.25}
+.hoja .h-fila div span{display:block;margin-top:4px;font-size:14px;line-height:1.4;color:var(--h-gris)}
+.hoja .h-rec{line-height:1.45}
+.hoja .h-barras{display:flex;gap:4px;padding-top:4px}
+.hoja .h-barras i{display:block;height:12px;background:var(--h-azul)}
+.hoja .h-barras i:nth-child(1){width:36px}.hoja .h-barras i:nth-child(2){width:28px}.hoja .h-barras i:nth-child(3){width:20px}
+.hoja .h-barras i.off{background:transparent}
+.hoja .h-nota{margin:16px 0 0;font-size:14.5px;line-height:1.5;color:var(--h-gris)}
+.hoja .h-nota strong{color:var(--h-tinta)}
+.hoja .h-tabla + .h-rot,.hoja .h-nota + .h-rot{margin-top:30px}
+.hoja .h-pasos{list-style:none;margin:10px 0 30px;padding:0;display:grid;gap:10px}
+.hoja .h-pasos li{display:grid;grid-template-columns:34px 1fr;font-size:15.5px;line-height:1.45}
+.hoja .h-pasos b{font-family:var(--h-cour);color:var(--h-azul)}
+.hoja .h-sig{margin:0}
+.hoja .lam-cta{margin-top:18px;background:var(--h-terra);color:#fff}
+.hoja .h-pie{margin-top:34px;padding-top:14px;border-top:1px solid var(--h-linea);font-size:11px}
+@media (max-width:640px){
+  .hoja .h-fila,.hoja .h-fila.b3{grid-template-columns:1fr;gap:6px}
+  .hoja .h-cab{display:none}
+  .hoja .h-alc{order:-1}
+}
+@media (prefers-reduced-motion:reduce){.lamina{transition:none}}
+.hoja .h-fila .h-alc .h-barras{display:flex;margin-top:0}

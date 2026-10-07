@@ -295,21 +295,40 @@
     const porSlug = Object.fromEntries(servicios.map(s => [s.slug, s]));
     let activa = null, foco = null, y0 = null;
 
+    // La lamina es una hoja con la forma de la propuesta comercial: rotulo,
+    // titular, bajada, «como trabajamos», tabla de tres, pasos y siguiente
+    // paso. El texto es nuestro (servicios.json); igual se escapa, y **x**
+    // es lo unico que se convierte en negrita.
+    const esc = t => String(t == null ? '' : t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const fuerte = t => esc(t).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    const barras = n => `<span class="h-barras" aria-label="${n} de 3">${[1, 2, 3].map(i => `<i${i > n ? ' class="off"' : ''}></i>`).join('')}</span>`;
     function pinta(s) {
+      const h = s.hoja || {};
       $('#lamCod').textContent = `/ ${s.codigo} — ${s.titulo}`;
-      $('#lamEt').textContent = s.etiqueta;
-      $('#lamTit').textContent = s.titulo;
-      $('#lamBaj').textContent = s.bajada;
-      $('#lamTexto').innerHTML = (s.lamina || []).map(p => `<p>${p}</p>`).join('');
-      $('#lamVin').innerHTML = (s.vinetas || []).map(v => `<li>${v}</li>`).join('');
-      const img = $('#lamImg');
-      if (s.imagen) { img.src = s.imagen; img.alt = s.imagen_alt || s.titulo; img.parentElement.hidden = false; }
-      else img.parentElement.hidden = true;
+      const tb = h.tabla || { cols: [], filas: [] };
+      const conBarras = !!tb.barras;
+      const filas = (tb.filas || []).map(f => `<div class="h-fila${conBarras ? ' b3' : ''}">
+          <div><b>${esc(f.nombre)}</b><span>${esc(f.para)}</span></div>
+          ${conBarras ? `<div class="h-alc">${barras(f.n || 0)}</div>` : ''}
+          <div class="h-rec">${esc(f.recibe)}</div>
+        </div>`).join('');
+      const cab = `<div class="h-fila h-cab${conBarras ? ' b3' : ''}">${(tb.cols || []).map(c => `<span>${esc(c)}</span>`).join('')}</div>`;
+      const pasos = (h.pasos || []).map((p, i) => `<li><b>${String(i + 1).padStart(2, '0')}</b><span>${esc(p)}</span></li>`).join('');
+      const sig = h.siguiente || {};
+      $('#lamHoja').innerHTML = `
+        <p class="h-kick">${esc(h.kicker)}</p>
+        <h2 id="lamTit">${esc(h.titulo || s.titulo)}</h2>
+        <p class="h-lead">${esc(h.lead || s.bajada)}</p>
+        ${h.como ? `<div class="h-como"><p class="h-rot azul">CÓMO TRABAJAMOS</p><p>${fuerte(h.como)}</p></div>` : ''}
+        ${filas ? `<p class="h-rot">${esc(tb.rotulo)}</p><div class="h-tabla">${cab}${filas}</div>` : ''}
+        ${h.nota ? `<p class="h-nota">${fuerte(h.nota)}</p>` : ''}
+        ${pasos ? `<p class="h-rot">CÓMO AVANZA</p><ol class="h-pasos">${pasos}</ol>` : ''}
+        <div class="h-como h-sig"><p class="h-rot azul">EL SIGUIENTE PASO</p><p>${esc(sig.texto)}</p>
+          <a class="lam-cta" id="lamCta" href="${esc(sig.url || '#inbox')}">${esc(sig.cta || s.cta || 'Cotizar')} &rarr;</a></div>
+        <p class="h-pie">COMPAI GLOBAL SOLUTIONS SpA &middot; compai.cl &middot; Santiago, Chile</p>`;
+      // el boton que manda al formulario de la misma pagina cierra la lamina
       const cta = $('#lamCta');
-      cta.textContent = s.cta || 'Cotizar';
-      // una lamina puede mandar a otra pagina en vez de al formulario
-      cta.setAttribute('href', s.cta_url || '#inbox');
-      cta.toggleAttribute('target', !!s.cta_url && s.cta_url.startsWith('http'));
+      if (cta.getAttribute('href').startsWith('#')) cta.addEventListener('click', () => $('#lamX').click());
     }
     function abre(slug, empujarUrl = true) {
       const s = porSlug[slug]; if (!s) return;

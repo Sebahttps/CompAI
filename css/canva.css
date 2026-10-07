@@ -684,3 +684,6 @@ html.foto .cv .kintranet.anim{opacity:.4}
 /* rotulo de los servicios PyME sobre las tres bandas (07-10-2026) */
 .cv .banda-rot{font-family:var(--plex);font-weight:200;color:#fff;white-space:nowrap;
   font-size:calc(24*var(--u));line-height:1.21;letter-spacing:.122em;text-transform:uppercase}
+/* la placa de / 04 tambien abre la lamina (07-10-2026) */
+.cv .placa[data-slug]{cursor:pointer;transition:border-color .2s}
+.cv .placa[data-slug]:hover{border-color:rgba(46,143,181,.6)}

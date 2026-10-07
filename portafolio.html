@@ -550,7 +550,8 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   color:var(--crema); margin:0 0 var(--s5)}
 .sel{position:absolute; top:0; left:0; width:1px; height:1px; opacity:0; pointer-events:none}
 #p1:focus-visible ~ .sala label[for="p1"], #p2:focus-visible ~ .sala label[for="p2"],
-#p3:focus-visible ~ .sala label[for="p3"], #p4:focus-visible ~ .sala label[for="p4"]{
+#p3:focus-visible ~ .sala label[for="p3"], #p4:focus-visible ~ .sala label[for="p4"],
+#p5:focus-visible ~ .sala label[for="p5"]{
   outline:2px solid var(--azul); outline-offset:3px}
 /* LA FRANJA DE CONFIANZA: lo que era la escena 05. Verificar la ficha es el
    tramite, no el motivo; por eso es una linea y no una escena. */
@@ -562,13 +563,22 @@ html.hdr-chico .brand .logo{transform:scale(.737);
    script lo pausa, asi que no hay cuatro bucles decodificando a la vez. */
 .pieza{display:none}
 #p1:checked ~ .sala .pieza[data-p="1"], #p2:checked ~ .sala .pieza[data-p="2"],
-#p3:checked ~ .sala .pieza[data-p="3"], #p4:checked ~ .sala .pieza[data-p="4"]{display:block}
+#p3:checked ~ .sala .pieza[data-p="3"], #p4:checked ~ .sala .pieza[data-p="4"],
+#p5:checked ~ .sala .pieza[data-p="5"]{display:block}
+/* la linea de la ficha de Mercado Publico es para el Estado y en usted: en la
+   escena de la panadera no le dice nada (Visu, 07-10-2026) */
+#p5:checked ~ .sala .confianza{display:none !important}
+/* y la promesa de licencias tampoco la recibe (ClAI-nte, 07-10-2026) */
+#p5:checked ~ .sala .carrete .promesa, #p5:checked ~ .sala .carrete .tope{display:none}
 #p1:checked ~ .sala label[for="p1"] .tt, #p2:checked ~ .sala label[for="p2"] .tt,
-#p3:checked ~ .sala label[for="p3"] .tt, #p4:checked ~ .sala label[for="p4"] .tt{color:var(--crema)}
+#p3:checked ~ .sala label[for="p3"] .tt, #p4:checked ~ .sala label[for="p4"] .tt,
+#p5:checked ~ .sala label[for="p5"] .tt{color:var(--crema)}
 #p1:checked ~ .sala label[for="p1"] .n, #p2:checked ~ .sala label[for="p2"] .n,
-#p3:checked ~ .sala label[for="p3"] .n, #p4:checked ~ .sala label[for="p4"] .n{color:var(--azul)}
+#p3:checked ~ .sala label[for="p3"] .n, #p4:checked ~ .sala label[for="p4"] .n,
+#p5:checked ~ .sala label[for="p5"] .n{color:var(--azul)}
 #p1:checked ~ .sala label[for="p1"]::before, #p2:checked ~ .sala label[for="p2"]::before,
-#p3:checked ~ .sala label[for="p3"]::before, #p4:checked ~ .sala label[for="p4"]::before{transform:scaleX(1)}
+#p3:checked ~ .sala label[for="p3"]::before, #p4:checked ~ .sala label[for="p4"]::before,
+#p5:checked ~ .sala label[for="p5"]::before{transform:scaleX(1)}
 
 /* ---- EL VIDEO ---- */
 .escenario{min-width:0}
@@ -653,7 +663,8 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   .carrete label::before{display:none}
   .carrete label:hover{padding-left:11px}
   #p1:checked ~ .sala label[for="p1"], #p2:checked ~ .sala label[for="p2"],
-  #p3:checked ~ .sala label[for="p3"], #p4:checked ~ .sala label[for="p4"]{border-color:var(--azul)}
+  #p3:checked ~ .sala label[for="p3"], #p4:checked ~ .sala label[for="p4"],
+  #p5:checked ~ .sala label[for="p5"]{border-color:var(--azul)}
   .confianza{display:none}
   .confianza.abajo{display:block}
   .pide{padding:var(--s4)}
@@ -808,6 +819,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 <input type="radio" name="pieza" id="p2" class="sel">
 <input type="radio" name="pieza" id="p3" class="sel">
 <input type="radio" name="pieza" id="p4" class="sel">
+<input type="radio" name="pieza" id="p5" class="sel">
 
 <main class="sala" id="servicios">
 
@@ -821,6 +833,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
         <li><label for="p2"><span class="n">02</span><span class="tt">El respaldo no estaba en el precio</span></label></li>
         <li><label for="p3"><span class="n">03</span><span class="tt">Llegó, se recibió, y ahí quedó</span></label></li>
         <li><label for="p4"><span class="n">04</span><span class="tt">El reporte que se arma a mano cada mes</span></label></li>
+        <li><label for="p5"><span class="n">05</span><span class="tt">Nadie encuentra la panadería</span></label></li>
       </ul>
       <p class="confianza">Antes de emitir la orden de compra, revise si estamos hábiles. La ficha es pública. <a href="https://proveedor.mercadopublico.cl/ficha/78.491.451-8" target="_blank" rel="noopener">Ver la ficha de CompAI en Mercado Público →</a></p>
     </div>
@@ -836,7 +849,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
         <h2>«La licencia venció el martes»</h2>
         <p>El lunes las planillas se abrieron en solo lectura. La renovación estaba en el presupuesto; nadie alcanzó a pedirla.</p>
       </div>
-      <form class="pide" data-titulo="La licencia venció el martes" data-asunto="Solicitud de cotización · Licencias · {institucion}" action="mailto:hola@compai.cl" method="post" enctype="text/plain">
+      <form class="pide" data-id="01" data-titulo="La licencia venció el martes" data-asunto="Solicitud de cotización · Licencias · {institucion}" action="mailto:hola@compai.cl" method="post" enctype="text/plain">
         <fieldset>
           <legend>¿Cuáles vencen?</legend>
           <ul class="items">
@@ -897,7 +910,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
         <h2>«El respaldo no estaba en el precio»</h2>
         <p>El precio publicado era el de la caja vacía. El respaldo apareció después de la orden de compra, cuando corregirla ya era otro trámite.</p>
       </div>
-      <form class="pide" data-titulo="El respaldo no estaba en el precio" data-asunto="Solicitud de cotización · Especificación · {institucion}" action="mailto:hola@compai.cl" method="post" enctype="text/plain">
+      <form class="pide" data-id="02" data-titulo="El respaldo no estaba en el precio" data-asunto="Solicitud de cotización · Especificación · {institucion}" action="mailto:hola@compai.cl" method="post" enctype="text/plain">
         <fieldset>
           <legend>¿Qué necesita tener escrito antes de comprar?</legend>
           <ul class="items">
@@ -936,7 +949,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
         <h2>«Llegó, se recibió, y ahí quedó»</h2>
         <p>La clave llegó por correo y los equipos siguen en caja. La recepción conforme está firmada y nadie los ha prendido.</p>
       </div>
-      <form class="pide" data-titulo="Llegó, se recibió, y ahí quedó" data-asunto="Solicitud de cotización · Puesta en marcha · {institucion}" action="mailto:hola@compai.cl" method="post" enctype="text/plain">
+      <form class="pide" data-id="03" data-titulo="Llegó, se recibió, y ahí quedó" data-asunto="Solicitud de cotización · Puesta en marcha · {institucion}" action="mailto:hola@compai.cl" method="post" enctype="text/plain">
         <fieldset>
           <legend>¿Qué quedó a medias?</legend>
           <ul class="items">
@@ -975,7 +988,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
         <h2>«El reporte que se arma a mano cada mes»</h2>
         <p>A fin de mes alguien copia del sistema a una planilla, y de la planilla a un correo. Si esa persona sale de vacaciones, el reporte también.</p>
       </div>
-      <form class="pide" data-titulo="El reporte que se arma a mano cada mes" data-asunto="Solicitud de cotización · Automatización · {institucion}" action="mailto:hola@compai.cl" method="post" enctype="text/plain">
+      <form class="pide" data-id="04" data-titulo="El reporte que se arma a mano cada mes" data-asunto="Solicitud de cotización · Automatización · {institucion}" action="mailto:hola@compai.cl" method="post" enctype="text/plain">
         <fieldset>
           <legend>¿Qué se sigue haciendo a mano?</legend>
           <ul class="items">
@@ -1005,10 +1018,49 @@ html.hdr-chico .brand .logo{transform:scale(.737);
         <p class="respaldo" hidden>¿No se abrió su correo? Escríbanos a hola@compai.cl <button type="button" class="copia">Copiar el requerimiento</button></p>
       </form>
     </div>
+
+    <!-- ---------- 05 ---------- -->
+    <div class="pieza" data-p="5">
+      <figure class="marco"><video muted loop playsinline preload="none" poster="media/escena-05.webp" aria-label="Cómic animado: la vecina busca pan amasado en el celular y no aparece nada; la panadera se pierde entre audios de WhatsApp: «¿Quién me pidió las hallullas?»; al final aparece, los pedidos le llegan escritos a un solo lugar y queda tranquila."><source src="media/escena-05.mp4" type="video/mp4"></video></figure>
+      <div class="pieplaca">
+        <p class="linea">Servicios PyME</p>
+        <h2>«Nadie encuentra la panadería»</h2>
+        <p>El pan sale bueno. Lo que falla es lo de afuera: la vecina te busca en el celular y no apareces, y los pedidos se te pierden entre audios.</p>
+      </div>
+      <form class="pide" data-id="05" data-titulo="Nadie encuentra la panadería" data-asunto="Pista, Nodo o Núcleo · {institucion}" action="mailto:hola@compai.cl" method="post" enctype="text/plain">
+        <fieldset>
+          <legend>¿Qué necesita tu negocio?</legend>
+          <ul class="items">
+          <li><div class="it"><input type="checkbox" id="i05-pista" name="item" value="pista" data-nombre="Pista: apareces">
+            <label class="tx" for="i05-pista"><span class="nm">Pista: apareces</span><span class="dt">Una página con tu nombre, lo que vendes y botón de WhatsApp</span></label></div></li>
+          <li><div class="it"><input type="checkbox" id="i05-nodo" name="item" value="nodo" data-nombre="Nodo: apareces y recibes">
+            <label class="tx" for="i05-nodo"><span class="nm">Nodo: apareces y recibes</span><span class="dt">Catálogo con fotos, y el pedido te llega escrito a un solo lugar</span></label></div></li>
+          <li><div class="it"><input type="checkbox" id="i05-nucleo" name="item" value="nucleo" data-nombre="Núcleo: apareces, recibes y ordenas">
+            <label class="tx" for="i05-nucleo"><span class="nm">Núcleo: apareces, recibes y ordenas</span><span class="dt">Cada pedido queda guardado: quién, qué y para cuándo</span></label></div></li>
+          </ul>
+        </fieldset>
+        <div class="quien">
+          <p class="tq">¿A quién le escribimos?</p>
+          <label>Tu negocio<input name="organismo" autocomplete="organization" required maxlength="120" placeholder="Ej.: Panadería La Espiga"></label>
+          <label>Nombre<input name="nombre" autocomplete="name" required maxlength="80"></label>
+          <label>Correo<input name="correo" type="email" autocomplete="email" required maxlength="120"></label>
+          <label>Teléfono<input name="telefono" type="tel" autocomplete="tel" maxlength="30"></label>
+          <label>¿Para cuándo?<input name="plazo" maxlength="60" placeholder="Ej.: antes de diciembre"></label>
+          
+          <span class="trampa" aria-hidden="true"><input name="sitioweb" tabindex="-1" autocomplete="off"></span>
+        </div>
+        <div class="envia">
+          <button type="submit">Pedir cotización</button><span class="cuenta" aria-live="polite"></span>
+          <p class="nota">Te respondemos al correo que dejes aquí.</p>
+        </div>
+        <p class="aviso" role="status" hidden></p>
+        <p class="respaldo" hidden>¿No se abrió tu correo? Escríbenos a hola@compai.cl <button type="button" class="copia">Copiar el pedido</button></p>
+      </form>
+    </div>
     <p class="confianza abajo">Antes de emitir la orden de compra, revise si estamos hábiles. La ficha es pública. <a href="https://proveedor.mercadopublico.cl/ficha/78.491.451-8" target="_blank" rel="noopener">Ver la ficha de CompAI en Mercado Público →</a></p>
   </div>
 </main>
-<script>window.ESCENAS={"formulario":{"titulo_quien":"¿A quién le enviamos la cotización?","cta":"Pedir cotización","nota":"Le respondemos al correo que deje aquí.","exito":"Listo, nos llegó. Le respondemos a {correo}. Si quiere adjuntar bases u orden de compra, se abrió su correo.","error":"No quedó registrado, pero le abrimos su correo con el requerimiento escrito: envíelo desde ahí.","vacio":"Marque al menos una.","sin_institucion":"Falta la institución.","faltan":"Falta el nombre o el correo.","plazo":{"etiqueta":"¿Para cuándo?","placeholder":"Ej.: antes del 30 de octubre","obligatorio":false,"tipo":"texto libre, no selector de fecha"},"institucion":{"etiqueta":"Institución","placeholder":"Ej.: Municipalidad de …","obligatorio":true},"respaldo":{"linea":"¿No se abrió su correo? Escríbanos a hola@compai.cl","boton_copiar":"Copiar el requerimiento","copiado":"Copiado. Péguelo en un correo a hola@compai.cl"},"cuerpo":"Estimados:\n\nDesde {institucion} solicitamos cotización por:\n\n{items}\n\nLo necesitamos {plazo}.\n\nCódigo de la compra: {codigo}\n\nPor favor indicar valor neto, IVA y la glosa para la orden de compra.\n\nSaludos cordiales,\n\n\n— Enviado desde compai.cl/portafolio · {escena}","codigo":{"etiqueta":"Código de Compra Ágil, si ya la publicó","placeholder":"Ej.: 1234-56-COT26"},"correo_malo":"Revise el correo: así no le llega la respuesta."},"endpoint":"https://script.google.com/macros/s/AKfycbxiRLWaLHDVNm99KXKboz7DxslZeUtbl8Rq36MJ3FFuiRfNqpACklvcp7pfX-y5F-M8/exec"};</script>
+<script>window.ESCENAS={"formulario":{"titulo_quien":"¿A quién le enviamos la cotización?","cta":"Pedir cotización","nota":"Le respondemos al correo que deje aquí.","exito":"Listo, nos llegó. Le respondemos a {correo}. Si quiere adjuntar bases u orden de compra, se abrió su correo.","error":"No quedó registrado, pero le abrimos su correo con el requerimiento escrito: envíelo desde ahí.","vacio":"Marque al menos una.","sin_institucion":"Falta la institución.","faltan":"Falta el nombre o el correo.","plazo":{"etiqueta":"¿Para cuándo?","placeholder":"Ej.: antes del 30 de octubre","obligatorio":false,"tipo":"texto libre, no selector de fecha"},"institucion":{"etiqueta":"Institución","placeholder":"Ej.: Municipalidad de …","obligatorio":true},"respaldo":{"linea":"¿No se abrió su correo? Escríbanos a hola@compai.cl","boton_copiar":"Copiar el requerimiento","copiado":"Copiado. Péguelo en un correo a hola@compai.cl"},"cuerpo":"Estimados:\n\nDesde {institucion} solicitamos cotización por:\n\n{items}\n\nLo necesitamos {plazo}.\n\nCódigo de la compra: {codigo}\n\nPor favor indicar valor neto, IVA y la glosa para la orden de compra.\n\nSaludos cordiales,\n\n\n— Enviado desde compai.cl/portafolio · {escena}","codigo":{"etiqueta":"Código de Compra Ágil, si ya la publicó","placeholder":"Ej.: 1234-56-COT26"},"correo_malo":"Revise el correo: así no le llega la respuesta."},"por":{"05":{"titulo_quien":"¿A quién le escribimos?","cta":"Pedir cotización","nota":"Te respondemos al correo que dejes aquí.","exito":"Listo, nos llegó. Te respondemos a {correo}.","error":"No quedó registrado, pero te abrimos tu correo con el pedido escrito: envíalo desde ahí.","vacio":"Marca al menos uno.","sin_institucion":"Falta el nombre de tu negocio.","faltan":"Falta tu nombre o tu correo.","plazo":{"etiqueta":"¿Para cuándo?","placeholder":"Ej.: antes de diciembre","obligatorio":false,"tipo":"texto libre, no selector de fecha"},"institucion":{"etiqueta":"Tu negocio","placeholder":"Ej.: Panadería La Espiga","obligatorio":true},"respaldo":{"linea":"¿No se abrió tu correo? Escríbenos a hola@compai.cl","boton_copiar":"Copiar el pedido","copiado":"Copiado. Pégalo en un correo a hola@compai.cl"},"cuerpo":"Hola:\n\nTengo {institucion} y me interesa:\n\n{items}\n\nLo necesito {plazo}.\n\nSaludos,\n\n\n— Enviado desde compai.cl/portafolio · {escena}","codigo":null,"correo_malo":"Revisa el correo: así no te llega la respuesta."}},"endpoint":"https://script.google.com/macros/s/AKfycbxiRLWaLHDVNm99KXKboz7DxslZeUtbl8Rq36MJ3FFuiRfNqpACklvcp7pfX-y5F-M8/exec"};</script>
 <!-- ESCENAS:FIN -->
 
 <!-- ================= LAS TRES LINEAS, CONSTRUIDAS =================
@@ -1168,6 +1220,15 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   }
   document.querySelectorAll(".sel").forEach(function(r){ r.addEventListener("change", sincroniza); });
   if(quieto) document.querySelectorAll(".pieza video").forEach(function(v){ v.removeAttribute("autoplay"); v.controls = true; });
+  /* #escena-05 abre esa escena: el llamado de la panadera en el home llega
+     directo a la suya, no a la licencia del martes (veto de ClAI-nte,
+     07-10-2026). */
+  var pedida = location.hash.match(/^#escena-(\d+)$/);
+  if(pedida){ var r = document.getElementById("p" + (+pedida[1]));
+    if(r){ r.checked = true;
+      /* en el telefono el carrete es una fila que se arrastra: se trae a la vista la escena pedida */
+      var lb = document.querySelector('label[for="' + r.id + '"]'), ul = lb && lb.closest("ul");
+      if(ul) ul.scrollLeft = lb.parentElement.offsetLeft - 16; } }
   sincroniza();
 
   /* la cantidad y el «¿cual?» solo se habilitan con su casilla marcada */
@@ -1184,6 +1245,8 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   function rellena(t, d){ return String(t || "").replace(/\{(\w+)\}/g, function(_, k){ return d[k] != null ? d[k] : ""; }); }
 
   document.querySelectorAll("form.pide").forEach(function(f){
+    /* la escena puede traer su propio formulario (la 05 le habla de tu) */
+    var F = (D.por || {})[f.dataset.id] || D.formulario || {};
     var aviso = f.querySelector(".aviso"), btn = f.querySelector("button[type=submit]"),
         cuenta = f.querySelector(".cuenta"), resp = f.querySelector(".respaldo"), texto = "";
     f.noValidate = true;   /* valida el script, con mensajes propios; sin JS valida el navegador */
@@ -1204,7 +1267,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
       if(!marcados.length){ muestra(F.vacio, true); return; }
       var d = Object.fromEntries(new FormData(f).entries());
       if(d.sitioweb) return;
-      if(!d.organismo){ muestra(F.sin_institucion, true); return; }
+      if(!d.organismo && (F.institucion || {}).obligatorio !== false){ muestra(F.sin_institucion, true); return; }
       if(!d.nombre || !d.correo){ muestra(F.faltan, true); return; }
       if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.correo)){ muestra(F.correo_malo, true); return; }
 
