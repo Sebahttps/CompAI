@@ -14,8 +14,8 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>Trabajos construidos — CompAI</title>
-<meta name="description" content="Cada servicio de CompAI con el trabajo ya construido que lo prueba: un proceso que corre solo todos los dias, una especificacion completa y un panel que opera en una sola pantalla.">
+<title>Catálogo de servicios y precios — CompAI</title>
+<meta name="description" content="Cinco historias que pasan de verdad, con lo que se pide debajo y su valor publicado. Marque lo que necesita y le enviamos la cotización formal.">
 <meta name="theme-color" content="#08090C">
 <script>window.__err=[];addEventListener('error',function(e){window.__err.push(String(e.message||e))});</script>
 <style>
@@ -54,7 +54,7 @@ body{margin:0; background:var(--ink-900); color:var(--crema);
   font-family:var(--font-body); font-size:16px; line-height:1.6;
   -webkit-font-smoothing:antialiased; overflow-x:clip}
 
-/* el plexus, mas apagado que en la portada: aqui el sujeto son las piezas */
+/* el circuito de / 04, apagado: aqui el sujeto son las historias */
 #bg{position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; background:var(--ink-900)}
 #bg video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.34;
   filter:brightness(.7) sepia(.24) saturate(1.4) hue-rotate(-12deg)}
@@ -761,12 +761,56 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   .tj:nth-of-type(even){grid-template-columns:minmax(0,1.4fr) minmax(0,.86fr)}
   .tj:nth-of-type(even) .texto{order:2}
 }
+
+/* ===== EL MENU DE LA PORTADA (07-10-2026) =====
+   Copia de css/sitio.css (.nodo y .menu). Si cambia alla, cambia aca. */
+@font-face{font-family:Archivo;font-style:normal;font-weight:300 800;font-display:swap;src:url(css/fuentes/archivo-var-latin.woff2) format('woff2')}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:swap;src:url(css/fuentes/plexmono-400-latin.woff2) format('woff2')}
+.nodo,.menu{--m-sol:#FFB25C;--m-crema:#F5F0E4;--m-crema2:#B8AEA2;--m-linea:#2C221B;
+  --m-display:Archivo,"Arial Narrow",Arial,sans-serif;--m-mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace}
+.nodo{position:relative;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;border:0;padding:0;cursor:pointer;
+  background:radial-gradient(circle,rgba(11,8,6,.72) 55%,transparent 72%)}
+.nodo canvas{width:64px;height:64px;display:block}
+.nodo .lbl{position:absolute;right:72px;top:50%;transform:translateY(-50%);white-space:nowrap;color:var(--m-crema2);opacity:0;transition:opacity .25s;
+  font-family:var(--m-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.nodo:hover .lbl,.nodo:focus-visible .lbl,.mn-abierto .nodo .lbl{opacity:1}
+.menu{position:fixed;inset:0;z-index:55;background:rgba(11,8,6,.975);color:var(--m-crema);
+  display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);
+  padding:calc(130px + env(safe-area-inset-top,0px)) clamp(16px,5vw,80px) calc(40px + env(safe-area-inset-bottom,0px));
+  overflow-y:auto;opacity:0;visibility:hidden;transition:opacity .35s,visibility 0s .35s}
+.mn-abierto .menu{opacity:1;visibility:visible;transition:opacity .35s}
+.mn-abierto{overflow:hidden}
+.menu .c{font-family:var(--m-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--m-crema2);font-weight:300}
+.menu ol{list-style:none;margin:0;padding:0;display:grid;gap:clamp(2px,.8vh,10px);align-content:start}
+.menu li{transform:translateY(18px);opacity:0;transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .5s}
+.mn-abierto .menu li{transform:none;opacity:1}
+.menu a{color:inherit}
+.menu a.mit{display:grid;grid-template-columns:clamp(150px,16vw,220px) 1fr;align-items:center;gap:16px;text-decoration:none;padding:4px 0}
+.menu a.mit b{font-family:var(--m-display);font-variation-settings:"wdth" 118;font-weight:700;
+  font-size:clamp(28px,4.2vw,58px);white-space:nowrap;line-height:1.02;letter-spacing:-.01em;transition:color .2s,transform .2s;display:inline-block}
+.menu a.mit:hover b,.menu a.mit:focus-visible b{color:var(--m-sol);transform:translateX(8px)}
+.menu aside{display:grid;gap:28px;align-content:end;border-left:1px solid var(--m-linea);padding-left:clamp(16px,3vw,40px)}
+.menu aside p{margin:0}
+.menu aside .big{font-family:var(--m-display);font-variation-settings:"wdth" 110;font-weight:700;font-size:clamp(22px,2.4vw,32px);color:var(--m-crema);line-height:1.1}
+.menu aside .pags{display:grid;gap:8px}
+.menu aside .pags a{text-decoration:none;color:var(--m-crema2)}
+.menu aside .pags a[aria-current]{color:var(--m-crema)}
+.menu aside .pags a:hover{color:var(--m-sol)}
+@media (max-width:820px){
+  .menu{grid-template-columns:1fr;padding-top:calc(104px + env(safe-area-inset-top,0px))}
+  .menu a.mit{grid-template-columns:1fr;gap:0}
+  .menu a.mit b{white-space:normal;font-size:clamp(26px,8vw,44px)}
+  .menu aside{border-left:0;border-top:1px solid var(--m-linea);padding:20px 0 0;align-content:start}
+}
+@media (prefers-reduced-motion:reduce){.menu,.menu li{transition:none}}
 </style>
 </head>
 <body>
 
 <div id="bg" aria-hidden="true">
-  <video autoplay muted loop playsinline preload="metadata" poster="media/plexus-poster.jpg"><source src="media/plexus.mp4" type="video/mp4"></video>
+  <!-- 07-10-2026, Sebastian: fuera el plexus. El fondo es el mismo circuito
+       de / 04 en la portada, para que el catalogo se lea como parte del sitio. -->
+  <video autoplay muted loop playsinline preload="metadata" poster="media/circuitos.webp"><source src="media/circuitos.mp4" type="video/mp4"></video>
   <div class="veil"></div>
 </div>
 
@@ -785,41 +829,36 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   <use href="#brillo" filter="url(#brasa)" opacity="0.9"/>
   <use href="#marca"/>
 </svg></a>
-    <div class="mnu-zona" id="mnuZona">
-      <button class="mnu" id="mnuBtn" type="button" aria-expanded="false" aria-controls="mnuPanel">
-        <span class="vu">Men&uacute;</span>
-        <svg class="tr" viewBox="0 0 252 26" aria-hidden="true"><g>
-          <!-- el halo: mismo trazado, mas grueso, invisible en reposo -->
-          <path class="halo t1" d="M249.5 3 H2.5"/><path class="halo t2" d="M249.5 10 H2.5"/>
-          <path class="halo t3" d="M249.5 17 H2.5"/><path class="halo t4" d="M249.5 24 H2.5"/>
-          <!-- las cuatro lineas. Trazadas de DERECHA a IZQUIERDA: asi el guion
-               descubre su extremo derecho y crecer es llevar el desfase a 0. -->
-          <path class="t t1" d="M249.5 3 H2.5"/><path class="t t2" d="M249.5 10 H2.5"/>
-          <path class="t t3" d="M249.5 17 H2.5"/><path class="t t4" d="M249.5 24 H2.5"/>
-        </g></svg>
-      </button>
-      <nav class="mnu-panel" id="mnuPanel" aria-label="Secciones">
-        <!-- EL MISMO MENU QUE LA PORTADA, 12-sep-2026 (segunda version del
-             mismo dia). Vuelve al espanol y cambia el orden por encargo literal
-             de Sebastian: Nucleo - Portafolio - Agente IA - Cotiza Run -
-             Contacto. El razonamiento entero —por que Nucleo va primero, por
-             que los `id` no se tocan y por que el azul es el de noche— esta
-             escrito UNA sola vez, en el <nav> de `index.html`, para no tener
-             dos versiones del mismo argumento.
-             «Cotiza Run» sigue estando aqui: esta pagina servia cuatro entradas
-             y la portada cinco, y el visitante que llegaba al portafolio perdia
-             la unica salida al formulario. `aria-current="page"` marca
-             Portafolio y por eso ese enlace NO va en azul: no es un destino
-             disponible, es donde estas parado. -->
-        <a href="index.html#empresa">N&uacute;cleo</a>
-        <a href="portafolio.html" aria-current="page">Portafolio</a>
-        <a href="index.html#agente-ia">Agente IA</a>
-        <a href="index.html#cotiza">Cotiza Run</a>
-        <a href="index.html#contacto">Contacto</a>
-      </nav>
-    </div>
+    <!-- 07-10-2026, Sebastian: el menu del catalogo pasa a ser EL MISMO de la
+         portada: el nodo que gira y el panel a pantalla completa, con las seis
+         secciones. El desplegable de cuatro lineas queda fuera. -->
+    <button class="nodo" id="nodoBtn" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">
+      <span class="lbl" id="nodoLbl">Menú</span>
+      <canvas id="nodoCv" width="128" height="128" aria-hidden="true"></canvas>
+    </button>
   </div>
 </header>
+<nav class="menu" id="menu" aria-label="Menú principal" aria-hidden="true">
+  <ol>
+    <li><a class="mit" href="index.html#offenbar"><span class="c">/ 01 — Offenbar</span><b>Inicio</b></a></li>
+    <li><a class="mit" href="index.html#il-cuore"><span class="c">/ 02 — Il Cuore</span><b>Manifiesto</b></a></li>
+    <li><a class="mit" href="index.html#grace"><span class="c">/ 03 — L'Intelligence</span><b>Grace</b></a></li>
+    <li><a class="mit" href="index.html#creative"><span class="c">/ 04 — Creative</span><b>Servicios</b></a></li>
+    <li><a class="mit" href="index.html#inbox"><span class="c">/ 05 — Inbox</span><b>Cotizar</b></a></li>
+    <li><a class="mit" href="index.html#contacto"><span class="c">/ 06 — Hablemos</span><b>Contacto</b></a></li>
+  </ol>
+  <aside>
+    <div><p class="c">¿Necesitas ayuda con un proyecto?</p><p class="big"><a href="mailto:hola@compai.cl">hola@compai.cl</a></p></div>
+    <div class="pags">
+      <span class="c">Páginas</span>
+      <a href="portafolio.html" aria-current="page">Catálogo de servicios y precios</a>
+      <a href="https://proveedor.mercadopublico.cl/ficha/78.491.451-8" target="_blank" rel="noopener">Ficha proveedores del Estado →</a>
+    </div>
+    <div><p class="big">SCL.</p><p class="c">Santiago, Chile</p></div>
+  </aside>
+</nav>
+
+<h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap">Catálogo de servicios y precios de CompAI</h1>
 
 <!-- ESCENAS:INICIO · lo arma construir.mjs desde contenido/escenas.json — NO SE EDITA A MANO -->
 <input type="radio" name="pieza" id="p1" class="sel" checked>
@@ -1075,76 +1114,9 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 <script>window.ESCENAS={"formulario":{"titulo_quien":"¿A quién le enviamos la cotización?","cta":"Pedir cotización","nota":"Le respondemos al correo que deje aquí.","exito":"Listo, nos llegó. Le respondemos a {correo}. Si quiere adjuntar bases u orden de compra, se abrió su correo.","error":"No quedó registrado, pero le abrimos su correo con el requerimiento escrito: envíelo desde ahí.","vacio":"Marque al menos una.","sin_institucion":"Falta la institución.","faltan":"Falta el nombre o el correo.","plazo":{"etiqueta":"¿Para cuándo?","placeholder":"Ej.: antes del 30 de octubre","obligatorio":false,"tipo":"texto libre, no selector de fecha"},"institucion":{"etiqueta":"Institución","placeholder":"Ej.: Municipalidad de …","obligatorio":true},"respaldo":{"linea":"¿No se abrió su correo? Escríbanos a hola@compai.cl","boton_copiar":"Copiar el requerimiento","copiado":"Copiado. Péguelo en un correo a hola@compai.cl"},"cuerpo":"Estimados:\n\nDesde {institucion} solicitamos cotización por:\n\n{items}\n\nLo necesitamos {plazo}.\n\nCódigo de la compra: {codigo}\n\nPor favor indicar valor neto, IVA y la glosa para la orden de compra.\n\nSaludos cordiales,\n\n\n— Enviado desde compai.cl/portafolio · {escena}","codigo":{"etiqueta":"Código de Compra Ágil, si ya la publicó","placeholder":"Ej.: 1234-56-COT26"},"correo_malo":"Revise el correo: así no le llega la respuesta."},"por":{"05":{"titulo_quien":"¿A quién le escribimos?","cta":"Pedir cotización","nota":"Te contestamos por WhatsApp. La mantención mensual va aparte y es opcional.","exito":"Listo, nos llegó. Se abrió WhatsApp con tu pedido escrito: envíalo y te contestamos por ahí.","error":"No quedó registrado, pero se abrió WhatsApp con tu pedido escrito: envíalo desde ahí.","vacio":"Marca al menos uno.","sin_institucion":"Falta el nombre de tu negocio.","faltan":"Falta tu nombre o tu WhatsApp.","plazo":{"etiqueta":"¿Para cuándo?","placeholder":"Ej.: antes de diciembre","obligatorio":false,"tipo":"texto libre, no selector de fecha"},"institucion":{"etiqueta":"Tu negocio","placeholder":"Ej.: Panadería La Espiga","obligatorio":true},"respaldo":{"linea":"¿No se abrió WhatsApp? Escríbenos al +56 9 6246 9977","boton_copiar":"Copiar el pedido","copiado":"Copiado. Pégalo en un WhatsApp al +56 9 6246 9977"},"cuerpo":"Hola:\n\nTengo {institucion} y me interesa:\n\n{items}\n\nLo necesito {plazo}.\n\nSaludos,\n\n\n— Enviado desde compai.cl/portafolio · {escena}","codigo":null,"correo_malo":"Revisa el correo: así no te llega la respuesta.","canal":"whatsapp","whatsapp":"https://wa.me/56962469977","telefono":{"etiqueta":"WhatsApp","placeholder":"+56 9 …","obligatorio":true},"agenda_cta":"O agenda 30 min de asesoría, sin costo →"}},"endpoint":"https://script.google.com/macros/s/AKfycbxiRLWaLHDVNm99KXKboz7DxslZeUtbl8Rq36MJ3FFuiRfNqpACklvcp7pfX-y5F-M8/exec"};</script>
 <!-- ESCENAS:FIN -->
 
-<!-- ================= LAS TRES LINEAS, CONSTRUIDAS =================
-     Lo que compai.cl publica son las tres lineas de venta de servicio propio
-     -L1, L2 y L3 del catalogo-, y nada mas: la linea PNN (desarrollo web para
-     PyMEs) trae escrito en su propia ficha «no va en compai.cl · se vende 1 a
-     1», y R1 y R2 son reventa. Reparto del 13-09-2026, en
-     asistente-comercial/portafolio/DECISIONES.md.
-     Cada linea se demuestra con una pieza que existe y se puede abrir. -->
-<section id="trabajos" aria-labelledby="t-tit">
-  <div class="caja">
-    <p class="ante">Trabajos construidos</p>
-    <h1 id="t-tit">Lo mismo que le cotizamos, ya construido y andando.</h1>
-    <p class="entrada">Las tres l&iacute;neas que cotizamos, cada una con una pieza que ya est&aacute; construida.</p>
-
-    <article class="tj">
-      <div class="texto">
-        <p class="et"><b>L1</b> &mdash; Automatizaci&oacute;n e integraci&oacute;n de sistemas</p>
-        <p class="papel">Lo que hoy se hace a mano &mdash;avisar, copiar, recordar&mdash; sale solo
-          y a la hora, sin sumar un funcionario m&aacute;s.</p>
-        <h2>Lo que nadie alcanza a revisar a mano, revisado solo, todos los d&iacute;as a la misma hora.</h2>
-        <p class="cuerpo">Cada ma&ntilde;ana entra a un sistema que no es nuestro, lee las publicaciones
-          del d&iacute;a y la ficha de cada una, se queda con las del rubro y deja una lista corta.
-          Nadie abre nada, nadie copia nada a una planilla, y a nadie hay que record&aacute;rselo.</p>
-        <a class="alser" href="#servicios">Pedir cotizaci&oacute;n</a>
-      </div>
-      <figure>
-        <div class="passe oscura"><img src="media/p-l1.webp" width="1040" height="558" loading="eager" decoding="async"
-          alt="Embudo del barrido diario: 4.638 publicaciones del d&iacute;a, 4.637 fichas le&iacute;das, 234 del rubro, y la lista corta a la mesa."></div>
-        <figcaption>Barrido diario sobre la API de Mercado P&uacute;blico &middot; 4.638 publicaciones le&iacute;das el 04-10-2026</figcaption>
-      </figure>
-    </article>
-
-    <article class="tj">
-      <div class="texto">
-        <p class="et"><b>L2</b> &mdash; Especificaci&oacute;n y asesor&iacute;a t&eacute;cnica</p>
-        <p class="papel">Saber qu&eacute; pedir y cu&aacute;nto deber&iacute;a costar antes de publicar la compra,
-          para que la oferta buena no llegue de casualidad.</p>
-        <h2>Lo que hay que decidir antes de publicar la compra, decidido y escrito.</h2>
-        <p class="cuerpo">Un producto completo especificado hasta la &uacute;ltima pantalla: qu&eacute; hace,
-          qu&eacute; no hace, c&oacute;mo se cobra y qu&eacute; pasa cuando algo falla. Cada decisi&oacute;n qued&oacute;
-          escrita al lado de la alternativa que se descart&oacute; y del motivo. Con ese documento el
-          trabajo se encarga sin ambig&uuml;edad &mdash;y reci&eacute;n despu&eacute;s se construye.</p>
-        <a class="alser" href="#servicios">Pedir cotizaci&oacute;n</a>
-      </div>
-      <figure>
-        <div class="passe"><img src="media/p-l2.webp" width="780" height="674" loading="eager" decoding="async"
-          alt="Mapa de Casero: radios de 100 y 500 metros sobre el barrio, con los edificios que alcanzas en cada uno."></div>
-        <figcaption>Casero &middot; especificaci&oacute;n de producto, quince rondas de decisi&oacute;n antes de la primera l&iacute;nea de c&oacute;digo</figcaption>
-      </figure>
-    </article>
-
-    <article class="tj">
-      <div class="texto">
-        <p class="et"><b>L3</b> &mdash; Puesta en marcha, migraci&oacute;n y continuidad</p>
-        <p class="papel">Que lo que ya compr&oacute; quede andando esta semana, y siga andando los doce
-          meses siguientes sin que nadie lo vigile a mano.</p>
-        <h2>Lo que estaba en dos bandejas y un cuaderno, en una pantalla y andando el mismo d&iacute;a.</h2>
-        <p class="cuerpo">Dos plataformas que no se hablaban entre s&iacute; y las respuestas que alguien
-          reescrib&iacute;a a mano cada vez, en una sola pantalla. Se abre en cualquier computador, no se
-          instala y no tiene servidor detr&aacute;s: por eso no hay nada que mantenerle.</p>
-        <a class="alser" href="#servicios">Pedir cotizaci&oacute;n</a>
-      </div>
-      <figure>
-        <div class="passe"><img src="media/p-l3.webp" width="1040" height="440" loading="eager" decoding="async"
-          alt="Panel de operaci&oacute;n de un alojamiento: pesta&ntilde;as de solicitudes, plantillas y traslados, con el estado de reservas."></div>
-        <figcaption>Panel de operaci&oacute;n de un alojamiento &middot; una sola p&aacute;gina, sin instalaci&oacute;n ni servidor</figcaption>
-      </figure>
-    </article>
-
-  </div>
-</section>
+<!-- 07-10-2026, Sebastian: sale «Trabajos construidos». El catalogo queda con
+     las historias y el formulario de cotizacion formal (formal porque ahi estan
+     los valores publicados). -->
 
 
 <script>
@@ -1334,5 +1306,54 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 <script data-goatcounter="https://compai.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 <!-- /CONTADOR -->
+<script>
+/* --- EL MENU DE LA PORTADA: abre y cierra, y el nodo gira (copia de js/sitio.js) --- */
+(function(){
+  var btn = document.getElementById("nodoBtn"), menu = document.getElementById("menu"), lbl = document.getElementById("nodoLbl");
+  if(!btn || !menu) return;
+  var abierto = false, ultimoFoco = null, quieto = matchMedia("(prefers-reduced-motion:reduce)").matches;
+  function setMenu(v){
+    abierto = v; document.body.classList.toggle("mn-abierto", v);
+    btn.setAttribute("aria-expanded", String(v)); btn.setAttribute("aria-label", v ? "Cerrar menú" : "Abrir menú");
+    menu.setAttribute("aria-hidden", String(!v)); lbl.textContent = v ? "Cerrar" : "Menú";
+    if(v){ ultimoFoco = document.activeElement; var a = menu.querySelector("a"); if(a) a.focus({preventScroll:true}); }
+    else if(ultimoFoco){ ultimoFoco.focus({preventScroll:true}); ultimoFoco = null; }
+  }
+  btn.addEventListener("click", function(){ setMenu(!abierto); });
+  menu.addEventListener("click", function(e){ if(e.target.closest("a")) setMenu(false); });
+  addEventListener("keydown", function(e){ if(e.key === "Escape" && abierto){ setMenu(false); e.preventDefault(); } });
+  var cv = document.getElementById("nodoCv"), ctx = cv.getContext("2d"), t = (1 + Math.sqrt(5)) / 2;
+  var V = [[-1,t,0],[1,t,0],[-1,-t,0],[1,-t,0],[0,-1,t],[0,1,t],[0,-1,-t],[0,1,-t],[t,0,-1],[t,0,1],[-t,0,-1],[-t,0,1]]
+    .map(function(v){ var l = Math.hypot(v[0],v[1],v[2]); return v.map(function(c){ return c / l; }); });
+  var E = [];
+  for(var i = 0; i < 12; i++) for(var j = i + 1; j < 12; j++)
+    if(Math.hypot(V[i][0]-V[j][0], V[i][1]-V[j][1], V[i][2]-V[j][2]) < 1.1) E.push([i, j]);
+  var ax = .5, ay = 0, vel = .008, esc = 1, sobre = false, ultimo = 0;
+  btn.addEventListener("pointerenter", function(){ sobre = true; }); btn.addEventListener("pointerleave", function(){ sobre = false; });
+  function dibuja(ts){
+    requestAnimationFrame(dibuja);
+    if(document.hidden || ts - ultimo < 32) return;
+    var dt = ultimo ? Math.min((ts - ultimo) / 16.7, 4) : 1; ultimo = ts;
+    var obj = abierto ? .02 : sobre ? .045 : .008, objEsc = abierto ? 1.08 : sobre ? 1.18 : 1;
+    vel += (obj - vel) * .08 * dt; esc += (objEsc - esc) * .12 * dt;
+    if(!quieto){ ay += vel * dt; ax += vel * .35 * dt; }
+    var W = cv.width, H = cv.height, R = W * .3 * esc, cx = W / 2, cy = H / 2;
+    ctx.clearRect(0, 0, W, H);
+    var cA = Math.cos(ax), sA = Math.sin(ax), cB = Math.cos(ay), sB = Math.sin(ay);
+    var P = V.map(function(v){
+      var x1 = v[0] * cB + v[2] * sB, z1 = -v[0] * sB + v[2] * cB, y1 = v[1] * cA - z1 * sA, z2 = v[1] * sA + z1 * cA, p = 2.6 / (2.6 - z2);
+      return [cx + x1 * R * p, cy + y1 * R * p, z2];
+    });
+    var col = abierto ? "200,121,65" : "46,143,181";
+    E.forEach(function(e){ var z = (P[e[0]][2] + P[e[1]][2]) / 2;
+      ctx.strokeStyle = "rgba(" + col + "," + (.25 + .45 * (z + 1) / 2) + ")"; ctx.lineWidth = W / 64;
+      ctx.beginPath(); ctx.moveTo(P[e[0]][0], P[e[0]][1]); ctx.lineTo(P[e[1]][0], P[e[1]][1]); ctx.stroke(); });
+    P.slice().sort(function(a, b){ return a[2] - b[2]; }).forEach(function(p){ var z = (p[2] + 1) / 2;
+      ctx.fillStyle = "rgba(" + (abierto ? "242,180,90" : "120,197,227") + "," + (.45 + .55 * z) + ")";
+      ctx.beginPath(); ctx.arc(p[0], p[1], W * (.028 + .03 * z) * esc, 0, 7); ctx.fill(); });
+  }
+  requestAnimationFrame(dibuja);
+})();
+</script>
 </body>
 </html>
