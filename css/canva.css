@@ -33,8 +33,18 @@
 }
 
 /* ── armazon ───────────────────────────────────────────────────────────── */
+/* SIN scroll-margin-top aqui: esta hoja carga DESPUES de sitio.css (ver
+   cabecera del archivo) y con la misma especificidad (una clase) que
+   `.sec{scroll-margin-top:var(--barra)}`, asi que cualquier valor que se
+   fije aqui GANA y anula esa reserva en TODAS las secciones (llevan ambas
+   clases, "sec cv"): un clic de menu deja la seccion al ras de arriba, bajo
+   la barra fija y transparente. Pasó el 07-10-2026 (confirmado con
+   getComputedStyle: scroll-margin-top daba 0px en vez de 88px) y es la causa
+   repetida de "el logo tapa el contenido a 390px" (01-10, 06-10, 07-10 x2).
+   `.hero` no necesita reserva (es el tope del documento) y no la pierde: el
+   valor inicial de scroll-margin-top ya es 0 sin declararlo. */
 .cv{position:relative;container-type:inline-size;width:100%;margin:0;padding:0;
-  background:#000;overflow:hidden;--u:0.0732064cqw;scroll-margin-top:0}
+  background:#000;overflow:hidden;--u:0.0732064cqw}
 .cv .pg{position:relative;width:100%;aspect-ratio:calc(1366 / var(--h));overflow:hidden;background:#000}
 .cv .b{position:absolute;left:calc(var(--x,0)*var(--u));top:calc(var(--y,0)*var(--u));
   width:calc(var(--w,1366)*var(--u));margin:0}
@@ -442,9 +452,21 @@
 #inbox .campo input::placeholder,#inbox .campo textarea::placeholder{color:#b6bbc0}
 #inbox .campo.mono input{font-family:var(--plex);letter-spacing:.06em}
 #inbox .campo textarea{min-height:calc(160*var(--u));resize:vertical}
-.iadjunta{grid-column:1/-1;margin-top:calc(26*var(--u));border:1px dashed rgba(255,255,255,.25);
+.iadjunta{grid-column:1/-1;margin-top:calc(26*var(--u))}
+.iadjunta input[type=file]{position:absolute;width:1px;height:1px;opacity:0;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.iadjunta label{border:1px dashed rgba(255,255,255,.25);cursor:pointer;
   border-radius:calc(3*var(--u));padding:calc(20*var(--u)) calc(24*var(--u));
   display:grid;grid-template-columns:auto 1fr;gap:calc(16*var(--u));align-items:center}
+.iadjunta label:hover{border-color:rgba(200,121,65,.6)}
+.iadjunta input[type=file]:focus-visible+label{outline:2px solid #c87941;outline-offset:2px}
+.ilista{list-style:none;margin:calc(12*var(--u)) 0 0;padding:0;display:grid;
+  gap:calc(6*var(--u))}
+.ilista li{font-family:var(--plex);font-size:calc(12*var(--u));color:#c9ced3;
+  letter-spacing:.04em;display:flex;justify-content:space-between;gap:calc(16*var(--u));
+  border-left:2px solid #c87941;padding-left:calc(10*var(--u))}
+.ilista li span{color:#8e949a}
+.ilista li.mal{color:#e8a0a0;border-left-color:#e8a0a0}
 .iadjunta svg{width:calc(22*var(--u));height:auto;object-fit:contain;color:#c9ced3}
 .iadjunta b{display:block;font-family:var(--clear);font-weight:400;font-size:calc(16*var(--u));color:#e4e8eb}
 .iadjunta span{display:block;font-family:var(--plex);font-size:calc(11*var(--u));color:#8e949a;

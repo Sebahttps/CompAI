@@ -1,336 +1,336 @@
 {
- "_leeme": "Única fuente de los textos del sitio. Cambiar un texto = editar este archivo y hacer push. El workflow .github/workflows/sitio-compai.yml vuelve a armar index.html solo.",
- "meta": {
-  "lang": "es-CL",
-  "title": "compAI — Servicios TI para el Estado, con precio publicado",
-  "description": "Servicios de TI con su valor neto publicado, el que va en la orden de compra. Compra Ágil bajo 100 UTM. Santiago, Chile.",
-  "url": "https://compai.cl/",
-  "og_image": "https://compai.cl/media/og.jpg",
-  "og_image_alt": "compAI — Tecnología para Chile, ejecutada por IA"
- },
- "hero": "franjas",
- "hero_sello": "media/compai-sello.svg",
- "_hero_opciones": "franjas = video de 5 franjas con el logo al centro como sello · nucleo = video del sol con el logo arriba a la izquierda",
- "formEndpoint": "https://script.google.com/macros/s/AKfycbxiRLWaLHDVNm99KXKboz7DxslZeUtbl8Rq36MJ3FFuiRfNqpACklvcp7pfX-y5F-M8/exec",
- "_formEndpoint": "URL del web app de Google Apps Script (apps-script/Code.gs). Mientras esté vacía, el formulario envía por mailto:hola@compai.cl.",
- "contacto": {
-  "correo": "hola@compai.cl",
-  "whatsapp": "",
-  "whatsapp_texto": "+56 9 6246 9977",
-  "_whatsapp": "VACIO A PROPOSITO. El manual de marca (10 Correo > Firma) deja el movil solo en la firma de Director o Gerente General y en la tarjeta: nunca en papeleria general, correos automaticos ni el sitio. Poner la URL wa.me aqui vuelve a mostrar el boton en / 06.",
-  "intranet": "https://claude.ai/artifact/MqfeH8WXnVQN1A6WgAEx9g",
-  "ficha": "https://proveedor.mercadopublico.cl/ficha/78.491.451-8",
-  "ciudad": "SCL.",
-  "lugar": "Santiago, Chile",
-  "razon_social": "COMPAI GLOBAL SOLUTIONS SpA",
-  "rut": "78.491.451-8"
- },
- "menu": [
-  {
-   "codigo": "/ 01",
-   "nombre": "Offenbar",
-   "titulo": "Inicio",
-   "ancla": "#offenbar"
+  "_leeme": "Única fuente de los textos del sitio. Cambiar un texto = editar este archivo y hacer push. El workflow .github/workflows/sitio-compai.yml vuelve a armar index.html solo.",
+  "meta": {
+    "lang": "es-CL",
+    "title": "compAI — Servicios TI para el Estado, con precio publicado",
+    "description": "Servicios de TI con su valor neto publicado, el que va en la orden de compra. Compra Ágil bajo 100 UTM. Santiago, Chile.",
+    "url": "https://compai.cl/",
+    "og_image": "https://compai.cl/media/og.jpg",
+    "og_image_alt": "compAI — Tecnología para Chile, ejecutada por IA"
   },
-  {
-   "codigo": "/ 02",
-   "nombre": "Il Cuore",
-   "titulo": "Manifiesto",
-   "ancla": "#il-cuore"
+  "hero": "franjas",
+  "hero_sello": "media/compai-sello.svg",
+  "_hero_opciones": "franjas = video de 5 franjas con el logo al centro como sello · nucleo = video del sol con el logo arriba a la izquierda",
+  "formEndpoint": "https://script.google.com/macros/s/AKfycbxiRLWaLHDVNm99KXKboz7DxslZeUtbl8Rq36MJ3FFuiRfNqpACklvcp7pfX-y5F-M8/exec",
+  "_formEndpoint": "URL del web app de Google Apps Script (apps-script/Code.gs). Mientras esté vacía, el formulario envía por mailto:hola@compai.cl.",
+  "contacto": {
+    "correo": "hola@compai.cl",
+    "whatsapp": "",
+    "whatsapp_texto": "+56 9 6246 9977",
+    "_whatsapp": "VACIO A PROPOSITO. El manual de marca (10 Correo > Firma) deja el movil solo en la firma de Director o Gerente General y en la tarjeta: nunca en papeleria general, correos automaticos ni el sitio. Poner la URL wa.me aqui vuelve a mostrar el boton en / 06.",
+    "intranet": "https://claude.ai/artifact/MqfeH8WXnVQN1A6WgAEx9g",
+    "ficha": "https://proveedor.mercadopublico.cl/ficha/78.491.451-8",
+    "ciudad": "SCL.",
+    "lugar": "Santiago, Chile",
+    "razon_social": "COMPAI GLOBAL SOLUTIONS SpA",
+    "rut": "78.491.451-8"
   },
-  {
-   "codigo": "/ 03",
-   "nombre": "L'Intelligence",
-   "titulo": "Grace",
-   "ancla": "#grace"
-  },
-  {
-   "codigo": "/ 04",
-   "nombre": "Creative",
-   "titulo": "Servicios",
-   "ancla": "#creative"
-  },
-  {
-   "codigo": "/ 05",
-   "nombre": "Inbox",
-   "titulo": "Cotizar",
-   "ancla": "#inbox"
-  },
-  {
-   "codigo": "/ 06",
-   "nombre": "Hablemos",
-   "titulo": "Contacto",
-   "ancla": "#contacto"
-  }
- ],
- "menu_aside": {
-  "kicker": "¿Necesitas ayuda con un proyecto?",
-  "enlaces": [
-   {
-    "texto": "Catálogo de servicios y precios",
-    "url": "/portafolio.html#servicios"
-   },
-   {
-    "texto": "Ficha proveedores del Estado →",
-    "url": "https://proveedor.mercadopublico.cl/ficha/78.491.451-8"
-   }
-  ]
- },
- "offenbar": {
-  "codigo": "/ 01",
-  "nombre": "Offenbar",
-  "titulo_1": "TECNOLOGÍA PARA CHILE",
-  "titulo_2": "ejecutada por IA.",
-  "enlace_texto": "Ficha proveedores del Estado →"
- },
- "il_cuore": {
-  "codigo": "/ 02",
-  "nombre": "Il Cuore",
-  "video": "media/il-cuore.mp4",
-  "video_poster": "media/il-cuore.webp",
-  "ia": {
-   "titulo": [
-    "soluciones tecnológicas",
-    "inteligencia artificial",
-    "& alma Creativa"
-   ],
-   "parrafo": "Hablamos humano en un mundo digital.\nSomos un equipo de agentes con súper inteligencia, creados con un propósito: Ayudar al Estado a gestionar requerimientos de manera ágil, combatiendo la burocracia paralizante y creando experiencias digitales que simplifiquen la vida.",
-   "ticks": "media/ticks.mp4",
-   "ticks_poster": "media/ticks.webp"
-  },
-  "accesos": [
-   {
-    "texto": "Creative",
-    "ancla": "#creative"
-   },
-   {
-    "texto": "Contacto",
-    "ancla": "#contacto"
-   }
-  ]
- },
- "grace": {
-  "codigo": "/ 03",
-  "nombre": "L'Intelligence",
-  "titulo": "Grace System",
-  "linea": "La agente Grace monitorea a diario las publicaciones de Mercado\nPúblico y filtra por rubro y presupuesto antes de que alguien mire.",
-  "pie": "Materialización por código",
-  "fondo": "media/campo-codigo.mp4",
-  "fondo_poster": "media/campo-codigo.webp",
-  "fondo_velocidad": 0.5,
-  "imagenes": [
-   {
-    "src": "media/grace-retrato.webp",
-    "alt": "Grace, retrato",
-    "anclaje": "derecha"
-   },
-   {
-    "src": "media/grace-perfil.webp",
-    "alt": "Grace de perfil",
-    "anclaje": "izquierda",
-    "alto": "grande",
-    "envivo": true
-   },
-   {
-    "src": "media/grace-lavanda.webp",
-    "alt": "Grace en un campo de lavanda al atardecer",
-    "anclaje": "cubrir",
-    "revelado": 1
-   }
-  ],
-  "_leyendas": "Los pies «Grace ___ con efecto materialización por código» se quitaron el 02-10-2026: eran la instrucción del encargo, no información para el visitante.",
-  "envivo": {
-   "titulo": "GRACE EN VIVO",
-   "estado": "EJEMPLO",
-   "barrido": "",
-   "_barrido": "Se refresca a mano cuando RAIdar corre un barrido nuevo. Si la fecha envejece, se nota: no dejarla vieja.",
-   "filas": [
+  "menu": [
     {
-     "marca": "GO",
-     "id": "LICENCIAS DE OFICINA · 40 PUESTOS",
-     "titulo": "Calza con el rubro y el presupuesto alcanza: propuesta armada",
-     "cierre": "propuesta lista",
-     "rubro": "SOFTWARE"
+      "codigo": "/ 01",
+      "nombre": "Offenbar",
+      "titulo": "Inicio",
+      "ancla": "#offenbar"
     },
     {
-     "marca": "GO",
-     "id": "PUESTA EN MARCHA DE SERVIDORES COMPRADOS",
-     "titulo": "Entregable cerrado y sin bulto que despachar: se oferta",
-     "cierre": "propuesta lista",
-     "rubro": "INFRAESTRUCTURA"
+      "codigo": "/ 02",
+      "nombre": "Il Cuore",
+      "titulo": "Manifiesto",
+      "ancla": "#il-cuore"
     },
     {
-     "marca": "NO-GO",
-     "id": "CABLEADO Y PUNTOS DE RED EN TERRENO",
-     "titulo": "Es obra física de cuadrilla: queda fuera del alcance declarado",
-     "cierre": "justificado",
-     "rubro": "OBRA DE REDES"
+      "codigo": "/ 03",
+      "nombre": "L'Intelligence",
+      "titulo": "Grace",
+      "ancla": "#grace"
     },
     {
-     "marca": "GO",
-     "id": "HOSPEDAJE Y CORREO · 12 MESES",
-     "titulo": "Se pide por capacidad y plazo, que es como se cotiza aquí",
-     "cierre": "propuesta lista",
-     "rubro": "SERVICIOS DE NUBE"
+      "codigo": "/ 04",
+      "nombre": "Creative",
+      "titulo": "Servicios",
+      "ancla": "#creative"
     },
     {
-     "marca": "NO-GO",
-     "id": "ENLACE DE INTERNET · FIBRA, 36 MESES",
-     "titulo": "Lo provee una empresa de telecomunicaciones, no un proveedor de nube",
-     "cierre": "justificado",
-     "rubro": "TELECOMUNICACIONES"
+      "codigo": "/ 05",
+      "nombre": "Inbox",
+      "titulo": "Cotizar",
+      "ancla": "#inbox"
     },
     {
-     "marca": "GO",
-     "id": "INFORME DE ESPECIFICACIÓN TÉCNICA",
-     "titulo": "Se entrega por informe y no hay un tercero a quien pagarle",
-     "cierre": "propuesta lista",
-     "rubro": "CONSULTORÍA TI"
-    },
-    {
-     "marca": "NO-GO",
-     "id": "EQUIPOS A DESPACHAR EN CINCO REGIONES",
-     "titulo": "Fuera del radio de despacho: le sirve un proveedor con bodega",
-     "cierre": "justificado",
-     "rubro": "EQUIPAMIENTO"
-    },
-    {
-     "marca": "GO",
-     "id": "MIGRACIÓN DE SITIO, DOMINIO Y CERTIFICADO",
-     "titulo": "Un solo responsable para el corte y para lo que queda andando",
-     "cierre": "propuesta lista",
-     "rubro": "SITIOS Y DOMINIOS"
+      "codigo": "/ 06",
+      "nombre": "Hablemos",
+      "titulo": "Contacto",
+      "ancla": "#contacto"
     }
-   ],
-   "video": "media/grace-vivo.mp4",
-   "video_poster": "media/grace-vivo.webp",
-   "pie": "Clasificadas por rubro. Se desplaza para ver el barrido completo."
+  ],
+  "menu_aside": {
+    "kicker": "¿Necesitas ayuda con un proyecto?",
+    "enlaces": [
+      {
+        "texto": "Catálogo de servicios y precios",
+        "url": "/portafolio.html#servicios"
+      },
+      {
+        "texto": "Ficha proveedores del Estado →",
+        "url": "https://proveedor.mercadopublico.cl/ficha/78.491.451-8"
+      }
+    ]
   },
-  "franja": [
-   {
-    "cifra": "24/7",
-    "glosa": "Operación continua"
-   },
-   {
-    "cifra": "<60m",
-    "glosa": "Respuesta a cotización"
-   },
-   {
-    "cifra": "100%",
-    "glosa": "Trazabilidad"
-   }
-  ],
-  "titulo_lineas": [
-   "CLASIFICA CADA LICITACIÓN",
-   "DE MERCADO PÚBLICO"
-  ],
-  "cta": "Ver los servicios, desde $360.000 neto",
-  "lamina": {
-   "video": "media/grace-lamina.mp4",
-   "video_poster": "media/grace-lamina.webp",
-   "titulo": [
-    "CLASIFICA CADA",
-    "LICITACIÓN",
-    "DE MERCADO",
-    "PÚBLICO"
-   ],
-   "izquierda": "Grace revisa las publicaciones todos los días y filtra por rubro y presupuesto. De cada oportunidad pertinente emite un análisis breve y un veredicto:",
-   "derecha": [
-    {
-     "marca": "GO",
-     "texto": "deja la propuesta lista para descargar y revisar por una persona."
+  "offenbar": {
+    "codigo": "/ 01",
+    "nombre": "Offenbar",
+    "titulo_1": "TECNOLOGÍA PARA CHILE",
+    "titulo_2": "ejecutada por IA.",
+    "enlace_texto": "Ficha proveedores del Estado →"
+  },
+  "il_cuore": {
+    "codigo": "/ 02",
+    "nombre": "Il Cuore",
+    "video": "media/il-cuore.mp4",
+    "video_poster": "media/il-cuore.webp",
+    "ia": {
+      "titulo": [
+        "soluciones tecnológicas",
+        "inteligencia artificial",
+        "& alma Creativa"
+      ],
+      "parrafo": "Hablamos humano en un mundo digital.\nSomos un equipo de agentes con súper inteligencia, creados con un propósito: Ayudar al Estado a gestionar requerimientos de manera ágil, combatiendo la burocracia paralizante y creando experiencias digitales que simplifiquen la vida.",
+      "ticks": "media/ticks.mp4",
+      "ticks_poster": "media/ticks.webp"
     },
-    {
-     "marca": "NO-GO",
-     "texto": "deja escrita la justificación de no proceder."
+    "accesos": [
+      {
+        "texto": "Creative",
+        "ancla": "#creative"
+      },
+      {
+        "texto": "Contacto",
+        "ancla": "#contacto"
+      }
+    ]
+  },
+  "grace": {
+    "codigo": "/ 03",
+    "nombre": "L'Intelligence",
+    "titulo": "Grace System",
+    "linea": "La agente Grace monitorea a diario las publicaciones de Mercado\nPúblico y filtra por rubro y presupuesto antes de que alguien mire.",
+    "pie": "Materialización por código",
+    "fondo": "media/campo-codigo.mp4",
+    "fondo_poster": "media/campo-codigo.webp",
+    "fondo_velocidad": 0.5,
+    "imagenes": [
+      {
+        "src": "media/grace-retrato.webp",
+        "alt": "Grace, retrato",
+        "anclaje": "derecha"
+      },
+      {
+        "src": "media/grace-perfil.webp",
+        "alt": "Grace de perfil",
+        "anclaje": "izquierda",
+        "alto": "grande",
+        "envivo": true
+      },
+      {
+        "src": "media/grace-lavanda.webp",
+        "alt": "Grace en un campo de lavanda al atardecer",
+        "anclaje": "cubrir",
+        "revelado": 1
+      }
+    ],
+    "_leyendas": "Los pies «Grace ___ con efecto materialización por código» se quitaron el 02-10-2026: eran la instrucción del encargo, no información para el visitante.",
+    "envivo": {
+      "titulo": "GRACE EN VIVO",
+      "estado": "EJEMPLO",
+      "barrido": "",
+      "_barrido": "Se refresca a mano cuando RAIdar corre un barrido nuevo. Si la fecha envejece, se nota: no dejarla vieja.",
+      "filas": [
+        {
+          "marca": "GO",
+          "id": "LICENCIAS DE OFICINA · 40 PUESTOS",
+          "titulo": "Calza con el rubro y el presupuesto alcanza: propuesta armada",
+          "cierre": "propuesta lista",
+          "rubro": "SOFTWARE"
+        },
+        {
+          "marca": "GO",
+          "id": "PUESTA EN MARCHA DE SERVIDORES COMPRADOS",
+          "titulo": "Entregable cerrado y sin bulto que despachar: se oferta",
+          "cierre": "propuesta lista",
+          "rubro": "INFRAESTRUCTURA"
+        },
+        {
+          "marca": "NO-GO",
+          "id": "CABLEADO Y PUNTOS DE RED EN TERRENO",
+          "titulo": "Es obra física de cuadrilla: queda fuera del alcance declarado",
+          "cierre": "justificado",
+          "rubro": "OBRA DE REDES"
+        },
+        {
+          "marca": "GO",
+          "id": "HOSPEDAJE Y CORREO · 12 MESES",
+          "titulo": "Se pide por capacidad y plazo, que es como se cotiza aquí",
+          "cierre": "propuesta lista",
+          "rubro": "SERVICIOS DE NUBE"
+        },
+        {
+          "marca": "NO-GO",
+          "id": "ENLACE DE INTERNET · FIBRA, 36 MESES",
+          "titulo": "Lo provee una empresa de telecomunicaciones, no un proveedor de nube",
+          "cierre": "justificado",
+          "rubro": "TELECOMUNICACIONES"
+        },
+        {
+          "marca": "GO",
+          "id": "INFORME DE ESPECIFICACIÓN TÉCNICA",
+          "titulo": "Se entrega por informe y no hay un tercero a quien pagarle",
+          "cierre": "propuesta lista",
+          "rubro": "CONSULTORÍA TI"
+        },
+        {
+          "marca": "NO-GO",
+          "id": "EQUIPOS A DESPACHAR EN CINCO REGIONES",
+          "titulo": "Fuera del radio de despacho: le sirve un proveedor con bodega",
+          "cierre": "justificado",
+          "rubro": "EQUIPAMIENTO"
+        },
+        {
+          "marca": "GO",
+          "id": "MIGRACIÓN DE SITIO, DOMINIO Y CERTIFICADO",
+          "titulo": "Un solo responsable para el corte y para lo que queda andando",
+          "cierre": "propuesta lista",
+          "rubro": "SITIOS Y DOMINIOS"
+        }
+      ],
+      "video": "media/grace-vivo.mp4",
+      "video_poster": "media/grace-vivo.webp",
+      "pie": "Clasificadas por rubro. Se desplaza para ver el barrido completo."
+    },
+    "franja": [
+      {
+        "cifra": "24/7",
+        "glosa": "Operación continua"
+      },
+      {
+        "cifra": "<60m",
+        "glosa": "Respuesta a cotización"
+      },
+      {
+        "cifra": "100%",
+        "glosa": "Trazabilidad"
+      }
+    ],
+    "titulo_lineas": [
+      "CLASIFICA CADA LICITACIÓN",
+      "DE MERCADO PÚBLICO"
+    ],
+    "cta": "Ver los servicios, desde $360.000 neto",
+    "lamina": {
+      "video": "media/grace-lamina.mp4",
+      "video_poster": "media/grace-lamina.webp",
+      "titulo": [
+        "CLASIFICA CADA",
+        "LICITACIÓN",
+        "DE MERCADO",
+        "PÚBLICO"
+      ],
+      "izquierda": "Grace revisa las publicaciones todos los días y filtra por rubro y presupuesto. De cada oportunidad pertinente emite un análisis breve y un veredicto:",
+      "derecha": [
+        {
+          "marca": "GO",
+          "texto": "deja la propuesta lista para descargar y revisar por una persona."
+        },
+        {
+          "marca": "NO-GO",
+          "texto": "deja escrita la justificación de no proceder."
+        }
+      ],
+      "cierre": "El panel muestra cómo se ve ese resultado.",
+      "lockup": "GRACE SYSTEM"
     }
-   ],
-   "cierre": "El panel muestra cómo se ve ese resultado.",
-   "lockup": "GRACE SYSTEM"
+  },
+  "creative": {
+    "codigo": "/ 04",
+    "nombre": "Creative",
+    "titulo": "Servicios",
+    "bajada": "Cuatro frentes. Uno basta para empezar.",
+    "etiquetas": [
+      "/pista",
+      "/nodo",
+      "/núcleo"
+    ],
+    "_etiquetas": "Los tres paquetes de desarrollo web para PyMEs (propuesta PC-2026-001). Van aca por decision de Sebastian del 05-10-2026 -«son un excelente enganche»-, aunque el catalogo de la intranet los marca «no va en compai.cl»: lo que no va es su PRECIO y su ficha comercial, que se venden uno a uno.",
+    "paquetes": [
+      {
+        "etiqueta": "/pista",
+        "verbo": "apareces",
+        "linea": "La vecina busca tu panadería en el celular y te encuentra.",
+        "estado": 1
+      },
+      {
+        "etiqueta": "/nodo",
+        "verbo": "apareces y recibes",
+        "linea": "El pedido te llega escrito a un solo lugar, no perdido entre mensajes de WhatsApp.",
+        "estado": 2
+      },
+      {
+        "etiqueta": "/núcleo",
+        "verbo": "apareces, recibes y ordenas",
+        "linea": "Cada pedido queda guardado: quién, qué y para cuándo. Se acabó el cuaderno.",
+        "estado": 3
+      }
+    ],
+    "llamado": {
+      "antes": "¿Cuál es la tuya?",
+      "enlace": "Búscala en el catálogo →",
+      "despues": "",
+      "url": "portafolio.html#escena-05"
+    },
+    "_llamado": "Bajo las tres bandas. 07-10-2026, Sebastian: el llamado pasa de «escríbenos» a revisar el catalogo (portafolio), que llevara las cuatro historias del Estado y la quinta de la panadera.",
+    "whatsapp_pyme": "https://wa.me/56962469977",
+    "_whatsapp_pyme": "Solo para PyME (lamina PyME y escena 05). Decision de Sebastian del 07-10-2026: «a la panadera se le contesta por WhatsApp». El campo general «whatsapp» sigue vacio: / 06 no muestra el movil.",
+    "agenda_url": "",
+    "_agenda_url": "Pagina de reserva de Google Calendar (asesoria de 30 min, sin costo). Vacio = el boton no aparece. Sebastian, 07-10-2026."
+  },
+  "inbox": {
+    "codigo": "/ 05",
+    "nombre": "Inbox",
+    "titulo": "Gestiona una Compra Ágil",
+    "bajada": "Cuéntanos qué necesitas. Respondemos con una propuesta, no con un acuse de recibo.",
+    "campos": {
+      "nombre": "Nombre y apellido",
+      "correo": "Correo electrónico",
+      "telefono": "Teléfono de contacto",
+      "mensaje": "Detalla tus requerimientos",
+      "idmp": "ID Mercado Público (opcional)"
+    },
+    "boton": "ENVIAR",
+    "nota": "Recibes la respuesta, no un acuse de recibo.",
+    "exito": "Listo. Tu mensaje llegó a hola@compai.cl — te respondemos hoy mismo.",
+    "error": "No se pudo enviar. Escríbenos directo a hola@compai.cl.",
+    "antetitulo": "RUN · FORMULARIO DE COTIZACIÓN",
+    "titulo_1": "GESTIONA UNA",
+    "titulo_2": "COMPRA ÁGIL",
+    "placeholders": {
+      "nombre": "Cómo te llamas",
+      "correo": "nombre@institucion.cl",
+      "telefono": "+56 9 1234 5678",
+      "mensaje": "Qué necesitas comprar, cantidades, plazo y presupuesto estimado",
+      "idmp": "1057417-15390-AG26"
+    },
+    "adjunta": {
+      "titulo": "Bases, anexo u orden de compra",
+      "nota": "Súbelas aquí y quedan guardadas. PDF, Word, Excel o imagen."
+    }
+  },
+  "contacto_seccion": {
+    "codigo": "/ 06",
+    "nombre": "Hablemos",
+    "pregunta": "¿Necesitas ayuda con un proyecto?",
+    "intranet_texto": "Intranet",
+    "pregunta_lineas": [
+      "¿Necesitas ayuda con un proyecto?",
+      "Envíanos un correo a"
+    ]
   }
- },
- "creative": {
-  "codigo": "/ 04",
-  "nombre": "Creative",
-  "titulo": "Servicios",
-  "bajada": "Cuatro frentes. Uno basta para empezar.",
-  "etiquetas": [
-   "/pista",
-   "/nodo",
-   "/núcleo"
-  ],
-  "_etiquetas": "Los tres paquetes de desarrollo web para PyMEs (propuesta PC-2026-001). Van aca por decision de Sebastian del 05-10-2026 -«son un excelente enganche»-, aunque el catalogo de la intranet los marca «no va en compai.cl»: lo que no va es su PRECIO y su ficha comercial, que se venden uno a uno.",
-  "paquetes": [
-   {
-    "etiqueta": "/pista",
-    "verbo": "apareces",
-    "linea": "La vecina busca tu panadería en el celular y te encuentra.",
-    "estado": 1
-   },
-   {
-    "etiqueta": "/nodo",
-    "verbo": "apareces y recibes",
-    "linea": "El pedido te llega escrito a un solo lugar, no perdido entre mensajes de WhatsApp.",
-    "estado": 2
-   },
-   {
-    "etiqueta": "/núcleo",
-    "verbo": "apareces, recibes y ordenas",
-    "linea": "Cada pedido queda guardado: quién, qué y para cuándo. Se acabó el cuaderno.",
-    "estado": 3
-   }
-  ],
-  "llamado": {
-   "antes": "¿Cuál es la tuya?",
-   "enlace": "Búscala en el catálogo →",
-   "despues": "",
-   "url": "portafolio.html#escena-05"
-  },
-  "_llamado": "Bajo las tres bandas. 07-10-2026, Sebastian: el llamado pasa de «escríbenos» a revisar el catalogo (portafolio), que llevara las cuatro historias del Estado y la quinta de la panadera.",
-  "whatsapp_pyme": "https://wa.me/56962469977",
-  "_whatsapp_pyme": "Solo para PyME (lamina PyME y escena 05). Decision de Sebastian del 07-10-2026: «a la panadera se le contesta por WhatsApp». El campo general «whatsapp» sigue vacio: / 06 no muestra el movil.",
-  "agenda_url": "",
-  "_agenda_url": "Pagina de reserva de Google Calendar (asesoria de 30 min, sin costo). Vacio = el boton no aparece. Sebastian, 07-10-2026."
- },
- "inbox": {
-  "codigo": "/ 05",
-  "nombre": "Inbox",
-  "titulo": "Gestiona una Compra Ágil",
-  "bajada": "Cuéntanos qué necesitas. Respondemos con una propuesta, no con un acuse de recibo.",
-  "campos": {
-   "nombre": "Nombre y apellido",
-   "correo": "Correo electrónico",
-   "telefono": "Teléfono de contacto",
-   "mensaje": "Detalla tus requerimientos",
-   "idmp": "ID Mercado Público (opcional)"
-  },
-  "boton": "ENVIAR",
-  "nota": "Recibes la respuesta, no un acuse de recibo.",
-  "exito": "Listo. Tu mensaje llegó a hola@compai.cl — te respondemos hoy mismo.",
-  "error": "No se pudo enviar. Escríbenos directo a hola@compai.cl.",
-  "antetitulo": "RUN · FORMULARIO DE COTIZACIÓN",
-  "titulo_1": "GESTIONA UNA",
-  "titulo_2": "COMPRA ÁGIL",
-  "placeholders": {
-   "nombre": "Cómo te llamas",
-   "correo": "nombre@institucion.cl",
-   "telefono": "+56 9 1234 5678",
-   "mensaje": "Qué necesitas comprar, cantidades, plazo y presupuesto estimado",
-   "idmp": "1057417-15390-AG26"
-  },
-  "adjunta": {
-   "titulo": "Bases, anexo u orden de compra",
-   "nota": "Se adjuntan en el correo que se abre al enviar"
-  }
- },
- "contacto_seccion": {
-  "codigo": "/ 06",
-  "nombre": "Hablemos",
-  "pregunta": "¿Necesitas ayuda con un proyecto?",
-  "intranet_texto": "Intranet",
-  "pregunta_lineas": [
-   "¿Necesitas ayuda con un proyecto?",
-   "Envíanos un correo a"
-  ]
- }
 }

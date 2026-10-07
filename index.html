@@ -344,8 +344,13 @@
             <p class="campo ancho2"><label for="f-mensaje">Detalla tus requerimientos</label><textarea id="f-mensaje" name="mensaje" rows="4" placeholder="Qué necesitas comprar, cantidades, plazo y presupuesto estimado" required></textarea></p>
             <p class="campo ancho2 mono"><label for="f-idmp">ID Mercado Público (opcional)</label><input id="f-idmp" name="idmp" type="text" placeholder="1057417-15390-AG26"></p>
             <div class="iadjunta">
-              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M13.5 6.5 7.9 12a2.1 2.1 0 0 0 3 3l5.6-5.6a4 4 0 1 0-5.7-5.7L5 9.6a5.9 5.9 0 0 0 8.4 8.4l4.3-4.3"/></svg>
-              <span><b>Bases, anexo u orden de compra</b><span>Se adjuntan en el correo que se abre al enviar</span></span>
+              <input id="f-archivos" name="archivos" type="file" multiple
+                     accept=".pdf,.doc,.docx,.xls,.xlsx,.odt,.ods,.rtf,.txt,.jpg,.jpeg,.png,.webp,.zip">
+              <label for="f-archivos">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M13.5 6.5 7.9 12a2.1 2.1 0 0 0 3 3l5.6-5.6a4 4 0 1 0-5.7-5.7L5 9.6a5.9 5.9 0 0 0 8.4 8.4l4.3-4.3"/></svg>
+                <span><b>Bases, anexo u orden de compra</b><span>Súbelas aquí y quedan guardadas. PDF, Word, Excel o imagen.</span></span>
+              </label>
+              <ul class="ilista" id="f-lista" aria-live="polite"></ul>
             </div>
           </div>
           <p class="trampa" aria-hidden="true"><label for="f-sitioweb">No llenar</label><input id="f-sitioweb" name="sitioweb" type="text" tabindex="-1" autocomplete="off"></p>

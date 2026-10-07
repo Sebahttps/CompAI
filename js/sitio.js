@@ -378,6 +378,48 @@
     const url = (DATOS.sitio && DATOS.sitio.formEndpoint) || '';
     const texto = (DATOS.sitio && DATOS.sitio.inbox) || {};
 
+    /* Adjuntos: suben acá y quedan en Drive. Antes se pedían por correo
+       aparte y era el único paso del formulario que no cumplía su función
+       (Sebastián, 07-10-2026). El correo queda solo como respaldo. */
+    const campoArch = $('#f-archivos'), listaArch = $('#f-lista');
+    const MAX_ARCH = 5, MAX_UNO = 10 * 1024 * 1024, MAX_TODOS = 20 * 1024 * 1024;
+    const OK_EXT = ['pdf','doc','docx','xls','xlsx','odt','ods','rtf','txt',
+                    'jpg','jpeg','png','webp','zip'];
+    const kb = n => n < 1024 * 1024 ? Math.max(1, Math.round(n / 1024)) + ' KB'
+                                    : (n / 1048576).toFixed(1) + ' MB';
+    // Mismos topes que el servidor, acá solo para avisar antes de subir.
+    function elegidos() {
+      if (!campoArch) return { lista: [], malos: [] };
+      const lista = [], malos = [];
+      let total = 0;
+      for (const ar of Array.from(campoArch.files || [])) {
+        const ext = (ar.name.split('.').pop() || '').toLowerCase();
+        if (!OK_EXT.includes(ext)) { malos.push(ar.name + ' — tipo no permitido'); continue; }
+        if (ar.size > MAX_UNO)     { malos.push(ar.name + ' — pasa de 10 MB'); continue; }
+        if (lista.length >= MAX_ARCH) { malos.push(ar.name + ' — van 5, el tope'); continue; }
+        if (total + ar.size > MAX_TODOS) { malos.push(ar.name + ' — el envío pasa de 20 MB'); continue; }
+        total += ar.size; lista.push(ar);
+      }
+      return { lista, malos };
+    }
+    function pintaArch() {
+      if (!listaArch) return;
+      const { lista, malos } = elegidos();
+      listaArch.innerHTML =
+        lista.map(a => `<li>${a.name.replace(/[<>&]/g, '')} <span>${kb(a.size)}</span></li>`).join('') +
+        malos.map(m => `<li class="mal">${m.replace(/[<>&]/g, '')}</li>`).join('');
+    }
+    if (campoArch) campoArch.addEventListener('change', pintaArch);
+
+    // base64 sin cabecera: es lo que Utilities.base64Decode espera en el script
+    const aBase64 = ar => new Promise((res, rej) => {
+      const r = new FileReader();
+      r.onload = () => res(String(r.result).split(',')[1] || '');
+      r.onerror = () => rej(r.error);
+      r.readAsDataURL(ar);
+    });
+
+
     function muestra(msg, mal) {
       aviso.textContent = msg;
       aviso.classList.toggle('mal', !!mal);
@@ -390,8 +432,8 @@
       if (d.sitioweb) return;                       // campo trampa: bot
       if (!d.nombre || !d.correo) { muestra('Falta el nombre o el correo.', true); return; }
 
-      // El correo se abre SIEMPRE: es donde la persona adjunta las bases, el
-      // anexo o la orden de compra. El Apps Script solo deja el registro.
+      // El correo ya NO se abre siempre: los adjuntos suben con el formulario.
+      // Queda como respaldo para cuando no hay web app o la subida falla.
       const correo = () => {
         const cuerpo = [
           `Nombre y apellido: ${d.nombre}`, `Correo electronico: ${d.correo}`,
@@ -407,17 +449,38 @@
         muestra('Te abrimos el correo con los datos listos. Adjunta ahi las bases u orden de compra.');
         return;
       }
+      const { lista, malos } = elegidos();
+      if (malos.length) { muestra('Revisa los archivos: ' + malos.join(' · '), true); return; }
+
       btnEnviar.disabled = true;
-      btnEnviar.textContent = 'Enviando…';
+      btnEnviar.textContent = lista.length ? 'Subiendo…' : 'Enviando…';
       try {
+        const archivos = [];
+        for (const ar of lista) archivos.push({ nombre: ar.name, b64: await aBase64(ar) });
         // text/plain evita el preflight CORS contra Apps Script
-        await fetch(url, { method: 'POST', body: JSON.stringify({ ...d, origen: 'compai.cl' }),
-                           headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
-        correo();
-        f.reset();
-        muestra(texto.exito || 'Listo, tu mensaje llegó.');
+        const res = await fetch(url, {
+          method: 'POST',
+          body: JSON.stringify({ ...d, archivos, origen: 'compai.cl' }),
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
+        // Un 200 no basta: Apps Script contesta 200 con {ok:false} adentro.
+        let r = {}; try { r = await res.json(); } catch (_) { }
+        if (!res.ok || r.ok === false) throw new Error(r.error || 'respuesta');
+
+        f.reset(); pintaArch();
+        const subidos = Number(r.adjuntos || 0);
+        if (lista.length && subidos < lista.length) {
+          // Se guardó el lead pero no todos los archivos: el correo es el respaldo.
+          correo();
+          muestra('Recibimos tu mensaje, pero ' + (lista.length - subidos) +
+                  ' archivo(s) no se pudieron guardar. Te abrimos el correo para adjuntarlos.', true);
+        } else {
+          muestra(subidos
+            ? `Listo. Recibimos tu mensaje y ${subidos} archivo(s).`
+            : (texto.exito || 'Listo, tu mensaje llegó.'));
+        }
         btnEnviar.textContent = 'Enviado';
       } catch (_) {
+        correo();
         muestra(texto.error || 'No se pudo enviar. Escríbenos a hola@compai.cl.', true);
         btnEnviar.disabled = false;
         btnEnviar.textContent = texto.boton || 'Enviar';
