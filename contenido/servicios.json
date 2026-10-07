@@ -7,7 +7,7 @@
   "vinetas": [
    "Avisos y recordatorios por mensajería",
    "Un proceso administrativo, hecho solo",
-   "Dos sistemas conectados, por hitos",
+   "Dos sistemas conectados, por etapas",
    "Precio cerrado antes de empezar",
    "Acta de puesta en marcha para la rendición"
   ],
@@ -20,7 +20,47 @@
   "imagen_alt": "Automatización e integración de sistemas",
   "cta": "Solicitar cotización",
   "linea": "L1",
-  "linea_nombre": "Automatización e integración de sistemas"
+  "linea_nombre": "Automatización e integración de sistemas",
+  "hoja": {
+   "kicker": "PARA EL ESTADO · AUTOMATIZACIÓN E INTEGRACIÓN",
+   "titulo": "Lo que hoy se hace a mano, hecho solo y a la hora.",
+   "lead": "Avisar, copiar, recordar: el trabajo que se repite todos los meses sale solo, sin sumar un funcionario más.",
+   "como": "Se cotiza por entregable, nunca por hora. **El valor se cierra antes de empezar y no sube si el trabajo nos toma más tiempo**: ese riesgo lo corremos nosotros. Si es largo, se parte en etapas y se paga contra etapa recibida conforme.",
+   "tabla": {
+    "rotulo": "LOS TRES SERVICIOS DE LA LÍNEA",
+    "cols": [
+     "QUÉ ES Y PARA CUÁNDO",
+     "QUÉ RECIBE"
+    ],
+    "filas": [
+     {
+      "nombre": "Avisos y recordatorios automáticos",
+      "para": "Las horas que hoy se confirman por teléfono.",
+      "recibe": "Los avisos saliendo solos, a nombre de la institución"
+     },
+     {
+      "nombre": "Un proceso administrativo, hecho solo",
+      "para": "El reporte que alguien rehace a mano cada mes.",
+      "recibe": "El proceso andando, con aviso cuando algo se traba"
+     },
+     {
+      "nombre": "Dos sistemas conectados, por etapas",
+      "para": "Cuando un sistema no le habla al otro.",
+      "recibe": "Los datos pasando solos, etapa por etapa"
+     }
+    ]
+   },
+   "pasos": [
+    "Nos cuenta qué se hace a mano hoy en su unidad.",
+    "Le enviamos por escrito qué se entrega y el valor cerrado.",
+    "Al cierre recibe el acta de puesta en marcha, lista para la rendición."
+   ],
+   "siguiente": {
+    "texto": "Cuéntenos qué se hace a mano en su unidad y le decimos cuál de los tres corresponde, y qué no necesita pagar. El valor de referencia de cada uno está en el catálogo.",
+    "cta": "Solicitar cotización",
+    "url": "#inbox"
+   }
+  }
  },
  {
   "slug": "especificacion",
@@ -43,7 +83,47 @@
   "imagen_alt": "Especificación y asesoría técnica",
   "cta": "Solicitar cotización",
   "linea": "L2",
-  "linea_nombre": "Especificación y asesoría técnica"
+  "linea_nombre": "Especificación y asesoría técnica",
+  "hoja": {
+   "kicker": "PARA EL ESTADO · ESPECIFICACIÓN Y ASESORÍA",
+   "titulo": "Saber qué pedir, y cuánto debería costar, antes de publicar la compra.",
+   "lead": "Una compra mal especificada se adjudica igual, y después se arrastra el año completo con el dinero ya comprometido.",
+   "como": "**Se especifica para quien va a comprar, nunca para competir después.** Si una asesoría nos deja fuera de esa compra, quedamos fuera, y eso se dice antes de tomar el trabajo.",
+   "tabla": {
+    "rotulo": "LOS TRES SERVICIOS DE LA LÍNEA",
+    "cols": [
+     "QUÉ ES Y PARA CUÁNDO",
+     "QUÉ RECIBE"
+    ],
+    "filas": [
+     {
+      "nombre": "Informe corto de especificación",
+      "para": "Qué pedir y con qué características mínimas.",
+      "recibe": "El informe, con la fuente de cada valor a la vista"
+     },
+     {
+      "nombre": "Anexo técnico para su licitación",
+      "para": "Cuando la compra va a licitación.",
+      "recibe": "El anexo técnico, listo para las bases"
+     },
+     {
+      "nombre": "Comparación de alternativas",
+      "para": "Cuando hay de tres a cinco opciones y hay que elegir una.",
+      "recibe": "La comparación ponderada, con el costo a tres años"
+     }
+    ]
+   },
+   "pasos": [
+    "Nos dice qué necesita comprar.",
+    "Le enviamos por escrito el alcance y el valor cerrado.",
+    "Recibe el documento listo para publicar la compra."
+   ],
+   "siguiente": {
+    "texto": "Cuéntenos qué va a comprar y le decimos cuál de los tres le sirve. El valor de referencia de cada uno está en el catálogo.",
+    "cta": "Solicitar cotización",
+    "url": "#inbox"
+   }
+  }
  },
  {
   "slug": "continuidad",
@@ -66,28 +146,120 @@
   "imagen_alt": "Puesta en marcha, migración y continuidad",
   "cta": "Solicitar cotización",
   "linea": "L3",
-  "linea_nombre": "Puesta en marcha, migración y continuidad"
+  "linea_nombre": "Puesta en marcha, migración y continuidad",
+  "hoja": {
+   "kicker": "PARA EL ESTADO · PUESTA EN MARCHA Y CONTINUIDAD",
+   "titulo": "Que lo que ya compró quede andando, y siga andando.",
+   "lead": "Que llegue la clave no es que quede funcionando. Lo dejamos andando esta semana y lo vigilamos los doce meses siguientes.",
+   "como": "**Un solo responsable técnico, de punta a punta.** El plan de vuelta atrás se escribe antes de tocar una sola cosa, y la hora de respuesta del soporte queda comprometida por escrito, no de palabra.",
+   "tabla": {
+    "rotulo": "LOS TRES SERVICIOS DE LA LÍNEA",
+    "cols": [
+     "QUÉ ES Y PARA CUÁNDO",
+     "QUÉ RECIBE"
+    ],
+    "filas": [
+     {
+      "nombre": "Puesta en marcha de lo comprado",
+      "para": "Llegó la licencia o el equipo y nadie lo ha instalado.",
+      "recibe": "Cuentas creadas, equipo andando y acta firmada"
+     },
+     {
+      "nombre": "Migración de sitio y correo",
+      "para": "Hay que cambiar de proveedor sin perder nada.",
+      "recibe": "Sitio, buzones y dominio trasladados, con un solo responsable"
+     },
+     {
+      "nombre": "Mantención por 12 meses",
+      "para": "Para que nada venza sin que alguien se entere.",
+      "recibe": "Reporte mensual y soporte con hora de respuesta escrita"
+     }
+    ]
+   },
+   "pasos": [
+    "Nos cuenta qué compró y qué no está andando.",
+    "Le enviamos por escrito el alcance y el valor cerrado.",
+    "Recibe el inventario, la configuración escrita y el acta firmada."
+   ],
+   "siguiente": {
+    "texto": "Cuéntenos qué compró y qué no está andando. Le decimos cuál de los tres corresponde. El valor de referencia de cada uno está en el catálogo.",
+    "cta": "Solicitar cotización",
+    "url": "#inbox"
+   }
+  }
  },
  {
-  "slug": "catalogo",
+  "slug": "pyme",
   "codigo": "04",
-  "titulo": "Los nueve servicios, con el precio a la vista",
-  "bajada": "Nueve servicios con su valor neto publicado y lo que no entra. Ninguno pasa las 100 UTM: los nueve van por Compra Ágil.",
+  "titulo": "Servicios PyME",
+  "bajada": "Tu negocio en internet: que te encuentren, que te pidan y que no se te pierda nada.",
   "vinetas": [
-   "Nueve servicios en tres líneas",
-   "El neto que va en la orden de compra",
-   "La lista de lo que no entra, completa",
-   "Glosa redactada para la orden de compra",
-   "La ficha del Estado, a dos clics"
+   "Pista: apareces",
+   "Nodo: apareces y recibes",
+   "Núcleo: apareces, recibes y ordenas",
+   "Precio cerrado antes de empezar",
+   "Versiones que abres en tu propio celular"
   ],
   "lamina": [
-   "Nueve servicios repartidos en tres líneas, y cada ficha trae lo mismo: el valor, el neto que va en la orden de compra y las dos listas completas, la de lo que entra y la de lo que no entra. Las dos, antes de que usted pida la cotización.",
-   "El valor se cierra antes de empezar y no sube si el trabajo toma más tiempo del previsto. Sólo cambia si usted pide algo que no estaba, y eso se autoriza por escrito y se cotiza aparte antes de ejecutarlo. La glosa de la orden de compra va redactada.",
-   "La empresa es nueva y usted lo puede comprobar sin creernos: la ficha del Registro de Proveedores muestra, de cualquier proveedor, sus ventas en Mercado Público y los convenios marco adjudicados. Las nuestras están en cero, y esa ficha está a dos clics de aquí."
+   "Pista es una página con tu nombre, lo que vendes y un botón de WhatsApp.",
+   "Nodo suma catálogo con fotos y un formulario: el pedido te llega escrito a un solo lugar.",
+   "Núcleo guarda: cada pedido queda registrado, quién, qué y para cuándo."
   ],
-  "imagen": "media/captura-portafolio.webp",
-  "imagen_alt": "Catálogo de servicios y precios de CompAI",
-  "cta": "Ver los nueve, con precio",
-  "cta_url": "/portafolio.html#servicios"
+  "imagen": "media/banda-pista.webp",
+  "imagen_alt": "La panadera de barrio atendiendo",
+  "cta": "Escríbenos",
+  "linea": "PYME",
+  "hoja": {
+   "kicker": "PARA TU NEGOCIO · PISTA, NODO Y NÚCLEO",
+   "titulo": "Tres formas de poner tu negocio en internet.",
+   "lead": "Partes con lo que tu negocio necesita hoy, y subes cuando te lo pida.",
+   "como": "No vendemos horas de programador: vendemos el sitio andando. **El precio se cierra antes de empezar y no sube si el trabajo nos toma más tiempo**: ese riesgo lo corremos nosotros. Solo cambia si pides algo que no estaba.",
+   "tabla": {
+    "rotulo": "LOS TRES PAQUETES · CADA UNO TRAE LO DEL ANTERIOR",
+    "cols": [
+     "QUÉ ES Y PARA QUIÉN",
+     "ALCANCE",
+     "QUÉ RECIBES",
+     "DESDE · CON IVA"
+    ],
+    "barras": true,
+    "filas": [
+     {
+      "nombre": "PISTA",
+      "para": "Recién estás partiendo.",
+      "n": 1,
+      "recibe": "Una página con tu nombre, lo que vendes y botón de WhatsApp",
+      "desde": "$500.000"
+     },
+     {
+      "nombre": "NODO",
+      "para": "Ya tienes clientes.",
+      "n": 2,
+      "recibe": "Catálogo con fotos, y el pedido te llega escrito a un solo lugar",
+      "desde": "$1.000.000"
+     },
+     {
+      "nombre": "NÚCLEO",
+      "para": "Ya no te alcanza el cuaderno.",
+      "n": 3,
+      "recibe": "Cada pedido queda guardado: quién, qué y para cuándo",
+      "desde": "$2.713.200"
+     }
+    ]
+   },
+   "nota": "No se elige por el tamaño del negocio: se elige por **lo que te falta hoy**. La mantención mensual va aparte y es opcional.",
+   "pasos": [
+    "Conversamos media hora y te decimos cuál de los tres te sirve. Si ninguno, también te lo decimos.",
+    "Te mandamos por escrito qué recibes y el precio cerrado.",
+    "Construimos mostrándote versiones que abres en tu propio celular.",
+    "Queda publicado con tu propio nombre: tunegocio.cl."
+   ],
+   "siguiente": {
+    "texto": "Escríbenos por WhatsApp y dinos en qué rubro estás: te decimos cuál te sirve, y qué no necesitas pagar.",
+    "cta": "Escríbenos por WhatsApp",
+    "url": "https://wa.me/56962469977?text=Hola%2C%20tengo%20un%20negocio%20y%20quiero%20saber%20cu%C3%A1l%20me%20sirve%3A%20Pista%2C%20Nodo%20o%20N%C3%BAcleo.",
+    "agenda_cta": "Agenda 30 min de asesoría, sin costo"
+   }
+  }
  }
 ]

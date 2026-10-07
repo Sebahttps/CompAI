@@ -208,16 +208,16 @@
   },
   "franja": [
    {
-    "cifra": "9",
-    "glosa": "SERVICIOS CON PRECIO PUBLICADO"
+    "cifra": "24/7",
+    "glosa": "Operación continua"
    },
    {
-    "cifra": "$360.000",
-    "glosa": "NETO · EL SERVICIO MÁS BARATO"
+    "cifra": "<60m",
+    "glosa": "Respuesta a cotización"
    },
    {
-    "cifra": "0",
-    "glosa": "VENTAS EN EL ESTADO: COMPRUÉBELO"
+    "cifra": "100%",
+    "glosa": "Trazabilidad"
    }
   ],
   "titulo_lineas": [
@@ -270,7 +270,7 @@
    {
     "etiqueta": "/nodo",
     "verbo": "apareces y recibes",
-    "linea": "El pedido te llega escrito, no perdido entre audios de WhatsApp.",
+    "linea": "El pedido te llega escrito a un solo lugar, no perdido entre mensajes de WhatsApp.",
     "estado": 2
    },
    {
@@ -282,11 +282,15 @@
   ],
   "llamado": {
    "antes": "¿Cuál es la tuya?",
-   "enlace": "Escríbenos a hola@compai.cl",
-   "despues": "y te decimos cuál y cuánto.",
-   "url": "mailto:hola@compai.cl?subject=Pista%2C%20Nodo%20o%20N%C3%BAcleo%20%E2%80%94%20mi%20negocio"
+   "enlace": "Búscala en el catálogo →",
+   "despues": "",
+   "url": "portafolio.html#escena-05"
   },
-  "_llamado": "Llamado para la PyME bajo las tres bandas (veto de ClAI-nte del 06-10-2026: no tenia a quien escribir). Correo y no WhatsApp: el movil va oculto a proposito."
+  "_llamado": "Bajo las tres bandas. 07-10-2026, Sebastian: el llamado pasa de «escríbenos» a revisar el catalogo (portafolio), que llevara las cuatro historias del Estado y la quinta de la panadera.",
+  "whatsapp_pyme": "https://wa.me/56962469977",
+  "_whatsapp_pyme": "Solo para PyME (lamina PyME y escena 05). Decision de Sebastian del 07-10-2026: «a la panadera se le contesta por WhatsApp». El campo general «whatsapp» sigue vacio: / 06 no muestra el movil.",
+  "agenda_url": "",
+  "_agenda_url": "Pagina de reserva de Google Calendar (asesoria de 30 min, sin costo). Vacio = el boton no aparece. Sebastian, 07-10-2026."
  },
  "inbox": {
   "codigo": "/ 05",

@@ -37,7 +37,8 @@
       "etiqueta": "Código de Compra Ágil, si ya la publicó",
       "placeholder": "Ej.: 1234-56-COT26"
     },
-    "correo_malo": "Revise el correo: así no le llega la respuesta."
+    "correo_malo": "Revise el correo: así no le llega la respuesta.",
+    "exito_doc": "Listo. Le enviamos la cotización formal en PDF a {correo}, con valor neto, IVA y la glosa para la orden de compra."
   },
   "escenas": [
     {
@@ -299,6 +300,84 @@
           ]
         }
       ]
+    },
+    {
+      "id": "05",
+      "carrete": "Nadie encuentra la panadería",
+      "video": "media/escena-05.mp4",
+      "poster": "media/escena-05.webp",
+      "alt": "Cómic animado: la vecina busca pan amasado en el celular y no aparece nada; la panadera se pierde entre audios de WhatsApp: «¿Quién me pidió las hallullas?»; al final aparece, los pedidos le llegan escritos a un solo lugar y queda tranquila.",
+      "linea": "Servicios PyME",
+      "titulo": "«Nadie encuentra la panadería»",
+      "bajada": "El pan sale bueno. Lo que falla es lo de afuera: la vecina te busca en el celular y no apareces, y los pedidos se te pierden entre audios.",
+      "asunto": "Pista, Nodo o Núcleo · {institucion}",
+      "grupos": [
+        {
+          "pregunta": "¿Qué necesita tu negocio?",
+          "items": [
+            {
+              "id": "pista",
+              "nombre": "Pista: apareces",
+              "detalle": "Una página con tu nombre, lo que vendes y botón de WhatsApp",
+              "cantidad": false,
+              "vigencia": false,
+              "sp": "PNN-1"
+            },
+            {
+              "id": "nodo",
+              "nombre": "Nodo: apareces y recibes",
+              "detalle": "Catálogo con fotos, y el pedido te llega escrito a un solo lugar",
+              "cantidad": false,
+              "vigencia": false,
+              "sp": "PNN-2"
+            },
+            {
+              "id": "nucleo",
+              "nombre": "Núcleo: apareces, recibes y ordenas",
+              "detalle": "Cada pedido queda guardado: quién, qué y para cuándo",
+              "cantidad": false,
+              "vigencia": false,
+              "sp": "PNN-3"
+            }
+          ]
+        }
+      ],
+      "formulario": {
+        "titulo_quien": "¿A quién le escribimos?",
+        "cta": "Pedir cotización",
+        "nota": "Te contestamos por WhatsApp. La mantención mensual va aparte y es opcional.",
+        "exito": "Listo, nos llegó. Se abrió WhatsApp con tu pedido escrito: envíalo y te contestamos por ahí.",
+        "error": "No quedó registrado, pero se abrió WhatsApp con tu pedido escrito: envíalo desde ahí.",
+        "vacio": "Marca al menos uno.",
+        "sin_institucion": "Falta el nombre de tu negocio.",
+        "faltan": "Falta tu nombre o tu WhatsApp.",
+        "correo_malo": "Revisa el correo: así no te llega la respuesta.",
+        "institucion": {
+          "etiqueta": "Tu negocio",
+          "placeholder": "Ej.: Panadería La Espiga",
+          "obligatorio": true
+        },
+        "plazo": {
+          "etiqueta": "¿Para cuándo?",
+          "placeholder": "Ej.: antes de diciembre"
+        },
+        "codigo": null,
+        "respaldo": {
+          "linea": "¿No se abrió WhatsApp? Escríbenos al +56 9 6246 9977",
+          "boton_copiar": "Copiar el pedido",
+          "copiado": "Copiado. Pégalo en un WhatsApp al +56 9 6246 9977"
+        },
+        "cuerpo": "Hola:\n\nTengo {institucion} y me interesa:\n\n{items}\n\nLo necesito {plazo}.\n\nSaludos,\n\n\n— Enviado desde compai.cl/portafolio · {escena}",
+        "canal": "whatsapp",
+        "whatsapp": "https://wa.me/56962469977",
+        "telefono": {
+          "etiqueta": "WhatsApp",
+          "placeholder": "+56 9 …",
+          "obligatorio": true
+        },
+        "agenda_cta": "O agenda 30 min de asesoría, sin costo →",
+        "exito_doc": "Listo, nos llegó. Te enviamos la cotización en PDF a {correo} y se abrió WhatsApp con tu pedido escrito."
+      }
     }
   ],
   "servicios": {
@@ -337,6 +416,18 @@
     "SP-09": {
       "bruto": "$2.570.400",
       "cond": "al año, en 12 cuotas de $214.200"
+    },
+    "PNN-1": {
+      "bruto": "$500.000",
+      "cond": "desde"
+    },
+    "PNN-2": {
+      "bruto": "$1.000.000",
+      "cond": "desde"
+    },
+    "PNN-3": {
+      "bruto": "$2.713.200",
+      "cond": "desde"
     }
   }
 }

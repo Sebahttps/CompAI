@@ -79,12 +79,16 @@ for (const s of serv) {
   if (vistos.has(s.slug)) mal(`slug repetido: ${s.slug}`); vistos.add(s.slug);
   if (s.vinetas && s.vinetas.length !== 5) mal(`«${s.slug}»: ${s.vinetas.length} viñetas, tienen que ser 5.`);
   if (s.lamina && s.lamina.length < 3) mal(`«${s.slug}»: la lamina tiene menos de 3 parrafos.`);
-  // PNN -/pista /nodo /nucleo- es la linea de desarrollo web PyME del catalogo
-  // de la intranet, y su ficha dice «no va en compai.cl · se vende 1 a 1». Lo que
-  // se publica son las tres lineas de servicio propio. (05-10-2026)
-  if (s.etiqueta) mal(`«${s.slug}»: trae «etiqueta» ${s.etiqueta}; PNN no se publica en compai.cl.`);
-  if (s.slug !== 'catalogo' && !['L1', 'L2', 'L3'].includes(s.linea)) mal(`«${s.slug}»: linea «${s.linea}» no es L1, L2 ni L3.`);
-  if (/ta\s*rifa|\$\s*\d/.test(JSON.stringify(s))) mal(`«${s.slug}»: hay un precio en el texto publico.`);
+  // Tres lineas para el Estado y, desde el 07-10-2026, la cuarta ficha es
+  // Servicios PyME (pista, nodo, nucleo), por decision de Sebastian. Su PRECIO
+  // sigue sin publicarse en el home: lo vigila la regla de abajo.
+  if (s.etiqueta) mal(`«${s.slug}»: trae «etiqueta» ${s.etiqueta}; la ficha no lleva etiqueta.`);
+  if (!['L1', 'L2', 'L3', 'PYME'].includes(s.linea)) mal(`«${s.slug}»: linea «${s.linea}» no es L1, L2, L3 ni PYME.`);
+  if (!s.hoja || !s.hoja.titulo || !(s.hoja.tabla && s.hoja.tabla.filas && s.hoja.tabla.filas.length === 3))
+    mal(`«${s.slug}»: la lamina no trae «hoja» con titulo y tabla de tres.`);
+  // Sin precio en el home, salvo el «desde» de PyME, que Sebastian aprobo el
+  // 07-10-2026 junto con la agenda de 30 min sin costo.
+  if (s.linea !== 'PYME' && /ta\s*rifa|\$\s*\d/.test(JSON.stringify(s))) mal(`«${s.slug}»: hay un precio en el texto publico.`);
 }
 if (!['franjas', 'nucleo'].includes(sitio.hero)) mal(`hero «${sitio.hero}» no es franjas ni nucleo.`);
 

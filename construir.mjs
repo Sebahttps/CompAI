@@ -22,7 +22,9 @@ const LOGO = readFileSync(join(raiz, 'media/logo-compai.svg'), 'utf8')
   .replace(/<\?xml[^>]*\?>\s*/, '').trim();
 
 const esc = t => String(t ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-const hoy = (process.env.FECHA_SITIO || new Date().toISOString()).slice(0, 10);
+// en UTC: el merge de un PR trae la hora de Chile (-03:00) y entre las 21:00 y
+// las 24:00 el slice daba otro dia que el commit del PR, y el CI fallaba.
+const hoy = new Date(process.env.FECHA_SITIO || Date.now()).toISOString().slice(0, 10);
 
 /* ── el isotipo: el doble check de la marca, suelto y en neón ─────────── */
 const TICKS = (clase, etiqueta) => `<svg class="${clase}" viewBox="0 0 22 20" role="img" aria-label="${etiqueta}">
@@ -285,9 +287,9 @@ const ICONO = {
   automatizacion: '<rect x="2.5" y="7" width="7" height="7" rx="1"/><rect x="14.5" y="7" width="7" height="7" rx="1"/><path d="M9.5 10.5h5"/><path d="M12.5 8.5 14.5 10.5 12.5 12.5"/>',
   especificacion: '<path d="M5.5 2.5h8l5 5v14h-13z"/><path d="M13.5 2.5v5h5"/><path d="M8.5 12.5h7"/><path d="M8.5 16.5h4.5"/>',
   continuidad: '<circle cx="7" cy="12" r="4"/><path d="M11 12h10"/><path d="M17.5 12v3.5"/><path d="M20.5 12v2.5"/>',
-  catalogo: '<path d="M12.5 2.5H21v8.5l-9.5 9.5a1.6 1.6 0 0 1-2.3 0l-6.2-6.2a1.6 1.6 0 0 1 0-2.3z"/><circle cx="17" cy="7" r="1.6"/><path d="M8 13.5l3 3"/>',
+  pyme: '<path d="M3.5 9.5 5 4h14l1.5 5.5"/><path d="M3.5 9.5h17v1a2.8 2.8 0 0 1-5.7 0 2.8 2.8 0 0 1-5.6 0 2.8 2.8 0 0 1-5.7 0z"/><path d="M5 13v7.5h14V13"/><path d="M10 20.5v-5h4v5"/>',
 };
-const ROT_LINEA = { automatizacion: 'L1', especificacion: 'L2', continuidad: 'L3', catalogo: 'CATÁLOGO' };
+const ROT_LINEA = { automatizacion: 'L1', especificacion: 'L2', continuidad: 'L3', pyme: 'PYME' };
 
 const servTexto = (s, x, y) => `<button class="b servblock" type="button" data-slug="${esc(s.slug)}" aria-haspopup="dialog"
         style="--x:${x};--y:${y};--w:583;text-align:left;display:block">
@@ -295,11 +297,13 @@ const servTexto = (s, x, y) => `<button class="b servblock" type="button" data-s
         <span class="serv-tit">${esc(s.titulo)}</span>
         <span class="serv-par">${esc(s.bajada)}</span>
         <ul class="serv-vin">${s.vinetas.slice(0, 3).map(v => `<li>${esc(v)}</li>`).join('')}</ul>
-        <span class="serv-acc">Ver precio &rarr;</span>
       </button>`;
 
-/* La placa reemplaza al mockup de telefono, monitor y notebook. */
-const placa = (s, x, y) => `<div class="b fh placa" style="--x:${x};--y:${y};--w:400;--hh:400" aria-hidden="true">
+/* La placa reemplaza al mockup de telefono, monitor y notebook. Desde el
+   07-10-2026 tambien abre la lamina: Sebastian pidio que el titular O el
+   icono la desplieguen. El boton de la izquierda es el accesible; la placa
+   es un atajo para el mouse y el dedo, por eso sigue aria-hidden. */
+const placa = (s, x, y) => `<div class="b fh placa" data-slug="${esc(s.slug)}" style="--x:${x};--y:${y};--w:400;--hh:400" aria-hidden="true">
         <svg class="placa-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"
              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">${ICONO[s.slug] || ''}</svg>
         <span class="placa-cod">${esc(s.codigo)}</span>
@@ -325,51 +329,17 @@ const creative = `
       ${placa(SERV[2], 836, 1750)}
     </div>
 
-    <div class="pg cvfondo" style="--h:2240">
-      <div class="b fh ccirc" style="--x:704;--y:0;--w:662;--hh:896" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
-      <div class="b fh cline" style="--x:659;--y:0;--w:9;--hh:902" aria-hidden="true"></div>
+    ${/* 07-10-2026, Sebastian: las bandas pista/nodo/nucleo salen del home.
+          Las tres se explican juntas en la ficha 04 (Servicios PyME) y su
+          lamina; la historia de la panadera vive en el catalogo (escena 05).
+          La linea sigue la de la pagina de arriba (657, 7 px): antes era
+          659/9 y en la union se veia el escalon. */ ''}
+    <div class="pg cvfondo" style="--h:960">
+      <div class="b fh ccirc" style="--x:704;--y:0;--w:662;--hh:960" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
+      <div class="b fh cline" style="--x:657;--y:0;--w:7;--hh:960" aria-hidden="true"></div>
       ${servTexto(SERV[3], 79, 203)}
       ${placa(SERV[3], 836, 163)}
-      ${/* Las tres bandas abren con un DIBUJO, no con una ficha de texto:
-            la ficha repetia el servicio de arriba. Un solo dibujo en tres
-            estados —la diferencia entre los paquetes es acumulativa—, y lo
-            que entra nuevo en cada uno va en ambar. Visu, 05-10-2026. */
-        S.creative.paquetes.map((pq, i) => {
-        const y = [896, 1278, 1704][i], h = [382, 426, 406][i];
-        const n = ['pista', 'nodo', 'nucleo'][i];
-        const e = pq.estado;
-        return `<details class="b fh banda banda-${n}" style="--x:0;--y:${y};--w:1366;--hh:${h}">
-        <summary>
-          <span class="ccirc" aria-hidden="true">${fondoVid(`media/banda-${n}.mp4`, `media/banda-${n}.webp`)}</span>
-          <span class="banda-velo" aria-hidden="true"></span>
-          <span class="banda-tx">${esc(pq.etiqueta)}</span>
-          <span class="banda-sub">${esc(pq.verbo)}</span>
-          <span class="banda-mas" aria-hidden="true"></span>
-        </summary>
-        <div class="banda-ficha">
-          <svg class="esq" viewBox="0 0 300 150" fill="none" aria-hidden="true"
-               stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <g class="traza">
-              <rect x="18" y="26" width="104" height="78" rx="3"/>
-              <path d="M18 44h104"/><path d="M34 62h52"/><path d="M34 76h72"/>
-            </g>
-            <g class="traza"><path d="M130 50h58"/><path d="M178 42 190 50 178 58"/></g>
-            ${e >= 2 ? `<g class="accion">
-              <rect x="196" y="30" width="86" height="20" rx="3"/>
-              <rect x="196" y="58" width="86" height="20" rx="3" fill="currentColor" stroke="none" opacity=".9"/>
-              <path d="M188 92h-58"/><path d="M140 84 128 92 140 100"/>
-            </g>` : ''}
-            ${e >= 3 ? `<g class="accion">
-              <ellipse cx="239" cy="104" rx="30" ry="9"/>
-              <path d="M209 104v22c0 5 13.4 9 30 9s30-4 30-9v-22"/>
-              <path d="M209 118c0 5 13.4 9 30 9s30-4 30-9"/>
-            </g>` : ''}
-          </svg>
-          <p class="esq-pie"><b>${esc(pq.verbo)}</b> ${esc(pq.linea)}</p>
-        </div>
-      </details>`;
-      }).join('')}
-      ${S.creative.llamado ? `<p class="b banda-llamado" style="--x:137;--y:2146;--w:1092;--hh:60">${esc(S.creative.llamado.antes)} <a href="${esc(S.creative.llamado.url)}">${esc(S.creative.llamado.enlace)}</a> ${esc(S.creative.llamado.despues)}</p>` : ''}
+      ${S.creative.llamado ? `<p class="b banda-llamado" style="--x:79;--y:830;--w:583;--hh:60">${esc(S.creative.llamado.antes)} <a href="${esc(S.creative.llamado.url)}">${esc(S.creative.llamado.enlace)}</a> ${esc(S.creative.llamado.despues)}</p>` : ''}
     </div>
   </section>`;
 
@@ -433,7 +403,10 @@ const contacto = `
 
 /* ── el documento ────────────────────────────────────────────────────── */
 const datos = {
-  servicios: SERV,
+  // la agenda de PyME (asesoria de 30 min, sin costo) vive en sitio.json y se
+  // le cuelga a la hoja que la ofrece; sin URL el boton no aparece.
+  servicios: SERV.map(s => s.hoja && s.hoja.siguiente && s.hoja.siguiente.agenda_cta
+    ? { ...s, hoja: { ...s.hoja, siguiente: { ...s.hoja.siguiente, agenda_url: S.creative.agenda_url || '' } } } : s),
   sitio: { formEndpoint: S.formEndpoint, inbox: { exito: S.inbox.exito, error: S.inbox.error, boton: S.inbox.boton } }
 };
 
@@ -462,7 +435,8 @@ const html = `<!doctype html>
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/favicon.svg">
+<link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preload" as="font" type="font/woff2" href="css/fuentes/archivo-var-latin.woff2" crossorigin>
 <link rel="preload" as="image" href="media/hero-franjas.webp" fetchpriority="high">
 <link rel="stylesheet" href="css/sitio.css">
@@ -508,18 +482,11 @@ ${contacto}
     </button>
   </div>
   <div class="lam-cuerpo">
-    <p class="lam-et" id="lamEt"></p>
-    <h2 id="lamTit"></h2>
-    <p class="lam-baj" id="lamBaj"></p>
-    <div class="lam-grid">
-      <div id="lamTexto"></div>
-      <ul class="lam-vin" id="lamVin"></ul>
-    </div>
-    <!-- sin atributo src: vacio resuelve a la propia pagina y dispara un error de
-       recurso en la consola. La ruta la pone el JS al abrir cada lamina. -->
-    <figure class="lam-img" hidden><img id="lamImg" alt="" loading="lazy" decoding="async"></figure>
-    <a class="lam-cta" id="lamCta" href="#inbox" onclick="document.getElementById('lamX').click()">Cotizar</a>
-    <p class="lam-pie">${S.creative.etiquetas.map(e => esc(e)).join(' &nbsp;·&nbsp; ')}</p>
+    <!-- La lamina es una hoja con la forma de la propuesta comercial PC-2026-001:
+         rotulo, titular, bajada, «como trabajamos», tabla de tres, pasos y el
+         siguiente paso. Sin precios: el precio vive en el catalogo. Sebastian,
+         07-10-2026. La pinta js/sitio.js desde servicios.json (campo «hoja»). -->
+    <article class="hoja" id="lamHoja" aria-labelledby="lamTit"></article>
   </div>
 </div>
 
@@ -544,6 +511,8 @@ const c404 = `<!doctype html>
 <meta name="theme-color" content="#0B0806">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="/css/sitio.css">
 <style>
 body{display:grid;place-items:center;min-height:100svh;padding:clamp(24px,6vw,64px);text-align:center}
@@ -603,7 +572,7 @@ if (!existsSync(join(raiz, 'media/og.jpg'))) console.warn('AVISO: falta media/og
   };
   const item = (e, it) => {
     const idc = `i${e.id}-${it.id}`.replace(/[^a-zA-Z0-9_-]/g, '');
-    const px = it.sp ? `<span class="px">${esc(precio(it))}</span>` : '';
+    const px = it.sp ? `<span class="px">${esc(precio(it))}</span>` : it.precio ? `<span class="px">${esc(it.precio)}</span>` : '';
     const cant = it.cantidad
       ? `<input class="cant" type="number" name="cant-${esc(it.id)}" min="1" step="1" inputmode="numeric" placeholder="${esc(it.unidad || 'cant.')}" data-unidad="${esc(it.unidad || '')}" aria-label="Cantidad de ${esc(it.unidad || 'unidades')} · ${esc(it.nombre)}">`
       : '';
@@ -621,7 +590,15 @@ ${g.items.map(it => item(e, it)).join('\n')}
         </fieldset>`;
   const vig = e => e.vigencia ? `
         <label class="vig">${esc(e.vigencia.etiqueta)}<select name="vigencia">${e.vigencia.opciones.map(o => `<option${o === e.vigencia.defecto ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select></label>` : '';
-  const pieza = (e, i) => `    <!-- ---------- ${e.id} ---------- -->
+  /* Una escena puede traer su propio formulario (la 05, la panadera, le
+     habla de tu y no pide institucion ni codigo de Compra Agil). Lo que no
+     trae lo hereda del formulario comun. 07-10-2026. */
+  const mezcla = e => {
+    const o = e.formulario || {}, r = { ...F, ...o };
+    for (const k of ['institucion', 'plazo', 'respaldo']) if (o[k]) r[k] = { ...F[k], ...o[k] };
+    return r;
+  };
+  const pieza = (e, i) => { const F = mezcla(e); return `    <!-- ---------- ${e.id} ---------- -->
     <div class="pieza" data-p="${i + 1}">
       <figure class="marco"><video muted loop playsinline ${i === 0 ? 'autoplay preload="metadata"' : 'preload="none"'} poster="${esc(e.poster)}" aria-label="${esc(e.alt)}"><source src="${esc(e.video)}" type="video/mp4"></video></figure>
       <div class="pieplaca">
@@ -629,26 +606,27 @@ ${g.items.map(it => item(e, it)).join('\n')}
         <h2>${esc(e.titulo)}</h2>
         <p>${esc(e.bajada)}</p>
       </div>
-      <form class="pide" data-titulo="${esc(e.carrete)}" data-asunto="${esc(e.asunto)}" action="mailto:hola@compai.cl" method="post" enctype="text/plain">
+      <form class="pide" data-id="${esc(e.id)}" data-titulo="${esc(e.carrete)}" data-asunto="${esc(e.asunto)}" action="mailto:hola@compai.cl" method="post" enctype="text/plain">
 ${e.grupos.map((g, k) => grupo(e, g) + (k === 0 ? vig(e) : '')).join('\n')}
         <div class="quien">
           <p class="tq">${esc(F.titulo_quien)}</p>
-          <label>${esc(F.institucion.etiqueta)}<input name="organismo" autocomplete="organization" required maxlength="120" placeholder="${esc(F.institucion.placeholder)}"></label>
+          <label>${esc(F.institucion.etiqueta)}<input name="organismo" autocomplete="organization"${F.institucion.obligatorio === false ? '' : ' required'} maxlength="120" placeholder="${esc(F.institucion.placeholder)}"></label>
           <label>Nombre<input name="nombre" autocomplete="name" required maxlength="80"></label>
           <label>Correo<input name="correo" type="email" autocomplete="email" required maxlength="120"></label>
-          <label>Teléfono<input name="telefono" type="tel" autocomplete="tel" maxlength="30"></label>
+          <label>${esc((F.telefono || {}).etiqueta || 'Teléfono')}<input name="telefono" type="tel" autocomplete="tel" maxlength="30"${(F.telefono || {}).obligatorio ? ' required' : ''}${(F.telefono || {}).placeholder ? ` placeholder="${esc(F.telefono.placeholder)}"` : ''}></label>
           <label>${esc(F.plazo.etiqueta)}<input name="plazo" maxlength="60" placeholder="${esc(F.plazo.placeholder)}"></label>
-          <label>${esc(F.codigo.etiqueta)}<input name="codigo" maxlength="40" placeholder="${esc(F.codigo.placeholder)}"></label>
+          ${F.codigo ? `<label>${esc(F.codigo.etiqueta)}<input name="codigo" maxlength="40" placeholder="${esc(F.codigo.placeholder)}"></label>` : ''}
           <span class="trampa" aria-hidden="true"><input name="sitioweb" tabindex="-1" autocomplete="off"></span>
         </div>
         <div class="envia">
           <button type="submit">${esc(F.cta)}</button><span class="cuenta" aria-live="polite"></span>
           <p class="nota">${esc(F.nota)}</p>
+          ${F.agenda_cta && S.creative.agenda_url ? `<a class="agenda" href="${esc(S.creative.agenda_url)}" target="_blank" rel="noopener">${esc(F.agenda_cta)}</a>` : ''}
         </div>
         <p class="aviso" role="status" hidden></p>
         <p class="respaldo" hidden>${esc(F.respaldo.linea)} <button type="button" class="copia">${esc(F.respaldo.boton_copiar)}</button></p>
       </form>
-    </div>`;
+    </div>`; };
   const conf = c => `<p class="confianza${c ? ' ' + c : ''}">${esc(E.confianza.texto)} <a href="${esc(E.confianza.url)}" target="_blank" rel="noopener">${esc(E.confianza.enlace)}</a></p>`;
   const bloque = `<!-- ESCENAS:INICIO · lo arma construir.mjs desde contenido/escenas.json — NO SE EDITA A MANO -->
 ${E.escenas.map((e, i) => `<input type="radio" name="pieza" id="p${i + 1}" class="sel"${i === 0 ? ' checked' : ''}>`).join('\n')}
@@ -673,7 +651,7 @@ ${E.escenas.map(pieza).join('\n\n')}
     ${conf('abajo')}
   </div>
 </main>
-<script>window.ESCENAS=${JSON.stringify({ formulario: F, endpoint: S.formEndpoint || '' }).replace(/</g, '\\u003c')};</script>
+<script>window.ESCENAS=${JSON.stringify({ formulario: F, por: Object.fromEntries(E.escenas.filter(e => e.formulario).map(e => [e.id, mezcla(e)])), endpoint: S.formEndpoint || '' }).replace(/</g, '\\u003c')};</script>
 <!-- ESCENAS:FIN -->`;
   const t = readFileSync(PORT, 'utf8');
   const re = /<!-- ESCENAS:INICIO[\s\S]*?<!-- ESCENAS:FIN -->/;
@@ -682,4 +660,23 @@ ${E.escenas.map(pieza).join('\n\n')}
     const n = E.escenas.reduce((a, e) => a + e.grupos.reduce((b, g) => b + g.items.length, 0), 0);
     console.log(`portafolio.html · ${E.escenas.length} escenas · ${n} cosas para pedir`);
   } else console.warn('AVISO: portafolio.html no tiene las marcas ESCENAS:INICIO/FIN — no se tocaron las escenas');
+
+  /* Los precios que usa el Apps Script para armar la cotizacion en PDF salen
+     de aqui mismo: el servidor no confia en los que manda el navegador.
+     07-10-2026. Tras cambiarlos hay que volver a desplegar el Apps Script. */
+  const PRE = {};
+  // de la ultima escena a la primera: el SP-07 toma el nombre de la 03
+  // («Puesta en marcha de lo comprado»), no el de la 01
+  for (const e of [...E.escenas].reverse()) for (const g of e.grupos) for (const it of g.items) {
+    const s = it.sp && E.servicios[it.sp]; if (!s || PRE[it.sp]) continue;
+    PRE[it.sp] = { nombre: it.nombre, detalle: it.detalle || '', bruto: Number(String(s.bruto).replace(/[^0-9]/g, '')), cond: s.cond };
+  }
+  const GS = join(raiz, 'apps-script/Code.gs');
+  const gs = readFileSync(GS, 'utf8');
+  const reP = /\/\/ PRECIOS:INICIO[\s\S]*?\/\/ PRECIOS:FIN/;
+  if (reP.test(gs)) {
+    const nuevo = gs.replace(reP, () => `// PRECIOS:INICIO\nvar PRECIOS = ${JSON.stringify(PRE, null, 1)};\n// PRECIOS:FIN`);
+    if (nuevo !== gs) writeFileSync(GS, nuevo, 'utf8');
+    console.log(`apps-script/Code.gs · ${Object.keys(PRE).length} precios para la cotizacion en PDF`);
+  }
 }
