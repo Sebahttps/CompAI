@@ -505,6 +505,7 @@
   .cv .b>video,.cv .b>img{width:100%;height:auto;object-fit:contain}
   .cv .b>canvas.gcanvas{width:100%;height:auto;aspect-ratio:calc(var(--w) / var(--hh))}
   .cv .rot{order:-1}
+  .cv .banda-rot{margin:calc(30*var(--u)) 0 calc(14*var(--u))}
   .harco,.obanda,.opanel,.cvelo,.cuvelo,.gvelo,.gpanel,.banda-velo,.ccirc,.cline,.ocod{display:none}
 
   #hero .pg{padding:0;gap:0}
@@ -679,3 +680,7 @@ body.lejos .bar .logo-link{opacity:0;pointer-events:none}
 html.foto .cv .anim{opacity:1;transform:none;transition:none}
 html.foto .cv .banda-tx.anim{opacity:.92}
 html.foto .cv .kintranet.anim{opacity:.4}
+
+/* rotulo de los servicios PyME sobre las tres bandas (07-10-2026) */
+.cv .banda-rot{font-family:var(--plex);font-weight:200;color:#fff;white-space:nowrap;
+  font-size:calc(24*var(--u));line-height:1.21;letter-spacing:.122em;text-transform:uppercase}
