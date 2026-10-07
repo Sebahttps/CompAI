@@ -281,7 +281,10 @@
     if (quieto.matches || !('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('vista')); return; }
     const io = new IntersectionObserver(es => es.forEach(e => {
       if (e.isIntersecting) { e.target.classList.add('vista'); io.unobserve(e.target); }
-    }), { threshold: .12, rootMargin: '0px 0px -8% 0px' });
+    // threshold 0, no un porcentaje: / 04 mide 4.720 px y con .12 hacia falta
+    // una ventana de 615 px de alto para que apareciera. En un notebook con la
+    // barra del navegador la seccion entera quedaba invisible. 07-10-2026.
+    }), { threshold: 0, rootMargin: '0px 0px -8% 0px' });
     els.forEach(e => io.observe(e));
   })();
 
