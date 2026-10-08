@@ -97,7 +97,12 @@
 .otit{font-family:var(--plex);font-weight:700;text-align:center;color:#fffefe;opacity:1;
   text-transform:uppercase}
 .osub{font-family:var(--plex);font-weight:400;text-align:center;color:#fff;opacity:1}
-.osub b{font-weight:700}
+/* El «IA» toma el cobre #C87941 del sello compAI y su brasa. Dos sombras:
+   una corta y saturada que hace el calor del filamento y una larga y tenue
+   que lo derrama, que es como el SVG arma el resplandor (Sebastian, 08-10). */
+.osub b{font-weight:700;color:#C87941;
+  text-shadow:0 0 calc(10*var(--u)) rgba(200,121,65,.85),
+              0 0 calc(34*var(--u)) rgba(200,121,65,.45)}
 .oenl{font-family:var(--plex);font-weight:700;color:var(--petroleo2);opacity:1;
   text-decoration:underline;text-underline-offset:calc(5*var(--u));display:block;
   text-align:left;white-space:nowrap}
@@ -197,8 +202,17 @@
   text-shadow:0 calc(2*var(--u)) calc(14*var(--u)) rgba(0,0,0,.95)}
 .gperfil{object-fit:contain;object-position:left bottom}
 .gcanvas{display:block;width:100%;height:100%;background:transparent}
-.gemblema{object-fit:contain;filter:drop-shadow(0 0 calc(8*var(--u)) rgba(5,248,249,.5))}
-.gmarca{font-family:var(--plex);font-weight:700;color:var(--cian);letter-spacing:.054em;
+/* El emblema vive dentro de .gmarca, asi que la linea la arma el flex y no
+   dos cajas del lienzo que en el telefono se separaban. 26 px contra los 40
+   de antes: acompana al rotulo, no compite con el. */
+/* `.cv` delante: sin el, `.cv .b>img{width:100%}` (0,2,1) le gana a
+   `.gmarca img` (0,1,1) y el emblema se infla a lamina. Es la MISMA
+   trampa que ya estaba anotada para .gllock img. */
+.cv .gmarca img{width:calc(26*var(--u));height:auto;flex:0 0 auto;object-fit:contain;
+  filter:drop-shadow(0 0 calc(9*var(--u)) rgba(5,248,249,.75))
+         drop-shadow(0 0 calc(22*var(--u)) rgba(5,248,249,.35))}
+.gmarca{display:flex;align-items:center;gap:calc(12*var(--u));
+  font-family:var(--plex);font-weight:700;color:var(--cian);letter-spacing:.054em;
   text-transform:uppercase;white-space:nowrap}
 .gvivo{font-family:var(--plex);font-weight:400;color:#fff;border:calc(1.4*var(--u)) solid rgba(5,248,249,.6);
   border-radius:999px;display:inline-grid;place-items:center;white-space:nowrap;letter-spacing:.14em}
@@ -537,7 +551,7 @@
 
   #offenbar .pg{position:relative}
   .ofondo{display:block;position:absolute;inset:0;width:100%;height:100%;opacity:.45}
-  .cv .gemblema{width:calc(70*var(--u));align-self:flex-start}
+  .cv .gmarca img{width:calc(40*var(--u))}
   .otit{font-size:calc(46*var(--u))}
   .osub{font-size:calc(38*var(--u))}
   .oenl{text-align:center;white-space:normal;font-size:calc(24*var(--u))}
@@ -554,6 +568,14 @@
   .gldcha{font-size:calc(28*var(--u));gap:calc(30*var(--u))}
   .gldcha li{padding-left:calc(34*var(--u))}
   .gldcha li::before{width:calc(10*var(--u));height:calc(10*var(--u))}
+  /* En el telefono el lockup GRACE SYSTEM caia al final de la lamina 1,
+     pegado al emblema encendido de la lamina 2: los dos logos quedaban
+     juntos y no se leia que uno esta apagado y el otro conectado. Sube a
+     justo debajo del video del rostro, centrado (Sebastian, 08-10-2026). */
+  .cv .glam>.b{order:1}
+  .cv .glam .rot{order:-2}
+  .cv .glam .gvideo{order:-1}
+  .cv .glam .gllock{order:0;justify-content:center;margin:calc(26*var(--u)) 0}
   .gllock{justify-content:flex-start;font-size:calc(26*var(--u));gap:calc(16*var(--u))}
   /* sin esto, `.cv .b>img{width:100%}` convierte el emblema en una lamina */
   .cv .gllock img{width:calc(56*var(--u))}

@@ -191,7 +191,6 @@ const ilCuore = `
           ? `<span><i class="amp">&amp;</i> ${esc(t.replace(/^&\s*/, ''))}</span>`
           : `<span>${esc(t)}</span>`).join('')}</h2>
       <p class="b t cpar" style="--x:248;--y:1120;--w:914;--fs:24.1;--lh:1.3">${esc(S.il_cuore.ia.parrafo).replace(/\n/g, '<br>')}</p>
-      <div class="b ciso" style="--x:970;--y:1330;--w:150">${TICKS('iso-svg', 'compAI')}</div>
       <a class="b cacc" style="--x:269;--y:1548;--w:330;--fs:15;--tr:0.14;font-size:calc(15*var(--u))" href="${esc(S.il_cuore.accesos[0].ancla)}"><span>/</span><span class="ic" aria-hidden="true"><svg viewBox="0 0 16 13" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 3.2V11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4.4a1 1 0 0 0-1-1H8L6.4 1.4A1 1 0 0 0 5.7 1H2a1 1 0 0 0-1 1z"/></svg></span><span>— ${esc(S.il_cuore.accesos[0].texto)}</span></a>
       <a class="b cacc" style="--x:766;--y:1543;--w:330;--fs:15;--tr:0.14;font-size:calc(15*var(--u))" href="${esc(S.il_cuore.accesos[1].ancla)}"><span>/</span><span class="ic red" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5.6" r="2.7"/><path d="M2.6 14c.5-3 2.7-4.6 5.4-4.6S12.9 11 13.4 14"/></svg></span><span>— ${esc(S.il_cuore.accesos[1].texto)}</span></a>
     </div>
@@ -258,8 +257,11 @@ const grace = (() => {
                muted loop playsinline autoplay preload="none"
                disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
       </div>
-      <img class="b fh gemblema" style="--x:500;--y:118;--w:40;--hh:40" src="media/grace-logo.webp" alt="" width="512" height="512" loading="lazy" decoding="async">
-      <p class="b t gmarca" style="--x:552;--y:122;--w:360;--fs:26;--lh:1.1">${esc(S.grace.envivo.titulo)}</p>
+      ${/* el emblema va DENTRO del rotulo y no como bloque aparte: separados,
+          en el telefono caian en lineas distintas. Encendido en cian = Grace
+          conectada, contra el apagado del lockup de la lamina 1 (Sebastian,
+          08-10-2026). */""}
+      <p class="b t gmarca" style="--x:500;--y:122;--w:412;--fs:26;--lh:1.1"><img src="media/grace-logo.webp" alt="" width="512" height="512" loading="lazy" decoding="async"><span>${esc(S.grace.envivo.titulo)}</span></p>
       <p class="b t gvivo fh" style="--x:940;--y:124;--w:124;--hh:30;--fs:12">(( ${esc(sello)} ))</p>
       <div class="b fh gcaja" style="--x:500;--y:186;--w:804;--hh:428">
         <ul class="glista">
