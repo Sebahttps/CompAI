@@ -296,12 +296,20 @@ const ICONO = {
 };
 const ROT_LINEA = { automatizacion: 'L1', especificacion: 'L2', continuidad: 'L3', pyme: 'PYME' };
 
+/* La lamina abre una hoja con el detalle y el precio de referencia. Hasta el
+   08-10-2026 nada lo anunciaba: se le quito el «Ver precio» y quedo sin accion
+   visible, asi que en las pruebas con gente NADIE supo que era clicable
+   (Sebastian, 08-10-2026). Vuelve el renglon de accion, sin el numero.
+   En el telefono ademas se esconde la bajada —titular + 3 checks + accion
+   bastan, y cuatro laminas con bajada eran un muro de texto—; la bajada
+   sigue estando en la hoja, que es donde se va a leer. */
 const servTexto = (s, x, y) => `<button class="b servblock" type="button" data-slug="${esc(s.slug)}" aria-haspopup="dialog"
         style="--x:${x};--y:${y};--w:583;text-align:left;display:block">
         <span class="serv-rot">${esc(s.codigo)} / ${esc(ROT_LINEA[s.slug] || '')}</span>
         <span class="serv-tit">${esc(s.titulo)}</span>
         <span class="serv-par">${esc(s.bajada)}</span>
         <ul class="serv-vin">${s.vinetas.slice(0, 3).map(v => `<li>${esc(v)}</li>`).join('')}</ul>
+        <span class="serv-acc">Ver el detalle <i aria-hidden="true">&rarr;</i></span>
       </button>`;
 
 /* La placa reemplaza al mockup de telefono, monitor y notebook. Desde el

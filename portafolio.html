@@ -1232,15 +1232,19 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   }
   document.querySelectorAll(".sel").forEach(function(r){ r.addEventListener("change", sincroniza); });
   if(quieto) document.querySelectorAll(".pieza video").forEach(function(v){ v.removeAttribute("autoplay"); v.controls = true; });
-  /* #escena-05 abre esa escena: el llamado de la panadera en el home llega
-     directo a la suya, no a la licencia del martes (veto de ClAI-nte,
-     07-10-2026). */
+  /* #escena-N abre esa escena Y baja hasta el catalogo: el enlace del home
+     llegaba a la escena correcta pero dejaba al visitante arriba de todo,
+     asi que parecia que no habia pasado nada (Sebastian, 08-10-2026). */
   var pedida = location.hash.match(/^#escena-(\d+)$/);
   if(pedida){ var r = document.getElementById("p" + (+pedida[1]));
     if(r){ r.checked = true;
       /* en el telefono el carrete es una fila que se arrastra: se trae a la vista la escena pedida */
       var lb = document.querySelector('label[for="' + r.id + '"]'), ul = lb && lb.closest("ul");
-      if(ul) ul.scrollLeft = lb.parentElement.offsetLeft - 16; } }
+      if(ul) ul.scrollLeft = lb.parentElement.offsetLeft - 16;
+      /* sin esto el hash no mueve la pagina: #escena-N no es el id de ningun
+         elemento, lo resuelve este script */
+      var sec = document.getElementById("servicios");
+      if(sec) sec.scrollIntoView({ block: "start" }); } }
   sincroniza();
 
   /* la cantidad y el «¿cual?» solo se habilitan con su casilla marcada */

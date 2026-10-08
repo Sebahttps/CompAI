@@ -587,11 +587,16 @@
 
   .serv-rot{font-size:calc(26*var(--u))}
   .serv-tit{font-size:calc(52*var(--u))}
-  .serv-par{font-size:calc(30*var(--u));text-align:left;max-width:none}
+  /* La bajada NO se muestra en el telefono: titular + 3 checks + accion
+     bastan, y cuatro laminas con bajada eran un muro de texto (probado con
+     gente, 08-10-2026). El texto sigue en la hoja, que es donde se lee. */
+  .serv-par{display:none}
   .serv-vin{margin-top:calc(34*var(--u));font-size:calc(28*var(--u));gap:calc(20*var(--u))}
   .serv-vin li{grid-template-columns:calc(34*var(--u)) minmax(0,1fr)}
   .serv-vin li::before{width:calc(30*var(--u));height:calc(27*var(--u))}
-  .serv-acc{font-size:calc(28*var(--u))}
+  .serv-acc{font-size:calc(26*var(--u));margin-top:calc(30*var(--u));
+    border:1px solid rgba(200,121,65,.55);border-radius:calc(4*var(--u));
+    padding:calc(14*var(--u)) calc(22*var(--u))}
   /* La placa sube sobre el texto y se achica: a ancho completo pesaria mas
      que el servicio que anuncia. */
   .cv .placa{order:-1;width:calc(300*var(--u));height:calc(300*var(--u));align-self:flex-start}
