@@ -603,6 +603,17 @@ ${g.items.map(it => item(e, it)).join('\n')}
     for (const k of ['institucion', 'plazo', 'respaldo']) if (o[k]) r[k] = { ...F[k], ...o[k] };
     return r;
   };
+  /* Muestras bajo el comic: el sitio de ejemplo de la escena, uno por plan.
+     Solo la escena que trae "muestras" en escenas.json. 07-10-2026. */
+  const muestras = e => !e.muestras ? '' : `      <section class="muestras" aria-label="${esc(e.muestras.titulo)}">
+        <p class="mu-t">${esc(e.muestras.titulo)}</p>
+        <p class="mu-b">${esc(e.muestras.bajada)}</p>
+        <ul>
+${e.muestras.items.map(m => `          <li><a href="${esc(m.url)}"><img src="${esc(m.img)}" width="640" height="400" loading="lazy" alt="${esc(m.alt)}"><span class="mu-p">${esc(m.plan)}</span><span class="mu-q">${esc(m.que)}</span><span class="mu-v">Ver la muestra →</span></a></li>`).join('\n')}
+        </ul>
+        <p class="mu-n">${esc(e.muestras.nota)}</p>
+      </section>
+`;
   const pieza = (e, i) => { const F = mezcla(e); return `    <!-- ---------- ${e.id} ---------- -->
     <div class="pieza" data-p="${i + 1}">
       <figure class="marco"><video muted loop playsinline ${i === 0 ? 'autoplay preload="metadata"' : 'preload="none"'} poster="${esc(e.poster)}" aria-label="${esc(e.alt)}"><source src="${esc(e.video)}" type="video/mp4"></video></figure>
@@ -611,7 +622,7 @@ ${g.items.map(it => item(e, it)).join('\n')}
         <h2>${esc(e.titulo)}</h2>
         <p>${esc(e.bajada)}</p>
       </div>
-      <form class="pide" data-id="${esc(e.id)}" data-titulo="${esc(e.carrete)}" data-asunto="${esc(e.asunto)}" action="mailto:hola@compai.cl" method="post" enctype="text/plain">
+${muestras(e)}      <form class="pide" data-id="${esc(e.id)}" data-titulo="${esc(e.carrete)}" data-asunto="${esc(e.asunto)}" action="mailto:hola@compai.cl" method="post" enctype="text/plain">
 ${e.grupos.map((g, k) => grupo(e, g) + (k === 0 ? vig(e) : '')).join('\n')}
         <div class="quien">
           <p class="tq">${esc(F.titulo_quien)}</p>

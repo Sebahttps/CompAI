@@ -377,6 +377,34 @@
         },
         "agenda_cta": "O agenda 30 min de asesoría, sin costo →",
         "exito_doc": "Listo, nos llegó. Te enviamos la cotización en PDF a {correo} y se abrió WhatsApp con tu pedido escrito."
+      },
+      "muestras": {
+        "titulo": "Pruébala antes de pedirla",
+        "bajada": "La panadería de María, en los tres planes. En Pista y Nodo eres la vecina que la busca y le encarga; en Núcleo, eres María.",
+        "nota": "María y su panadería son inventadas: es una muestra.",
+        "items": [
+          {
+            "plan": "Pista",
+            "que": "Apareces",
+            "url": "muestras/maria-tapia/pista.html",
+            "img": "media/muestra-pista.webp",
+            "alt": "Muestra Pista: la página de la panadería con su horario, sus panes y cómo llegar"
+          },
+          {
+            "plan": "Nodo",
+            "que": "Apareces y recibes",
+            "url": "muestras/maria-tapia/nodo.html",
+            "img": "media/muestra-nodo.webp",
+            "alt": "Muestra Nodo: la vecina arma su encargo en la página y elige a qué hora pasa"
+          },
+          {
+            "plan": "Núcleo",
+            "que": "Apareces, recibes y ordenas",
+            "url": "muestras/maria-tapia/nucleo.html",
+            "img": "media/muestra-nucleo.webp",
+            "alt": "Muestra Núcleo: el panel de María con los pedidos de hoy, el inventario y la semana"
+          }
+        ]
       }
     }
   ],
