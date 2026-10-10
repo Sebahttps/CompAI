@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Construye la propuesta de app Tripu.
+"""Construye la propuesta de app Tri-UP!
 
 Genera dos cosas a partir de este solo archivo:
   canvas/     los 9 artboards en formato .dc.html + canvas.json, tal como viven en el
@@ -217,7 +217,7 @@ CATS.clear(); CATS.update({
  "sostenibilidad":("Sostenibilidad a bordo",  "#3C7A1E", "#E8F5DF"),
 })
 CAT_ICON.clear(); CAT_ICON.update({"seguridad":"shield","otp":"clock","hbc":"users","especiales":"alert","equipo":"award","bienestar":"moon","imagen":"shirt","preparacion":"clipboard","comunicacion":"megaphone","sostenibilidad":"leaf"})
-APP = "Tripu"
+APP = "Tri-UP!"
 W,H = 390,844
 
 # ---------- mobile helpers ----------
