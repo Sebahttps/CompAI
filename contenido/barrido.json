@@ -1,7 +1,7 @@
 {
- "fecha": "2026-10-09",
+ "fecha": "2026-10-10",
  "fuente": "API de Mercado Público · licitaciones activas, todas las modalidades",
- "barridas": 4883,
+ "barridas": 5061,
  "filas": [
   {
    "marca": "GO",
@@ -39,7 +39,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "SERVICIO DE SOFTWARE Y SOPORTE TÉCNICO MENSUAL PARA …",
+   "id": "MANTENCION DATA CENTER, RACK DE COMUNICACIONES Y AMPLIACION …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   }
