@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tri-UP! · Buenas prácticas de la tripulación LATAM</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Nunito Sans', system-ui, sans-serif;
+  background: linear-gradient(135deg, #1a5d3d 0%, #0d3d26 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.container {
+  width: 100%;
+  max-width: 390px;
+  padding: 40px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.logo-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.shield {
+  width: 64px;
+  height: 64px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+}
+
+h1 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.tagline {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+.description {
+  font-size: 16px;
+  line-height: 1.5;
+  opacity: 0.95;
+  margin-bottom: 8px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.stat {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stat-value {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: #ffd700;
+}
+
+.stat-label {
+  font-size: 11px;
+  opacity: 0.8;
+  line-height: 1.2;
+}
+
+.benefits {
+  font-size: 14px;
+  line-height: 1.6;
+  opacity: 0.85;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 16px;
+  border-radius: 12px;
+  margin: 16px 0;
+}
+
+.benefits li {
+  list-style: none;
+  margin-bottom: 8px;
+  padding-left: 20px;
+  position: relative;
+}
+
+.benefits li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #ffd700;
+  font-weight: bold;
+}
+
+.cta-button {
+  background: #ffd700;
+  color: #1a5d3d;
+  border: none;
+  border-radius: 12px;
+  padding: 16px 24px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.cta-button:hover {
+  background: #ffe54c;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footprint {
+  font-size: 24px;
+}
+
+.alma-compai {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  opacity: 0.8;
+}
+
+.close-btn {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 32px 16px;
+    gap: 24px;
+  }
+
+  h1 {
+    font-size: 40px;
+  }
+
+  .stats {
+    gap: 10px;
+  }
+
+  .stat {
+    padding: 12px 10px;
+  }
+
+  .stat-value {
+    font-size: 18px;
+  }
+}
+</style>
+</head>
+<body>
+
+<button class="close-btn" onclick="window.close()">×</button>
+
+<div class="container">
+  <div class="logo-section">
+    <div class="shield">✈️</div>
+  </div>
+
+  <h1>Tri-UP!</h1>
+
+  <div class="tagline">TRIPULACIÓN VERIFICADA · 2025</div>
+
+  <div class="description">
+    La app de buenas prácticas para la tripulación LATAM
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-value">2.450</div>
+      <div class="stat-label">Tripulantes activos</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">8.400</div>
+      <div class="stat-label">Buenas prácticas</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">120K</div>
+      <div class="stat-label">Reconocimientos</div>
+    </div>
+  </div>
+
+  <div class="benefits">
+    <ul>
+      <li>Reconocimiento entre pares</li>
+      <li>Historias y videos de tripulantes</li>
+      <li>Gamificación y desafíos semanales</li>
+      <li>Pulso anónimo de cultura</li>
+    </ul>
+  </div>
+
+  <a href="Inicio.html" class="cta-button">Entrar a Tri-UP! →</a>
+
+  <div class="footer">
+    <div class="footprint">👣</div>
+    <div class="alma-compai">ALMA COMPAI</div>
+  </div>
+</div>
+
+</body>
+</html>
