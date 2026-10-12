@@ -694,20 +694,32 @@ ${E.escenas.map(pieza).join('\n\n')}
 
   /* Los precios que usa el Apps Script para armar la cotizacion en PDF salen
      de aqui mismo: el servidor no confia en los que manda el navegador.
-     07-10-2026. Tras cambiarlos hay que volver a desplegar el Apps Script. */
-  const PRE = {};
-  // de la ultima escena a la primera: el SP-07 toma el nombre de la 03
-  // («Puesta en marcha de lo comprado»), no el de la 01
-  for (const e of [...E.escenas].reverse()) for (const g of e.grupos) for (const it of g.items) {
-    const s = it.sp && E.servicios[it.sp]; if (!s || PRE[it.sp]) continue;
-    PRE[it.sp] = { nombre: it.nombre, detalle: it.detalle || '', bruto: Number(String(s.bruto).replace(/[^0-9]/g, '')), cond: s.cond };
-  }
+     07-10-2026. Tras cambiarlos hay que volver a desplegar el Apps Script.
+
+     apps-script/ NO viaja al repo publico a proposito (publicar.py, lista
+     VIAJAN): es la logica de servidor de la cotizacion (folio, PDF, margen),
+     y el despliegue es manual desde el escritorio
+     (Desktop/DESPLEGAR-FORMULARIO-COMPAI.bat), nunca desde CI ni desde el
+     repo publico. Por eso esto se salta con una guarda en vez de "arreglarse"
+     publicando el archivo: publicarlo expondria esa logica sin necesidad,
+     porque nadie despliega desde ahi. Sin la guarda, 12-10-2026: CI roto del
+     07-10 al 11-10 en Sebahttps/CompAI, ENOENT al faltar la carpeta — la
+     correccion es esta guarda, confirmada con la corrida real que sigue. */
   const GS = join(raiz, 'apps-script/Code.gs');
-  const gs = readFileSync(GS, 'utf8');
-  const reP = /\/\/ PRECIOS:INICIO[\s\S]*?\/\/ PRECIOS:FIN/;
-  if (reP.test(gs)) {
-    const nuevo = gs.replace(reP, () => `// PRECIOS:INICIO\nvar PRECIOS = ${JSON.stringify(PRE, null, 1)};\n// PRECIOS:FIN`);
-    if (nuevo !== gs) writeFileSync(GS, nuevo, 'utf8');
-    console.log(`apps-script/Code.gs · ${Object.keys(PRE).length} precios para la cotizacion en PDF`);
+  if (existsSync(GS)) {
+    const PRE = {};
+    // de la ultima escena a la primera: el SP-07 toma el nombre de la 03
+    // («Puesta en marcha de lo comprado»), no el de la 01
+    for (const e of [...E.escenas].reverse()) for (const g of e.grupos) for (const it of g.items) {
+      const s = it.sp && E.servicios[it.sp]; if (!s || PRE[it.sp]) continue;
+      PRE[it.sp] = { nombre: it.nombre, detalle: it.detalle || '', bruto: Number(String(s.bruto).replace(/[^0-9]/g, '')), cond: s.cond };
+    }
+    const gs = readFileSync(GS, 'utf8');
+    const reP = /\/\/ PRECIOS:INICIO[\s\S]*?\/\/ PRECIOS:FIN/;
+    if (reP.test(gs)) {
+      const nuevo = gs.replace(reP, () => `// PRECIOS:INICIO\nvar PRECIOS = ${JSON.stringify(PRE, null, 1)};\n// PRECIOS:FIN`);
+      if (nuevo !== gs) writeFileSync(GS, nuevo, 'utf8');
+      console.log(`apps-script/Code.gs · ${Object.keys(PRE).length} precios para la cotizacion en PDF`);
+    }
   }
 }
