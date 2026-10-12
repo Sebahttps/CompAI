@@ -352,7 +352,10 @@ const creative = `
           La linea sigue la de la pagina de arriba (657, 7 px): antes era
           659/9 y en la union se veia el escalon. */ ''}
     <div class="pg cvfondo" style="--h:880">
-      <div class="b fh ccirc" style="--x:704;--y:0;--w:662;--hh:960" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
+      ${/* El fondo corta donde corta la linea (636), no 324 px mas abajo:
+          con dos bordes distintos el banner quedaba a medio camino entre
+          los dos. Sebastian, 12-10-2026. */''}
+      <div class="b fh ccirc" style="--x:704;--y:0;--w:662;--hh:636" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
       <div class="b fh cline" style="--x:657;--y:0;--w:7;--hh:636" aria-hidden="true"></div>
       ${servTexto(SERV[3], 79, 203)}
       ${placa(SERV[3], 836, 163)}
