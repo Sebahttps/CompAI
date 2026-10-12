@@ -222,7 +222,10 @@ const grace = (() => {
   const vivo = BARRIDO && Array.isArray(BARRIDO.filas) && BARRIDO.filas.length
     ? BARRIDO : null;
   const filas = vivo ? vivo.filas : S.grace.envivo.filas;
-  const sello = vivo ? `BARRIDO DEL ${vivo.fecha}` : S.grace.envivo.estado;
+  // 12-10-2026, Sebastian: el sello decia «(( BARRIDO DEL 2026-10-12 ))».
+  // «Barrido» es vocabulario del estudio, no del comprador, y los parentesis
+  // dobles lo hacian leer como una nota al pie en vez de un dato fresco.
+  const sello = vivo ? `actualizado ${vivo.fecha}` : S.grace.envivo.estado;
   const pie = vivo
     ? `${vivo.barridas.toLocaleString('es-CL')} licitaciones activas barridas · ${vivo.fuente}. Clasificadas por rubro; se desplaza para verlas todas.`
     : S.grace.envivo.pie;
@@ -245,7 +248,7 @@ const grace = (() => {
       ${TRAZA('b glzurda', 228, 452, 150)}
       ${TRAZA('b gldiestra', 904, 528, 150)}
       <ul class="b gldcha" style="--x:904;--y:584;--w:400;--fs:14.5;--lh:1.62">
-        ${L.derecha.map(d => `<li><b class="${/^NO/.test(d.marca) ? 'no' : ''}">${esc(d.marca)}</b> ${esc(d.texto)}</li>`).join('')}
+        ${L.derecha.map(d => { const no = /^NO/.test(d.marca); return `<li class="${no ? 'no' : ''}"><b class="${no ? 'no' : ''}">${esc(d.marca)}</b> ${esc(d.texto)}</li>`; }).join('')}
       </ul>
       <p class="b t glcierre" style="--x:904;--y:730;--w:400;--fs:14.5;--lh:1.62">${esc(L.cierre)}</p>
       <p class="b gllock" style="--x:483;--y:772;--w:400"><img src="media/grace-logo.webp" alt="" width="512" height="512" loading="lazy" decoding="async"><span>${esc(L.lockup)}</span></p>
@@ -261,8 +264,8 @@ const grace = (() => {
           en el telefono caian en lineas distintas. Encendido en cian = Grace
           conectada, contra el apagado del lockup de la lamina 1 (Sebastian,
           08-10-2026). */""}
-      <p class="b t gmarca" style="--x:500;--y:122;--w:412;--fs:26;--lh:1.1"><img src="media/grace-logo.webp" alt="" width="512" height="512" loading="lazy" decoding="async"><span>${esc(S.grace.envivo.titulo)}</span></p>
-      <p class="b t gvivo fh" style="--x:940;--y:124;--w:124;--hh:30;--fs:12">(( ${esc(sello)} ))</p>
+      <p class="b t gmarca" style="--x:500;--y:122;--w:412;--fs:26;--lh:1.1"><img src="media/grace-logo.webp" alt="" width="512" height="512" loading="lazy" decoding="async"><span>(${esc(S.grace.envivo.titulo)})</span></p>
+      <p class="b t gvivo fh" style="--x:940;--y:124;--w:124;--hh:30;--fs:12">${esc(sello)}</p>
       <div class="b fh gcaja" style="--x:500;--y:186;--w:804;--hh:428">
         <ul class="glista">
           ${filas.map(fila).join('')}

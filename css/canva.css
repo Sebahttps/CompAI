@@ -164,6 +164,10 @@
   width:calc(5*var(--u));height:calc(5*var(--u));border-radius:50%;background:var(--cian)}
 .gldcha b{font-weight:700;color:var(--cian);font-style:normal}
 .gldcha b.no{color:#c87941}
+/* El punto seguia cian en los NO-GO: el color vivia en el <b> y la vineta
+   cuelga del <li>. Cian = traza, cobre = transaccion; un NO-GO con punto
+   cian decia lo contrario de lo que dice la palabra al lado. 12-10-2026. */
+.gldcha li.no::before{background:#c87941}
 .glcierre{color:#aeb9c2}
 .gllock{display:flex;align-items:center;justify-content:center;gap:calc(10*var(--u));
   font-family:var(--plex);font-weight:700;color:var(--cian);text-transform:uppercase;
@@ -209,8 +213,21 @@
    `.gmarca img` (0,1,1) y el emblema se infla a lamina. Es la MISMA
    trampa que ya estaba anotada para .gllock img. */
 .cv .gmarca img{width:calc(26*var(--u));height:auto;flex:0 0 auto;object-fit:contain;
-  filter:drop-shadow(0 0 calc(9*var(--u)) rgba(5,248,249,.75))
+  /* Apagado de entrada. Se enciende cuando la lamina llega a pantalla: en la
+     lamina 1 el mismo emblema va sin halo, asi que el encendido es lo que
+     dice «Grace conectada» — si naciera prendido no se leeria el cambio.
+     Sebastian, 12-10-2026. */
+  filter:grayscale(1) brightness(.45);opacity:.5;
+  transition:filter .9s var(--curva,ease), opacity .9s var(--curva,ease)}
+.cv .gmarca.vis img{opacity:1;
+  filter:grayscale(0) brightness(1)
+         drop-shadow(0 0 calc(9*var(--u)) rgba(5,248,249,.75))
          drop-shadow(0 0 calc(22*var(--u)) rgba(5,248,249,.35))}
+/* El encendido llega despues de que el rotulo termino de entrar, para que
+   se vea como un arranque y no como parte del fundido. */
+.cv .gmarca.vis img{transition-delay:.35s}
+@media (prefers-reduced-motion:reduce){
+  .cv .gmarca img{filter:none;opacity:1;transition:none}}
 .gmarca{display:flex;align-items:center;gap:calc(12*var(--u));
   font-family:var(--plex);font-weight:700;color:var(--cian);letter-spacing:.054em;
   text-transform:uppercase;white-space:nowrap}
