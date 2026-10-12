@@ -280,8 +280,8 @@
       }
     ],
     "llamado": {
-      "antes": "¿Cuál es la tuya?",
-      "enlace": "Búscala en el catálogo →",
+      "antes": "",
+      "enlace": "Revisar catálogo →",
       "despues": "",
       "url": "portafolio.html#escena-01"
     },

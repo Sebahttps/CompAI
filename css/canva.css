@@ -231,8 +231,11 @@
 .gmarca{display:flex;align-items:center;gap:calc(12*var(--u));
   font-family:var(--plex);font-weight:700;color:var(--cian);letter-spacing:.054em;
   text-transform:uppercase;white-space:nowrap}
-.gvivo{font-family:var(--plex);font-weight:400;color:#fff;border:calc(1.4*var(--u)) solid rgba(5,248,249,.6);
-  border-radius:999px;display:inline-grid;place-items:center;white-space:nowrap;letter-spacing:.14em}
+/* 12-10-2026, Sebastian: el sello baja debajo del rotulo y pierde la capsula.
+   Arriba y encapsulado competia con el emblema encendido; abajo y desnudo se
+   lee como lo que es, el pie de fecha del panel. */
+.gvivo{font-family:var(--plex);font-weight:400;letter-spacing:.14em;
+  color:rgba(245,240,228,.52);text-transform:none}
 /* El panel se lee, no se descifra: el cuerpo pasa de 8-10 px a 11-14 px
    y la columna del veredicto baja de 104 a 48 px de lienzo, que es lo que
    mide «NO-GO». Medido por Visu, 04-10-2026. */
@@ -437,8 +440,16 @@
 .esq .traza{stroke:var(--azul);color:var(--azul)}
 .esq .accion{stroke:#c87941;color:#c87941}
 /* Llamado para la PyME bajo las bandas (veto de ClAI-nte, 06-10-2026). */
-.banda-llamado{margin:0;font-family:var(--plex);font-weight:300;font-size:calc(26*var(--u));
-  line-height:1.4;color:#e8e2d6}
+/* El banner del catalogo. Ancho completo bajo la lamina PyME: era una frase
+   al pie («¿Cual es la tuya? Buscala en el catalogo») y nadie la leia como
+   una accion. Sebastian, 12-10-2026. */
+.bcat{display:flex;align-items:center;justify-content:center;
+  text-decoration:none;border:1px solid rgba(200,121,65,.45);
+  border-radius:calc(4*var(--u));background:rgba(200,121,65,.06);
+  font-family:var(--courier);font-size:calc(24*var(--u));letter-spacing:.14em;
+  color:#c87941;transition:background .3s ease,border-color .3s ease,color .3s ease}
+.bcat:hover{background:rgba(200,121,65,.14);border-color:rgba(200,121,65,.8);
+  color:#e0944f}
 .banda-llamado a{color:#c87941;font-weight:700;text-decoration:none;border-bottom:2px solid rgba(200,121,65,.5)}
 .banda-llamado a:hover{color:#e09a63;border-bottom-color:#e09a63}
 .esq-pie{margin:calc(16*var(--u)) 0 0;font-family:var(--plex);font-weight:300;
@@ -629,7 +640,8 @@
   /* La bajada NO se muestra en el telefono: titular + 3 checks + accion
      bastan, y cuatro laminas con bajada eran un muro de texto (probado con
      gente, 08-10-2026). El texto sigue en la hoja, que es donde se lee. */
-  .serv-par{display:none}
+  /* la bajada ya no se emite en ninguna lamina: se quito del
+     constructor el 12-10-2026, no solo del telefono */
   .serv-vin{margin-top:calc(34*var(--u));font-size:calc(28*var(--u));gap:calc(20*var(--u))}
   .serv-vin li{grid-template-columns:calc(34*var(--u)) minmax(0,1fr)}
   .serv-vin li::before{width:calc(30*var(--u));height:calc(27*var(--u))}

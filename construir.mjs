@@ -265,7 +265,7 @@ const grace = (() => {
           conectada, contra el apagado del lockup de la lamina 1 (Sebastian,
           08-10-2026). */""}
       <p class="b t gmarca" style="--x:500;--y:122;--w:412;--fs:26;--lh:1.1"><img src="media/grace-logo.webp" alt="" width="512" height="512" loading="lazy" decoding="async"><span>(${esc(S.grace.envivo.titulo)})</span></p>
-      <p class="b t gvivo fh" style="--x:940;--y:124;--w:124;--hh:30;--fs:12">${esc(sello)}</p>
+      <p class="b t gvivo" style="--x:502;--y:160;--w:420;--fs:12">${esc(sello)}</p>
       <div class="b fh gcaja" style="--x:500;--y:186;--w:804;--hh:428">
         <ul class="glista">
           ${filas.map(fila).join('')}
@@ -312,7 +312,6 @@ const servTexto = (s, x, y) => `<button class="b servblock" type="button" data-s
         style="--x:${x};--y:${y};--w:583;text-align:left;display:block">
         <span class="serv-rot">${esc(s.codigo)} / ${esc(ROT_LINEA[s.slug] || '')}</span>
         <span class="serv-tit">${esc(s.titulo)}</span>
-        <span class="serv-par">${esc(s.bajada)}</span>
         <ul class="serv-vin">${s.vinetas.slice(0, 3).map(v => `<li>${esc(v)}</li>`).join('')}</ul>
         <span class="serv-acc">Ver el detalle <i aria-hidden="true">&rarr;</i></span>
       </button>`;
@@ -335,16 +334,16 @@ const mkLap = (x, y, n) => `<div class="mk lap p${n}" style="--x:${x};--y:${y};-
 
 const creative = `
   <section class="sec cv ap" id="creative">
-    <div class="pg cvfondo" style="--h:2380">
+    <div class="pg cvfondo" style="--h:2060">
       <div class="b fh ccirc" style="--x:704;--y:0;--w:662;--hh:2380" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
-      <div class="b fh cline" style="--x:657;--y:0;--w:7;--hh:2380" aria-hidden="true"></div>
+      <div class="b fh cline" style="--x:657;--y:0;--w:7;--hh:2060" aria-hidden="true"></div>
       ${rot(S.creative, 62, 38)}
       ${servTexto(SERV[0], 79, 192)}
       ${placa(SERV[0], 836, 152)}
-      ${servTexto(SERV[1], 79, 1000)}
-      ${placa(SERV[1], 836, 960)}
-      ${servTexto(SERV[2], 79, 1790)}
-      ${placa(SERV[2], 836, 1750)}
+      ${servTexto(SERV[1], 79, 812)}
+      ${placa(SERV[1], 836, 772)}
+      ${servTexto(SERV[2], 79, 1432)}
+      ${placa(SERV[2], 836, 1392)}
     </div>
 
     ${/* 07-10-2026, Sebastian: las bandas pista/nodo/nucleo salen del home.
@@ -352,12 +351,16 @@ const creative = `
           lamina; la historia de la panadera vive en el catalogo (escena 05).
           La linea sigue la de la pagina de arriba (657, 7 px): antes era
           659/9 y en la union se veia el escalon. */ ''}
-    <div class="pg cvfondo" style="--h:960">
+    <div class="pg cvfondo" style="--h:880">
       <div class="b fh ccirc" style="--x:704;--y:0;--w:662;--hh:960" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
-      <div class="b fh cline" style="--x:657;--y:0;--w:7;--hh:960" aria-hidden="true"></div>
+      <div class="b fh cline" style="--x:657;--y:0;--w:7;--hh:636" aria-hidden="true"></div>
       ${servTexto(SERV[3], 79, 203)}
       ${placa(SERV[3], 836, 163)}
-      ${S.creative.llamado ? `<p class="b banda-llamado" style="--x:79;--y:830;--w:583;--hh:60">${esc(S.creative.llamado.antes)} <a href="${esc(S.creative.llamado.url)}">${esc(S.creative.llamado.enlace)}</a> ${esc(S.creative.llamado.despues)}</p>` : ''}
+      ${/* 12-10-2026, Sebastian: «¿Cual es la tuya? Buscala en el catalogo»
+          era una frase suelta al pie y nadie la veia como una accion. Pasa a
+          banner propio, ancho completo, bajo la lamina PyME. */""}
+      ${S.creative.llamado ? `<a class="b bcat" href="${esc(S.creative.llamado.url)}"
+         style="--x:79;--y:700;--w:1157;--hh:92">${esc(S.creative.llamado.enlace)}</a>` : ''}
     </div>
   </section>`;
 
