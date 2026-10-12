@@ -420,7 +420,11 @@ const contacto = `
       <a class="b fh kpicaflor" style="--x:0;--y:320;--w:493;--hh:493"
          href="${esc(S.contacto.intranet)}" target="_blank" rel="noopener"
          aria-label="${esc(S.contacto_seccion.intranet_texto)} — acceso del equipo">
-        <img src="media/picaflor.webp" alt="" width="900" height="900" loading="lazy" decoding="async">
+        <img src="media/picaflor-intranet.webp" alt="" width="900" height="900" loading="lazy" decoding="async">
+        ${/* preload=none: pesa 500 KB y no se ve hasta que alguien toca. El
+            video NO lleva loop: suena una vez, como un interruptor. */""}
+        <video src="media/picaflor-intranet.mp4" muted playsinline preload="none"
+               disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
       </a>
       <p class="b t kscl" style="--x:425;--y:215;--w:515;--fs:236;--lh:1.21;--tr:-0.031">${esc(S.contacto.ciudad)}</p>
       <p class="b t klugar" style="--x:555;--y:499;--w:256;--fs:26.7;--lh:1.21;--tr:-0.031">${esc(S.contacto.lugar)}</p>

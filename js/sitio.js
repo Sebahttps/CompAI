@@ -490,27 +490,40 @@
 
   /* ── el picaflor abre la intranet ───────────────────────────────────
      Desde el 12-10-2026 es el UNICO acceso: se quitaron la compuerta
-     dibujada y el rotulo «Intranet». Al soltar el clic se le encienden
-     los circuitos del cuerpo y recien ahi se abre la pestana — si
-     navegara de inmediato, el encendido no se veria nunca y el pajaro
-     seguiria pareciendo un adorno.
+     dibujada y el rotulo «Intranet».
 
-     Se intercepta el click y NO se usa un setTimeout a secas para
-     abrir: `window.open` fuera del gesto del usuario lo bloquea el
-     navegador. Se deja que el <a> haga su trabajo —target=_blank abre
-     la pestana enseguida— y el encendido queda visible en la pestana
-     de atras, que es donde la persona vuelve. */
+     Sebastian entrego la animacion hecha (5 s: el ave aletea y se le
+     encienden los circuitos en amarillo neon), asi que el clic NO
+     aplica un filtro sobre la foto —eso no aletea ni cambia de color—
+     sino que cambia la foto por el video y lo corre UNA vez.
+
+     El <a> hace su trabajo normal: target=_blank abre la pestana en el
+     mismo gesto del usuario, que es lo unico que el navegador no
+     bloquea. La animacion queda corriendo en la pestana de atras, que
+     es a la que la persona vuelve. */
   (() => {
     const p = $('.kpicaflor'); if (!p) return;
-    const prende = () => {
-      p.classList.add('encendido');
-      // se apaga solo: si queda prendido para siempre deja de significar
-      // «lo tocaste» y pasa a ser el estado normal del dibujo
-      setTimeout(() => p.classList.remove('encendido'), 1600);
+    const v = p.querySelector('video'); if (!v) return;
+
+    // El video pesa 500 KB con preload=none. Se trae al pasar el mouse,
+    // no al cargar la pagina: asi el primer clic ya lo tiene listo y el
+    // que nunca toca el picaflor no lo descarga jamas.
+    let pedido = false;
+    const traer = () => { if (!pedido) { pedido = true; v.load(); } };
+    p.addEventListener('pointerenter', traer, { once: true });
+    p.addEventListener('focus', traer, { once: true });
+
+    const vuela = () => {
+      if (quieto.matches) return;        // respeta prefers-reduced-motion
+      p.classList.add('volando');
+      try { v.currentTime = 0; v.play(); } catch (_) { }
     };
-    p.addEventListener('click', prende);
+    // Al terminar vuelve a la foto: dejar el ultimo cuadro congelado
+    // haria que el encendido pasara a ser el estado normal del dibujo.
+    v.addEventListener('ended', () => p.classList.remove('volando'));
+    p.addEventListener('click', vuela);
     p.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') prende();
+      if (e.key === 'Enter' || e.key === ' ') vuela();
     });
   })();
 

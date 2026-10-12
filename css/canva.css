@@ -540,26 +540,28 @@
   text-shadow:0 calc(10*var(--u)) calc(40*var(--u)) rgba(0,0,0,.9)}
 .klugar{font-family:var(--space);font-weight:400;text-align:center;color:#fff;
   letter-spacing:.06em;white-space:nowrap}
-/* El picaflor es la puerta de la intranet desde el 12-10-2026. Lo que se
-   enciende son los circuitos dorados que ya trae dibujados en el cuerpo: no
-   se les pinta nada encima, se suben el brillo y la saturacion y se les
-   agrega un halo. Por eso el encendido se ve EN el animal y no como un
-   recuadro alrededor, que es lo que haria un boton. */
+/* El picaflor es la puerta de la intranet desde el 12-10-2026, y el encendido
+   NO se puede hacer con filtros: Sebastian entrego la animacion hecha y en
+   ella el ave ALETEA y los circuitos se prenden en amarillo neon. Un
+   brightness/saturate sobre la foto quieta no da ninguna de las dos cosas.
+   Asi que la foto y el video viven superpuestos y el clic cambia cual se ve. */
 .kpicaflor{mix-blend-mode:screen;opacity:.95;display:block;cursor:pointer;
-  -webkit-tap-highlight-color:transparent}
-.kpicaflor img{object-fit:contain;transition:filter .45s ease, transform .45s ease}
+  position:absolute;-webkit-tap-highlight-color:transparent}
+.kpicaflor img,.kpicaflor video{display:block;width:100%;height:auto;
+  object-fit:contain}
+.kpicaflor video{position:absolute;inset:0;opacity:0;pointer-events:none}
+/* El cruce es inmediato y no un fundido: el primer cuadro del video es la
+   misma foto, asi que un fundido se veria como un parpadeo sin motivo. */
+.kpicaflor.volando img{opacity:0}
+.kpicaflor.volando video{opacity:1}
 .kpicaflor:hover img{filter:brightness(1.12) saturate(1.15)}
-/* El encendido pleno. Lo pone el JS al soltar el clic y dura lo que tarda en
-   abrirse la intranet: si navegara de inmediato nadie lo veria. */
-.kpicaflor.encendido img{transform:scale(1.015);
-  filter:brightness(1.55) saturate(1.7) contrast(1.08)
-         drop-shadow(0 0 calc(16*var(--u)) rgba(5,248,249,.55))
-         drop-shadow(0 0 calc(44*var(--u)) rgba(46,143,181,.35))}
+.kpicaflor img{transition:filter .45s ease}
 /* Foco de teclado: la puerta tiene que ser alcanzable sin mouse, porque ya
    no queda ningun otro enlace a la intranet en la pagina. */
 .kpicaflor:focus-visible{outline:2px solid var(--cian);outline-offset:4px}
 @media (prefers-reduced-motion:reduce){
-  .kpicaflor img,.kpicaflor.encendido img{transition:none;transform:none}}
+  .kpicaflor.volando img{opacity:1}
+  .kpicaflor.volando video{opacity:0}}
 .kcomp{display:block;text-decoration:none;opacity:.5;transition:opacity .4s}
 .kcomp:hover{opacity:1}
 .kcomp img{object-fit:cover;object-position:center 42%}
