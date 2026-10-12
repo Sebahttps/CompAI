@@ -487,4 +487,31 @@
       }
     });
   })();
+
+  /* ── el picaflor abre la intranet ───────────────────────────────────
+     Desde el 12-10-2026 es el UNICO acceso: se quitaron la compuerta
+     dibujada y el rotulo «Intranet». Al soltar el clic se le encienden
+     los circuitos del cuerpo y recien ahi se abre la pestana — si
+     navegara de inmediato, el encendido no se veria nunca y el pajaro
+     seguiria pareciendo un adorno.
+
+     Se intercepta el click y NO se usa un setTimeout a secas para
+     abrir: `window.open` fuera del gesto del usuario lo bloquea el
+     navegador. Se deja que el <a> haga su trabajo —target=_blank abre
+     la pestana enseguida— y el encendido queda visible en la pestana
+     de atras, que es donde la persona vuelve. */
+  (() => {
+    const p = $('.kpicaflor'); if (!p) return;
+    const prende = () => {
+      p.classList.add('encendido');
+      // se apaga solo: si queda prendido para siempre deja de significar
+      // «lo tocaste» y pasa a ser el estado normal del dibujo
+      setTimeout(() => p.classList.remove('encendido'), 1600);
+    };
+    p.addEventListener('click', prende);
+    p.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') prende();
+    });
+  })();
+
 })();

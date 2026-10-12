@@ -412,17 +412,18 @@ const contacto = `
     </div>
 
     <div class="pg" style="--h:1006">
-      <div class="b fh kpicaflor" style="--x:0;--y:320;--w:493;--hh:493" aria-hidden="true">
+      ${/* 12-10-2026, Sebastian: el acceso a la intranet deja de ser una
+          compuerta dibujada con la palabra «Intranet» al lado y pasa a ser el
+          picaflor. Al tocarlo se le encienden los circuitos del cuerpo y
+          recien entonces navega: el encendido ES el acuse del clic, en una
+          pieza que hasta hoy era pura decoracion (aria-hidden). */""}
+      <a class="b fh kpicaflor" style="--x:0;--y:320;--w:493;--hh:493"
+         href="${esc(S.contacto.intranet)}" target="_blank" rel="noopener"
+         aria-label="${esc(S.contacto_seccion.intranet_texto)} — acceso del equipo">
         <img src="media/picaflor.webp" alt="" width="900" height="900" loading="lazy" decoding="async">
-      </div>
+      </a>
       <p class="b t kscl" style="--x:425;--y:215;--w:515;--fs:236;--lh:1.21;--tr:-0.031">${esc(S.contacto.ciudad)}</p>
       <p class="b t klugar" style="--x:555;--y:499;--w:256;--fs:26.7;--lh:1.21;--tr:-0.031">${esc(S.contacto.lugar)}</p>
-      <a class="b fh kcomp" style="--x:1078;--y:820;--w:205;--hh:115" href="${esc(S.contacto.intranet)}" target="_blank" rel="noopener"
-         aria-label="${esc(S.contacto_seccion.intranet_texto)} — acceso del equipo">
-        <img src="media/compuerta.webp" alt="" width="760" height="836" loading="lazy" decoding="async">
-      </a>
-      <a class="b t kintranet" style="--x:1124;--y:852;--w:124;--fs:26.7;--lh:1.21;--tr:-0.031"
-         href="${esc(S.contacto.intranet)}" target="_blank" rel="noopener">${esc(S.contacto_seccion.intranet_texto)}</a>
       <p class="b kpie" style="--x:41;--y:960;--w:1284">
         <span>${esc(S.contacto.razon_social)} · RUT ${esc(S.contacto.rut)}</span>
         <span><a href="${esc(S.contacto.ficha)}" target="_blank" rel="noopener">Ficha proveedores del Estado</a> · <a href="/portafolio.html">Portafolio</a></span>

@@ -540,8 +540,26 @@
   text-shadow:0 calc(10*var(--u)) calc(40*var(--u)) rgba(0,0,0,.9)}
 .klugar{font-family:var(--space);font-weight:400;text-align:center;color:#fff;
   letter-spacing:.06em;white-space:nowrap}
-.kpicaflor{mix-blend-mode:screen;opacity:.95}
-.kpicaflor img{object-fit:contain}
+/* El picaflor es la puerta de la intranet desde el 12-10-2026. Lo que se
+   enciende son los circuitos dorados que ya trae dibujados en el cuerpo: no
+   se les pinta nada encima, se suben el brillo y la saturacion y se les
+   agrega un halo. Por eso el encendido se ve EN el animal y no como un
+   recuadro alrededor, que es lo que haria un boton. */
+.kpicaflor{mix-blend-mode:screen;opacity:.95;display:block;cursor:pointer;
+  -webkit-tap-highlight-color:transparent}
+.kpicaflor img{object-fit:contain;transition:filter .45s ease, transform .45s ease}
+.kpicaflor:hover img{filter:brightness(1.12) saturate(1.15)}
+/* El encendido pleno. Lo pone el JS al soltar el clic y dura lo que tarda en
+   abrirse la intranet: si navegara de inmediato nadie lo veria. */
+.kpicaflor.encendido img{transform:scale(1.015);
+  filter:brightness(1.55) saturate(1.7) contrast(1.08)
+         drop-shadow(0 0 calc(16*var(--u)) rgba(5,248,249,.55))
+         drop-shadow(0 0 calc(44*var(--u)) rgba(46,143,181,.35))}
+/* Foco de teclado: la puerta tiene que ser alcanzable sin mouse, porque ya
+   no queda ningun otro enlace a la intranet en la pagina. */
+.kpicaflor:focus-visible{outline:2px solid var(--cian);outline-offset:4px}
+@media (prefers-reduced-motion:reduce){
+  .kpicaflor img,.kpicaflor.encendido img{transition:none;transform:none}}
 .kcomp{display:block;text-decoration:none;opacity:.5;transition:opacity .4s}
 .kcomp:hover{opacity:1}
 .kcomp img{object-fit:cover;object-position:center 42%}
