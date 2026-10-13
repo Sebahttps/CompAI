@@ -26,6 +26,22 @@ const esc = t => String(t ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').re
 // las 24:00 el slice daba otro dia que el commit del PR, y el CI fallaba.
 const hoy = new Date(process.env.FECHA_SITIO || Date.now()).toISOString().slice(0, 10);
 
+/* 13-10-2026: el lastmod del sitemap NO se recalcula en cada corrida nomas
+   porque cambio el dia. `hoy` solo se usa si el contenido REAL de la pagina
+   cambio respecto a lo que ya esta commiteado (index.html/portafolio.html);
+   si no cambio, se conserva el lastmod que el sitemap commiteado ya trae.
+   Por que: `hoy` depende de CUANDO se corre el armador, no de CUANDO cambio
+   la pagina — un commit que toca sitio/compai/** sin tocar estas dos (p.ej.
+   `contenido/barrido.json` solo, o cualquier commit de otro dia) adelantaba
+   el lastmod sin que el contenido se hubiera movido, y el guardian de CI
+   («El index.html versionado esta al dia») lo leia como desincronizado: 11
+   corridas rojas seguidas desde el 12-10, confirmado con `gh run list` y
+   `gh run view --log-failed` (el unico diff era `sitemap.xml`, 4 lineas).
+   `INDEX_ANTES`/`SITEMAP_ANTES` se leen ACA, antes de escribir nada. */
+const INDEX_ANTES = existsSync(join(raiz, 'index.html')) ? readFileSync(join(raiz, 'index.html'), 'utf8') : null;
+const SITEMAP_ANTES = existsSync(join(raiz, 'sitemap.xml')) ? readFileSync(join(raiz, 'sitemap.xml'), 'utf8') : '';
+const LASTMODS_ANTES = [...SITEMAP_ANTES.matchAll(/<lastmod>(\d{4}-\d{2}-\d{2})<\/lastmod>/g)].map(m => m[1]);
+
 /* ── el isotipo: el doble check de la marca, suelto y en neón ─────────── */
 const TICKS = (clase, etiqueta) => `<svg class="${clase}" viewBox="0 0 22 20" role="img" aria-label="${etiqueta}">
       <title>${etiqueta}</title>
@@ -575,13 +591,13 @@ body{display:grid;place-items:center;min-height:100svh;padding:clamp(24px,6vw,64
 `;
 writeFileSync(join(raiz, '404.html'), c404, 'utf8');
 
-const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>${S.meta.url}</loc><lastmod>${hoy}</lastmod><changefreq>monthly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://compai.cl/portafolio.html</loc><lastmod>${hoy}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-</urlset>
-`;
-writeFileSync(join(raiz, 'sitemap.xml'), sitemap, 'utf8');
+// lastmod de la home: solo se mueve a `hoy` si el index.html generado AHORA
+// difiere del que ya estaba commiteado (INDEX_ANTES, leido al principio,
+// antes de escribir nada). Si no cambio, se conserva el que ya traia el
+// sitemap commiteado — el sitemap se escribe mas abajo, despues de resolver
+// tambien el de portafolio.html, que se sabe mas tarde en este script.
+const cambioHome = INDEX_ANTES !== html;
+const lastmodHome = (!cambioHome && LASTMODS_ANTES[0]) ? LASTMODS_ANTES[0] : hoy;
 
 writeFileSync(join(raiz, 'robots.txt'),
   `User-agent: *\nAllow: /\nDisallow: /estado/\n\nSitemap: https://compai.cl/sitemap.xml\n`, 'utf8');
@@ -595,6 +611,9 @@ if (!existsSync(join(raiz, 'media/og.jpg'))) console.warn('AVISO: falta media/og
    `contenido/escenas.json` (copy de Visu) y se reescribe SOLO lo que hay
    entre las marcas ESCENAS:INICIO / ESCENAS:FIN; el resto del portafolio
    sigue a mano. Las licencias van SIN precio: se cotizan. */
+// mismo criterio que lastmodHome, resuelto por defecto y ajustado dentro del
+// bloque (ahi se sabe si portafolio.html cambio de verdad).
+let lastmodPort = LASTMODS_ANTES[1] || hoy;
 {
   const PORT = join(raiz, 'portafolio.html');
   const E = lee('contenido/escenas.json');
@@ -701,7 +720,8 @@ ${E.escenas.map(pieza).join('\n\n')}
   const t = readFileSync(PORT, 'utf8');
   const re = /<!-- ESCENAS:INICIO[\s\S]*?<!-- ESCENAS:FIN -->/;
   if (re.test(t)) {
-    writeFileSync(PORT, t.replace(re, () => bloque), 'utf8');
+    const nuevoPort = t.replace(re, () => bloque);
+    if (nuevoPort !== t) { writeFileSync(PORT, nuevoPort, 'utf8'); lastmodPort = hoy; }
     const n = E.escenas.reduce((a, e) => a + e.grupos.reduce((b, g) => b + g.items.length, 0), 0);
     console.log(`portafolio.html · ${E.escenas.length} escenas · ${n} cosas para pedir`);
   } else console.warn('AVISO: portafolio.html no tiene las marcas ESCENAS:INICIO/FIN — no se tocaron las escenas');
@@ -737,3 +757,15 @@ ${E.escenas.map(pieza).join('\n\n')}
     }
   }
 }
+
+// El sitemap se escribe ACA, al final: recien aqui estan resueltos lastmodHome
+// (comparado contra INDEX_ANTES, arriba) y lastmodPort (comparado dentro del
+// bloque de portafolio.html). Ninguno de los dos depende de `hoy` salvo que
+// el contenido real haya cambiado en ESTA corrida.
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>${S.meta.url}</loc><lastmod>${lastmodHome}</lastmod><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://compai.cl/portafolio.html</loc><lastmod>${lastmodPort}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+</urlset>
+`;
+writeFileSync(join(raiz, 'sitemap.xml'), sitemap, 'utf8');
