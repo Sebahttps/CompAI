@@ -18,12 +18,13 @@
     "whatsapp": "",
     "whatsapp_texto": "+56 9 6246 9977",
     "_whatsapp": "VACIO A PROPOSITO. El manual de marca (10 Correo > Firma) deja el movil solo en la firma de Director o Gerente General y en la tarjeta: nunca en papeleria general, correos automaticos ni el sitio. Poner la URL wa.me aqui vuelve a mostrar el boton en / 06.",
-    "intranet": "https://claude.ai/artifact/MqfeH8WXnVQN1A6WgAEx9g",
+    "intranet": "https://compai.cl/estado/",
     "ficha": "https://proveedor.mercadopublico.cl/ficha/78.491.451-8",
     "ciudad": "SCL.",
     "lugar": "Santiago, Chile",
     "razon_social": "COMPAI GLOBAL SOLUTIONS SpA",
-    "rut": "78.491.451-8"
+    "rut": "78.491.451-8",
+    "_intranet": "12-10-2026: deja de apuntar al artefacto de claude.ai. Ese enlace exigia cuenta de Claude y la intranet no era de CompAI sino de un chat. Ahora vive en el dominio propio, cifrada con la clave de Sebastian."
   },
   "menu": [
     {
