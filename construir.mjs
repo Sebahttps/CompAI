@@ -427,7 +427,15 @@ const contacto = `
       <a class="b t kcorreo" style="--x:171;--y:348;--w:1024;--fs:32.3;--lh:1.21" href="mailto:${esc(S.contacto.correo)}">${esc(S.contacto.correo)}</a>
     </div>
 
-    <div class="pg" style="--h:1006">
+    ${/* 13-10-2026, Sebastian: «el corte del sitio en la parte inferior
+        deberia cortar a la altura del video de los colibries, sino al darles
+        movimiento, uno de ellos se corta de igual manera por el limite de su
+        encuadre». El lienzo media 1006 y el picaflor terminaba en 813: 193 px
+        de negro muerto que convertian el borde del encuadre en un recorte a
+        media pagina. Ahora el lienzo cierra EN 813 —el borde del video es el
+        borde del sitio— y el pie legal se corre a la derecha, al vacio que
+        queda junto a SCL. */""}
+    <div class="pg" style="--h:813">
       ${/* 12-10-2026, Sebastian: el acceso a la intranet deja de ser una
           compuerta dibujada con la palabra «Intranet» al lado y pasa a ser el
           picaflor. Al tocarlo se le encienden los circuitos del cuerpo y
@@ -444,7 +452,7 @@ const contacto = `
       </a>
       <p class="b t kscl" style="--x:425;--y:215;--w:515;--fs:236;--lh:1.21;--tr:-0.031">${esc(S.contacto.ciudad)}</p>
       <p class="b t klugar" style="--x:555;--y:499;--w:256;--fs:26.7;--lh:1.21;--tr:-0.031">${esc(S.contacto.lugar)}</p>
-      <p class="b kpie" style="--x:41;--y:960;--w:1284">
+      <p class="b kpie" style="--x:520;--y:752;--w:805">
         <span>${esc(S.contacto.razon_social)} · RUT ${esc(S.contacto.rut)}</span>
         <span><a href="${esc(S.contacto.ficha)}" target="_blank" rel="noopener">Ficha proveedores del Estado</a> · <a href="/portafolio.html">Portafolio</a></span>
       </p>

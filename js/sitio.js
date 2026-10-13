@@ -149,7 +149,14 @@
     if (quieto.matches || !('IntersectionObserver' in window)) return;
     const sel = '.cv .rot, .cv .t, .cv .serv-tit, .cv .serv-par, .cv .serv-vin,' +
                 ' .cv .glista li, .cv .gpie, .cv .gcifras > div, .cv .cacc,' +
-                ' .cv .ikick, .cv .ititulo, .cv .campo, .cv .iadjunta, .cv .enviar, .cv .kpie';
+                ' .cv .ikick, .cv .ititulo, .cv .campo, .cv .iadjunta, .cv .enviar';
+    /* .kpie FUERA, 13-10-2026. La regla de abajo enciende un texto solo si
+       su borde superior queda sobre innerHeight*0.92; el pie legal vive
+       pegado al fondo del documento, asi que al llegar al final SIEMPRE
+       cae dentro de ese 8% y nunca se encendia: razon social, RUT, ficha
+       de proveedores y portafolio quedaban invisibles en escritorio.
+       Se descubrio midiendo opacity (0) al recortar el lienzo del pie,
+       pero ya pasaba con el lienzo de 1006. */
     const els = $$(sel); if (!els.length) return;
     els.forEach((e, i) => { e.classList.add('anim'); e.style.setProperty('--d', (i % 6) * 60 + 'ms'); });
     // Va y viene: al salir por arriba o por abajo el texto se retira, asi el
