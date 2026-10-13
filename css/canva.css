@@ -567,7 +567,12 @@
 .kcomp img{object-fit:cover;object-position:center 42%}
 .kintranet{font-family:var(--space);font-weight:400;text-align:center;color:#fff;opacity:.4;
   text-decoration:none;display:block;letter-spacing:-.031em}
-.kpie{font-family:var(--plex);font-size:calc(11*var(--u));letter-spacing:.08em;color:#45484c;
+/* #787d82 y no #45484c: el gris anterior daba 2,28 de contraste contra el
+   negro, la mitad del minimo exigible de 4,5. Son la razon social, el RUT, la
+   ficha de proveedores y el enlace al portafolio — justo lo que un comprador
+   publico necesita LEER para verificar con quien trata. Medido por _medir.py
+   el 12-10-2026, que llevaba dias sin correr y por eso nadie lo vio. */
+.kpie{font-family:var(--plex);font-size:calc(11*var(--u));letter-spacing:.08em;color:#787d82;
   text-transform:uppercase;display:flex;justify-content:space-between;gap:calc(16*var(--u))}
 .kpie a{text-decoration:none}
 .kpie a:hover{color:#c87941}
