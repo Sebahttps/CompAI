@@ -44,8 +44,18 @@
    `.hero` no necesita reserva (es el tope del documento) y no la pierde: el
    valor inicial de scroll-margin-top ya es 0 sin declararlo. */
 .cv{position:relative;container-type:inline-size;width:100%;margin:0;padding:0;
-  background:#000;overflow:hidden;--u:0.0732064cqw}
-.cv .pg{position:relative;width:100%;aspect-ratio:calc(1366 / var(--h));overflow:hidden;background:#000}
+  background:#000;overflow:hidden;--u:min(0.0732064cqw,1px)}
+/* TECHO DE ESCALADO, 13-10-2026 (decision de Sebastian, opcion A).
+   Hasta hoy --u era 0.0732064cqw a secas: el lienzo de 1366 se estiraba al
+   ancho de la ventana y TODO crecia con el, texto incluido. A 1920 px el
+   parrafo de /02 media 33,9 px donde un sitio normal mide 16. Se leia como
+   un sitio con zoom puesto. Ahora la unidad se capa en 1 px —que es
+   exactamente 0.0732064cqw a 1366 px— y el lienzo se centra. Bajo 1366 el
+   comportamiento no cambia: min() toma el cqw, que ahi es menor que 1px.
+   En movil el techo no entra: --u vale 0.1465128cqw (lienzo 683) y
+   calc(1366*--u) da 200cqw, asi que el min(100%,...) deja el 100%. */
+.cv .pg{position:relative;width:min(100%,calc(1366*var(--u)));margin-inline:auto;
+  aspect-ratio:calc(1366 / var(--h));overflow:hidden;background:#000}
 .cv .b{position:absolute;left:calc(var(--x,0)*var(--u));top:calc(var(--y,0)*var(--u));
   width:calc(var(--w,1366)*var(--u));margin:0}
 .cv .b.fh{height:calc(var(--hh,0)*var(--u))}
