@@ -1,0 +1,100 @@
+<!doctype html><html lang="es-CL"><head><meta charset="utf-8">
+<title>Veredicto 1098710-178-COT26 · Subsec. Ciencia · CompAI</title><style>
+body{font-family:Arial,Helvetica,sans-serif;color:#1A1D1B;max-width:760px;margin:40px auto;padding:0 24px;line-height:1.5}
+.logo{font-family:"Courier New",monospace;font-weight:700;font-size:26px}.logo b{color:#A85F1B}
+h1{font-size:22px;margin:18px 0 4px}h2{font-size:15px;border-bottom:2px solid #A85F1B;padding-bottom:4px;margin-top:26px}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{border:1px solid #ddd;padding:7px 9px;text-align:left;vertical-align:top}th{background:#f4efe8}
+.k{color:#666;width:38%}.big{font-size:20px;font-weight:700}
+.gate{border:2px dashed #0F5C7A;padding:12px 14px;border-radius:8px;margin-top:22px}
+.no{border:2px solid #B42318;color:#B42318;font-weight:700;padding:10px 14px;border-radius:8px;margin:18px 0}
+.cita{border-left:3px solid #A85F1B;background:#faf7f2;padding:8px 12px;margin:10px 0;font-size:13.5px}
+.pie{margin-top:28px;font-size:12px;color:#666}.mal{color:#B42318;font-weight:700}
+code{background:#f4efe8;padding:1px 4px;border-radius:3px;font-size:12.5px}
+</style></head><body>
+<div class="logo">comp<b>AI</b></div>
+
+<h1>Veredicto: NO SE OFERTA</h1>
+<p>Compra Ágil <b>1098710-178-COT26</b> · Subsecretaría de Ciencia, Tecnología, Conocimiento e Innovación<br>
+«Servicio de adaptación del módulo de autoevaluación de la plataforma <i>Trayectoria EBCT</i> para empresas de servicios»</p>
+
+<div class="no">NO SE OFERTA. Dos motivos independientes, cualquiera basta:
+(1) el único documento que define el alcance lo entrega ChileCompra con 0 bytes, y está probado
+con control positivo; (2) el escalón que calza con este trabajo está cerrado hasta que PAIton firme.</div>
+
+<h2>1. La compra, leída de la ficha oficial</h2>
+<table>
+<tr><td class="k">Institución</td><td>SUBSECRETARÍA DE CIENCIA, TECNOLOGÍA, CONOCIMIENTO E INNOVACIÓN · RUT 62.000.740-4</td></tr>
+<tr><td class="k">Qué compran</td><td>Adaptar el módulo de autoevaluación de una plataforma que el organismo <b>ya tiene</b></td></tr>
+<tr><td class="k">Línea</td><td>única · UNSPSC <b>93141511</b> «Estudios de grupos sociales o servicios relacionados» · cantidad 1 · unidad GL</td></tr>
+<tr><td class="k">Presupuesto</td><td class="big">$6.000.000</td></tr>
+<tr><td class="k">Tipo de presupuesto</td><td>«Estimado». La ficha <b>no</b> declara si es neto o bruto: queda como supuesto y no entra a ningún cálculo</td></tr>
+<tr><td class="k">Plazo de entrega</td><td>65 días</td></tr>
+<tr><td class="k">Entrega</td><td>Morandé 226, piso 8</td></tr>
+<tr><td class="k">Primer llamado cierra</td><td><b>06-10-2026 14:00</b></td></tr>
+<tr><td class="k">Segundo llamado cierra</td><td><b>07-10-2026 15:00</b></td></tr>
+<tr><td class="k">Multas</td><td>La ficha declara 0</td></tr>
+<tr><td class="k">Garantía</td><td>Compra Ágil no publica garantía en ninguna ficha (medido en 4 fichas COT: cero ocurrencias de «garant»). Es NO MEDIDO estructural, no «no exige»</td></tr>
+<tr><td class="k">Ofertas ya recibidas</td><td>2</td></tr>
+<tr><td class="k">Publicada</td><td>05-10-2026 12:59 · último cambio 13:00</td></tr>
+</table>
+
+<h2>2. Motivo 1 — el TDR viene vacío, y el instrumento está verificado</h2>
+<p>La ficha publica un adjunto: «Servicio de adaptación del módulo de autoevaluación de la
+platafo.pdf». Al pedirlo, ChileCompra responde <b>HTTP 200 con <code>Content-Length: 0</code></b>.</p>
+<p>Antes de culpar a la pieza se verificó el instrumento. Misma ruta, misma clave, mismo cliente,
+mismo minuto:</p>
+<table>
+<tr><th>Código</th><th>Adjuntos</th><th>Resultado</th></tr>
+<tr><td>813-648-COT26</td><td>1 PDF</td><td>200 · 463.295 B · application/pdf ✓</td></tr>
+<tr><td>2173-161-COT26</td><td>PDF + Excel</td><td>200 · 194.767 B y 200 · 350.720 B ✓</td></tr>
+<tr><td><b>1098710-178-COT26</b></td><td>1 PDF</td><td class="mal">200 · 0 B ✗</td></tr>
+</table>
+<p>También se descartó que fuera el cliente, el User-Agent o el WAF: con un <b>Chrome real,
+headless, haciendo <code>fetch()</code> dentro de la propia página del buscador</b>, la respuesta es
+idéntica (200, 0 bytes). Y la API v2 oficial no tiene ruta de descarga: devuelve
+403 «Missing Authentication Token» en las cinco variantes probadas. El <code>encrypt</code> acepta
+cualquier id y devuelve un token que luego da 500 — un parámetro que nunca sabe decir «no sé».</p>
+<p><b>Conclusión:</b> el comprador publicó un TDR de 0 bytes. No lo puede bajar nadie, tampoco los
+dos oferentes que ya cotizaron. Y Compra Ágil <b>no tiene foro de preguntas</b>, así que no hay vía
+formal para pedir la corrección dentro del proceso.</p>
+<p>Lo que habría que cotizar son <b>65 días de desarrollo sobre una plataforma ajena</b> con un
+alcance que no está escrito en ninguna parte legible: la ficha repite la misma frase de una línea
+tres veces. Comprometer eso es comprometer una entrega que no se puede dimensionar.</p>
+
+<h2>3. Motivo 2 — el escalón que calza está cerrado por decisión propia</h2>
+<table>
+<tr><th>Escalón</th><th>Precio</th><th>¿Calza?</th></tr>
+<tr><td>SP-04 VEREDICTO</td><td>$571.200</td><td>No. No es un informe</td></tr>
+<tr><td>SP-07 ENCENDIDO</td><td>$428.400</td><td>No. No hay nada comprado que poner en marcha</td></tr>
+<tr><td>SP-01 DISPARO</td><td>$599.760</td><td>No. Es leer un origen de datos, no escribir en el sistema</td></tr>
+<tr><td>SP-02 CINTA</td><td>$1.071.000 «desde»</td><td class="mal">Sí por naturaleza — marcado NO SE OFERTA, firma PAIton</td></tr>
+<tr><td>SP-03 PUENTE</td><td>$2.713.200 «desde»</td><td class="mal">Sí por tamaño — marcado NO SE OFERTA, firma PAIton</td></tr>
+</table>
+<p>Cotizar este trabajo con el precio de otro escalón sería vender SP-02 con la etiqueta de SP-01.</p>
+
+<h2>4. Lo que NO fue el motivo</h2>
+<table>
+<tr><td class="k">Caja</td><td>El semáforo del 05-10 está <b>verde</b>: caben 4 órdenes de servicio propio y el tope por orden es $2.505.265. Los $6.000.000 del techo del organismo están sobre ese tope, así que si algún día se cotiza, se cotiza bajo el tope y nunca al techo</td></tr>
+<tr><td class="k">Garantía</td><td>Compra Ágil no la pide</td></tr>
+<tr><td class="k">Competencia</td><td>Sólo 2 ofertas para un techo de $6 millones</td></tr>
+<tr><td class="k">Plazo</td><td>Hay un segundo llamado el 07-10 15:00</td></tr>
+</table>
+
+<h2>5. Lo único que la reabriría</h2>
+<p><b>A (recomendado) — pedir el PDF directo al comprador</b>, señalando que el adjunto se descarga
+con 0 bytes y que eso afecta a todos los oferentes. Si llega antes del <b>07-10 15:00</b>, alcanza el
+segundo llamado.</p>
+<p><b>B — bajarlo con la sesión de proveedor.</b> La ruta pública da 0 bytes; con sesión autenticada
+no se ha probado. Si con sesión tampoco baja, queda probado que el archivo está roto en origen y el
+camino es A.</p>
+<p>En los dos casos, antes de cotizar hay que mirar el escalón: si el alcance es escribir en la
+plataforma del cliente, esto es SP-02 o SP-03, y los dos esperan la firma de PAIton.</p>
+
+<div class="gate"><b>Tu decisión:</b> ☐ Pedir el TDR al comprador hoy (alcanza el 2.º llamado)
+&nbsp;&nbsp; ☐ Intentar la descarga con tu sesión de proveedor &nbsp;&nbsp; ☐ Confirmar el NO y archivar</div>
+
+<p class="pie">Ficha oficial en disco: <code>kri-eit\radar\bases\1098710-178-COT26\api2-ficha.json</code>.
+El adjunto no está en disco porque pesa 0 bytes en origen.<br>
+COMPAI GLOBAL SOLUTIONS SpA · RUT 78.491.451-8 · compai.cl · Preparado por Rai el 05-10-2026.
+Toda cifra sin fuente citada va marcada como supuesto.</p>
+</body></html>
