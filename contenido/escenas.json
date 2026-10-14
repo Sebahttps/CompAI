@@ -1,5 +1,5 @@
 {
-  "_nota": "Fuente unica de las escenas de portafolio.html. Se edita ACA y se corre `node construir.mjs`, que reescribe el bloque entre <!-- ESCENAS:INICIO --> y <!-- ESCENAS:FIN -->. Precios de servicio: los del catalogo SP-01..SP-09 (GAIn). Licencias: SIN precio, se cotizan; Gerencia dejo la reventa de licencias en NO por caja (05-10-2026): esto capta demanda, no compromete compra. Copy: Visu, CompAI/Dir. Arte.../2026-10-05-escenas-selector/.",
+  "_nota": "Fuente unica de las escenas de portafolio.html. Se edita ACA y se corre `node construir.mjs`, que reescribe el bloque entre <!-- ESCENAS:INICIO --> y <!-- ESCENAS:FIN -->. Precios de servicio: los del catalogo SP-01..SP-09 (GAIn). Licencias: SIN precio, se cotizan; lo que se vende alrededor de la licencia (SP-04, SP-07, SP-09) si tiene precio y es la linea L4 del home. SOUL-1/2/3 (fresh, sun, vibe) son SUSCRIPCION MENSUAL y reemplazan a PNN-1/2/3 (pago unico de $500.000 a $2.713.200): aprobado por Sebastian el 13-10-2026, PDF de SOUL pag. 4 §6 Economia. Copy: Visu, CompAI/Dir. Arte.../2026-10-05-escenas-selector/.",
   "promesa": "De la licencia que vence al reporte hecho a mano: le decimos qué pedir y lo dejamos andando.",
   "tope": "¿Cuál le pasó este año?",
   "confianza": {
@@ -47,7 +47,7 @@
       "video": "media/escena-01.mp4",
       "poster": "media/escena-01.webp",
       "alt": "Cómic animado: lunes a las 9, la fila crece y el computador del funcionario dice «Producto sin licencia»; sus compañeros se miran: «¿Quién compraba esto?».",
-      "linea": "Renovación y compra de licencias",
+      "linea": "Licencias que vencen",
       "titulo": "«La licencia venció el martes»",
       "bajada": "El lunes las planillas se abrieron en solo lectura. La renovación estaba en el presupuesto; nadie alcanzó a pedirla.",
       "asunto": "Solicitud de cotización · Licencias · {institucion}",
@@ -158,8 +158,16 @@
           ]
         },
         {
-          "pregunta": "¿Y quién las deja instaladas?",
+          "pregunta": "¿Y quién se encarga del resto?",
           "items": [
+            {
+              "id": "sp04-lic",
+              "nombre": "Decirnos qué pedir, antes de comprar",
+              "detalle": "Qué edición le sirve, cuántos usuarios y la glosa para que la orden no rebote",
+              "cantidad": false,
+              "sp": "SP-04",
+              "vigencia": false
+            },
             {
               "id": "sp07-lic",
               "nombre": "Dejarlas instaladas y funcionando",
@@ -167,6 +175,14 @@
               "cantidad": true,
               "unidad": "usuarios",
               "sp": "SP-07"
+            },
+            {
+              "id": "sp09-lic",
+              "nombre": "Que no vuelva a vencer",
+              "detalle": "Cada licencia y certificado revisado al mes, con reporte",
+              "cantidad": false,
+              "sp": "SP-09",
+              "vigencia": false
             }
           ]
         }
@@ -307,37 +323,37 @@
       "video": "media/escena-05.mp4",
       "poster": "media/escena-05.webp",
       "alt": "Cómic animado: la vecina busca pan amasado en el celular y no aparece nada; la panadera se pierde entre audios de WhatsApp: «¿Quién me pidió las hallullas?»; al final aparece, los pedidos le llegan escritos a un solo lugar y queda tranquila.",
-      "linea": "Servicios PyME",
+      "linea": "SOUL · sitios para quien vive de su oficio",
       "titulo": "«Nadie encuentra la panadería»",
       "bajada": "El pan sale bueno. Lo que falla es lo de afuera: la vecina te busca en el celular y no apareces, y los pedidos se te pierden entre audios.",
-      "asunto": "Pista, Nodo o Núcleo · {institucion}",
+      "asunto": "fresh, sun o vibe · {institucion}",
       "grupos": [
         {
-          "pregunta": "¿Qué necesita tu negocio?",
+          "pregunta": "¿Cuál es el tuyo?",
           "items": [
             {
-              "id": "pista",
-              "nombre": "Pista: apareces",
-              "detalle": "Una página con tu nombre, lo que vendes y botón de WhatsApp",
+              "id": "fresh",
+              "nombre": "fresh: una página",
+              "detalle": "Tu oficio, tus servicios y WhatsApp a un toque. Recién partes.",
               "cantidad": false,
               "vigencia": false,
-              "sp": "PNN-1"
+              "sp": "SOUL-1"
             },
             {
-              "id": "nodo",
-              "nombre": "Nodo: apareces y recibes",
-              "detalle": "Catálogo con fotos, y el pedido te llega escrito a un solo lugar",
+              "id": "sun",
+              "nombre": "sun: varias páginas",
+              "detalle": "Cada servicio con su foto y su precio, y tus redes conectadas. El que te recomendamos.",
               "cantidad": false,
               "vigencia": false,
-              "sp": "PNN-2"
+              "sp": "SOUL-2"
             },
             {
-              "id": "nucleo",
-              "nombre": "Núcleo: apareces, recibes y ordenas",
-              "detalle": "Cada pedido queda guardado: quién, qué y para cuándo",
+              "id": "vibe",
+              "nombre": "vibe: tu sitio y tu panel",
+              "detalle": "Lo de sun más tu panel: quién pidió, qué, para cuándo y si ya respondiste.",
               "cantidad": false,
               "vigencia": false,
-              "sp": "PNN-3"
+              "sp": "SOUL-3"
             }
           ]
         }
@@ -345,7 +361,7 @@
       "formulario": {
         "titulo_quien": "¿A quién le escribimos?",
         "cta": "Pedir cotización",
-        "nota": "Te contestamos por WhatsApp. La mantención mensual va aparte y es opcional.",
+        "nota": "Te contestamos por WhatsApp. No pagas nada para partir: pagas el primer mes cuando decides quedártelo.",
         "exito": "Listo, nos llegó. Se abrió WhatsApp con tu pedido escrito: envíalo y te contestamos por ahí.",
         "error": "No quedó registrado, pero se abrió WhatsApp con tu pedido escrito: envíalo desde ahí.",
         "vacio": "Marca al menos uno.",
@@ -353,7 +369,7 @@
         "faltan": "Falta tu nombre o tu WhatsApp.",
         "correo_malo": "Revisa el correo: así no te llega la respuesta.",
         "institucion": {
-          "etiqueta": "Tu negocio",
+          "etiqueta": "Tu oficio o tu negocio",
           "placeholder": "Ej.: Panadería La Espiga",
           "obligatorio": true
         },
@@ -367,7 +383,7 @@
           "boton_copiar": "Copiar el pedido",
           "copiado": "Copiado. Pégalo en un WhatsApp al +56 9 6246 9977"
         },
-        "cuerpo": "Hola:\n\nTengo {institucion} y me interesa:\n\n{items}\n\nLo necesito {plazo}.\n\nSaludos,\n\n\n— Enviado desde compai.cl/portafolio · {escena}",
+        "cuerpo": "Hola:\n\nVivo de mi oficio ({institucion}) y me interesa:\n\n{items}\n\nLo necesito {plazo}.\n\nSaludos,\n\n\n— Enviado desde compai.cl/portafolio · {escena}",
         "canal": "whatsapp",
         "whatsapp": "https://wa.me/56962469977",
         "telefono": {
@@ -380,27 +396,27 @@
       },
       "muestras": {
         "titulo": "Pruébala antes de pedirla",
-        "bajada": "La panadería de María, en los tres planes. En Pista y Nodo eres la vecina que la busca y le encarga; en Núcleo, eres María.",
+        "bajada": "La panadería de María, en los tres planes. En fresh y sun eres la vecina que la busca y le encarga; en vibe, eres María.",
         "nota": "María y su panadería son inventadas: es una muestra.",
         "items": [
           {
-            "plan": "Pista",
-            "que": "Apareces",
-            "url": "muestras/maria-tapia/pista.html",
+            "plan": "fresh",
+            "que": "Una página",
+            "url": "muestras/maria-tapia/fresh.html",
             "img": "media/muestra-pista.webp",
             "alt": "Muestra Pista: la página de la panadería con su horario, sus panes y cómo llegar"
           },
           {
-            "plan": "Nodo",
-            "que": "Apareces y recibes",
-            "url": "muestras/maria-tapia/nodo.html",
+            "plan": "sun",
+            "que": "Varias páginas",
+            "url": "muestras/maria-tapia/sun.html",
             "img": "media/muestra-nodo.webp",
             "alt": "Muestra Nodo: la vecina arma su encargo en la página y elige a qué hora pasa"
           },
           {
-            "plan": "Núcleo",
-            "que": "Apareces, recibes y ordenas",
-            "url": "muestras/maria-tapia/nucleo.html",
+            "plan": "vibe",
+            "que": "Varias páginas + tu panel",
+            "url": "muestras/maria-tapia/vibe.html",
             "img": "media/muestra-nucleo.webp",
             "alt": "Muestra Núcleo: el panel de María con los pedidos de hoy, el inventario y la semana"
           }
@@ -445,17 +461,17 @@
       "bruto": "$2.570.400",
       "cond": "al año, en 12 cuotas de $214.200"
     },
-    "PNN-1": {
-      "bruto": "$500.000",
-      "cond": "desde"
+    "SOUL-1": {
+      "bruto": "$9.990",
+      "cond": "al mes"
     },
-    "PNN-2": {
-      "bruto": "$1.000.000",
-      "cond": "desde"
+    "SOUL-2": {
+      "bruto": "$19.990",
+      "cond": "al mes"
     },
-    "PNN-3": {
-      "bruto": "$2.713.200",
-      "cond": "desde"
+    "SOUL-3": {
+      "bruto": "$39.990",
+      "cond": "al mes"
     }
   }
 }

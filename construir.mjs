@@ -313,9 +313,10 @@ const ICONO = {
   automatizacion: '<rect x="2.5" y="7" width="7" height="7" rx="1"/><rect x="14.5" y="7" width="7" height="7" rx="1"/><path d="M9.5 10.5h5"/><path d="M12.5 8.5 14.5 10.5 12.5 12.5"/>',
   especificacion: '<path d="M5.5 2.5h8l5 5v14h-13z"/><path d="M13.5 2.5v5h5"/><path d="M8.5 12.5h7"/><path d="M8.5 16.5h4.5"/>',
   continuidad: '<circle cx="7" cy="12" r="4"/><path d="M11 12h10"/><path d="M17.5 12v3.5"/><path d="M20.5 12v2.5"/>',
-  pyme: '<path d="M3.5 9.5 5 4h14l1.5 5.5"/><path d="M3.5 9.5h17v1a2.8 2.8 0 0 1-5.7 0 2.8 2.8 0 0 1-5.6 0 2.8 2.8 0 0 1-5.7 0z"/><path d="M5 13v7.5h14V13"/><path d="M10 20.5v-5h4v5"/>',
+  licencias: '<path d="M5.5 2.5h8l5 5v14h-13z"/><path d="M13.5 2.5v5h5"/><circle cx="10" cy="13" r="2.2"/><path d="M10 15.2v3.3"/><path d="M10 17h1.8"/>',
+  soul: '<path d="M3.5 9.5 5 4h14l1.5 5.5"/><path d="M3.5 9.5h17v1a2.8 2.8 0 0 1-5.7 0 2.8 2.8 0 0 1-5.6 0 2.8 2.8 0 0 1-5.7 0z"/><path d="M5 13v7.5h14V13"/><path d="M10 20.5v-5h4v5"/>',
 };
-const ROT_LINEA = { automatizacion: 'L1', especificacion: 'L2', continuidad: 'L3', pyme: 'PYME' };
+const ROT_LINEA = { automatizacion: 'L1', especificacion: 'L2', continuidad: 'L3', licencias: 'L4', soul: 'SOUL' };
 
 /* La lamina abre una hoja con el detalle y el precio de referencia. Hasta el
    08-10-2026 nada lo anunciaba: se le quito el «Ver precio» y quedo sin accion
@@ -350,9 +351,9 @@ const mkLap = (x, y, n) => `<div class="mk lap p${n}" style="--x:${x};--y:${y};-
 
 const creative = `
   <section class="sec cv ap" id="creative">
-    <div class="pg cvfondo" style="--h:2060">
-      <div class="b fh ccirc" style="--x:704;--y:0;--w:662;--hh:2380" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
-      <div class="b fh cline" style="--x:657;--y:0;--w:7;--hh:2060" aria-hidden="true"></div>
+    <div class="pg cvfondo" style="--h:2680">
+      <div class="b fh ccirc" style="--x:704;--y:0;--w:662;--hh:3000" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
+      <div class="b fh cline" style="--x:657;--y:0;--w:7;--hh:2680" aria-hidden="true"></div>
       ${rot(S.creative, 62, 38)}
       ${servTexto(SERV[0], 79, 192)}
       ${placa(SERV[0], 836, 152)}
@@ -360,11 +361,17 @@ const creative = `
       ${placa(SERV[1], 836, 772)}
       ${servTexto(SERV[2], 79, 1432)}
       ${placa(SERV[2], 836, 1392)}
+      ${/* 14-10-2026, GAIn: cuarta lamina del Estado. La escena 01 del catalogo
+            («La licencia vencio el martes») apuntaba a una linea que el home no
+            publicaba: el caso abria un enlace a nada. El paso entre laminas es
+            620 px (192, 812, 1432, 2052) y la pagina crecio lo mismo. */''}
+      ${servTexto(SERV[3], 79, 2052)}
+      ${placa(SERV[3], 836, 2012)}
     </div>
 
-    ${/* 07-10-2026, Sebastian: las bandas pista/nodo/nucleo salen del home.
-          Las tres se explican juntas en la ficha 04 (Servicios PyME) y su
-          lamina; la historia de la panadera vive en el catalogo (escena 05).
+    ${/* 07-10-2026, Sebastian: las bandas del plan salen del home. Los tres
+          planes se explican juntos en la ficha 05 (SOUL: fresh, sun y vibe) y
+          su lamina; la historia de la panadera vive en el catalogo (escena 05).
           La linea sigue la de la pagina de arriba (657, 7 px): antes era
           659/9 y en la union se veia el escalon. */ ''}
     <div class="pg cvfondo" style="--h:880">
@@ -373,8 +380,8 @@ const creative = `
           los dos. Sebastian, 12-10-2026. */''}
       <div class="b fh ccirc" style="--x:704;--y:0;--w:662;--hh:636" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
       <div class="b fh cline" style="--x:657;--y:0;--w:7;--hh:636" aria-hidden="true"></div>
-      ${servTexto(SERV[3], 79, 203)}
-      ${placa(SERV[3], 836, 163)}
+      ${servTexto(SERV[4], 79, 203)}
+      ${placa(SERV[4], 836, 163)}
       ${/* 12-10-2026, Sebastian: «¿Cual es la tuya? Buscala en el catalogo»
           era una frase suelta al pie y nadie la veia como una accion. Pasa a
           banner propio, ancho completo, bajo la lamina PyME. */""}

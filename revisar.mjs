@@ -71,7 +71,7 @@ for (const s of serv) {
 }
 
 /* ── estructura de contenido ─────────────────────────────────────────── */
-if (serv.length !== 4) mal(`servicios.json trae ${serv.length}; tienen que ser 4.`);
+if (serv.length !== 5) mal(`servicios.json trae ${serv.length}; tienen que ser 5.`);
 const vistos = new Set();
 for (const s of serv) {
   for (const k of ['slug', 'codigo', 'titulo', 'bajada', 'vinetas', 'lamina', 'cta'])
@@ -79,16 +79,22 @@ for (const s of serv) {
   if (vistos.has(s.slug)) mal(`slug repetido: ${s.slug}`); vistos.add(s.slug);
   if (s.vinetas && s.vinetas.length !== 5) mal(`«${s.slug}»: ${s.vinetas.length} viñetas, tienen que ser 5.`);
   if (s.lamina && s.lamina.length < 3) mal(`«${s.slug}»: la lamina tiene menos de 3 parrafos.`);
-  // Tres lineas para el Estado y, desde el 07-10-2026, la cuarta ficha es
-  // Servicios PyME (pista, nodo, nucleo), por decision de Sebastian. Su PRECIO
-  // sigue sin publicarse en el home: lo vigila la regla de abajo.
+  // CUATRO lineas para el Estado desde el 14-10-2026: L4 «Licencias que vencen»
+  // existe porque la escena 01 del catalogo apuntaba a una linea que el home no
+  // publicaba. Y la quinta ficha es SOUL (fresh, sun, vibe), que reemplaza a
+  // Servicios PyME: la suscripcion mensual aprobada por Sebastian el 13-10-2026
+  // mato el pago unico de PNN. Su PRECIO es el unico que se publica en el home:
+  // lo vigila la regla de abajo, que NO se relajo, solo cambio de nombre.
   if (s.etiqueta) mal(`«${s.slug}»: trae «etiqueta» ${s.etiqueta}; la ficha no lleva etiqueta.`);
-  if (!['L1', 'L2', 'L3', 'PYME'].includes(s.linea)) mal(`«${s.slug}»: linea «${s.linea}» no es L1, L2, L3 ni PYME.`);
+  if (!['L1', 'L2', 'L3', 'L4', 'SOUL'].includes(s.linea)) mal(`«${s.slug}»: linea «${s.linea}» no es L1, L2, L3, L4 ni SOUL.`);
   if (!s.hoja || !s.hoja.titulo || !(s.hoja.tabla && s.hoja.tabla.filas && s.hoja.tabla.filas.length === 3))
     mal(`«${s.slug}»: la lamina no trae «hoja» con titulo y tabla de tres.`);
-  // Sin precio en el home, salvo el «desde» de PyME, que Sebastian aprobo el
-  // 07-10-2026 junto con la agenda de 30 min sin costo.
-  if (s.linea !== 'PYME' && /ta\s*rifa|\$\s*\d/.test(JSON.stringify(s))) mal(`«${s.slug}»: hay un precio en el texto publico.`);
+  // Sin precio en el home para las lineas del Estado: Sebastian les quito «Ver
+  // precio» el 07-10-2026 y su valor vive en el catalogo. La unica excepcion es
+  // la linea del oficio (antes PYME, hoy SOUL), aprobada el 07-10-2026 junto
+  // con la agenda de 30 min sin costo. GAIn intento publicar los tres valores
+  // de L4 en el home el 14-10-2026 y esta regla lo detuvo: quedo asi.
+  if (s.linea !== 'SOUL' && /ta\s*rifa|\$\s*\d/.test(JSON.stringify(s))) mal(`«${s.slug}»: hay un precio en el texto publico.`);
 }
 if (!['franjas', 'nucleo'].includes(sitio.hero)) mal(`hero «${sitio.hero}» no es franjas ni nucleo.`);
 
