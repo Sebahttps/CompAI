@@ -1,0 +1,13 @@
+# Los artefactos cifrados de /proyecto/ NO se tocan.
+#
+# 14-10-2026. git avisaba «LF will be replaced by CRLF» sobre los .json de
+# proyecto/. Esos archivos son la carga cifrada de las presentaciones: si el
+# checkout les cambia los saltos de linea, GitHub Pages sirve bytes distintos
+# a los que se cifraron y el descifrado falla con un error de autenticacion
+# de AES-GCM -- que no dice «te cambiaron un byte», dice «clave incorrecta».
+# Un dia entero de buscar en el lugar equivocado.
+#
+# Esta casa ya perdio tiempo con CRLF una vez: dos copias del mismo HTML
+# diferian 2.620 bytes y eran identicas.
+proyecto/**/*.json -text
+estado/index.html  -text
