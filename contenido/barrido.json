@@ -1,13 +1,13 @@
 {
- "fecha": "2026-10-13",
+ "fecha": "2026-10-14",
  "fuente": "API de Mercado Público · licitaciones activas, todas las modalidades",
- "barridas": 5067,
+ "barridas": 4612,
  "filas": [
   {
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "MANTENCION DATA CENTER, RACK DE COMUNICACIONES Y AMPLIACION …",
+   "id": "SERVICIO DE HOUSING EN MODO DATA CENTER",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -15,7 +15,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "SERVICIO DE HOUSING EN MODO DATA CENTER",
+   "id": "SERVICIO DE ARRIENDO DE UNA SOLUCIÓN DE INFRAESTRUCTURA DE …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
