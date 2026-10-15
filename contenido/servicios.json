@@ -214,7 +214,7 @@
    "kicker": "PARA EL ESTADO · LICENCIAS QUE VENCEN",
    "titulo": "La licencia venció, y la renovación estaba en el presupuesto.",
    "lead": "Le decimos qué pedir antes de comprar, lo dejamos instalado con su acta, y vigilamos el próximo vencimiento.",
-   "como": "**La licencia la compra usted al canal autorizado del fabricante: nosotros no se la vendemos.** Lo que cobramos es el trabajo que queda alrededor, y se cotiza por entregable con el valor cerrado antes de empezar.",
+   "como": "**La licencia se la vendemos nosotros, con factura chilena a nombre de su institución y la glosa escrita para que la orden de compra no rebote.** Si prefiere comprarla directo al canal del fabricante, también lo acompañamos: el trabajo de decirle qué pedir, dejarlo instalado y vigilar el próximo vencimiento se cobra igual. Se cotiza por entregable, con el valor cerrado antes de empezar.",
    "tabla": {
     "rotulo": "LOS TRES SERVICIOS DE LA LÍNEA",
     "cols": [
@@ -239,7 +239,7 @@
      }
     ]
    },
-   "nota": "Los tres se cotizan juntos o por separado, y cualquiera de ellos cabe en una Compra Ágil. **La licencia misma no entra en el valor**: esa la compra usted.",
+   "nota": "Los tres se cotizan juntos o por separado, y cualquiera de ellos cabe en una Compra Ágil. **La licencia va en línea aparte del trabajo**: así ve qué paga por el producto y qué por el servicio.",
    "pasos": [
     "Nos dice qué venció o está por vencer, y cuántos usuarios son.",
     "Le enviamos por escrito el alcance y el valor cerrado, con la glosa lista para la orden de compra.",
