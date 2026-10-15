@@ -1,13 +1,13 @@
 {
- "fecha": "2026-10-14",
+ "fecha": "2026-10-15",
  "fuente": "API de Mercado Público · licitaciones activas, todas las modalidades",
- "barridas": 4612,
+ "barridas": 4707,
  "filas": [
   {
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "CONTRATAR EL SISTEMA DE RESERVAS Y PAGO ONLINE DE CAMPOS …",
+   "id": "SERVICIO DE GESTIÓN DE ESTRATEGIA DE COMUNICACIÓN INTERNA …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -15,7 +15,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "SERVICIOS DE TELECOMUNICACIONES Y OTROS SERVICIOS …",
+   "id": "CURSO ELABORACIÓN Y CONTINUIDAD DEL PLAN CONSENSUADO …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -23,7 +23,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "SERVICIO DE LICENCIAS CLOUD SUCCESSFACTORS EN MODALIDAD SAAS.",
+   "id": "77-002-003-015-00 CURSO LIDERAZGO PARA LA GESTIÓN DEL …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -31,7 +31,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "SERVICIO DE ELABORACIÓN DE INSUMOS PARA LA CONFECCIÓN DE …",
+   "id": "ORDENAMIENTO, CLASIFICACIÓN Y DISPOSICIÓN DE DOCUMENTACIÓN …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -39,7 +39,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "Y SUS PROGRAMAS DEPENDIENTES",
+   "id": "ESTA HERRAMIENTA PERMITIRÁ CENTRALIZAR PROCESOS …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -47,7 +47,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "SERVICIO DE HOUSING EN MODO DATA CENTER",
+   "id": "CAPACITACIÓN A EMPLEADOS",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -55,7 +55,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "SERVICIO DE ARRIENDO DE UNA SOLUCIÓN DE INFRAESTRUCTURA DE …",
+   "id": "SERVICIO DE GESTIÓN DE DOTACIÓN DOCENTE Y ASISTENTES DE LA …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -63,7 +63,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "ADQUISICIÓN DE 1 WIRELESS LAN CONTROLLER MÁS SERVICIOS DE …",
+   "id": "ELABORACIÓN PERFILES DE CARGO",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -71,7 +71,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "SERVICIO DE SOFTWARE DE GESTIÓN TRIBUTARIA E INVENTARIO POR …",
+   "id": "REQUERIMIENTO DE SERVICIOS INFORMÁTICOS",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -79,7 +79,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "LICENCIAMIENTO SOFTWARE O SISTEMA DE CONCILIACIONES …",
+   "id": "SERVICIO DE ADMINISTRACIÓN DE SEGURIDAD PERIMETRAL (INDICAR …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   }
