@@ -1,13 +1,13 @@
 {
- "fecha": "2026-10-15",
+ "fecha": "2026-10-17",
  "fuente": "API de Mercado Público · licitaciones activas, todas las modalidades",
- "barridas": 4707,
+ "barridas": 4880,
  "filas": [
   {
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "ORDENAMIENTO, CLASIFICACIÓN Y DISPOSICIÓN DE DOCUMENTACIÓN …",
+   "id": "PLATAFORMA TECNOLÓGICA EN MODALIDAD SAAS DESTINADA A …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -15,7 +15,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "ESTA HERRAMIENTA PERMITIRÁ CENTRALIZAR PROCESOS …",
+   "id": "SERVICIO DE CONTINUIDAD DE LA IMPLEMENTACIÓN DE LA …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -23,7 +23,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "SERVICIO DE GESTIÓN DE DOTACIÓN DOCENTE Y ASISTENTES DE LA …",
+   "id": "RENOVACIÓN DE 210 UNIDADES DE LICENCIAMIENTO OFFICE 365 …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -39,7 +39,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "SERVICIO DE ADMINISTRACIÓN DE SEGURIDAD PERIMETRAL (INDICAR …",
+   "id": "SUSCRIPCIÓN DE LICENCIAS EN MODALIDAD CLOUD COMPUTING SAAS …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -47,7 +47,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "MANTENIMIENTO EVOLUTIVO Y SOPORTE PARA LOS SISTEMAS FONDO …",
+   "id": "CONTRATACIÓN DE SERVICIOS DE CLOUD COMPUTING Y ARRIENDO DE …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -55,7 +55,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "CONTRATACIÓN DE SERVICIO DE SOFTWARE DE RECURSOS HUMANOS",
+   "id": "CENTRO DE SERVICIOS DE DATOS",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -63,7 +63,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "SERVICIO ARRIENDO DE UNIDAD DE RESPALDO DE ENERGÍA – UPS …",
+   "id": "SE REQUIERE LA CONTRATACIÓN DE LICENCIAS DE UNA PLATAFORMA …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -71,7 +71,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "DISEÑO Y ELABORACIÓN DE REPORTE DE IMPACTO 2026 PARA LA …",
+   "id": "REQUERIMIENTO DE SERVICIOS INFORMÁTICOS",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
