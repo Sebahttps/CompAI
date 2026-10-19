@@ -7,14 +7,6 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "PLATAFORMA TECNOLÓGICA EN MODALIDAD SAAS DESTINADA A …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
    "id": "SERVICIO DE CONTINUIDAD DE LA IMPLEMENTACIÓN DE LA …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
@@ -79,7 +71,15 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "SISTEMA DE ADMINISTRACIÓN DE FACTURAS Y BOLETAS DE …",
+   "id": "REQUERIMIENTO DE SERVICIOS INFORMÁTICOS",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "REQUERIMIENTO DE SERVICIOS INFORMÁTICOS",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   }
