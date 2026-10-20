@@ -1,7 +1,7 @@
 {
- "fecha": "2026-10-19",
+ "fecha": "2026-10-20",
  "fuente": "API de Mercado Público · licitaciones activas, todas las modalidades",
- "barridas": 4889,
+ "barridas": 4604,
  "filas": [
   {
    "marca": "GO",
@@ -71,7 +71,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "REQUERIMIENTO DE SERVICIOS INFORMÁTICOS",
+   "id": "SERVIDOR DELL POWER EDGE R760XS INTEL XEON GOLD 6438Y+",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -79,7 +79,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "REQUERIMIENTO DE SERVICIOS INFORMÁTICOS",
+   "id": "CONTRATACIÓN SERVICIO DE GESTIÓN DE CONTROL DE ACTIVO FIJO …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   }
