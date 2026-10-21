@@ -7,14 +7,6 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "DESARROLLO E IMPLEMENTACIÓN DE PLATAFORMA WEB PARA REVISTA …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
    "id": "ADQUISICIÓN DE EQUIPAMIENTO TECNOLÓGICO EDUCATIVO …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
@@ -80,6 +72,14 @@
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
    "id": "SERVICIO DE OPERACIÓN, MANTENIMIENTO Y ACTUALIZACIÓN DE …",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "LA CORPORACIÓN LLAMA A LICITACIÓN PÚBLICA PARA CONTRATAR …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   }
