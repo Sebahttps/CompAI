@@ -1,37 +1,13 @@
 {
- "fecha": "2026-10-21",
+ "fecha": "2026-10-22",
  "fuente": "API de Mercado Público · licitaciones activas, todas las modalidades",
- "barridas": 4665,
+ "barridas": 4823,
  "filas": [
   {
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "ADQUISICIÓN DE EQUIPAMIENTO TECNOLÓGICO EDUCATIVO …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
-   "id": "SERVICIO DE SUMINISTRO E INSTALACIÓN DE RADARES …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
    "id": "REQUIERE DE LA ADQUISICIÓN DE UN (1) SOFTWARE DE CONTROL …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
-   "id": "PLATAFORMA DE GESTIÓN EDUCACIONAL PARA 77 ESTABLECIMIENTOS …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -71,6 +47,14 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
+   "id": "DESARROLLO E IMPLEMENTACIÓN DE PLATAFORMA WEB PARA REVISTA …",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
    "id": "SERVICIO DE OPERACIÓN, MANTENIMIENTO Y ACTUALIZACIÓN DE …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
@@ -79,7 +63,23 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "LA CORPORACIÓN LLAMA A LICITACIÓN PÚBLICA PARA CONTRATAR …",
+   "id": "INTEGRATE PIE PARA LICEO B. ARTISTICO",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "SERVICIO DE PLATAFORMA TECNOLÓGICA SAAS PARA LA GESTIÓN DE …",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "LA PRESENTE ADQUISICIÓN TIENE POR FINALIDAD LA SUSCRIPCIÓN …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   }
