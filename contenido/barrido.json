@@ -5,54 +5,6 @@
  "filas": [
   {
    "marca": "GO",
-   "rubro": "EQUIPAMIENTO",
-   "tipo": "reventa",
-   "id": "ALL IN ONE HP PROONE 440 G9 EQUIVALENTE HP, NOTA: VER EN …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de equipamiento lista para armar",
-   "cierre": "propuesta lista"
-  },
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
-   "id": "SERVICIO MULTISTREAMING CON TRANSMISIÓN DIGITAL E INTERNET …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
-   "id": "CONSTRUCCIÓN DEL SISTEMA DE AGUA POTABLE RURAL (APR) EL …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
-   "id": "SERVICIO DE CONTINUIDAD DE LA IMPLEMENTACIÓN DE LA …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
-   "id": "DESARROLLO E IMPLEMENTACIÓN DE PLATAFORMA WEB PARA REVISTA …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
-   "id": "SERVICIO DE OPERACIÓN, MANTENIMIENTO Y ACTUALIZACIÓN DE …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
-  {
-   "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
    "id": "INTEGRATE PIE PARA LICEO B. ARTISTICO",
@@ -80,6 +32,54 @@
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
    "id": "SERVICIO DE SUMINISTRO E INSTALACIÓN DE RADARES …",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "RENOVACIÓN DE 210 UNIDADES DE LICENCIAMIENTO OFFICE 365 …",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "MANTENIMIENTO PREVENTIVO Y CORRECTIVO DE HARDWARE Y …",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "SERNAPESCA REQUIERE CONTRATAR LOS SERVICIOS DE ARRIENDO DE …",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "SERVICIO DE REPOSICIÓN, ADQUISICIÓN, INSTALACIÓN Y …",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "SERVICIO ESPECIALIZADOS DE SOPORTE Y MANTENIMIENTO DE LA …",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "REQUERIMIENTO DE SERVICIOS INFORMÁTICOS",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   }
