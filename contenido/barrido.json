@@ -1,7 +1,7 @@
 {
- "fecha": "2026-10-22",
+ "fecha": "2026-10-23",
  "fuente": "API de Mercado Público · licitaciones activas, todas las modalidades",
- "barridas": 4823,
+ "barridas": 4952,
  "filas": [
   {
    "marca": "GO",
@@ -79,7 +79,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "RENOVACIÓN DE 210 UNIDADES DE LICENCIAMIENTO OFFICE 365 …",
+   "id": "SERVICIO DE SUMINISTRO E INSTALACIÓN DE RADARES …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   }
