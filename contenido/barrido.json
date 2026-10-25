@@ -1,7 +1,7 @@
 {
- "fecha": "2026-10-23",
+ "fecha": "2026-10-25",
  "fuente": "API de Mercado Público · licitaciones activas, todas las modalidades",
- "barridas": 4952,
+ "barridas": 5143,
  "filas": [
   {
    "marca": "GO",
@@ -55,6 +55,14 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
+   "id": "REQUERIMIENTO DE SERVICIOS INFORMÁTICOS",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
    "id": "SERNAPESCA REQUIERE CONTRATAR LOS SERVICIOS DE ARRIENDO DE …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
@@ -72,14 +80,6 @@
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
    "id": "SERVICIO ESPECIALIZADOS DE SOPORTE Y MANTENIMIENTO DE LA …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
-   "id": "REQUERIMIENTO DE SERVICIOS INFORMÁTICOS",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   }
