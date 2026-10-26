@@ -11,7 +11,7 @@
  "hero": "franjas",
  "hero_sello": "media/compai-sello.svg",
  "_hero_opciones": "franjas = video de 5 franjas con el logo al centro como sello · nucleo = video del sol con el logo arriba a la izquierda",
- "formEndpoint": "https://script.google.com/macros/s/AKfycbxiRLWaLHDVNm99KXKboz7DxslZeUtbl8Rq36MJ3FFuiRfNqpACklvcp7pfX-y5F-M8/exec",
+ "formEndpoint": "https://script.google.com/macros/s/AKfycbz9EDOC1XJu9ERRKHS7JyEM1Jz9op-jNRsfTLZWUgXxZoDw3t5q158VaJJap3RUfwJH/exec",
  "_formEndpoint": "URL del web app de Google Apps Script (apps-script/Code.gs). Mientras esté vacía, el formulario envía por mailto:hola@compai.cl.",
  "contacto": {
   "correo": "hola@compai.cl",
