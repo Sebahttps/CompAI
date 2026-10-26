@@ -504,10 +504,11 @@
      aplica un filtro sobre la foto —eso no aletea ni cambia de color—
      sino que cambia la foto por el video y lo corre UNA vez.
 
-     El <a> hace su trabajo normal: target=_blank abre la pestana en el
-     mismo gesto del usuario, que es lo unico que el navegador no
-     bloquea. La animacion queda corriendo en la pestana de atras, que
-     es a la que la persona vuelve. */
+     CORREGIDO el 20-10-2026: hasta hoy el <a> abria la pestana en el
+     mismo gesto y la animacion quedaba corriendo DETRAS, en la pestana
+     de atras. Eso estaba escrito aqui como si fuera una virtud y era el
+     defecto: nadie veia nunca el encendido. Ahora el clic normal espera
+     3 s y recien entonces abre -- ver `accionar` mas abajo. */
   (() => {
     const p = $('.kpicaflor'); if (!p) return;
     const v = p.querySelector('video'); if (!v) return;
@@ -528,9 +529,55 @@
     // Al terminar vuelve a la foto: dejar el ultimo cuadro congelado
     // haria que el encendido pasara a ser el estado normal del dibujo.
     v.addEventListener('ended', () => p.classList.remove('volando'));
-    p.addEventListener('click', vuela);
+
+    /* La espera de 3 s antes de abrir (20-10-2026, encargo de Sebastian:
+       «que demore al menos 3 segundos en abrir el enlace, de manera que se
+       vea el efecto de la luz en el colibrie»).
+
+       Hasta hoy el target=_blank abria la pestana en el mismo gesto y la
+       animacion quedaba corriendo DETRAS: nadie veia el encendido. Era un
+       error de diseno declarado como virtud en el comentario de arriba.
+
+       Los 3 s no son un numero redondo: medido cuadro a cuadro sobre
+       media/picaflor-intranet.mp4 (5,03 s, ffprobe), los circuitos neon
+       aparecen a los 2,0 s y estan plenos a los 3,0 s. Antes de 2 s no hay
+       nada que esperar; despues de 3 s no hay nada nuevo que ver.
+
+       Se abre con window.open y NO con un setTimeout a pelo sobre el <a>,
+       porque Chrome y Firefox conservan la activacion transitoria del clic
+       unos 5 s: a los 3 s la ventana todavia se permite. Si algun navegador
+       igual la bloquea, `w` viene null y se navega en esta misma pestana --
+       nunca se queda sin ir a ningun lado. */
+    const ESPERA_MS = 3000;
+    let abriendo = false;
+
+    const accionar = e => {
+      // Ctrl/Cmd/Shift/Alt, clic medio o boton auxiliar: el navegador manda.
+      // Quien abre en pestana nueva a proposito no quiere esperar nada.
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button > 0) return;
+      // Sin animacion no hay nada que mostrar, asi que no se hace esperar:
+      // ni con prefers-reduced-motion ni con el video aun sin datos
+      // (preload=none: en tactil puede no haber llegado).
+      if (quieto.matches || v.readyState < 2) return;
+      e.preventDefault();
+      if (abriendo) return;              // doble clic no abre dos veces
+      abriendo = true;
+      vuela();
+      const href = p.href;
+      setTimeout(() => {
+        abriendo = false;
+        const w = window.open(href, '_blank', 'noopener');
+        if (!w) location.href = href;
+      }, ESPERA_MS);
+    };
+
+    p.addEventListener('click', accionar);
+    // Enter sobre un <a> ya dispara click, asi que solo falta la barra
+    // espaciadora, que por defecto haria scroll en vez de entrar.
     p.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') vuela();
+      if (e.key !== ' ') return;
+      e.preventDefault();
+      p.click();
     });
   })();
 
