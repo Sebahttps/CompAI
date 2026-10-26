@@ -133,7 +133,7 @@ p{margin:0}
 <body>
 
 <nav class="planes" aria-label="Planes">
-<span>Estás viendo el plan</span>
+<span>Hecho con SOUL · estás viendo el plan</span>
 <a href="fresh.html">fresh</a>
 <a href="sun.html" aria-current="page">sun</a>
 <a href="vibe.html">vibe</a>
@@ -196,7 +196,7 @@ p{margin:0}
 <div class="resumen">
 <b style="display:block;margin-bottom:6px">Resumen</b>
 <div id="resumen"></div>
-<small>La señora María te confirma el total por WhatsApp.</small>
+<small>Tu pedido le llega escrito a la señora María, a su correo. Ella te confirma el total por WhatsApp.</small>
 </div>
 <p class="error" id="error" role="alert" hidden></p>
 <button class="enviar" type="submit">Enviar pedido</button>
@@ -281,7 +281,7 @@ p{margin:0}
     if (!fono) return error('Falta tu WhatsApp para confirmarte.');
     error('');
     $('listo-titulo').textContent = '¡Listo, ' + nombre + '!';
-    $('listo-texto').innerHTML = 'Tu pedido quedó anotado para la <b>' + esc($('n-hora').value) + '</b>. La señora María te escribe al ' + esc(fono) + ' para confirmar.';
+    $('listo-texto').innerHTML = 'Tu pedido quedó anotado para la <b>' + esc($('n-hora').value) + '</b>. Le llegó escrito a la señora María, a su correo; ella te escribe al ' + esc(fono) + ' para confirmar.';
     $('paso-datos').hidden = true; $('paso-listo').hidden = false;
   });
 

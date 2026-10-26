@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SOUL, el alma de tu oficio · tu sitio propio desde $9.990 al mes</title>
+<meta name="description" content="Respondes unas preguntas desde el celular y al terminar ves tu sitio armado: con tu oficio, tus servicios y un formulario para que te escriban. Desde $9.990 al mes.">
+<link rel="canonical" href="https://compai.cl/soul/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="SOUL, el alma de tu oficio">
+<meta property="og:description" content="Tu sitio propio. Respondes unas preguntas desde el celular y al terminar lo ves armado.">
+<meta property="og:url" content="https://compai.cl/soul/">
+<meta property="og:image" content="https://compai.cl/media/og.jpg">
+<meta name="theme-color" content="#1F3A4D">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fuentes/bricolage-800-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="soul.css">
+<style>
+body{background:#1F3A4D}
+.pagina{min-height:100vh;color:var(--tinta);font-family:var(--texto);overflow-x:clip}
+.wrap{max-width:1280px;margin:0 auto;padding:0 32px}
+.h2{margin:0;font:800 clamp(34px,4.2vw,48px)/1.02 var(--display);letter-spacing:-.025em}
+.ofi-0{background-image:url(img/oficio-00.webp)}.ofi-1{background-image:url(img/oficio-01.webp)}.ofi-2{background-image:url(img/oficio-02.webp)}.ofi-3{background-image:url(img/oficio-03.webp)}.ofi-4{background-image:url(img/oficio-04.webp)}.ofi-6{background-image:url(img/oficio-06.webp)}.ofi-12{background-image:url(img/oficio-12.webp)}.ofi-13{background-image:url(img/oficio-13.webp)}.ofi-14{background-image:url(img/oficio-14.webp)}.ofi-18{background-image:url(img/oficio-18.webp)}
+.ej-img{background:url(ejemplo/img/primer-plano-bn.webp) 50% 15%/cover}
+
+/* el isotipo hecho paisaje */
+.iso{--w:min(620px,88vw);position:absolute;right:max(32px,calc((100% - 1280px)/2 + 32px));bottom:calc(var(--w) * -.5);width:var(--w);height:var(--w);z-index:3;overflow:visible;pointer-events:none}
+@keyframes fromL{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}
+@keyframes fromR{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+@keyframes rise{from{transform:translateY(30px)}to{transform:none}}
+@keyframes breathe{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
+@keyframes drift{0%{transform:translate(0,0)}100%{transform:translate(60px,-30px)}}
+@keyframes driftB{0%{transform:translate(0,0)}100%{transform:translate(-80px,24px)}}
+@keyframes skyShift{0%{background-position:50% 0%}100%{background-position:50% 100%}}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes open{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.a-sky{animation:fromL 1.2s cubic-bezier(.2,.7,.2,1) both;transform-box:fill-box}
+.a-fire{animation:fromR 1.2s cubic-bezier(.2,.7,.2,1) both;transform-box:fill-box}
+.a-sun{animation:rise 1.4s cubic-bezier(.2,.7,.2,1) 1s both;transform-box:fill-box}
+.a-halo{animation:breathe 6s ease-in-out 2.2s infinite;transform-box:fill-box;transform-origin:center}
+.a-up{animation:up .9s ease-out 1.8s both}
+.a-up2{animation:up .9s ease-out 2.1s both}
+.float{animation:drift 18s ease-in-out infinite alternate}
+.floatB{animation:driftB 22s ease-in-out infinite alternate}
+
+.amanecer{position:relative;z-index:2;background:linear-gradient(180deg,#BFE3F5 0%,#D9EEF7 38%,#FFF1C9 72%,#FFE9A3 88%,#FFD3B4 100%);background-size:100% 140%;animation:skyShift 16s ease-in-out infinite alternate}
+.nubes{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.nubes .float{position:absolute;left:-80px;top:120px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.45)}
+.nubes .floatB{position:absolute;left:38%;top:-120px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.35)}
+.nav{position:relative;padding-top:22px;padding-bottom:22px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
+.marca{display:flex;align-items:center;gap:10px;text-decoration:none;min-height:44px}
+.marca span{font:800 30px/1 var(--display);letter-spacing:-.04em}
+.nav-r{display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center;font-weight:600;font-size:16px}
+.nav-r a.txt{text-decoration:none;display:inline-flex;align-items:center;min-height:44px}
+.nav-r a.btn{min-height:46px;padding:0 20px;font-size:15px;background:var(--tinta);color:#fff}
+.titular{position:relative;padding-top:clamp(40px,7vw,96px);padding-bottom:clamp(200px,22vw,260px)}
+.titular .col{max-width:640px;display:flex;flex-direction:column;gap:20px}
+.k-tinta{color:#33546A}
+.soul-gigante{font:800 clamp(120px,17vw,250px)/.78 var(--display);letter-spacing:-.06em}
+.titular h1{margin:0;font:800 clamp(34px,4.2vw,56px)/1 var(--display);letter-spacing:-.03em}
+.titular p{margin:0;font:500 clamp(18px,1.6vw,21px)/1.45 var(--texto);max-width:540px}
+.titular p.desde{font:500 clamp(16px,1.4vw,18px)/1.4 var(--texto);margin:-4px 0 0}.titular p.desde b{font-weight:700}
+.acciones{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px}
+.b-tinta{background:var(--tinta);color:#fff}
+.b-vidrio{background:rgba(255,255,255,.75);color:var(--tinta)}
+
+.tierra{position:relative;z-index:1;background:var(--tinta);color:#F7FBFD;padding:calc(min(620px,88vw) * .31 + 56px) 0 120px}
+.tierra .wrap{display:flex;flex-direction:column;gap:28px}
+.tierra .intro{max-width:620px;display:flex;flex-direction:column;gap:14px}
+.tierra p{margin:0;font-size:18px;line-height:1.5;color:#DCEAF2}
+.fotos6{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:12px}
+.fotos6 div{height:240px}
+
+.capa{position:relative;margin-top:-56px;border-radius:56px 56px 0 0;padding:88px 0 120px;overflow:hidden}
+.capa .wrap{position:relative}
+.luz{z-index:2;background:#FFF6E8}
+.luz .wrap{display:flex;flex-direction:column;gap:28px}
+.pasos3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.paso{border-radius:28px;background:#fff;padding:32px;display:flex;flex-direction:column;gap:14px;box-shadow:0 1px 0 #F0E2C8}
+.paso h3{margin:0;font:800 26px/1.1 var(--display)}
+.paso p{margin:0;font-size:17px;line-height:1.5;color:#33546A}
+.dia{z-index:3;background:#BFE3F5}
+.dia .wrap{display:flex;flex-wrap:wrap;gap:32px;align-items:stretch}
+.dia .izq{flex:1 1 380px;display:flex;flex-direction:column;gap:18px;justify-content:center}
+.dia ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;font-size:18px}
+.dia li{display:flex;gap:12px;align-items:center}
+.dia .der{flex:1 1 420px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.dia .der div{min-height:220px}
+.noche{z-index:4;background:var(--tinta);color:#F7FBFD}
+.ej{border-radius:36px;background:rgba(247,251,253,.06);border:1px solid rgba(247,251,253,.12);overflow:hidden;display:flex;flex-wrap:wrap}
+.ej-img{flex:1 1 380px;min-height:320px}
+.ej-tx{flex:1 1 380px;padding:clamp(28px,4vw,56px);display:flex;flex-direction:column;gap:18px;justify-content:center}
+.ej-tx h2{margin:0;font:800 clamp(30px,3vw,40px)/1.04 var(--display);letter-spacing:-.02em;color:#fff}
+.ej-tx p{margin:0;font-size:18px;line-height:1.5;color:#DCEAF2}
+.ej-tx .nota{font-size:14px;color:#BFD3DF}
+
+.sol{z-index:5;background:linear-gradient(180deg,#FFF6E8 0%,#FFE9A3 100%)}
+.sol .halo{position:absolute;left:50%;top:45%;width:720px;height:720px;margin:-360px 0 0 -360px;border-radius:50%;background:radial-gradient(circle,rgba(255,217,102,.55) 0%,rgba(255,217,102,0) 65%)}
+.sol .wrap{display:flex;flex-direction:column;gap:28px}
+.sol-cab{display:flex;flex-wrap:wrap;gap:12px 40px;justify-content:space-between;align-items:flex-end}
+.sol-cab>div{display:flex;flex-direction:column;gap:12px}
+.planes{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px;align-items:start}
+.plan{border-radius:28px;padding:30px;display:flex;flex-direction:column;gap:12px;position:relative;background:#fff;border:1px solid #F0E2C8;color:var(--tinta);transition:transform .25s ease,box-shadow .25s ease}
+.plan:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(31,58,77,.16)}
+.plan.rec{border:2px solid #F4A574;box-shadow:0 0 0 6px rgba(255,217,102,.45)}
+.plan.rec:hover{box-shadow:0 0 0 6px rgba(255,217,102,.45),0 18px 40px rgba(31,58,77,.16)}
+.plan.dk{background:var(--tinta);border-color:var(--tinta);color:#F7FBFD}
+.plan .cab{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.plan .nom{display:flex;align-items:center;gap:10px;font:800 30px var(--display)}
+.plan .ins{font:700 12px var(--texto);padding:6px 12px;border-radius:999px;background:#fff;color:var(--tinta)}
+.plan .quien{font-size:15px;font-weight:600;color:#33546A}
+.plan.rec .quien,.plan.rec .corto,.plan.rec .alm{color:#4A3A0C}
+.plan.dk .quien,.plan.dk .corto,.plan.dk .alm{color:#DCEAF2}
+.plan .precio{display:flex;align-items:baseline;gap:8px}
+.plan .precio b{font:800 40px/1 var(--display)}
+.plan .precio span{font-size:14px;color:#33546A}
+.plan.rec .precio span{color:#4A3A0C}.plan.dk .precio span{color:#DCEAF2}
+.plan .corto{margin:0;font-size:16px;line-height:1.5;color:#33546A}
+.plan .ver{display:flex;align-items:center;gap:8px;min-height:44px;font:700 15px var(--texto);color:inherit;background:none;border:0;padding:0;cursor:pointer;text-align:left}
+.plan.rec .ver,.plan:not(.dk) .ver{color:#1F3A4D}
+.plan .detalle{display:flex;flex-direction:column;gap:12px;border-top:1px solid #EADFCB;padding-top:16px;animation:open .35s ease-out both}
+.plan.rec .detalle{border-top-color:#F4D9A0}
+.plan.dk .detalle{border-top-color:rgba(247,251,253,.18)}
+.plan .detalle[hidden]{display:none}
+.plan .detalle p{margin:0;font-size:15px;line-height:1.5}
+.plan .detalle .k{font-size:11px;color:#33546A}
+.plan.rec .detalle .k{color:#4A3A0C}.plan.dk .detalle .k{color:#DCEAF2}
+.plan .detalle ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+.plan .detalle li{display:flex;gap:10px;align-items:flex-start;font-size:15px;line-height:1.45}
+.plan .detalle li svg{flex:none;margin-top:3px}
+.plan .alm{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-radius:16px;background:#FFF6E8;padding:12px 14px;font-size:14px}
+.plan.rec .alm{background:#FFF1C9}.plan.dk .alm{background:rgba(247,251,253,.08)}
+.plan .quiero{align-self:flex-start;min-height:48px;padding:0 22px;font-size:15px;background:var(--tinta);color:#fff}
+.plan.dk .quiero{background:var(--durazno);color:var(--tinta)}
+.sol .letra{margin:0;font-size:16px;line-height:1.5;color:#4A3A0C}
+
+.comienzo{z-index:6;background:linear-gradient(180deg,#FFD3B4 0%,#F4A574 100%);padding:96px 0 140px}
+.comienzo .halo{position:absolute;right:6%;bottom:0;width:min(520px,80vw);height:auto}
+.comienzo .wrap{display:flex;flex-wrap:wrap;gap:28px;align-items:center;justify-content:space-between}
+.comienzo .tx{display:flex;flex-direction:column;gap:12px;max-width:640px}
+.comienzo h2{margin:0;font:800 clamp(38px,4.6vw,56px)/1 var(--display);letter-spacing:-.03em}
+.comienzo p{margin:0;font-size:18px;line-height:1.5}
+.comienzo .cierre-b{display:flex;flex-direction:column;align-items:flex-start;gap:6px}.comienzo .duda{display:inline-flex;align-items:center;min-height:44px;font-weight:600;font-size:15px;color:var(--tinta)}
+.comienzo .btn{min-height:60px;padding:0 32px;font-size:18px;background:var(--tinta);color:#fff}
+.pie-pagina{background:var(--tinta);color:#DCEAF2;padding:40px 0 40px}
+.pie-pagina .fila{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;font-size:15px}
+.pie-pagina .fila>span{display:flex;align-items:center;gap:8px}
+.pie-pagina b{color:#fff}
+.pie-pagina .pie{flex:1 1 100%}
+@media (max-width:600px){
+  .wrap{padding-left:16px;padding-right:16px}.nav-r a.hide-s{display:none}
+  .plan .precio b{font-size:40px}
+  .dia .float-sol{right:-50px!important;top:-40px!important;width:150px!important;height:150px!important}
+  .comienzo{padding:88px 0 200px}
+  .capa{padding-top:72px}
+}
+</style>
+</head>
+<body>
+<a class="salto" href="#planes-y-precios">Ir a los precios</a>
+<div class="pagina">
+
+<!-- ============ 1 · AMANECER ============ -->
+<header class="amanecer" id="top">
+  <div class="nubes" aria-hidden="true"><div class="float"></div><div class="floatB"></div></div>
+  <div class="wrap nav">
+    <a class="marca" href="#top" aria-label="SOUL, inicio">
+      <svg width="34" height="34" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#5BA8D6"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/><circle cx="74" cy="24" r="9" fill="#FFD966"/></svg>
+      <span>soul</span>
+    </a>
+    <nav class="nav-r" aria-label="Secciones">
+      <a class="txt hide-s" href="#como">Cómo funciona</a>
+      <a class="txt hide-s" href="#ejemplo">Ejemplo</a>
+      <a class="txt hide-s" href="#planes-y-precios">Precios</a>
+      <a class="btn" href="preguntas.html">Empieza tu sitio</a>
+    </nav>
+  </div>
+  <div class="wrap titular">
+    <div class="col">
+      <span class="k k-tinta">Sitios para oficios · Hecho en Chile</span>
+      <span class="soul-gigante a-up" aria-hidden="true">soul</span>
+      <h1 class="a-up2"><span class="solo-lector">soul. </span>El alma de tu oficio.</h1>
+      <p>Tu sitio propio, que muestra quién eres y lo que haces. Respondes unas preguntas desde el celular y al terminar ya lo ves armado.</p>
+      <p class="desde"><b>Desde $9.990 al mes</b>, con IVA. Sin pago para partir y sin permanencia.</p>
+      <div class="acciones">
+        <a class="btn b-tinta" href="preguntas.html">Empezar mi sitio →</a>
+        <a class="btn b-vidrio" href="ejemplo/">Ver un ejemplo</a>
+      </div>
+    </div>
+  </div>
+  <svg class="iso" viewBox="0 0 100 100" aria-hidden="true">
+    <circle class="a-halo" cx="74" cy="24" r="22" fill="#FFE9A3" opacity=".7"/>
+    <circle class="a-halo" cx="74" cy="24" r="15" fill="none" stroke="#F4A574" stroke-width=".25" opacity=".6"/>
+    <path class="a-sky" d="M8 50 A31 31 0 0 1 70 50 Z" fill="#5BA8D6"/>
+    <path class="a-fire" d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/>
+    <circle class="a-sun" cx="74" cy="24" r="9" fill="#FFD966"/>
+  </svg>
+</header>
+
+<main id="contenido">
+<!-- ============ 2 · TIERRA ============ -->
+<section class="tierra" aria-labelledby="t-quienes">
+  <div class="wrap">
+    <div class="intro">
+      <span class="k" style="color:#FFE9A3">Para quiénes</span>
+      <h2 class="h2" id="t-quienes">Para los que se lo ganaron trabajando.</h2>
+      <p>Jardineros, maestros, peluqueras, cocineras, soldadores, animadores. Gente que hace bien su pega y merece una vitrina a la altura.</p>
+    </div>
+    <div class="fotos6">
+      <div class="ofi ofi-1" style="border-radius:120px 120px 22px 22px" role="img" aria-label="Jardinero podando un cerco"></div>
+      <div class="ofi ofi-4" style="border-radius:22px" role="img" aria-label="Cocinera amasando"></div>
+      <div class="ofi ofi-13" style="border-radius:22px 22px 120px 120px" role="img" aria-label="Soldador trabajando una reja"></div>
+      <div class="ofi ofi-3" style="border-radius:120px 120px 22px 22px" role="img" aria-label="Peluquero de barrio cortando el pelo"></div>
+      <div class="ofi ofi-12" style="border-radius:22px" role="img" aria-label="Ceramista en el torno"></div>
+      <div class="ofi ofi-0" style="border-radius:22px 22px 120px 120px" role="img" aria-label="Animador cantando en un matrimonio"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3 · LUZ DE LA MAÑANA ============ -->
+<section class="capa luz" id="como" aria-labelledby="t-como">
+  <div class="float" aria-hidden="true" style="position:absolute;right:-120px;top:-60px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,#FFE9A3 0%,rgba(255,233,163,0) 70%)"></div>
+  <div class="wrap">
+    <span class="k" style="color:#4E6B7E">Cómo funciona</span>
+    <h2 class="h2" id="t-como" style="max-width:640px">Tres pasos, y tu oficio amanece en internet.</h2>
+    <div class="pasos3">
+      <div class="paso">
+        <svg width="56" height="56" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#BFE3F5"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#FFD3B4"/><text x="50" y="60" text-anchor="middle" font-family="'Bricolage Grotesque',system-ui,sans-serif" font-weight="800" font-size="30" fill="#1F3A4D">1</text></svg>
+        <h3>Nos cuentas quién eres</h3>
+        <p>De 10 a 19 preguntas desde el celular, según tu plan: tu oficio, lo que te mueve, tus colores y la imagen que te representa.</p>
+      </div>
+      <div class="paso">
+        <svg width="56" height="56" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#BFE3F5"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#FFD3B4"/><text x="50" y="60" text-anchor="middle" font-family="'Bricolage Grotesque',system-ui,sans-serif" font-weight="800" font-size="30" fill="#1F3A4D">2</text></svg>
+        <h3>Tu sitio, a la vista</h3>
+        <p>Terminas las preguntas y lo ves armado: tu portada, tus servicios con precio y tu historia. Lo afinamos contigo por WhatsApp.</p>
+      </div>
+      <div class="paso">
+        <svg width="56" height="56" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#BFE3F5"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#FFD3B4"/><circle cx="74" cy="24" r="9" fill="#FFD966"/><text x="50" y="60" text-anchor="middle" font-family="'Bricolage Grotesque',system-ui,sans-serif" font-weight="800" font-size="30" fill="#1F3A4D">3</text></svg>
+        <h3>Te llegan los clientes</h3>
+        <p>El cliente llena el formulario y te llega la solicitud a tu correo: qué necesita, cuándo y cómo ubicarlo. Tú solo respondes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4 · CIELO DE DÍA ============ -->
+<section class="capa dia" id="trae" aria-labelledby="t-trae">
+  <div class="floatB" aria-hidden="true" style="position:absolute;left:-100px;bottom:-120px;width:380px;height:380px;border-radius:50%;background:rgba(255,255,255,.5)"></div>
+  <div class="float float-sol" aria-hidden="true" style="position:absolute;right:10%;top:40px;width:160px;height:160px;border-radius:50%;background:#FFE9A3"></div>
+  <div class="wrap">
+    <div class="izq">
+      <span class="k" style="color:#33546A">Qué trae tu sitio</span>
+      <h2 class="h2" id="t-trae">Todo lo que un cliente necesita para decirte que sí.</h2>
+      <ul>
+        <li><svg width="18" height="18" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#1F3A4D"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/></svg>Portada con tu imagen y tu frase</li>
+        <li><svg width="18" height="18" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#1F3A4D"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/></svg>Servicios con precio «desde»</li>
+        <li><svg width="18" height="18" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#1F3A4D"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/></svg>Formulario de cotización</li>
+        <li><svg width="18" height="18" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#1F3A4D"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/></svg>Botón de WhatsApp a un toque</li>
+        <li><svg width="18" height="18" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#1F3A4D"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/></svg>Se ve perfecta en el celular</li>
+      </ul>
+    </div>
+    <div class="der">
+      <div class="ofi ofi-2" style="border-radius:110px 110px 24px 24px" role="img" aria-label="Carpintero en su taller"></div>
+      <div class="ofi ofi-6" style="border-radius:24px" role="img" aria-label="Costurera en su máquina"></div>
+      <div class="ofi ofi-14" style="border-radius:24px" role="img" aria-label="Mecánico revisando un motor"></div>
+      <div class="ofi ofi-18" style="border-radius:24px 24px 110px 110px" role="img" aria-label="Pintor de fachadas en Valparaíso"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5 · NOCHE QUE TERMINA: ejemplo ============ -->
+<section class="capa noche oscuro" id="ejemplo" aria-labelledby="t-ej">
+  <div class="float" aria-hidden="true" style="position:absolute;right:-140px;bottom:-200px;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(244,165,116,.45) 0%,rgba(244,165,116,0) 70%)"></div>
+  <div class="wrap">
+    <div class="ej">
+      <div class="ej-img" role="img" aria-label="Portada del sitio de Miguel Chaurán: él, en blanco y negro, con el micrófono"></div>
+      <div class="ej-tx">
+        <span class="k" style="color:#FFE9A3">Caso piloto</span>
+        <h2 id="t-ej">MIG7MIC<br>Miguel Chaurán: maestro de ceremonias, animación y canto.</h2>
+        <p>Su página dice lo que él hace en una mirada: «La voz del momento». Seis servicios con precio y un formulario que le deja cada solicitud escrita.</p>
+        <a href="ejemplo/" class="btn" style="align-self:flex-start;min-height:52px;background:#FFD3B4;color:#1F3A4D;font-size:16px">Ver su sitio →</a>
+        <p class="nota">Es un ejemplo: nada de lo que escribas ahí se envía.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6 · PLENO SOL: precios ============ -->
+<section class="capa sol" id="planes-y-precios" aria-labelledby="t-pre">
+  <div class="halo a-halo" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="sol-cab">
+      <div>
+        <span class="k" style="color:#4E6B7E">Precios · mes a mes, con IVA</span>
+        <h2 class="h2" id="t-pre">Un precio claro. Sin letra chica.</h2>
+      </div>
+      <span style="font-size:15px;color:#4A3A0C">Toca un plan para ver qué incluye.</span>
+    </div>
+    <div class="planes">
+      <article class="plan" data-plan="0">
+        <div class="cab">
+          <h3 class="nom"><svg width="30" height="30" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#BFE3F5"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#FFD3B4"/><circle cx="74" cy="24" r="9" fill="#FFE9A3"/></svg>fresh</h3>
+          
+        </div>
+        <span class="quien">Recién estás partiendo.</span>
+        <span class="precio"><b>$9.990</b><span>al mes</span></span>
+        <p class="corto">Tu página con tu nombre, tu oficio, lo que haces, botón de WhatsApp y formulario de cotización.</p>
+        <button type="button" class="ver" aria-expanded="false" aria-controls="det-0"><span class="ver-t">Ver qué incluye +</span></button>
+        <div class="detalle" id="det-0" hidden>
+          <p><b>Para ti si</b> recién partes y hoy quien te busca en Google no encuentra nada tuyo.</p>
+          <span class="k">Qué incluye</span>
+          <ul><li><svg width="16" height="16" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#5BA8D6"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/></svg>Una página con tu nombre, tu oficio y lo que haces</li><li><svg width="16" height="16" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#5BA8D6"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/></svg>La lista de tus servicios</li><li><svg width="16" height="16" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#5BA8D6"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/></svg>Botón de WhatsApp: el cliente lo toca y te escribe, sin copiar el número</li><li><svg width="16" height="16" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#5BA8D6"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/></svg>Formulario de cotización: la solicitud te llega al correo</li><li><svg width="16" height="16" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#5BA8D6"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/></svg>Tus redes sociales enlazadas desde la página</li><li><svg width="16" height="16" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#5BA8D6"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/></svg>Hecha primero para el celular: el botón queda al alcance del pulgar</li><li><svg width="16" height="16" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#5BA8D6"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/></svg>Respondes 10 preguntas y la ves armada al terminar</li></ul>
+          <div class="alm"><span><b>Mes a mes</b> · $9.990</span><span><b>O un año de una vez</b> · $99.900 (12 meses al precio de 10, y tu .cl propio desde el primer día)</span></div>
+          <a href="preguntas.html?plan=0" class="btn quiero">Quiero fresh →</a>
+        </div>
+      </article>
+      <article class="plan rec" data-plan="1">
+        <div class="cab">
+          <h3 class="nom"><svg width="30" height="30" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#5BA8D6"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/><circle cx="74" cy="24" r="9" fill="#FFD966"/></svg>sun</h3>
+          <span class="ins">Te recomendamos este</span>
+        </div>
+        <span class="quien">Ya tienes clientes.</span>
+        <span class="precio"><b>$19.990</b><span>al mes</span></span>
+        <p class="corto">Suma tus servicios con fotos y precio. El cliente cotiza el servicio exacto y te llega escrito a tu correo.</p>
+        <button type="button" class="ver" aria-expanded="false" aria-controls="det-1"><span class="ver-t">Ver qué incluye +</span></button>
+        <div class="detalle" id="det-1" hidden>
+          <p><b>Para ti si</b> ya tienes clientes, y tu página tiene que trabajar: mostrar lo que haces y recibir las solicitudes.</p>
+          <span class="k">Todo lo de fresh, y además</span>
+          <ul><li><svg width="16" height="16" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#5BA8D6"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/></svg>Varias páginas, una por cada cosa que quieras explicar bien</li><li><svg width="16" height="16" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#5BA8D6"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/></svg>Tus servicios con foto, descripción y precio</li><li><svg width="16" height="16" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#5BA8D6"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/></svg>El cliente cotiza el servicio exacto: te llega su nombre, su teléfono y lo que necesita</li><li><svg width="16" height="16" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#5BA8D6"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/></svg>Lo que publicas en Instagram o Facebook aparece solo en tu página</li><li><svg width="16" height="16" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#5BA8D6"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/></svg>Respondes 5 preguntas más (15 en total) y lo ves armado al terminar</li></ul>
+          <div class="alm"><span><b>Mes a mes</b> · $19.990</span><span><b>O un año de una vez</b> · $199.900 (12 meses al precio de 10, y tu .cl propio desde el primer día)</span></div>
+          <a href="preguntas.html?plan=1" class="btn quiero">Quiero sun →</a>
+        </div>
+      </article>
+      <article class="plan dk" data-plan="2">
+        <div class="cab">
+          <h3 class="nom"><svg width="30" height="30" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#BFE3F5"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/><circle cx="74" cy="24" r="9" fill="#FFD966"/></svg>vibe</h3>
+          
+        </div>
+        <span class="quien">Ya no te alcanza el cuaderno.</span>
+        <span class="precio"><b>$39.990</b><span>al mes</span></span>
+        <p class="corto">Cada cotización queda guardada en tu panel: quién, qué, para cuándo y si ya respondiste.</p>
+        <button type="button" class="ver" aria-expanded="false" aria-controls="det-2"><span class="ver-t">Ver qué incluye +</span></button>
+        <div class="detalle" id="det-2" hidden>
+          <p><b>Para ti si</b> tu oficio necesita guardar y consultar: quién pidió, qué pidió y cuándo.</p>
+          <span class="k">Todo lo de sun, y además</span>
+          <ul><li><svg width="16" height="16" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#5BA8D6"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/></svg>Entras a tu panel con tu usuario y tu clave, y ves solo lo tuyo</li><li><svg width="16" height="16" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#5BA8D6"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/></svg>Cada solicitud queda guardada: quién, qué, para cuándo y si ya respondiste</li><li><svg width="16" height="16" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#5BA8D6"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/></svg>Una pantalla con las cifras del mes, sin exportar nada</li><li><svg width="16" height="16" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#5BA8D6"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/></svg>Se conecta con lo que ya usas: planillas Excel y medios de pago</li><li><svg width="16" height="16" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#5BA8D6"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/></svg>Respondes 4 preguntas más (19 en total) y lo ves armado al terminar</li></ul>
+          <div class="alm"><span><b>Mes a mes</b> · $39.990</span><span><b>O un año de una vez</b> · $399.900 (12 meses al precio de 10, y tu .cl propio desde el primer día)</span></div>
+          <a href="preguntas.html?plan=2" class="btn quiero">Quiero vibe →</a>
+        </div>
+      </article>
+    </div>
+    <p class="letra">Cada plan trae todo lo del anterior. No pagas nada para partir: ves tu sitio armado y pagas el primer mes cuando decides quedártelo. Incluye que tu página no se caiga y esté protegida. Partes en compai.cl/tu-negocio; tu propio .cl llega desde el segundo mes, o de inmediato si pagas el año. Sin permanencia: si te vas, te vas. Con una o dos pegas extra al año, fresh ya se pagó.</p>
+  </div>
+</section>
+
+<!-- ============ 7 · EL COMIENZO ============ -->
+<section class="capa comienzo" aria-labelledby="t-fin">
+  <svg class="halo a-halo" viewBox="0 0 100 50" aria-hidden="true"><path d="M10 50 A40 40 0 0 1 90 50 Z" fill="#FFD966"/></svg>
+  <div class="wrap">
+    <div class="tx">
+      <h2 id="t-fin">Tu oficio ya tiene alma. Ahora, que se vea.</h2>
+      <p>Eliges tu plan, respondes desde el celular y al terminar ves tu sitio armado. Desde $9.990 al mes, sin pagar nada para partir.</p>
+    </div>
+    <div class="cierre-b"><a href="preguntas.html" class="btn">Empezar mi sitio →</a><a class="duda" href="https://wa.me/56962469977?text=Hola%2C%20dudo%20entre%20dos%20planes%20de%20SOUL" target="_blank" rel="noopener">¿Dudas entre dos? Escríbenos por WhatsApp</a></div>
+  </div>
+</section>
+</main>
+
+<footer class="pie-pagina oscuro">
+  <div class="wrap">
+    <div class="fila">
+      <span><svg width="22" height="22" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#BFE3F5"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/><circle cx="74" cy="24" r="9" fill="#FFD966"/></svg><b>soul</b> · El alma de tu oficio.</span>
+    </div>
+    <div class="pie sobre-oscuro"><div class="pie-compai"><img src="img/pie-compai-claro.png" width="310" height="95" alt="alma compAI"></div></div>
+  </div>
+</footer>
+</div>
+<script src="landing.js" defer></script>
+</body>
+</html>

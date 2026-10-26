@@ -135,6 +135,35 @@ if (!/@media \(prefers-reduced-motion:reduce\)/.test(css.replace(/\s+/g, ' ').re
 for (const js of ['js/sitio.js', 'js/materializa.js'])
   if (!/prefers-reduced-motion/.test(leer(js))) mal(`${js} no mira prefers-reduced-motion.`);
 
+/* ── soul/ · compai.cl/soul (26-10-2026) ─────────────────────────────── */
+for (const f of ['soul/index.html', 'soul/preguntas.html', 'soul/app.js', 'soul/datos.js', 'soul/config.js',
+                 'soul/img/pie-compai-claro.png', 'soul/img/pie-alma-compai-oscuro.png',
+                 'soul/ejemplo/index.html', 'soul/ejemplo/cotizacion.html', 'soul/ejemplo/agenda.html'])
+  if (!existsSync(join(raiz, f))) mal(`falta ${f}.`);
+if (existsSync(join(raiz, 'soul/index.html'))) {
+  const sm = leer('sitemap.xml');
+  if (!sm.includes('https://compai.cl/soul/')) mal('el sitemap no incluye https://compai.cl/soul/.');
+  if (!sm.includes('https://compai.cl/soul/ejemplo/')) mal('el sitemap no incluye /soul/ejemplo/.');
+  for (const f of ['soul/index.html', 'soul/preguntas.html', 'soul/ejemplo/index.html', 'soul/ejemplo/cotizacion.html', 'soul/ejemplo/agenda.html']) {
+    const t = leer(f);
+    // el pie oficial (CLAUDE.md 4.b): solo la imagen, con la medida fijada
+    if (!/<div class="pie-compai"><img src="img\/pie-(compai-claro|alma-compai-oscuro)\.png"/.test(t)) mal(`${f}: falta el pie oficial de marca.`);
+    for (const img of t.match(/<img\b[^>]*>/g) || []) if (!/\salt=/.test(img)) mal(`${f}: <img> sin alt.`);
+  }
+  if (!/pie-compai\{width:113\.4px;height:14\.4px;overflow:hidden/.test(leer('soul/soul.css'))) mal('soul.css: el pie no tiene la medida de 4.b.');
+  // los precios de SOUL son los aprobados y los mismos que cobra el Apps Script
+  const gs = existsSync(join(raiz, 'apps-script/Code.gs')) ? leer('apps-script/Code.gs') : '';
+  const dd = leer('soul/datos.js');
+  for (const [pl, mes, anual] of [['fresh', 9990, 99900], ['sun', 19990, 199900], ['vibe', 39990, 399900]]) {
+    if (!new RegExp(`label: '${pl}'[^}]*mes: ${mes}, anual: ${anual}`).test(dd)) mal(`soul/datos.js: precio de ${pl} distinto de $${mes}/$${anual}.`);
+    if (gs && !new RegExp(`"${pl}": \\{[^}]*"bruto": ${mes},[^}]*"anual": ${anual}`).test(gs)) mal(`Code.gs: precio de ${pl} distinto del de SOUL.`);
+  }
+  if (gs && !/d\.tipo === 'soul'/.test(gs)) mal('Code.gs no recibe el tipo «soul».');
+  const esc05 = JSON.parse(leer('contenido/escenas.json')).escenas.find(e => e.id === '05');
+  if (!esc05 || !esc05.soul || esc05.soul.url !== 'soul/') mal('la escena 05 no lleva su CTA a soul/.');
+  if (!serv.find(x => x.slug === 'soul' && x.hoja.siguiente.url === 'soul/')) mal('la ficha SOUL del home no lleva su CTA a soul/.');
+}
+
 /* ── resultado ───────────────────────────────────────────────────────── */
 if (fallos.length) {
   console.error(`revisar: ${fallos.length} problema(s)`);

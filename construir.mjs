@@ -301,7 +301,7 @@ const grace = (() => {
   </section>`;
 })();
 
-/* Los cuatro servicios del Canva: texto a la izquierda, mockup a la derecha.
+/* Los cinco servicios (el numero es el de la escena del catalogo, 14-10-2026): texto a la izquierda, mockup a la derecha.
    La línea de las viñetas alterna azul y ámbar, igual que la referencia. */
 /* ── La ficha de servicio de / 04, segun Visu (05-10-2026) ─────────────
    Encabezado 44 px, bajada 24, TRES checks de los cinco y un llamado. Lo que
@@ -327,7 +327,7 @@ const ROT_LINEA = { automatizacion: 'L1', especificacion: 'L2', continuidad: 'L3
    sigue estando en la hoja, que es donde se va a leer. */
 const servTexto = (s, x, y) => `<button class="b servblock" type="button" data-slug="${esc(s.slug)}" aria-haspopup="dialog"
         style="--x:${x};--y:${y};--w:583;text-align:left;display:block">
-        <span class="serv-rot">${esc(s.codigo)} / ${esc(ROT_LINEA[s.slug] || '')}</span>
+        <span class="serv-rot">${esc(s.codigo)} / ${esc(ROT_LINEA[s.slug] || '')}${s.sello ? ` · ${esc(s.sello)}` : ''}</span>
         <span class="serv-tit">${esc(s.titulo)}</span>
         <ul class="serv-vin">${s.vinetas.slice(0, 3).map(v => `<li>${esc(v)}</li>`).join('')}</ul>
         <span class="serv-acc">Ver el detalle <i aria-hidden="true">&rarr;</i></span>
@@ -617,6 +617,19 @@ const lastmodHome = (!cambioHome && LASTMODS_ANTES[0]) ? LASTMODS_ANTES[0] : hoy
 writeFileSync(join(raiz, 'robots.txt'),
   `User-agent: *\nAllow: /\nDisallow: /estado/\n\nSitemap: https://compai.cl/sitemap.xml\n`, 'utf8');
 
+/* ── soul/ · el enlace de SOUL (compai.cl/soul), 26-10-2026 ───────────────
+   Las paginas de soul/ se escriben a mano; lo unico que sale de aca es
+   soul/config.js, para que la URL del Apps Script viva en UN solo lugar
+   (contenido/sitio.json). Sin URL, las preguntas igual se recorren y, al
+   confirmar, avisan en pantalla y ofrecen WhatsApp: nunca un error mudo. */
+const SOUL_DIR = join(raiz, 'soul');
+if (existsSync(SOUL_DIR)) {
+  const wa = String((S.creative && S.creative.whatsapp_pyme) || 'https://wa.me/56962469977').replace(/\D/g, '');
+  writeFileSync(join(SOUL_DIR, 'config.js'),
+    `/* LO ESCRIBE construir.mjs desde contenido/sitio.json — NO SE EDITA A MANO. */\nwindow.SOUL_CFG = ${JSON.stringify({ endpoint: S.formEndpoint || '', whatsapp: wa })};\n`, 'utf8');
+  console.log(`soul/config.js · endpoint ${S.formEndpoint ? 'configurado' : 'VACIO (las preguntas ofreceran WhatsApp)'}`);
+}
+
 const kb = n => Math.round(n / 102.4) / 10;
 console.log(`index.html  ${kb(Buffer.byteLength(html))} KB · ${SERV.length} servicios · hero "${S.hero}" · formEndpoint ${S.formEndpoint ? 'configurado' : 'VACÍO (mailto de respaldo)'}`);
 if (!existsSync(join(raiz, 'media/og.jpg'))) console.warn('AVISO: falta media/og.jpg (Open Graph 1200×630)');
@@ -635,10 +648,15 @@ let lastmodPort = LASTMODS_ANTES[1] || hoy;
   const F = E.formulario;
   const precio = it => {
     const s = E.servicios[it.sp]; if (!s) return '';
-    const base = s.cond === 'desde' ? `desde ${s.bruto} con IVA` : `${s.bruto} con IVA · ${s.cond}`;
+    // «al mes» va pegado a la cifra, antes del IVA (pasada de Visu, 13-10-2026)
+    const base = s.cond === 'desde' ? `desde ${s.bruto} con IVA`
+      : s.cond === 'al mes' ? `${s.bruto} al mes con IVA`
+      : `${s.bruto} con IVA · ${s.cond}`;
     return it.precio_sufijo ? `${base}, ${it.precio_sufijo}` : base;
   };
-  const item = (e, it) => {
+  // g.unico: los planes de una escalera se excluyen (cada uno trae lo del anterior),
+  // asi que se elige UNO: radio y no casilla (GAIn C2, 13-10-2026)
+  const item = (e, it, g) => {
     const idc = `i${e.id}-${it.id}`.replace(/[^a-zA-Z0-9_-]/g, '');
     const px = it.sp ? `<span class="px">${esc(precio(it))}</span>` : it.precio ? `<span class="px">${esc(it.precio)}</span>` : '';
     const cant = it.cantidad
@@ -647,13 +665,13 @@ let lastmodPort = LASTMODS_ANTES[1] || hoy;
     const cual = it.campo_texto
       ? `<input class="cual" type="text" name="cual-${esc(it.id)}" maxlength="80" placeholder="${esc(it.campo_texto)}" aria-label="${esc(it.campo_texto)} · ${esc(it.nombre)}">`
       : '';
-    return `          <li><div class="it"><input type="checkbox" id="${idc}" name="item" value="${esc(it.id)}" data-nombre="${esc(it.nombre)}"${it.sp ? ` data-sp="${esc(it.sp)}"` : ''}${it.vigencia ? ' data-vigencia="1"' : ''}>
+    return `          <li><div class="it"><input type="${g.unico ? 'radio' : 'checkbox'}" id="${idc}" name="item" value="${esc(it.id)}" data-nombre="${esc(it.nombre)}"${it.sp ? ` data-sp="${esc(it.sp)}"` : ''}${it.vigencia ? ' data-vigencia="1"' : ''}>
             <label class="tx" for="${idc}"><span class="nm">${esc(it.nombre)}</span><span class="dt">${esc(it.detalle)}</span>${px}</label>${cant}${cual}</div></li>`;
   };
   const grupo = (e, g) => `        <fieldset>
           <legend>${esc(g.pregunta)}</legend>
           <ul class="items">
-${g.items.map(it => item(e, it)).join('\n')}
+${g.items.map(it => item(e, it, g)).join('\n')}
           </ul>
         </fieldset>`;
   const vig = e => e.vigencia ? `
@@ -685,7 +703,8 @@ ${e.muestras.items.map(m => `          <li><a href="${esc(m.url)}"><img src="${e
         <h2>${esc(e.titulo)}</h2>
         <p>${esc(e.bajada)}</p>
       </div>
-${muestras(e)}      <form class="pide" data-id="${esc(e.id)}" data-titulo="${esc(e.carrete)}" data-asunto="${esc(e.asunto)}" action="mailto:hola@compai.cl" method="post" enctype="text/plain">
+${e.soul ? `      <div class="soul-cta"><p>${esc(e.soul.texto)}</p><a class="soul-b" href="${esc(e.soul.url)}">${esc(e.soul.cta)}</a></div>
+` : ''}${muestras(e)}      <form class="pide" data-id="${esc(e.id)}" data-titulo="${esc(e.carrete)}" data-asunto="${esc(e.asunto)}" action="mailto:hola@compai.cl" method="post" enctype="text/plain">
 ${e.grupos.map((g, k) => grupo(e, g) + (k === 0 ? vig(e) : '')).join('\n')}
         <div class="quien">
           <p class="tq">${esc(F.titulo_quien)}</p>
@@ -762,6 +781,7 @@ ${E.escenas.map(pieza).join('\n\n')}
     for (const e of [...E.escenas].reverse()) for (const g of e.grupos) for (const it of g.items) {
       const s = it.sp && E.servicios[it.sp]; if (!s || PRE[it.sp]) continue;
       PRE[it.sp] = { nombre: it.nombre, detalle: it.detalle || '', bruto: Number(String(s.bruto).replace(/[^0-9]/g, '')), cond: s.cond };
+      if (s.anual) PRE[it.sp].anual = Number(String(s.anual).replace(/[^0-9]/g, ''));
     }
     const gs = readFileSync(GS, 'utf8');
     const reP = /\/\/ PRECIOS:INICIO[\s\S]*?\/\/ PRECIOS:FIN/;
@@ -777,10 +797,14 @@ ${E.escenas.map(pieza).join('\n\n')}
 // (comparado contra INDEX_ANTES, arriba) y lastmodPort (comparado dentro del
 // bloque de portafolio.html). Ninguno de los dos depende de `hoy` salvo que
 // el contenido real haya cambiado en ESTA corrida.
+// lastmod de /soul/: se conserva el que ya traia el sitemap commiteado (la
+// pagina es a mano y no hay HTML generado que comparar); si es nueva, `hoy`.
+const lastmodSoul = (SITEMAP_ANTES.match(/<loc>https:\/\/compai\.cl\/soul\/<\/loc><lastmod>(\d{4}-\d{2}-\d{2})<\/lastmod>/) || [])[1] || hoy;
+const lastmodEj = (SITEMAP_ANTES.match(/<loc>https:\/\/compai\.cl\/soul\/ejemplo\/<\/loc><lastmod>(\d{4}-\d{2}-\d{2})<\/lastmod>/) || [])[1] || hoy;
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>${S.meta.url}</loc><lastmod>${lastmodHome}</lastmod><changefreq>monthly</changefreq><priority>1.0</priority></url>
   <url><loc>https://compai.cl/portafolio.html</loc><lastmod>${lastmodPort}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-</urlset>
+${existsSync(join(raiz, 'soul/index.html')) ? `  <url><loc>https://compai.cl/soul/</loc><lastmod>${lastmodSoul}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>\n` : ''}${existsSync(join(raiz, 'soul/ejemplo/index.html')) ? `  <url><loc>https://compai.cl/soul/ejemplo/</loc><lastmod>${lastmodEj}</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>\n` : ''}</urlset>
 `;
 writeFileSync(join(raiz, 'sitemap.xml'), sitemap, 'utf8');

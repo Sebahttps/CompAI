@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SOUL · Cuéntanos tu oficio y arma tu sitio</title>
+<meta name="description" content="Responde las preguntas de SOUL desde el celular y mira el borrador de tu sitio al final. No pagas nada para partir.">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://compai.cl/soul/">
+<meta name="theme-color" content="#F7FBFD">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fuentes/bricolage-800-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="soul.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body class="app-body">
+<a class="salto" href="#paso">Ir a la pregunta</a>
+<div class="app" id="app">
+  <header class="cab-app">
+    <div class="fila">
+      <a class="marca-q" href="index.html" aria-label="SOUL, volver al inicio">
+        <svg width="24" height="24" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#5BA8D6"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/><circle cx="74" cy="24" r="9" fill="#FFD966"/></svg>
+        <b>soul</b><span class="mono m-sub">questions</span>
+      </a>
+      <span class="mono m-sub" id="etiqueta" aria-live="polite"></span>
+    </div>
+    <div class="barra" role="progressbar" aria-label="Avance de las preguntas" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="barra" style="width:0%"></i></div>
+  </header>
+  <div class="cuerpo">
+    <main id="paso" tabindex="-1">
+      <noscript><p class="error" style="display:block">Las preguntas de SOUL necesitan JavaScript. Escríbenos por WhatsApp al +56 9 6246 9977 y armamos tu sitio por ahí.</p></noscript>
+    </main>
+    <div class="acciones-app" id="acciones"></div>
+  </div>
+  <div class="pie-app">
+    <div class="pie"><div class="pie-compai"><img src="img/pie-alma-compai-oscuro.png" width="310" height="95" alt="alma compAI"></div></div>
+  </div>
+</div>
+<input type="file" id="archivo" accept="image/*" hidden>
+<script src="config.js"></script>
+<script src="datos.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

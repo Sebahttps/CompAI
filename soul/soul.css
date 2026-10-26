@@ -1,0 +1,31 @@
+/* SOUL · hoja compartida por la landing (index.html) y las preguntas (preguntas.html).
+   Identidad del diseño aprobado: Bricolage Grotesque + Figtree, cielo/fuego/sol.
+   Fuentes propias (sin Google Fonts): carpeta soul/fuentes/. */
+@font-face{font-family:'Bricolage Grotesque';font-style:normal;font-weight:800;font-display:swap;src:url(fuentes/bricolage-800-latin.woff2) format('woff2')}
+@font-face{font-family:'Figtree';font-style:normal;font-weight:400 700;font-display:swap;src:url(fuentes/figtree-var-latin.woff2) format('woff2')}
+
+:root{--tinta:#1F3A4D;--tinta2:#33546A;--tinta3:#4E6B7E;--cielo:#5BA8D6;--cielo-l:#BFE3F5;--cielo-xl:#DCEAF2;--fuego:#F4A574;--durazno:#FFD3B4;--sol:#FFD966;--sol-l:#FFE9A3;--crema:#FFF6E8;--hielo:#F7FBFD;--linea:#DCEAF2;--display:'Bricolage Grotesque',system-ui,sans-serif;--texto:'Figtree',system-ui,sans-serif}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--texto);color:var(--tinta);background:var(--tinta)}
+a{color:inherit}
+:focus-visible{outline:3px solid #2F6E96;outline-offset:3px;border-radius:4px}
+.sobre-oscuro :focus-visible,.oscuro :focus-visible{outline-color:var(--sol)}
+.salto{position:absolute;left:12px;top:-60px;z-index:100;background:var(--tinta);color:#fff;padding:12px 18px;border-radius:999px;font-weight:700;text-decoration:none}
+.salto:focus{top:12px}
+.solo-lector{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* El pie oficial (CLAUDE.md 4.b). Solo la imagen, alineada a la derecha, con una
+   linea encima y 40 px de aire sobre lo que haya arriba. Medida fijada en la
+   Portada de Casero: mascara 113,4 x 14,4 con overflow:hidden; imagen
+   113,4 x 34,65 desplazada top:-10,08. No se redibuja ni se achica. */
+.pie{display:flex;justify-content:flex-end;margin-top:40px;padding-top:12px;border-top:1px solid rgba(31,58,77,.16)}
+.pie.sobre-oscuro{border-top-color:rgba(247,251,253,.14)}
+.pie-compai{width:113.4px;height:14.4px;overflow:hidden;position:relative;flex:none}
+.pie-compai img{position:absolute;top:-10.08px;left:0;width:113.4px;height:34.65px;display:block;max-width:none}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:56px;padding:0 28px;border-radius:999px;font:700 17px var(--texto);text-decoration:none;border:0;cursor:pointer;transition:transform .2s ease,background .2s ease}
+.btn:hover{transform:translateY(-2px)}
+.k{font:700 12px var(--texto);letter-spacing:.16em;text-transform:uppercase}
+.ofi{background-size:cover;background-position:center;background-color:var(--cielo-xl)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}

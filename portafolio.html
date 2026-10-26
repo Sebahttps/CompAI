@@ -615,6 +615,10 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 .muestras .mu-q{font-size:13px; color:var(--crema-75); line-height:1.4}
 .muestras .mu-v{margin-top:auto; padding-top:6px; font-size:13px; color:var(--azul-300)}
 .muestras .mu-n{margin:8px 0 0; font-size:12px; color:var(--crema-60)}
+.soul-cta{margin-top:var(--s5); display:flex; flex-wrap:wrap; align-items:center; gap:14px 20px}
+.soul-cta p{margin:0; font-size:15px; line-height:1.6; color:var(--crema-75); max-width:52ch}
+.soul-cta .soul-b{display:inline-flex; align-items:center; min-height:48px; padding:0 22px; border-radius:999px; background:var(--crema); color:#0B1B26; font-weight:700; font-size:15px; text-decoration:none}
+.soul-cta .soul-b:hover,.soul-cta .soul-b:focus-visible{background:var(--azul-300)}
 @media (max-width:640px){.muestras ul{grid-template-columns:1fr}
   .muestras a{display:grid; grid-template-columns:44% 1fr; grid-template-rows:auto auto 1fr; column-gap:12px; row-gap:2px; align-content:start}
   .muestras img{grid-row:1 / 4; margin:0}.muestras .mu-v{margin-top:0; align-self:end}}
@@ -632,8 +636,8 @@ html.hdr-chico .brand .logo{transform:scale(.737);
   border:1px solid var(--crema-12); border-radius:var(--radio); background:rgba(22,26,33,.6);
   transition:border-color .18s, background-color .18s}
 .it:hover{border-color:var(--crema-28)}
-.it:has(input[type=checkbox]:checked){border-color:var(--azul); background:rgba(46,143,181,.10)}
-.it input[type=checkbox]{flex:0 0 auto; width:18px; height:18px; margin:0; accent-color:var(--azul); cursor:pointer}
+.it:has(input[type=checkbox]:checked),.it:has(input[type=radio]:checked){border-color:var(--azul); background:rgba(46,143,181,.10)}
+.it input[type=checkbox],.it input[type=radio]{flex:0 0 auto; width:18px; height:18px; margin:0; accent-color:var(--azul); cursor:pointer}
 .it .tx{flex:1 1 auto; min-width:0; cursor:pointer}
 .it .nm{display:block; font-size:14px; line-height:1.35; color:var(--crema)}
 .it .dt{display:block; font-size:12px; line-height:1.4; color:var(--crema-60); margin-top:2px}
@@ -677,6 +681,9 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 
 /* TELEFONO: una sola columna; el carrete se vuelve una fila que se arrastra */
 @media (max-width:860px){
+  /* el logo y el nodo flotan: sin fondo se montaban sobre la tarjeta sun y los
+     precios al hacer scroll (ClAI-nte, 13-10-2026). Degradado, no barra. */
+  .hdr{background:linear-gradient(to bottom, var(--ink-900) 60%, rgba(8,9,12,0))}
   .sala{grid-template-columns:minmax(0,1fr); gap:var(--s5);
     padding:calc(var(--hdr) + var(--s3)) var(--s4) var(--s6)}
   .carrete{position:static}
@@ -946,7 +953,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
           <li><div class="it"><input type="checkbox" id="i01-sp04-lic" name="item" value="sp04-lic" data-nombre="Decirnos qué pedir, antes de comprar" data-sp="SP-04">
             <label class="tx" for="i01-sp04-lic"><span class="nm">Decirnos qué pedir, antes de comprar</span><span class="dt">Qué edición le sirve, cuántos usuarios y la glosa para que la orden no rebote</span><span class="px">$571.200 con IVA · precio cerrado</span></label></div></li>
           <li><div class="it"><input type="checkbox" id="i01-sp07-lic" name="item" value="sp07-lic" data-nombre="Dejarlas instaladas y funcionando" data-sp="SP-07">
-            <label class="tx" for="i01-sp07-lic"><span class="nm">Dejarlas instaladas y funcionando</span><span class="dt">Cuentas creadas, usuarios asignados y acta de puesta en marcha</span><span class="px">desde $428.400 con IVA</span></label><input class="cant" type="number" name="cant-sp07-lic" min="1" step="1" inputmode="numeric" placeholder="usuarios" data-unidad="usuarios" aria-label="Cantidad de usuarios · Dejarlas instaladas y funcionando"></div></li>
+            <label class="tx" for="i01-sp07-lic"><span class="nm">Dejarlas instaladas y funcionando</span><span class="dt">Cuentas creadas, usuarios asignados y acta de puesta en marcha</span><span class="px">$428.400 con IVA · precio cerrado</span></label><input class="cant" type="number" name="cant-sp07-lic" min="1" step="1" inputmode="numeric" placeholder="usuarios" data-unidad="usuarios" aria-label="Cantidad de usuarios · Dejarlas instaladas y funcionando"></div></li>
           <li><div class="it"><input type="checkbox" id="i01-sp09-lic" name="item" value="sp09-lic" data-nombre="Que no vuelva a vencer" data-sp="SP-09">
             <label class="tx" for="i01-sp09-lic"><span class="nm">Que no vuelva a vencer</span><span class="dt">Cada licencia y certificado revisado al mes, con reporte</span><span class="px">$2.570.400 con IVA · al año, en 12 cuotas de $214.200</span></label></div></li>
           </ul>
@@ -1024,9 +1031,9 @@ html.hdr-chico .brand .logo{transform:scale(.737);
           <legend>¿Qué quedó a medias?</legend>
           <ul class="items">
           <li><div class="it"><input type="checkbox" id="i03-sp07" name="item" value="sp07" data-nombre="Puesta en marcha de lo comprado" data-sp="SP-07">
-            <label class="tx" for="i03-sp07"><span class="nm">Puesta en marcha de lo comprado</span><span class="dt">Instalado, configurado, con inventario y acta firmada</span><span class="px">desde $428.400 con IVA</span></label><input class="cant" type="number" name="cant-sp07" min="1" step="1" inputmode="numeric" placeholder="equipos" data-unidad="equipos" aria-label="Cantidad de equipos · Puesta en marcha de lo comprado"></div></li>
+            <label class="tx" for="i03-sp07"><span class="nm">Puesta en marcha de lo comprado</span><span class="dt">Instalado, configurado, con inventario y acta firmada</span><span class="px">$428.400 con IVA · precio cerrado</span></label><input class="cant" type="number" name="cant-sp07" min="1" step="1" inputmode="numeric" placeholder="equipos" data-unidad="equipos" aria-label="Cantidad de equipos · Puesta en marcha de lo comprado"></div></li>
           <li><div class="it"><input type="checkbox" id="i03-sp08" name="item" value="sp08" data-nombre="Migración de sitio y correo" data-sp="SP-08">
-            <label class="tx" for="i03-sp08"><span class="nm">Migración de sitio y correo</span><span class="dt">Cambiar de proveedor sin perder el correo ni el sitio</span><span class="px">desde $856.800 con IVA</span></label><input class="cant" type="number" name="cant-sp08" min="1" step="1" inputmode="numeric" placeholder="buzones" data-unidad="buzones" aria-label="Cantidad de buzones · Migración de sitio y correo"></div></li>
+            <label class="tx" for="i03-sp08"><span class="nm">Migración de sitio y correo</span><span class="dt">Cambiar de proveedor sin perder el correo ni el sitio</span><span class="px">$856.800 con IVA · precio cerrado</span></label><input class="cant" type="number" name="cant-sp08" min="1" step="1" inputmode="numeric" placeholder="buzones" data-unidad="buzones" aria-label="Cantidad de buzones · Migración de sitio y correo"></div></li>
           <li><div class="it"><input type="checkbox" id="i03-sp09" name="item" value="sp09" data-nombre="Mantención por 12 meses" data-sp="SP-09">
             <label class="tx" for="i03-sp09"><span class="nm">Mantención por 12 meses</span><span class="dt">Vencimientos, respaldos y parches revisados cada mes</span><span class="px">$2.570.400 con IVA · al año, en 12 cuotas de $214.200</span></label></div></li>
           </ul>
@@ -1064,7 +1071,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
           <legend>¿Qué se sigue haciendo a mano?</legend>
           <ul class="items">
           <li><div class="it"><input type="checkbox" id="i04-sp01" name="item" value="sp01" data-nombre="Avisos y recordatorios automáticos" data-sp="SP-01">
-            <label class="tx" for="i04-sp01"><span class="nm">Avisos y recordatorios automáticos</span><span class="dt">La hora o el trámite se avisa solo</span><span class="px">desde $599.760 con IVA</span></label></div></li>
+            <label class="tx" for="i04-sp01"><span class="nm">Avisos y recordatorios automáticos</span><span class="dt">La hora o el trámite se avisa solo</span><span class="px">$599.760 con IVA · precio cerrado</span></label></div></li>
           <li><div class="it"><input type="checkbox" id="i04-sp02" name="item" value="sp02" data-nombre="Un proceso administrativo, hecho solo" data-sp="SP-02">
             <label class="tx" for="i04-sp02"><span class="nm">Un proceso administrativo, hecho solo</span><span class="dt">Ese reporte mensual, armado sin copiar y pegar</span><span class="px">desde $1.071.000 con IVA</span></label></div></li>
           <li><div class="it"><input type="checkbox" id="i04-sp03" name="item" value="sp03" data-nombre="Dos sistemas conectados, por etapas" data-sp="SP-03">
@@ -1093,19 +1100,20 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 
     <!-- ---------- 05 ---------- -->
     <div class="pieza" data-p="5">
-      <figure class="marco"><video muted loop playsinline preload="none" poster="media/escena-05.webp" aria-label="Cómic animado: la vecina busca pan amasado en el celular y no aparece nada; la panadera se pierde entre audios de WhatsApp: «¿Quién me pidió las hallullas?»; al final aparece, los pedidos le llegan escritos a un solo lugar y queda tranquila."><source src="media/escena-05.mp4" type="video/mp4"></video></figure>
+      <figure class="marco"><video muted loop playsinline preload="none" poster="media/escena-05.webp" aria-label="Cómic animado: la vecina busca pan amasado en el celular y no aparece nada; la panadera se pierde entre audios de WhatsApp: «¿Quién me pidió las hallullas?»; contesta las preguntas SOUL desde el celular y su sitio aparece: «¡Ya está mi sitio!»; los pedidos le llegan escritos a un solo lugar. Hecho con SOUL: fresh, sun y vibe."><source src="media/escena-05.mp4" type="video/mp4"></video></figure>
       <div class="pieplaca">
         <p class="linea">SOUL · sitios para quien vive de su oficio</p>
         <h2>«Nadie encuentra la panadería»</h2>
         <p>El pan sale bueno. Lo que falla es lo de afuera: la vecina te busca en el celular y no apareces, y los pedidos se te pierden entre audios.</p>
       </div>
+      <div class="soul-cta"><p>Respondes unas preguntas desde el celular y ves un borrador de tu sitio armado. No pagas nada para partir.</p><a class="soul-b" href="soul/">Armar mi sitio ahora →</a></div>
       <section class="muestras" aria-label="Pruébala antes de pedirla">
         <p class="mu-t">Pruébala antes de pedirla</p>
         <p class="mu-b">La panadería de María, en los tres planes. En fresh y sun eres la vecina que la busca y le encarga; en vibe, eres María.</p>
         <ul>
-          <li><a href="muestras/maria-tapia/fresh.html"><img src="media/muestra-pista.webp" width="640" height="400" loading="lazy" alt="Muestra Pista: la página de la panadería con su horario, sus panes y cómo llegar"><span class="mu-p">fresh</span><span class="mu-q">Una página</span><span class="mu-v">Ver la muestra →</span></a></li>
-          <li><a href="muestras/maria-tapia/sun.html"><img src="media/muestra-nodo.webp" width="640" height="400" loading="lazy" alt="Muestra Nodo: la vecina arma su encargo en la página y elige a qué hora pasa"><span class="mu-p">sun</span><span class="mu-q">Varias páginas</span><span class="mu-v">Ver la muestra →</span></a></li>
-          <li><a href="muestras/maria-tapia/vibe.html"><img src="media/muestra-nucleo.webp" width="640" height="400" loading="lazy" alt="Muestra Núcleo: el panel de María con los pedidos de hoy, el inventario y la semana"><span class="mu-p">vibe</span><span class="mu-q">Varias páginas + tu panel</span><span class="mu-v">Ver la muestra →</span></a></li>
+          <li><a href="muestras/maria-tapia/fresh.html"><img src="media/muestra-pista.webp" width="640" height="400" loading="lazy" alt="Muestra fresh: la página de la panadería con su horario, sus panes y cómo llegar"><span class="mu-p">fresh</span><span class="mu-q">Una página</span><span class="mu-v">Ver la muestra →</span></a></li>
+          <li><a href="muestras/maria-tapia/sun.html"><img src="media/muestra-nodo.webp" width="640" height="400" loading="lazy" alt="Muestra sun: la vecina arma su encargo en la página y elige a qué hora pasa"><span class="mu-p">sun</span><span class="mu-q">Varias páginas</span><span class="mu-v">Ver la muestra →</span></a></li>
+          <li><a href="muestras/maria-tapia/vibe.html"><img src="media/muestra-nucleo.webp" width="640" height="400" loading="lazy" alt="Muestra vibe: el panel de María con los pedidos de hoy, el inventario y la semana"><span class="mu-p">vibe</span><span class="mu-q">Varias páginas + tu panel</span><span class="mu-v">Ver la muestra →</span></a></li>
         </ul>
         <p class="mu-n">María y su panadería son inventadas: es una muestra.</p>
       </section>
@@ -1113,12 +1121,12 @@ html.hdr-chico .brand .logo{transform:scale(.737);
         <fieldset>
           <legend>¿Cuál es el tuyo?</legend>
           <ul class="items">
-          <li><div class="it"><input type="checkbox" id="i05-fresh" name="item" value="fresh" data-nombre="fresh: una página" data-sp="SOUL-1">
-            <label class="tx" for="i05-fresh"><span class="nm">fresh: una página</span><span class="dt">Tu oficio, tus servicios y WhatsApp a un toque. Recién partes.</span><span class="px">$9.990 con IVA · al mes</span></label></div></li>
-          <li><div class="it"><input type="checkbox" id="i05-sun" name="item" value="sun" data-nombre="sun: varias páginas" data-sp="SOUL-2">
-            <label class="tx" for="i05-sun"><span class="nm">sun: varias páginas</span><span class="dt">Cada servicio con su foto y su precio, y tus redes conectadas. El que te recomendamos.</span><span class="px">$19.990 con IVA · al mes</span></label></div></li>
-          <li><div class="it"><input type="checkbox" id="i05-vibe" name="item" value="vibe" data-nombre="vibe: tu sitio y tu panel" data-sp="SOUL-3">
-            <label class="tx" for="i05-vibe"><span class="nm">vibe: tu sitio y tu panel</span><span class="dt">Lo de sun más tu panel: quién pidió, qué, para cuándo y si ya respondiste.</span><span class="px">$39.990 con IVA · al mes</span></label></div></li>
+          <li><div class="it"><input type="radio" id="i05-fresh" name="item" value="fresh" data-nombre="fresh: una página" data-sp="fresh">
+            <label class="tx" for="i05-fresh"><span class="nm">fresh: una página</span><span class="dt">Tu oficio, tus servicios y WhatsApp a un toque. Recién partes.</span><span class="px">$9.990 al mes con IVA, o $99.900 el año de una vez</span></label></div></li>
+          <li><div class="it"><input type="radio" id="i05-sun" name="item" value="sun" data-nombre="sun: varias páginas" data-sp="sun">
+            <label class="tx" for="i05-sun"><span class="nm">sun: varias páginas</span><span class="dt">Cada servicio con su foto y su precio, y tus redes conectadas. El que te recomendamos.</span><span class="px">$19.990 al mes con IVA, o $199.900 el año de una vez</span></label></div></li>
+          <li><div class="it"><input type="radio" id="i05-vibe" name="item" value="vibe" data-nombre="vibe: tu sitio y tu panel" data-sp="vibe">
+            <label class="tx" for="i05-vibe"><span class="nm">vibe: tu sitio y tu panel</span><span class="dt">Lo de sun más tu panel: quién pidió, qué, para cuándo y si ya respondiste.</span><span class="px">$39.990 al mes con IVA, o $399.900 el año de una vez</span></label></div></li>
           </ul>
         </fieldset>
         <div class="quien">
@@ -1132,7 +1140,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
           <span class="trampa" aria-hidden="true"><input name="sitioweb" tabindex="-1" autocomplete="off"></span>
         </div>
         <div class="envia">
-          <button type="submit">Pedir cotización</button><span class="cuenta" aria-live="polite"></span>
+          <button type="submit">Quiero ver mi sitio</button><span class="cuenta" aria-live="polite"></span>
           <p class="nota">Te contestamos por WhatsApp. No pagas nada para partir: pagas el primer mes cuando decides quedártelo.</p>
           
         </div>
@@ -1143,7 +1151,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
     <p class="confianza abajo">Antes de emitir la orden de compra, revise si estamos hábiles. La ficha es pública. <a href="https://proveedor.mercadopublico.cl/ficha/78.491.451-8" target="_blank" rel="noopener">Ver la ficha de CompAI en Mercado Público →</a></p>
   </div>
 </main>
-<script>window.ESCENAS={"formulario":{"titulo_quien":"¿A quién le enviamos la cotización?","cta":"Pedir cotización","nota":"Le respondemos al correo que deje aquí.","exito":"Listo, nos llegó. Le respondemos a {correo}. Si quiere adjuntar bases u orden de compra, se abrió su correo.","error":"No quedó registrado, pero le abrimos su correo con el requerimiento escrito: envíelo desde ahí.","vacio":"Marque al menos una.","sin_institucion":"Falta la institución.","faltan":"Falta el nombre o el correo.","plazo":{"etiqueta":"¿Para cuándo?","placeholder":"Ej.: antes del 30 de octubre","obligatorio":false,"tipo":"texto libre, no selector de fecha"},"institucion":{"etiqueta":"Institución","placeholder":"Ej.: Municipalidad de …","obligatorio":true},"respaldo":{"linea":"¿No se abrió su correo? Escríbanos a hola@compai.cl","boton_copiar":"Copiar el requerimiento","copiado":"Copiado. Péguelo en un correo a hola@compai.cl"},"cuerpo":"Estimados:\n\nDesde {institucion} solicitamos cotización por:\n\n{items}\n\nLo necesitamos {plazo}.\n\nCódigo de la compra: {codigo}\n\nPor favor indicar valor neto, IVA y la glosa para la orden de compra.\n\nSaludos cordiales,\n\n\n— Enviado desde compai.cl/portafolio · {escena}","codigo":{"etiqueta":"Código de Compra Ágil, si ya la publicó","placeholder":"Ej.: 1234-56-COT26"},"correo_malo":"Revise el correo: así no le llega la respuesta.","exito_doc":"Listo. Le enviamos la cotización formal en PDF a {correo}, con valor neto, IVA y la glosa para la orden de compra."},"por":{"05":{"titulo_quien":"¿A quién le escribimos?","cta":"Pedir cotización","nota":"Te contestamos por WhatsApp. No pagas nada para partir: pagas el primer mes cuando decides quedártelo.","exito":"Listo, nos llegó. Se abrió WhatsApp con tu pedido escrito: envíalo y te contestamos por ahí.","error":"No quedó registrado, pero se abrió WhatsApp con tu pedido escrito: envíalo desde ahí.","vacio":"Marca al menos uno.","sin_institucion":"Falta el nombre de tu negocio.","faltan":"Falta tu nombre o tu WhatsApp.","plazo":{"etiqueta":"¿Para cuándo?","placeholder":"Ej.: antes de diciembre","obligatorio":false,"tipo":"texto libre, no selector de fecha"},"institucion":{"etiqueta":"Tu oficio o tu negocio","placeholder":"Ej.: Panadería La Espiga","obligatorio":true},"respaldo":{"linea":"¿No se abrió WhatsApp? Escríbenos al +56 9 6246 9977","boton_copiar":"Copiar el pedido","copiado":"Copiado. Pégalo en un WhatsApp al +56 9 6246 9977"},"cuerpo":"Hola:\n\nVivo de mi oficio ({institucion}) y me interesa:\n\n{items}\n\nLo necesito {plazo}.\n\nSaludos,\n\n\n— Enviado desde compai.cl/portafolio · {escena}","codigo":null,"correo_malo":"Revisa el correo: así no te llega la respuesta.","exito_doc":"Listo, nos llegó. Te enviamos la cotización en PDF a {correo} y se abrió WhatsApp con tu pedido escrito.","canal":"whatsapp","whatsapp":"https://wa.me/56962469977","telefono":{"etiqueta":"WhatsApp","placeholder":"+56 9 …","obligatorio":true},"agenda_cta":"O agenda 30 min de asesoría, sin costo →"}},"endpoint":"https://script.google.com/macros/s/AKfycbz9EDOC1XJu9ERRKHS7JyEM1Jz9op-jNRsfTLZWUgXxZoDw3t5q158VaJJap3RUfwJH/exec"};</script>
+<script>window.ESCENAS={"formulario":{"titulo_quien":"¿A quién le enviamos la cotización?","cta":"Pedir cotización","nota":"Le respondemos al correo que deje aquí.","exito":"Listo, nos llegó. Le respondemos a {correo}. Si quiere adjuntar bases u orden de compra, se abrió su correo.","error":"No quedó registrado, pero le abrimos su correo con el requerimiento escrito: envíelo desde ahí.","vacio":"Marque al menos una.","sin_institucion":"Falta la institución.","faltan":"Falta el nombre o el correo.","plazo":{"etiqueta":"¿Para cuándo?","placeholder":"Ej.: antes del 30 de octubre","obligatorio":false,"tipo":"texto libre, no selector de fecha"},"institucion":{"etiqueta":"Institución","placeholder":"Ej.: Municipalidad de …","obligatorio":true},"respaldo":{"linea":"¿No se abrió su correo? Escríbanos a hola@compai.cl","boton_copiar":"Copiar el requerimiento","copiado":"Copiado. Péguelo en un correo a hola@compai.cl"},"cuerpo":"Estimados:\n\nDesde {institucion} solicitamos cotización por:\n\n{items}\n\nLo necesitamos {plazo}.\n\nCódigo de la compra: {codigo}\n\nPor favor indicar valor neto, IVA y la glosa para la orden de compra.\n\nSaludos cordiales,\n\n\n— Enviado desde compai.cl/portafolio · {escena}","codigo":{"etiqueta":"Código de Compra Ágil, si ya la publicó","placeholder":"Ej.: 1234-56-COT26"},"correo_malo":"Revise el correo: así no le llega la respuesta.","exito_doc":"Listo. Le enviamos la cotización formal en PDF a {correo}, con valor neto, IVA y la glosa para la orden de compra."},"por":{"05":{"titulo_quien":"¿A quién le escribimos?","cta":"Quiero ver mi sitio","nota":"Te contestamos por WhatsApp. No pagas nada para partir: pagas el primer mes cuando decides quedártelo.","exito":"Listo, nos llegó. Se abrió WhatsApp con tu pedido escrito: envíalo y te contestamos por ahí.","error":"No quedó registrado, pero se abrió WhatsApp con tu pedido escrito: envíalo desde ahí.","vacio":"Elige un plan.","sin_institucion":"Falta el nombre de tu negocio.","faltan":"Falta tu nombre o tu WhatsApp.","plazo":{"etiqueta":"¿Para cuándo?","placeholder":"Ej.: antes de diciembre","obligatorio":false,"tipo":"texto libre, no selector de fecha"},"institucion":{"etiqueta":"Tu oficio o tu negocio","placeholder":"Ej.: Panadería La Espiga","obligatorio":true},"respaldo":{"linea":"¿No se abrió WhatsApp? Escríbenos al +56 9 6246 9977","boton_copiar":"Copiar el pedido","copiado":"Copiado. Pégalo en un WhatsApp al +56 9 6246 9977"},"cuerpo":"Hola:\n\nVivo de mi oficio ({institucion}) y me interesa:\n\n{items}\n\nLo necesito {plazo}.\n\nSaludos,\n\n\n— Enviado desde compai.cl/portafolio · {escena}","codigo":null,"correo_malo":"Revisa el correo: así no te llega la respuesta.","exito_doc":"Listo, nos llegó. Te enviamos la cotización en PDF a {correo} y se abrió WhatsApp con tu pedido escrito.","canal":"whatsapp","whatsapp":"https://wa.me/56962469977","telefono":{"etiqueta":"WhatsApp","placeholder":"+56 9 …","obligatorio":true},"agenda_cta":null}},"endpoint":"https://script.google.com/macros/s/AKfycbz9EDOC1XJu9ERRKHS7JyEM1Jz9op-jNRsfTLZWUgXxZoDw3t5q158VaJJap3RUfwJH/exec"};</script>
 <!-- ESCENAS:FIN -->
 
 <!-- 07-10-2026, Sebastian: sale «Trabajos construidos». El catalogo queda con
@@ -1253,7 +1261,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 
   /* la cantidad y el «¿cual?» solo se habilitan con su casilla marcada */
   document.querySelectorAll(".it").forEach(function(it){
-    var c = it.querySelector("input[type=checkbox]"), extra = it.querySelectorAll(".cant,.cual");
+    var c = it.querySelector("input[type=checkbox],input[type=radio]"), extra = it.querySelectorAll(".cant,.cual");
     var al = function(){
       extra.forEach(function(n){ n.disabled = !c.checked; });
       var n = it.querySelector(".cant");
@@ -1272,7 +1280,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
     f.noValidate = true;   /* valida el script, con mensajes propios; sin JS valida el navegador */
     function muestra(msg, mal){ aviso.textContent = msg; aviso.classList.toggle("mal", !!mal); aviso.hidden = false; }
     f.addEventListener("change", function(){
-      var k = f.querySelectorAll(".items input[type=checkbox]:checked").length;
+      var k = f.querySelectorAll(".items input:checked").length;
       cuenta.textContent = k ? (k === 1 ? "1 marcado" : k + " marcados") : "";
     });
     resp.querySelector(".copia").addEventListener("click", function(){
@@ -1283,7 +1291,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
 
     f.addEventListener("submit", function(e){
       e.preventDefault();
-      var marcados = [].slice.call(f.querySelectorAll(".items input[type=checkbox]:checked"));
+      var marcados = [].slice.call(f.querySelectorAll(".items input:checked"));
       if(!marcados.length){ muestra(F.vacio, true); return; }
       var d = Object.fromEntries(new FormData(f).entries());
       if(d.sitioweb) return;
@@ -1297,7 +1305,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
         /* «Otra licencia: cual» va pegado al nombre; en las demas, la marca y
            edicion que usan hoy va al final: sin ella no se cotiza (GAIn). */
         var otra = /-otra$/.test(c.value);
-        var partes = [(c.dataset.sp ? c.dataset.sp + " " : "") + (otra && q && q.value ? c.dataset.nombre + ": " + q.value : c.dataset.nombre)];
+        var partes = [(c.dataset.sp && c.dataset.nombre.indexOf(c.dataset.sp) !== 0 ? c.dataset.sp + " " : "") + (otra && q && q.value ? c.dataset.nombre + ": " + q.value : c.dataset.nombre)];
         if(n && n.value) partes.push(n.value + " " + (n.dataset.unidad || ""));
         if(!otra && q && q.value) partes.push("hoy usan: " + q.value);
         if(c.dataset.vigencia && d.vigencia) partes.push(d.vigencia);

@@ -271,7 +271,7 @@
   ],
   "imagen": "media/banda-pista.webp",
   "imagen_alt": "La panadera de barrio atendiendo en su local",
-  "cta": "Escríbenos",
+  "cta": "Armar mi sitio",
   "linea": "SOUL",
   "linea_nombre": "SOUL · sitios para quien vive de su oficio",
   "hoja": {
@@ -320,9 +320,9 @@
     "Pagas el primer mes cuando decides que sí, y lo compartes por WhatsApp."
    ],
    "siguiente": {
-    "texto": "Escríbenos por WhatsApp y dinos cuál es tu oficio: te mandamos tus preguntas y te decimos cuál plan te sirve.",
-    "cta": "Escríbenos por WhatsApp",
-    "url": "https://wa.me/56962469977?text=Hola%2C%20vivo%20de%20mi%20oficio%20y%20quiero%20mi%20sitio%20SOUL%3A%20fresh%2C%20sun%20o%20vibe.",
+    "texto": "Responde las preguntas de SOUL desde el celular y mira tu sitio armado. No pagas nada para partir.",
+    "cta": "Armar mi sitio",
+    "url": "soul/",
     "agenda_cta": "Agenda 30 min de asesoría, sin costo"
    }
   }

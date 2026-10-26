@@ -322,49 +322,58 @@
       "carrete": "Nadie encuentra la panadería",
       "video": "media/escena-05.mp4",
       "poster": "media/escena-05.webp",
-      "alt": "Cómic animado: la vecina busca pan amasado en el celular y no aparece nada; la panadera se pierde entre audios de WhatsApp: «¿Quién me pidió las hallullas?»; al final aparece, los pedidos le llegan escritos a un solo lugar y queda tranquila.",
+      "alt": "Cómic animado: la vecina busca pan amasado en el celular y no aparece nada; la panadera se pierde entre audios de WhatsApp: «¿Quién me pidió las hallullas?»; contesta las preguntas SOUL desde el celular y su sitio aparece: «¡Ya está mi sitio!»; los pedidos le llegan escritos a un solo lugar. Hecho con SOUL: fresh, sun y vibe.",
       "linea": "SOUL · sitios para quien vive de su oficio",
       "titulo": "«Nadie encuentra la panadería»",
       "bajada": "El pan sale bueno. Lo que falla es lo de afuera: la vecina te busca en el celular y no apareces, y los pedidos se te pierden entre audios.",
       "asunto": "fresh, sun o vibe · {institucion}",
+      "soul": {
+        "texto": "Respondes unas preguntas desde el celular y ves un borrador de tu sitio armado. No pagas nada para partir.",
+        "cta": "Armar mi sitio ahora →",
+        "url": "soul/"
+      },
       "grupos": [
         {
           "pregunta": "¿Cuál es el tuyo?",
+          "unico": true,
           "items": [
             {
               "id": "fresh",
               "nombre": "fresh: una página",
               "detalle": "Tu oficio, tus servicios y WhatsApp a un toque. Recién partes.",
+              "precio_sufijo": "o $99.900 el año de una vez",
               "cantidad": false,
               "vigencia": false,
-              "sp": "SOUL-1"
+              "sp": "fresh"
             },
             {
               "id": "sun",
               "nombre": "sun: varias páginas",
               "detalle": "Cada servicio con su foto y su precio, y tus redes conectadas. El que te recomendamos.",
+              "precio_sufijo": "o $199.900 el año de una vez",
               "cantidad": false,
               "vigencia": false,
-              "sp": "SOUL-2"
+              "sp": "sun"
             },
             {
               "id": "vibe",
               "nombre": "vibe: tu sitio y tu panel",
               "detalle": "Lo de sun más tu panel: quién pidió, qué, para cuándo y si ya respondiste.",
+              "precio_sufijo": "o $399.900 el año de una vez",
               "cantidad": false,
               "vigencia": false,
-              "sp": "SOUL-3"
+              "sp": "vibe"
             }
           ]
         }
       ],
       "formulario": {
         "titulo_quien": "¿A quién le escribimos?",
-        "cta": "Pedir cotización",
+        "cta": "Quiero ver mi sitio",
         "nota": "Te contestamos por WhatsApp. No pagas nada para partir: pagas el primer mes cuando decides quedártelo.",
         "exito": "Listo, nos llegó. Se abrió WhatsApp con tu pedido escrito: envíalo y te contestamos por ahí.",
         "error": "No quedó registrado, pero se abrió WhatsApp con tu pedido escrito: envíalo desde ahí.",
-        "vacio": "Marca al menos uno.",
+        "vacio": "Elige un plan.",
         "sin_institucion": "Falta el nombre de tu negocio.",
         "faltan": "Falta tu nombre o tu WhatsApp.",
         "correo_malo": "Revisa el correo: así no te llega la respuesta.",
@@ -391,7 +400,7 @@
           "placeholder": "+56 9 …",
           "obligatorio": true
         },
-        "agenda_cta": "O agenda 30 min de asesoría, sin costo →",
+        "agenda_cta": null,
         "exito_doc": "Listo, nos llegó. Te enviamos la cotización en PDF a {correo} y se abrió WhatsApp con tu pedido escrito."
       },
       "muestras": {
@@ -404,21 +413,21 @@
             "que": "Una página",
             "url": "muestras/maria-tapia/fresh.html",
             "img": "media/muestra-pista.webp",
-            "alt": "Muestra Pista: la página de la panadería con su horario, sus panes y cómo llegar"
+            "alt": "Muestra fresh: la página de la panadería con su horario, sus panes y cómo llegar"
           },
           {
             "plan": "sun",
             "que": "Varias páginas",
             "url": "muestras/maria-tapia/sun.html",
             "img": "media/muestra-nodo.webp",
-            "alt": "Muestra Nodo: la vecina arma su encargo en la página y elige a qué hora pasa"
+            "alt": "Muestra sun: la vecina arma su encargo en la página y elige a qué hora pasa"
           },
           {
             "plan": "vibe",
             "que": "Varias páginas + tu panel",
             "url": "muestras/maria-tapia/vibe.html",
             "img": "media/muestra-nucleo.webp",
-            "alt": "Muestra Núcleo: el panel de María con los pedidos de hoy, el inventario y la semana"
+            "alt": "Muestra vibe: el panel de María con los pedidos de hoy, el inventario y la semana"
           }
         ]
       }
@@ -427,7 +436,7 @@
   "servicios": {
     "SP-01": {
       "bruto": "$599.760",
-      "cond": "desde"
+      "cond": "precio cerrado"
     },
     "SP-02": {
       "bruto": "$1.071.000",
@@ -451,27 +460,30 @@
     },
     "SP-07": {
       "bruto": "$428.400",
-      "cond": "desde"
+      "cond": "precio cerrado"
     },
     "SP-08": {
       "bruto": "$856.800",
-      "cond": "desde"
+      "cond": "precio cerrado"
     },
     "SP-09": {
       "bruto": "$2.570.400",
       "cond": "al año, en 12 cuotas de $214.200"
     },
-    "SOUL-1": {
+    "fresh": {
       "bruto": "$9.990",
-      "cond": "al mes"
+      "cond": "al mes",
+      "anual": "$99.900"
     },
-    "SOUL-2": {
+    "sun": {
       "bruto": "$19.990",
-      "cond": "al mes"
+      "cond": "al mes",
+      "anual": "$199.900"
     },
-    "SOUL-3": {
+    "vibe": {
       "bruto": "$39.990",
-      "cond": "al mes"
+      "cond": "al mes",
+      "anual": "$399.900"
     }
   }
 }
