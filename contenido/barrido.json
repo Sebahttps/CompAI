@@ -1,13 +1,13 @@
 {
- "fecha": "2026-10-21",
+ "fecha": "2026-10-28",
  "fuente": "API de Mercado Público · licitaciones activas, todas las modalidades",
- "barridas": 4665,
+ "barridas": 4947,
  "filas": [
   {
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "ADQUISICIÓN DE EQUIPAMIENTO TECNOLÓGICO EDUCATIVO …",
+   "id": "SOPORTE Y ACTUALIZACIONES SOFTWARE SERVICETONIC LICENCIAS …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -15,7 +15,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "SERVICIO DE SUMINISTRO E INSTALACIÓN DE RADARES …",
+   "id": "CONTRATACIÓN DE SERVICIOS DE CLOUD COMPUTING Y ARRIENDO DE …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -23,7 +23,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "REQUIERE DE LA ADQUISICIÓN DE UN (1) SOFTWARE DE CONTROL …",
+   "id": "REQUERIMIENTO DE SERVICIOS INFORMÁTICOS",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -31,23 +31,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "PLATAFORMA DE GESTIÓN EDUCACIONAL PARA 77 ESTABLECIMIENTOS …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
-  {
-   "marca": "GO",
-   "rubro": "EQUIPAMIENTO",
-   "tipo": "reventa",
-   "id": "ALL IN ONE HP PROONE 440 G9 EQUIVALENTE HP, NOTA: VER EN …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de equipamiento lista para armar",
-   "cierre": "propuesta lista"
-  },
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
-   "id": "SERVICIO MULTISTREAMING CON TRANSMISIÓN DIGITAL E INTERNET …",
+   "id": "PLATAFORMA DE GESTIÓN DE ESTABLECIMIENTOS EDUCACIONALES …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -55,7 +39,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "CONSTRUCCIÓN DEL SISTEMA DE AGUA POTABLE RURAL (APR) EL …",
+   "id": "ADQUISICIÓN, SUMINISTRO, CONFIGURACIÓN, PUESTA EN MARCHA Y …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -63,7 +47,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "SERVICIO DE CONTINUIDAD DE LA IMPLEMENTACIÓN DE LA …",
+   "id": "SERVICIO DE APOYO AL DESARROLLO E IMPLEMENTACIÓN DEL …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -71,7 +55,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "SERVICIO DE OPERACIÓN, MANTENIMIENTO Y ACTUALIZACIÓN DE …",
+   "id": "INSTALACIÓN DE EQUIPO DE AIRE ACONDICIONADO SPLIT MURO …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -79,7 +63,23 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "LA CORPORACIÓN LLAMA A LICITACIÓN PÚBLICA PARA CONTRATAR …",
+   "id": "ADQUISICIÓN DE SISTEMA INTEGRAL DE TRANSMISIÓN Y GESTIÓN …",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "CONTRATACION DEL SERVICIO DE CONSULTORIA PARA LA …",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "MANTENIMIENTO CORRECTIVO Y/O CORRECTIVO DE SISTEMA DE …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   }
