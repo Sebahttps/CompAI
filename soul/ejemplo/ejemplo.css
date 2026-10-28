@@ -28,7 +28,7 @@ body.mig{margin:0;background:#121110;color:#F1EEE8;font-family:'Instrument Sans'
 
 /* hero */
 .hero{position:relative;min-height:calc(100vh - 56px);padding:28px clamp(20px,4vw,56px) 40px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;background:#121110}
-.hero-img{position:absolute;top:0;right:0;bottom:0;width:58%;background:url(img/primer-plano-bn.webp) 50% 12%/cover}
+.hero-img{position:absolute;top:0;right:0;bottom:0;width:58%;background:url(img/ilustracion.webp) 50% 20%/cover}
 .hero-scrim{position:absolute;inset:0;background:linear-gradient(90deg,#121110 0%,#121110 36%,rgba(18,17,16,.55) 52%,rgba(18,17,16,0) 72%),linear-gradient(0deg,#121110 0%,rgba(18,17,16,.9) 32%,rgba(18,17,16,0) 55%)}
 .nav{position:relative;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
 .nav-l{display:flex;gap:28px;flex-wrap:wrap;font:12px 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase}

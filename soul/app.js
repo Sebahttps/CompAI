@@ -1,6 +1,7 @@
 /* SOUL · las preguntas como una app de una pagina.
    Traduccion a JS plano de Paso00..Paso20 (diseño aprobado): mismas preguntas,
-   mismos saltos por plan (fresh 9 / sun 15 / vibe 19), mismo texto.
+   mismos saltos por plan. SOUL 2 (27-10-2026) suma 6 pasos «del alma» tras el oficio
+   (fresh 16 / sun 21 / vibe 25 preguntas) y la marca en miniatura (marca.js).
    - Estado en memoria + sessionStorage (con try/catch: modo privado no rompe nada).
    - Al confirmar: POST al Apps Script de las cotizaciones con tipo «soul».
      Si falla, NUNCA en silencio: se dice en pantalla y se ofrece WhatsApp con las
@@ -11,6 +12,7 @@
 (function () {
   'use strict';
   var D = window.SOUL_DATA;
+  var M = window.SOUL_MARCA;
   var CFG = window.SOUL_CFG || { endpoint: '', whatsapp: '56962469977' };
   var WSP = CFG.whatsapp || '56962469977';
   var WSP_TXT = '+56 9 6246 9977';
@@ -37,12 +39,14 @@
   /* ───────── estado ───────── */
   function nuevo() {
     return {
-      step: 0, plan: 1, name: '', oficio: null, oficioOtro: '', likes: [], likeOtro: '',
+      step: 0, plan: 1, name: '', apodo: '', oficio: null, oficioOtro: '', likes: [], likeOtro: '',
       palette: null, concept: 0, conceptText: '', style: 0, bg: 0, motion: 1, tone: 0, enfoque: 2,
       myColors: ['#E8789A', '#FFF1B8', '#2A1D45'], photoName: '',
       svcs: [0, 1, 2].map(function () { return { n: '', p: '', d: '', ph: 'lib', phName: '' }; }),
       where: [], comunas: '', insta: '', fb: '', fields: [], email: '',
-      avg: null, reply: null, books: null, modalidad: null, tel: '', correo: '', result: null
+      avg: null, reply: null, books: null, modalidad: null, tel: '', correo: '', result: null,
+      // el alma (SOUL 2) y la dirección de marca (null = la elige el borrador)
+      origen: '', unico: '', nunca: '', momento: '', cifraN: '', cifraU: '', cifraOtro: '', cierre: '', dir: null
     };
   }
   var ST = nuevo();
@@ -50,26 +54,36 @@
   var MEM = { photo: '', svcPh: {} };
   var enviando = false, pendiente = null, errorMsg = '';
 
-  function guardar() { try { sessionStorage.setItem(KEY, JSON.stringify(ST)); } catch (_) { /* modo privado o lleno: se sigue en memoria */ } }
+  var VISTA = false;   // true cuando se abre el enlace «#borrador=…» del correo: solo mira, no guarda ni mide
+  function guardar() { if (VISTA || (ST.result && ST.result.ok)) return; try { sessionStorage.setItem(KEY, JSON.stringify(ST)); } catch (_) { /* modo privado o lleno: se sigue en memoria */ } }
+  function mezclar(s) {
+    var base = nuevo();
+    Object.keys(base).forEach(function (k) {
+      if (s[k] === undefined || s[k] === null) { if (k === 'oficio' || k === 'dir' || k === 'palette' || k === 'avg' || k === 'reply' || k === 'books' || k === 'result' || k === 'modalidad') base[k] = null; return; }
+      if (Array.isArray(base[k]) !== Array.isArray(s[k])) return;
+      base[k] = s[k];
+    });
+    if (base.svcs.length < 1 || base.svcs.length > 6) base.svcs = nuevo().svcs;
+    return base;
+  }
   function cargar() {
-    try {
-      var raw = sessionStorage.getItem(KEY);
-      if (!raw) return;
-      var s = JSON.parse(raw), base = nuevo();
-      Object.keys(base).forEach(function (k) {
-        if (s[k] === undefined || s[k] === null) { if (k === 'oficio' || k === 'palette' || k === 'avg' || k === 'reply' || k === 'books' || k === 'result' || k === 'modalidad') base[k] = null; return; }
-        if (Array.isArray(base[k]) !== Array.isArray(s[k])) return;
-        base[k] = s[k];
-      });
-      if (base.svcs.length < 1 || base.svcs.length > 6) base.svcs = nuevo().svcs;
-      ST = base;
-    } catch (_) { ST = nuevo(); }
+    try { var raw = sessionStorage.getItem(KEY); if (raw) ST = mezclar(JSON.parse(raw)); } catch (_) { ST = nuevo(); }
+  }
+  /* El borrador viaja en el enlace del correo: las respuestas (sin teléfono ni correos) en base64url. Sin servidor. */
+  function codificar() {
+    var o = {}; Object.keys(ST).forEach(function (k) { if (['tel', 'correo', 'email', 'result', 'step'].indexOf(k) < 0) o[k] = ST[k]; });
+    return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+  function decodificar(h) {
+    h = h.replace(/-/g, '+').replace(/_/g, '/'); while (h.length % 4) h += '=';
+    return JSON.parse(decodeURIComponent(escape(atob(h))));
   }
 
   /* ───────── la secuencia segun el plan ───────── */
   function seq() {
     // fresh promete «la lista de tus servicios»: el paso 11 lo piden los tres planes (26-10-2026, ClAI-nte)
-    return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11].concat(ST.plan >= 1 ? [12, 13, 14, 15, 16] : [], ST.plan === 2 ? [17, 18, 19, 20] : [], [10]);
+    // 21..26 = las 6 preguntas del alma (marcadas F en la propuesta): van tras el oficio, en los tres planes
+    return [0, 1, 21, 22, 23, 24, 25, 26, 2, 3, 4, 5, 6, 7, 8, 9, 11].concat(ST.plan >= 1 ? [12, 13, 14, 15, 16] : [], ST.plan === 2 ? [17, 18, 19, 20] : [], [10]);
   }
   function total() { return seq().length - 1; }     // indice de la ficha
   function nPreg() { return total() - 1; }
@@ -90,12 +104,12 @@
   function slug() { return (ST.name || 'tu-negocio').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'tu-negocio'; }
   var DOMINIO = 'Partes en compai.cl/tu-negocio; tu propio .cl llega desde el segundo mes, o de inmediato si pagas el año.';
   function svcsLlenos() { return ST.svcs.filter(function (x) { return x.n.trim(); }); }
-  function luz(hex) {
-    var m = /^#?([0-9a-f]{6})$/i.exec(hex || ''); if (!m) return 0;
-    var n = parseInt(m[1], 16), c = [n >> 16, (n >> 8) & 255, n & 255].map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
-    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
-  }
-  function sobre(hex) { return luz(hex) > 0.4 ? '#080A09' : '#FFFFFF'; }
+  var sobre = M.sobre;
+
+  function EJ() { return D.EJEMPLOS[ST.oficio == null ? D.EJEMPLOS.length - 1 : ST.oficio]; }
+  function dirActual() { return ST.dir != null ? ST.dir : M.elegir(ST, D); }
+  function cifraTxt() { var c = M.cifra(ST, D); return c ? c.texto : ''; }
+  function sup() { return M.superficies(M.DIRS[dirActual()], ST.bg === 0, pal()[0]); }
 
   /* ───────── piezas de HTML ───────── */
   function chip(label, on, a, i) { return '<button type="button" class="chip" aria-pressed="' + (on ? 'true' : 'false') + '" data-a="' + a + '" data-i="' + i + '">' + esc(label) + '</button>'; }
@@ -142,7 +156,14 @@
     var of = ofi(), p = D.PLANS[ST.plan];
     var r = [
       { k: 'Nombre', v: ST.name.trim() },
+      { k: 'Cómo le dicen', v: ST.apodo.trim() || '—' },
       { k: 'Oficio', v: oficioNombre() },
+      { k: 'Cómo llegó', v: ST.origen.trim() || '—' },
+      { k: 'Lo que otros no hacen', v: ST.unico.trim() || '—' },
+      { k: 'Lo que nunca haría', v: ST.nunca.trim() || '—' },
+      { k: 'Cuándo quedó bien', v: ST.momento.trim() || '—' },
+      { k: 'Cifra de orgullo', v: cifraTxt() || '—' },
+      { k: 'Qué quiere que digan', v: ST.cierre.trim() || '—' },
       { k: 'Le mueve', v: ST.likes.map(function (l) { return l === 'Otro' ? (ST.likeOtro || 'Otro') : l; }).join(' · ') || '—' },
       { k: 'Paleta', v: ST.palette === CUSTOM_PAL ? 'Propia · ' + ST.myColors.join(' ') : D.PALETTES[ST.palette == null ? 0 : ST.palette].label },
       { k: 'Enfoque', v: D.ENFOQUES[ST.enfoque].label },
@@ -173,20 +194,23 @@
     return r;
   }
 
+  function almaTag(n) { return 'tu alma · ' + n + ' de 6'; }
+
   /* ───────── los pasos ───────── */
   function pasoHTML(cur) {
     var h = '', of = ofi(), i;
     if (cur === 0) {
       var pl = D.PLANS;
-      h += '<div class="bienvenida"><p class="mono kick" style="margin:0">● ' + nPreg() + ' preguntas · ' + (ST.plan === 0 ? '3' : ST.plan === 1 ? '8' : '10') + ' minutos</p>' +
+      h += '<div class="bienvenida"><p class="mono kick" style="margin:0">● ' + nPreg() + ' preguntas · ' + (ST.plan === 0 ? '5' : ST.plan === 1 ? '10' : '12') + ' minutos</p>' +
         '<h1 class="q" tabindex="-1" id="foco" style="font-size:40px;line-height:.92;text-transform:uppercase">Tu oficio<br>ya tiene alma.<br><mark>Ahora, que se vea.</mark></h1>' +
-        '<p class="hint" style="font-size:17px">Cuéntanos tu oficio, lo que te gusta y cómo te ves. Con eso definimos la imagen de portada, los colores, el fondo y el ritmo de tu página.</p>' +
+        '<p class="hint" style="font-size:17px">Seis preguntas son sobre ti: cómo llegaste, qué haces distinto, qué no harías nunca. Con tus palabras armamos tu marca y tu sitio.</p>' +
         '<div class="col" role="group" aria-label="Elige tu plan"><span class="mono m-sub">Elige tu plan</span>';
       pl.forEach(function (p, k) { h += fila('<span class="t"><strong>' + p.label + '</strong><span>' + esc(p.desc) + '</span></span><span class="pr">' + esc(p.price) + '</span>', ST.plan === k, 'plan', k); });
       h += '<span class="hint" style="font-size:14px">No pagas nada para partir: ves tu sitio armado y pagas el primer mes cuando decides quedártelo. ' + DOMINIO + '</span></div></div>';
     } else if (cur === 1) {
       h += '<h1 class="q" tabindex="-1" id="foco">¿Quién eres y a qué te dedicas?</h1>' +
         campoTexto('Tu nombre', 'name', ST.name, 'Nombre y apellido', { attrs: ' autocomplete="name" maxlength="80"' }) +
+        campoTexto('¿Cómo te dicen? (opcional)', 'apodo', ST.apodo, 'Ej: Mig. Es el nombre de tu marca', { attrs: ' maxlength="30" autocapitalize="words"' }) +
         '<div role="group" aria-labelledby="l-ofi" class="col"><span class="mono m-sub" id="l-ofi">Tu oficio</span><div class="chips">' +
         D.OFICIOS.map(function (o, k) { return chip(o.label, ST.oficio === k, 'oficio', k); }).join('') + '</div></div>';
       if (esOtro()) h += '<input class="in" type="text" data-k="oficioOtro" value="' + esc(ST.oficioOtro) + '" maxlength="60" placeholder="Ej: herrero, ceramista, guía de montaña" aria-label="Tu oficio, con tus palabras">';
@@ -222,14 +246,14 @@
       h += '<h1 class="q" tabindex="-1" id="foco">¿Cómo le hablas a tus clientes?</h1><p class="hint">Define cómo escribimos tus textos.</p><div class="col">' +
         D.TONES.map(function (t, k) { return filaTD(t.label, t.desc, ST.tone === k, 'tone', k, true); }).join('') + '</div>';
     } else if (cur === 9) {
-      h += '<h1 class="q" tabindex="-1" id="foco">¿Tienes una foto tuya en acción?</h1><p class="hint">Opcional. Si la imagen de portada se produce aparte, tu foto va en «Quién está detrás».</p>';
+      h += '<h1 class="q" tabindex="-1" id="foco">¿Tienes una foto tuya en acción?</h1><p class="hint">Opcional. Si la tienes, es la portada de tu sitio; si no, armamos una con tu marca.</p>';
       if (MEM.photo) h += '<div class="foto-caja hay"><img src="' + esc(MEM.photo) + '" alt="Tu foto, ' + esc(ST.photoName) + '"></div><div class="fila-b"><button type="button" class="btn-s" data-a="photoup">Cambiar foto</button><button type="button" class="btn-s" data-a="photorm">Quitar</button></div>';
       else h += '<div class="foto-caja"><button type="button" class="sube" data-a="photoup">' + SUBIR_SVG + 'Subir foto</button></div>';
       h += '<div class="mono checks"><span>✓ Cara visible</span><span>✓ En acción</span><span>✗ Selfie</span></div>';
     } else if (cur === 11) {
       h += kick(ST.plan === 0 ? 'fresh · tus servicios' : 'sun · tus servicios', 'kick-sun') + '<h1 class="q" tabindex="-1" id="foco">¿Qué servicios ofreces?</h1><p class="hint">Hasta 6. El nombre y el precio «desde» que cobras.</p><div class="col">';
       ST.svcs.forEach(function (v, k) {
-        h += '<div class="svc"><input class="in" type="text" data-svc="n" data-i="' + k + '" value="' + esc(v.n) + '" maxlength="70" placeholder="' + esc(D.SVC_PH[k]) + '" aria-label="Nombre del servicio ' + (k + 1) + '">' +
+        h += '<div class="svc"><input class="in" type="text" data-svc="n" data-i="' + k + '" value="' + esc(v.n) + '" maxlength="70" placeholder="' + 'Ej: ' + esc(EJ().s[Math.min(k, 2)]) + '" aria-label="Nombre del servicio ' + (k + 1) + '">' +
           '<input class="in" type="text" inputmode="numeric" data-svc="p" data-i="' + k + '" value="' + esc(v.p) + '" maxlength="20" placeholder="$ desde" aria-label="Precio desde del servicio ' + (k + 1) + '"></div>';
       });
       h += '</div>';
@@ -248,7 +272,7 @@
       h += kick('sun · qué incluye', 'kick-sun') + '<h1 class="q" tabindex="-1" id="foco">En una frase, ¿qué incluye cada uno?</h1><p class="hint">Lo que el cliente recibe, sin letra chica.</p><div class="col" style="gap:10px">';
       ST.svcs.forEach(function (v, k) {
         if (!v.n.trim()) return;
-        h += '<label class="campo"><span class="mono m-sub">' + esc(v.n) + '</span><input class="in" type="text" data-svc="d" data-i="' + k + '" value="' + esc(v.d) + '" maxlength="140" placeholder="Ej: dos horas de música en vivo y equipo de sonido"></label>';
+        h += '<label class="campo"><span class="mono m-sub">' + esc(v.n) + '</span><input class="in" type="text" data-svc="d" data-i="' + k + '" value="' + esc(v.d) + '" maxlength="140" placeholder="Ej: ' + esc(EJ().i[Math.min(k, 2)]) + '"></label>';
       });
       h += '</div>';
     } else if (cur === 14) {
@@ -275,6 +299,27 @@
     } else if (cur === 20) {
       h += kick('vibe · tus cuentas') + '<h1 class="q" tabindex="-1" id="foco">¿Dónde llevas hoy tus cuentas?</h1><p class="hint">Si es Excel, el panel lo conecta.</p><div class="col">' +
         D.BOOKS.map(function (b, k) { return filaTD(b, '', ST.books === k, 'books', k); }).join('') + '</div>';
+    } else if (cur === 21) {
+      h += kick(almaTag(1), 'kick-sun') + '<h1 class="q" tabindex="-1" id="foco">¿Cómo llegaste a esto?</h1><p class="hint">Quién te enseñó, o tu primera vez. Abre la historia de tu sitio. Si no se te ocurre, sigue: la puedes saltar.</p>' +
+        '<textarea class="in" data-k="origen" rows="3" maxlength="220" placeholder="Ej: ' + esc(EJ().o) + '." aria-label="Cómo llegaste a tu oficio">' + esc(ST.origen) + '</textarea>';
+    } else if (cur === 22) {
+      h += kick(almaTag(2), 'kick-sun') + '<h1 class="q" tabindex="-1" id="foco">¿Qué haces tú que otros de tu oficio no hacen?</h1><p class="hint">Una línea, con tus palabras. Es el titular de tu sitio.</p>' +
+        '<input class="in" type="text" data-k="unico" value="' + esc(ST.unico) + '" maxlength="90" placeholder="Ej: ' + esc(EJ().u) + '." aria-label="Lo que haces distinto">';
+    } else if (cur === 23) {
+      h += kick(almaTag(3), 'kick-sun') + '<h1 class="q" tabindex="-1" id="foco">¿Qué no harías nunca, aunque te paguen?</h1><p class="hint">Se entiende quién eres por lo que no aceptas. Si no se te ocurre, sigue: la puedes saltar.</p>' +
+        '<input class="in" type="text" data-k="nunca" value="' + esc(ST.nunca) + '" maxlength="90" placeholder="Ej: ' + esc(EJ().n) + '." aria-label="Lo que no harías nunca">';
+    } else if (cur === 24) {
+      h += kick(almaTag(4), 'kick-sun') + '<h1 class="q" tabindex="-1" id="foco">¿En qué momento sabes que el trabajo quedó bien?</h1><p class="hint">Esa escena que solo ve quien lo hace. Si no se te ocurre, sigue: la puedes saltar.</p>' +
+        '<input class="in" type="text" data-k="momento" value="' + esc(ST.momento) + '" maxlength="90" placeholder="Ej: ' + esc(EJ().m) + '." aria-label="Cuándo sabes que quedó bien">';
+    } else if (cur === 25) {
+      h += kick(almaTag(5), 'kick-sun') + '<h1 class="q" tabindex="-1" id="foco">Una cifra de la que estés orgulloso.</h1><p class="hint">Solo si es verdad: sale tal cual bajo el titular. Puedes dejarla en blanco.</p>' +
+        campoTexto('El número', 'cifraN', ST.cifraN, 'Ej: +50', { attrs: ' maxlength="9" inputmode="text" autocomplete="off"' }) +
+        '<div role="group" aria-labelledby="l-uni" class="col"><span class="mono m-sub" id="l-uni">De qué (opcional)</span><div class="chips">' +
+        D.CIFRA_UNID.map(function (u, k) { return chip(u, ST.cifraU === u, 'cifraU', k); }).join('') + '</div></div>';
+      if (ST.cifraU === 'Otro') h += '<input class="in" type="text" data-k="cifraOtro" value="' + esc(ST.cifraOtro) + '" maxlength="30" placeholder="Ej: matrimonios" aria-label="De qué es tu cifra">';
+    } else if (cur === 26) {
+      h += kick(almaTag(6), 'kick-sun') + '<h1 class="q" tabindex="-1" id="foco">¿Qué quieres que la gente diga de ti cuando no estás?</h1><p class="hint">Una línea. Es el cierre de tu sitio. Si no se te ocurre, sigue: la puedes saltar.</p>' +
+        '<input class="in" type="text" data-k="cierre" value="' + esc(ST.cierre) + '" maxlength="80" placeholder="Ej: ' + esc(EJ().c) + '" aria-label="Lo que quieres que digan de ti">';
     } else if (cur === 10) {
       h += fichaHTML();
     }
@@ -293,7 +338,7 @@
       '<div class="scrim" style="background:linear-gradient(0deg,' + base + ' 0%,' + (dark ? 'rgba(8,10,9,.75)' : 'rgba(245,240,228,.82)') + ' 32%,rgba(0,0,0,0) 62%)"></div>' +
       '<div class="arr"><span class="mono" style="color:' + ink + ';letter-spacing:.1em">' + esc(ST.name || 'Tu nombre') + '</span><span class="dot' + (ST.motion === 2 ? ' pulso' : '') + '" style="background:' + accent + '"></span></div>' +
       '<div class="conc"><span class="mono">Portada · ' + esc(D.ENFOQUES[ST.enfoque].label) + '</span><br>' + esc(concepto()) + '</div>' +
-      '<div class="abj"><span class="mono" style="color:' + ink + ';letter-spacing:.1em">' + esc(oficioLabel()) + '</span><p style="color:' + ink + '">' + esc(of.head) + '</p></div></div>' +
+      '<div class="abj"><span class="mono" style="color:' + ink + ';letter-spacing:.1em">' + esc(oficioLabel()) + '</span><p style="color:' + ink + '">' + esc(M.titular(ST) || of.head) + '</p></div></div>' +
       '<dl class="resumen">' + resumen().filter(function (r) { return r.k !== 'WhatsApp' && r.k !== 'Correo' && r.k !== 'Nombre'; }).map(function (r) { return '<div><dt class="mono">' + esc(r.k) + '</dt><dd>' + esc(r.v) + '</dd></div>'; }).join('') + '</dl>' +
       '<div class="contacto" role="group" aria-labelledby="l-modo"><h2 id="l-modo">¿Cómo prefieres pagar?</h2><p class="hint" style="margin:0">No pagas nada hoy: es para dejarte la propuesta lista.</p><div class="col">' + MODOS.map(function (m, k) { return filaTD(m.titulo, m.desc(D.PLANS[ST.plan]), ST.modalidad === k, 'modo', k); }).join('') + '</div></div>' +
       '<div class="contacto"><h2>¿Cómo te avisamos?</h2><p class="hint" style="margin:0">Para decirte que tu sitio está listo. Nada más.</p>' +
@@ -304,81 +349,164 @@
     return h;
   }
 
-  /* ───────── la vista previa: el sitio borrador armado con las respuestas ───────── */
+  /* ───────── la vista previa: el sitio borrador armado con las respuestas ─────────
+     SOUL 2: la dirección de marca (marca.js) pone tipografía y superficies; el titular, el manifiesto
+     y el cierre salen de las respuestas del alma. Ninguna línea habla del sitio ni de cómo se hizo,
+     y la misma foto de biblioteca ya no se reparte por rubro: foto propia o arte SVG con la paleta. */
+  function iniciales() {
+    var w = M.marcaNombre(ST).split(/\s+/).filter(Boolean);
+    return (w.length > 1 ? w[0].charAt(0) + w[1].charAt(0) : (w[0] || 'S').slice(0, 2)).toUpperCase();
+  }
+  function rgba(hex, a) {
+    var n = parseInt(hex.slice(1), 16); return 'rgba(' + (n >> 16) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')';
+  }
+  /* El arte de la portada y de las tarjetas: monograma gigante + el motivo del oficio + la trama de la dirección. */
+  function motivoG(tf, sw) {
+    var singer = ST.oficio === 0, m = D.MOTIFS[ST.oficio == null ? D.MOTIFS.length - 1 : ST.oficio];
+    return '<path d="' + m + '" transform="' + tf + '" fill="' + (singer ? 'var(--ac)' : 'none') + '" fill-opacity="' + (singer ? '.5' : '0') + '" stroke="' + (singer ? 'none' : 'var(--ac)') + '" stroke-width="' + sw + '" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" opacity=".6"></path>';
+  }
+  function arteSVG(d) {
+    var o = '<svg viewBox="0 0 400 760" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">', k;
+    if (d.trama === 'rayos') {
+      for (k = 0; k < 9; k++) o += '<line x1="200" y1="-40" x2="' + (k * 50 - 20) + '" y2="780" stroke="var(--ac)" stroke-opacity=".16" stroke-width="1.2"></line>';
+    } else if (d.trama === 'grano') {
+      o += '<defs><pattern id="vpg" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.4" fill="var(--ink)" fill-opacity=".16"></circle><circle cx="14" cy="14" r="1" fill="var(--ink)" fill-opacity=".1"></circle></pattern></defs><rect width="400" height="760" fill="url(#vpg)"></rect>';
+    } else {
+      for (k = 1; k < 10; k++) o += '<line x1="' + k * 40 + '" y1="0" x2="' + k * 40 + '" y2="760" stroke="var(--ink)" stroke-opacity=".08"></line>';
+      for (k = 1; k < 19; k++) o += '<line x1="0" y1="' + k * 40 + '" x2="400" y2="' + k * 40 + '" stroke="var(--ink)" stroke-opacity=".08"></line>';
+      o += '<path d="M40 40h40M40 40v40M360 720h-40M360 720v-40" stroke="var(--ac)" stroke-width="2" fill="none"></path>';
+    }
+    o += '<text x="-14" y="560" style="font-family:var(--display);font-weight:800;font-size:520px;letter-spacing:-.04em" fill="none" stroke="var(--ac)" stroke-opacity=".34" stroke-width="2">' + esc(iniciales()) + '</text>';
+    o += ST.oficio === 0 ? motivoG('translate(-38 120) scale(4.6)', 2) : motivoG('translate(88 190) scale(9)', 2.4);
+    return o + '</svg>';
+  }
+  function arteTarjeta() {
+    var m = D.MOTIFS[ST.oficio == null ? D.MOTIFS.length - 1 : ST.oficio];
+    var tf = ST.oficio === 0 ? 'translate(78 -2) scale(.95)' : 'translate(66 14) scale(2.6)';
+    return '<svg viewBox="0 0 200 140" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path d="' + m + '" transform="' + tf + '" fill="' + (ST.oficio === 0 ? 'var(--ac)' : 'none') + '" fill-opacity=".45" stroke="' + (ST.oficio === 0 ? 'none' : 'var(--ac)') + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" opacity=".7"></path></svg>';
+  }
+
+  /* Las últimas palabras del titular van en el acento: el remate se lee primero (vara de Miguel). */
+  function titHTML(t) {
+    var w = String(t).split(' '); if (w.length < 3) return esc(t);
+    var k = w.length > 5 ? 2 : 1;
+    return esc(w.slice(0, -k).join(' ')) + ' <em>' + esc(w.slice(-k).join(' ')) + '</em>';
+  }
   function sitioBorrador() {
-    var dark = ST.bg === 0, p = pal(), of = ofi();
-    var ac = (!dark && ST.palette === 5) ? '#080A09' : p[0];
-    var heroBase = dark ? '#080A09' : '#F5F0E4';
+    var dark = ST.bg === 0, di = dirActual(), d = M.DIRS[di], su = sup();
     var anim = ST.motion === 0 ? '' : ST.motion === 1 ? ' kb1' : ' kb2';
-    var filtros = ['saturate(1.2)', 'grayscale(1) contrast(1.15)', 'none', 'grayscale(1) brightness(.92)'][ST.enfoque];
-    var nombre = ST.name.trim() || 'Tu nombre';
+    var nombre = M.marcaNombre(ST);
     var cta = TONO_CTA[ST.tone] || 'Cotizar';
     var tel = digitos(ST.tel);
     var wsp = 'https://wa.me/' + (tel.length >= 8 ? (tel.length === 9 && tel.charAt(0) === '9' ? '56' + tel : tel) : WSP);
-    var s = '<div class="vp' + (dark ? '' : ' claro') + '" style="--ac:' + ac + ';--on:' + sobre(ac) + ';--c2:' + p[1] + ';--c3:' + p[2] + '">' +
-      '<div class="nav"><b>' + esc(nombre) + '</b><a href="#vp-cotiza" data-vp>' + esc(cta) + '</a></div>' +
-      '<section class="hero" aria-label="Portada"><div class="img ofi' + anim + '" style="' + fondo(fotoOficio()) + ';background-color:' + (dark ? p[2] : p[1]) + ';filter:' + filtros + '"></div>' +
-      '<div class="scrim" style="background:linear-gradient(0deg,' + heroBase + ' 0%,' + (dark ? 'rgba(8,10,9,.7)' : 'rgba(245,240,228,.8)') + ' 36%,rgba(0,0,0,0) 74%)"></div>' +
-      '<div class="in-h"><span class="ofi-t">' + esc(oficioNombre()) + '</span><h2>' + esc(of.head) + '</h2>' +
-      '<p class="ref">Imagen de referencia: ' + esc(concepto()) + '. La versión final se produce aparte.</p>' +
+    var ci = M.cifra(ST, D), tit = M.titular(ST), cie = M.cierre(ST);
+    var n = 0; function num(t) { n++; return '<p class="mn num">' + pad(n) + ' — ' + esc(t) + '</p>'; }
+    var vars = '--display:' + d.display + ';--texto:' + d.texto + ';--mono:' + d.mono +
+      ';--bg:' + su.bg + ';--bg2:' + su.bg2 + ';--ink:' + su.ink + ';--mut:' + su.mut + ';--ac:' + su.ac + ';--on:' + sobre(su.ac) + ';--ln:' + rgba(su.ink, .22) +
+      ';--bgI:' + su.bgI + ';--bg2I:' + su.bg2I + ';--inkI:' + su.inkI + ';--mutI:' + su.mutI + ';--acI:' + su.acI + ';--onI:' + sobre(su.acI) + ';--lnI:' + rgba(su.inkI, .22);
+    var s = '<div class="vp' + (d.mayus ? ' my' : '') + '" data-dir="' + d.id + '" style="' + vars + '">';
+    // portada alta: nav + arte (foto propia si la hay; si no, arte SVG con la paleta) + titular
+    s += '<section class="hero sf-a" aria-label="Portada"><div class="arte' + anim + '"' + (MEM.photo ? ' style="' + fondo(MEM.photo) + '"' : '') + '>' + (MEM.photo ? '' : arteSVG(d)) + '</div><div class="scrim"></div>' +
+      '<div class="nav"><span class="logo"><i aria-hidden="true">' + esc(iniciales()) + '</i><b>' + esc(nombre) + '</b></span><a class="cta" href="#vp-cotiza" data-vp>' + esc(cta) + '</a></div>' +
+      '<div class="in-h"><p class="mn">' + esc(oficioNombre()) + '</p><h2 class="tit">' + titHTML(tit || nombre) + '</h2>' +
+      (ci ? '<p class="mn prueba">' + esc(ci.texto) + '</p>' : '') +
       '<div class="acc"><a class="cta" href="#vp-cotiza" data-vp>' + esc(cta) + '</a><a class="cta sec" href="' + esc(wsp) + '" target="_blank" rel="noopener">WhatsApp</a></div></div></section>';
-    // quién está detrás
-    var gus = ST.likes.map(function (l) { return l === 'Otro' ? (ST.likeOtro.trim() || '') : l; }).filter(Boolean);
-    s += '<section class="s alt" aria-label="Quién está detrás"><span class="kk">Quién está detrás</span><div class="quien">' +
-      (MEM.photo ? '<img src="' + esc(MEM.photo) + '" alt="' + esc(nombre) + ' trabajando">' : '') +
-      '<div style="flex:1 1 240px;display:flex;flex-direction:column;gap:12px"><h3>Soy ' + esc(nombre) + '.</h3><p class="t">Me dedico a ' + esc(oficioLabel()) + '. ' + esc(of.head) + '</p>' +
-      (gus.length ? '<div class="tags" aria-label="Lo que me mueve">' + gus.map(function (g) { return '<span class="tag">' + esc(g) + '</span>'; }).join('') + '</div>' : '') + '</div></div></section>';
-    // servicios (sun y vibe)
+    // manifiesto: origen + dos principios, todo con palabras de la persona
+    var ori = M.origen(ST), pr = [['I · Mi límite', M.nunca(ST)], ['II · Mi vara', M.momento(ST)]].filter(function (x) { return x[1]; });
+    if (ori || pr.length) {
+      s += '<section class="s sf-i" aria-label="Manifiesto">' + num('Manifiesto') + (ori ? '<p class="mani">' + esc(ori) + '</p>' : '') +
+        (pr.length ? '<div class="tres">' + pr.map(function (x) { return '<div><p class="mn">' + esc(x[0]) + '</p><p>' + esc(x[1]) + '</p></div>'; }).join('') + '</div>' : '') + '</section>';
+    }
+    // servicios
     var lleno = svcsLlenos();
     if (lleno.length) {
       if (ST.plan === 0) {
-        s += '<section class="s" aria-label="Servicios"><span class="kk">Servicios</span><h3>Lo que hago por ti</h3><ul class="lista">' +
-          lleno.map(function (v) { return '<li><b>' + esc(v.n.trim()) + '</b>' + (v.p.trim() ? '<span class="pr">Desde ' + esc(v.p.trim()) + '</span>' : '') + '</li>'; }).join('') + '</ul></section>';
+        s += '<section class="s sf-a" aria-label="Servicios">' + num('Servicios') + '<h3>Lo que hago por ti</h3><ul class="lista">' +
+          lleno.map(function (v) { return '<li><b>' + esc(v.n.trim()) + '</b>' + (v.p.trim() ? '<span class="pr">desde ' + esc(v.p.trim()) + '</span>' : '') + '</li>'; }).join('') + '</ul></section>';
       } else {
-        s += '<section class="s" aria-label="Servicios"><span class="kk">Servicios</span><h3>Lo que hago por ti</h3><div class="svcs">' +
+        var c = 0;
+        s += '<section class="s sf-a" aria-label="Servicios">' + num('Servicios') + '<h3>Lo que hago por ti</h3><div class="svcs">' +
           ST.svcs.map(function (v, k) {
             if (!v.n.trim()) return '';
-            var foto = (v.ph === 'up' && MEM.svcPh[k]) ? MEM.svcPh[k] : fotoOficio();
-            return '<div class="svcc"><div class="ph" style="' + fondo(esc(foto)) + '"></div><div class="bd"><b>' + esc(v.n.trim()) + '</b>' +
-              (v.p.trim() ? '<span class="pr">Desde ' + esc(v.p.trim()) + '</span>' : '') + (v.d.trim() ? '<p>' + esc(v.d.trim()) + '</p>' : '') + '</div></div>';
+            c++;
+            var propia = v.ph === 'up' && MEM.svcPh[k];
+            return '<div class="svcc">' + (propia ? '<div class="ph" style="' + fondo(esc(MEM.svcPh[k])) + '"></div>' : '<div class="ph art">' + arteTarjeta() + '<p class="mn">' + pad(c) + '</p></div>') +
+              '<div class="bd"><b>' + esc(v.n.trim()) + '</b>' + (v.p.trim() ? '<span class="pr">desde ' + esc(v.p.trim()) + '</span>' : '') + (v.d.trim() ? '<p>' + esc(v.d.trim()) + '</p>' : '') + '</div></div>';
           }).join('') + '</div></section>';
       }
     }
     if (ST.plan >= 1) {
       var dnd = ST.where.join(' · ');
-      s += '<section class="s alt" aria-label="Dónde trabajo"><span class="kk">Dónde</span><h3>' + esc(dnd || 'Dónde trabajo') + '</h3>' +
+      s += '<section class="s sf-b" aria-label="Dónde trabajo">' + num('Dónde') + '<h3>' + esc(dnd || 'Dónde trabajo') + '</h3>' +
         (ST.comunas.trim() ? '<p class="t">' + esc(ST.comunas.trim()) + '</p>' : '') +
         ((ST.insta.trim() || ST.fb.trim()) ? '<div class="tags">' + [ST.insta.trim(), ST.fb.trim()].filter(Boolean).map(function (r) { return '<span class="tag">' + esc(r) + '</span>'; }).join('') + '</div>' : '') + '</section>';
     }
     // formulario de cotización
     var campos = ['Nombre', 'Teléfono'].concat(ST.plan >= 1 ? ['Servicio'] : []).concat(ST.plan >= 1 ? ST.fields : []);
-    s += '<section class="s" id="vp-cotiza" aria-label="Cotiza"><span class="kk">Cotiza</span><h3>' + esc(cta) + '</h3><div class="form" aria-hidden="true">' +
+    s += '<section class="s sf-a" id="vp-cotiza" aria-label="Cotiza">' + num('Contacto') + '<h3>' + esc(cta) + '</h3><div class="form" aria-hidden="true">' +
       campos.map(function (c) { return '<label>' + esc(c) + '<span class="fake">' + (c === 'Servicio' ? 'Elige un servicio ▾' : '') + '</span></label>'; }).join('') +
       '<span class="cta">Enviar</span></div><a class="wsp" href="' + esc(wsp) + '" target="_blank" rel="noopener">Escríbeme por WhatsApp</a></section>';
     // el panel (vibe)
     if (ST.plan === 2) {
-      s += '<section class="s alt" aria-label="Tu panel"><span class="kk">Tu panel</span><h3>Cada solicitud, guardada.</h3><p class="t">Entras con <b>' + esc(ST.email.trim() || 'tu correo') + '</b> y ves solo lo tuyo.</p><div class="panel">' +
+      s += '<section class="s sf-b" aria-label="Tu panel">' + num('Tu panel') + '<h3>Cada solicitud, guardada.</h3><p class="t">Entras con <b>' + esc(ST.email.trim() || 'tu correo') + '</b> y ves solo lo tuyo.</p><div class="panel">' +
         '<div><b>0</b><span>solicitudes este mes</span></div>' +
         '<div><b>' + esc(ST.avg == null ? '—' : D.AVGS[ST.avg]) + '</b><span>valor medio por trabajo</span></div>' +
         '<div><b>' + esc(ST.reply == null ? '—' : D.REPLIES[ST.reply]) + '</b><span>tu meta de respuesta</span></div>' +
         '<div><b>' + esc(ST.books == null ? '—' : D.BOOKS[ST.books]) + '</b><span>donde llevas hoy tus cuentas</span></div></div></section>';
     }
-    return s + '<footer class="vf">' + esc(nombre) + ' · compai.cl/' + esc(slug()) + ' · sitio hecho con soul</footer></div>';
+    // cierre: la frase que la persona quiere que digan de ella
+    if (cie) s += '<section class="s sf-i" aria-label="Cierre"><p class="cie">' + esc(cie) + '</p><a class="wsp" href="' + esc(wsp) + '" target="_blank" rel="noopener">Escríbeme por WhatsApp</a></section>';
+    // pie oficial (CLAUDE.md 4.b): solo la imagen «alma compAI», 40 px libres arriba y la línea. Oscuro → crema; claro → tinta.
+    var finOscuro = cie ? !dark : dark;
+    s += '<footer class="vf ' + (cie ? 'sf-i' : 'sf-a') + '"><div class="pie"><div class="pie-compai"><img src="img/' + (finOscuro ? 'pie-compai-claro' : 'pie-alma-compai-oscuro') + '.png" width="310" height="95" alt="alma compAI"></div></div></footer>';
+    return s + '</div>';
+  }
+
+  /* Nombre simple de un color, para decirlo como se dice en la calle. */
+  function colorNombre(hex) {
+    var n = parseInt(hex.slice(1), 16), r = (n >> 16) / 255, g = ((n >> 8) & 255) / 255, b = (n & 255) / 255;
+    var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, d = mx - mn, h = 0, sa = d === 0 ? 0 : d / (1 - Math.abs(2 * l - 1));
+    if (d) { h = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h = (h * 60 + 360) % 360; }
+    if (sa < 0.12 || l < 0.1 || l > 0.93) return l > 0.75 ? 'blanco' : l < 0.25 ? 'negro' : 'gris';
+    var base = h < 15 || h >= 345 ? 'rojo' : h < 40 ? (l < 0.4 ? 'café' : 'naranjo') : h < 65 ? 'amarillo' : h < 160 ? 'verde' : h < 200 ? 'turquesa' : h < 255 ? 'azul' : h < 290 ? 'violeta' : 'rosado';
+    return (l > 0.82 ? base + ' claro' : l < 0.25 ? base + ' oscuro' : base);
+  }
+
+  /* El resumen corporativo, en lenguaje de quien lo lee: colores con nombre simple y letras que se ven, no que se nombran.
+     Los datos técnicos (códigos, nombres de letra, contraste) van solo en el correo al estudio. */
+  function corpHTML() {
+    var di = dirActual(), d = M.DIRS[di], su = sup(), t3 = M.tres(ST);
+    var sw = [['Fondo', su.bg], ['Fondo suave', su.bg2], ['Letra', su.ink], ['Tu color', su.ac]];
+    return '<section class="corp" aria-label="Resumen corporativo"><span class="mono kick">Resumen corporativo</span><h2>' + esc(M.marcaNombre(ST)) + ': tu marca en una hoja</h2><dl>' +
+      '<div><dt class="mono">Concepto</dt><dd>' + esc(M.concepto(ST, D)) + '</dd></div>' +
+      '<div><dt class="mono">Estilo</dt><dd>' + esc(d.nombre + ' · ' + d.idea) + '</dd></div>' +
+      '<div><dt class="mono">Tono</dt><dd>' + esc(D.TONES[ST.tone].label + ': ' + d.voz) + '</dd></div>' +
+      '<div><dt class="mono">Colores</dt><dd><div class="sws">' + sw.map(function (c) { return '<span><i style="background:' + c[1] + '"></i>' + c[0] + ': ' + colorNombre(c[1]) + '</span>'; }).join('') + '</div></dd></div>' +
+      '<div><dt class="mono">Letras</dt><dd class="letras"><span style="font-family:' + d.display + ';font-weight:800;font-size:26px;line-height:1.1">' + esc(M.marcaNombre(ST)) + '</span><span style="font-family:' + d.texto + ';font-size:16px">Así se leen tus textos, claros y cómodos.</span><span style="font-family:' + d.mono + ';font-size:13px;letter-spacing:.12em">' + esc((M.cifra(ST, D) || { texto: 'tus cifras, 2026' }).texto.toUpperCase()) + '</span></dd></div>' +
+      '<div><dt class="mono">Tus frases</dt><dd><ol>' + t3.map(function (f) { return '<li>' + esc(f) + '</li>'; }).join('') + '</ol></dd></div></dl></section>';
+  }
+
+  function dirsHTML() {
+    var di = dirActual();
+    return '<div class="dirs" role="group" aria-label="Dirección de marca">' + M.DIRS.map(function (d, k) { return chip(d.nombre, di === k, 'dir', k); }).join('') +
+      '<p class="hint">Elegimos «' + esc(M.DIRS[M.elegir(ST, D)].nombre) + '» con tus respuestas. Prueba otra: cambia la tipografía y los fondos.</p></div>';
   }
 
   /* ───────── el cierre: envio + borrador ───────── */
   function waTexto() {
     var p = D.PLANS[ST.plan];
     var t = 'Hola, quiero mi sitio SOUL, plan ' + p.label + ' (' + p.price + ' con IVA).\n\nMis respuestas:\n' +
-      resumen().map(function (r) { return r.k + ': ' + r.v; }).join('\n');
+      resumen().map(function (r) { return r.k + ': ' + r.v; }).join('\n');   // la marca se deriva de estas respuestas: no viaja por WhatsApp
     if (t.length > 1500) t = t.slice(0, 1480).replace(/\s+\S*$/, '') + '…\n(Faltan datos: te los paso por acá.)';
     return t;
   }
   function waUrl() { return 'https://wa.me/' + WSP + '?text=' + encodeURIComponent(waTexto()); }
   function finHTML() {
     var R = ST.result || { ok: false, motivo: 'sin-envio' }, h = '';
-    h += '<h1 class="q" tabindex="-1" id="foco" style="font-size:26px">' + (R.ok ? 'Tu sitio, en borrador.' : 'Tu borrador está listo.') + '</h1>';
-    if (R.ok) {
+    h += '<h1 class="q" tabindex="-1" id="foco" style="font-size:26px">' + (VISTA ? 'Borrador de ' + esc(ST.name || 'la persona') : R.ok ? 'Tu sitio, en borrador.' : 'Tu borrador está listo.') + '</h1>';
+    if (VISTA) {
+      h += '<p class="hint">Así lo vio quien respondió. Se arma de nuevo con sus respuestas.</p>';
+    } else if (R.ok) {
       h += '<div class="aviso-ok" role="status"><h2>Recibimos tus respuestas.</h2><p>Mira abajo cómo va quedando tu sitio. Te escribimos al WhatsApp ' + esc(ST.tel.trim()) + ' antes de un día hábil para afinarlo y contarte cómo pagar: mes a mes, o el año con tu .cl incluido. No pagas nada todavía.</p></div>';
     } else {
       // Tono neutro, no de error: el WhatsApp es un camino normal (ClAI-nte, 26-10-2026).
@@ -388,7 +516,7 @@
         '<details><summary style="min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:600">Ver o copiar mis respuestas</summary><textarea class="resp-txt" readonly aria-label="Mis respuestas" id="resp-txt">' + esc(waTexto()) + '</textarea>' +
         '<button type="button" class="btn-s" data-a="copiar" style="margin-top:8px">Copiar mis respuestas</button><span id="copiado" role="status" class="hint"></span></details></div>';
     }
-    h += '<div class="borrador-t"><span class="mono">Borrador</span><span class="hint">Así se vería tu sitio. Es una vista previa: las fotos y los textos finales los afinamos contigo. ' + DOMINIO + '</span></div>' + sitioBorrador();
+    h += '<div class="borrador-t"><span class="mono">Borrador</span><span class="hint">Así se vería tu sitio. Es una vista previa: las fotos y los textos finales los afinamos contigo. ' + DOMINIO + '</span></div>' + dirsHTML() + sitioBorrador() + corpHTML();
     return h;
   }
 
@@ -399,6 +527,8 @@
       if (ST.oficio == null) return ['Elige tu oficio.', '[data-a="oficio"]'];
       if (esOtro() && !ST.oficioOtro.trim()) return ['Cuéntanos cuál es tu oficio.', '[data-k="oficioOtro"]'];
     }
+    if (cur === 22 && !ST.unico.trim()) return ['Cuéntanos en una línea qué haces distinto: es el titular de tu sitio.', '[data-k="unico"]'];
+    if (cur === 25 && ST.cifraN.trim() && !M.cifra(ST, D)) return ['Escribe solo el número, por ejemplo 50 o +50.', '[data-k="cifraN"]'];
     if (cur === 3 && ST.palette == null) return ['Elige una paleta.', '[data-a="pal"]'];
     if (cur === 11 && !svcsLlenos().length) return ['Escribe al menos un servicio.', '[data-svc="n"]'];
     if (cur === 14 && !ST.where.length) return ['Marca dónde trabajas.', '[data-a="where"]'];
@@ -426,12 +556,19 @@
     if (ST.step > T) ST.step = T;
     if (ST.step < 0) ST.step = 0;
     if (ST.step > 1 && ST.oficio == null) ST.step = 1;
-    if (ST.step > 3 && ST.palette == null) ST.step = 3;
+    if (ST.step > sq.indexOf(3) && ST.palette == null) ST.step = sq.indexOf(3);
     return sq[ST.step];
   }
 
+  var ultimo = null;
+  /* GoatCounter (sin cookies): un evento por pantalla para saber dónde se abandona. Si el contador no cargó, no pasa nada. */
+  function medir(cur, camino) {
+    if (VISTA || cur === ultimo) return; ultimo = cur;
+    try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: camino || ('soul/paso-' + pad(ST.step) + '-' + D.PLANS[ST.plan].label), title: 'SOUL paso ' + ST.step + ' (' + cur + ')', event: true }); } catch (_) { /* medir nunca rompe el flujo */ }
+  }
   function render(mover, foco) {
     var cur = curActual(), T = total();
+    medir(cur);
     var fin = cur === 'fin';
     appEl.classList.toggle('ancho', fin);
     pasoEl.innerHTML = fin ? finHTML() : pasoHTML(cur);
@@ -442,7 +579,9 @@
     $('.barra').setAttribute('aria-valuenow', String(pct));
     // acciones
     var a = '';
-    if (fin) {
+    if (VISTA) {
+      a = '';
+    } else if (fin) {
       a += '<button class="btn-v" type="button" data-a="editar" aria-label="Volver a mis respuestas">' + SVG_ATRAS + '</button>';
       a += (ST.result && ST.result.ok) ? '<a class="btn-p" href="index.html">Listo, volver al inicio</a>' : '<a class="btn-p" href="' + esc(waUrl()) + '" target="_blank" rel="noopener" data-a="wsp">Enviar por WhatsApp</a>';
     } else {
@@ -497,6 +636,8 @@
       case 'where': toggle(ST.where, D.WHERE[n]); break;
       case 'field': toggle(ST.fields, D.FIELDS[n]); break;
       case 'modo': ST.modalidad = n; break;
+      case 'dir': ST.dir = n; break;
+      case 'cifraU': ST.cifraU = ST.cifraU === D.CIFRA_UNID[n] ? '' : D.CIFRA_UNID[n]; break;
       case 'avg': ST.avg = n; break;
       case 'reply': ST.reply = n; break;
       case 'books': ST.books = n; break;
@@ -569,7 +710,8 @@
       plan: p.label, precio_mes: p.mes, precio_anual: p.anual,
       modalidad: ST.modalidad === 1 ? 'anio' : 'mes', slug: slug(),
       nombre: ST.name.trim(), telefono: ST.tel.trim(), correo: c, oficio: oficioNombre(),
-      resumen: resumen(), archivos: archivos
+      borrador: codificar(),
+      resumen: M.resumenMarca(ST, D, dirActual(), sup()).concat(resumen()), archivos: archivos
     };
   }
   function enviar() {
@@ -589,7 +731,7 @@
           return r;
         });
       });
-    p.then(function () { ST.result = { ok: true }; }, function (err) {
+    p.then(function () { ST.result = { ok: true }; try { sessionStorage.removeItem(KEY); } catch (_) { /* nada que borrar */ } medir('enviado', 'soul/enviado-' + D.PLANS[ST.plan].label); }, function (err) {
       ST.result = { ok: false, motivo: (err && err.name === 'AbortError') ? 'tardó demasiado' : (err && err.name === 'TypeError') ? 'sin conexión con el servidor' : String((err && err.message) || err) };
     }).then(function () {
       clearTimeout(t); enviando = false; ST.step = total() + 1; guardar(); render(true);
@@ -621,10 +763,20 @@
   });
 
   /* ───────── arranque ───────── */
-  cargar();
+  var hm = /^#borrador=([A-Za-z0-9_-]{10,8000})$/.exec(location.hash || '');
+  if (hm) {
+    try { ST = mezclar(decodificar(hm[1])); ST.result = { ok: true }; ST.step = 9999; VISTA = true; } catch (_) { ST = nuevo(); VISTA = false; }
+  } else {
+    // Abrir la página otra vez NO hereda lo de la persona anterior: solo se conserva al recargar o al volver atrás.
+    try {
+      var nav = performance.getEntriesByType('navigation')[0];
+      if (!nav || (nav.type !== 'reload' && nav.type !== 'back_forward')) sessionStorage.removeItem(KEY);
+    } catch (_) { /* sin Performance API: se parte limpio igual */ try { sessionStorage.removeItem(KEY); } catch (__) { /* sin storage */ } }
+    cargar();
+  }
   try {
     var q = new URLSearchParams(location.search).get('plan');
-    if (q !== null && /^[012]$/.test(q)) { ST.plan = Number(q); ST.step = 0; ST.result = null; }
+    if (!VISTA && ST.step === 0 && q !== null && /^[012]$/.test(q)) { ST.plan = Number(q); ST.step = 0; ST.result = null; }
   } catch (_) { /* sin URLSearchParams: se queda el plan guardado */ }
   render(false);
 })();
