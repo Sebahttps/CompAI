@@ -764,8 +764,15 @@
 
   /* ───────── arranque ───────── */
   var hm = /^#borrador=([A-Za-z0-9_-]{10,8000})$/.exec(location.hash || '');
+  // «#cargar=…»: el estudio arma las respuestas de alguien (una prueba, o lo que mandó por WhatsApp) y la persona
+  // abre la ficha ya llena, editable, y solo toca enviar. A diferencia de «#borrador=», sí guarda y sí envía.
+  var hc = !hm && /^#cargar=([A-Za-z0-9_-]{10,8000})$/.exec(location.hash || '');
   if (hm) {
     try { ST = mezclar(decodificar(hm[1])); ST.result = { ok: true }; ST.step = 9999; VISTA = true; } catch (_) { ST = nuevo(); VISTA = false; }
+  } else if (hc) {
+    try { ST = mezclar(decodificar(hc[1])); ST.result = null; ST.step = total(); } catch (_) { ST = nuevo(); }
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (_) { /* sin History API: el hash queda, no molesta */ }
+    guardar();
   } else {
     // Abrir la página otra vez NO hereda lo de la persona anterior: solo se conserva al recargar o al volver atrás.
     try {
