@@ -228,15 +228,25 @@
         // no hay nada que repintar. La animacion es de escritorio.
         if (quieto.matches || innerWidth < 700) { porImagen(); return; }
         if (!mide()) return;
-        muestrea();
+        muestrea();     // deja `listo` en true
         pinta(0);
-        // Arranca aqui mismo: el observador que pidio la imagen ya usa un
-        // margen de 400 px, asi que llegar hasta aca significa que el canvas
-        // esta a punto de verse. Antes habia un SEGUNDO observador sobre el
-        // canvas y, cuando no llegaba a dispararse —una captura de pagina
-        // completa, un salto por ancla—, la lamina se quedaba en negro para
-        // siempre. Un solo disparador, y el bucle igual se duerme a los 4,2 s.
-        despierta();
+        /* AQUI YA NO SE ARRANCA (26-10-2026, encargo de Sebastian: «el
+           efecto de caida de codigos debe iniciarse al pasar la vista por
+           sobre la pantalla»). El observador que pide la imagen usa 400 px
+           de margen, asi que arrancar aqui significaba que la caida empezaba
+           400 px ANTES de verse y terminaba antes de que nadie llegara: el
+           efecto existia y no lo veia nadie.
+
+           Ahora la imagen se descarga igual de temprano —llegar tarde deja
+           el recuadro vacio— pero la caida la dispara `arranca()`, abajo.
+
+           La trampa que esto reabre y que hay que seguir tapando: cuando
+           habia un segundo observador y NO llegaba a dispararse —captura de
+           pagina completa, salto por ancla— la lamina quedaba en negro para
+           siempre. Por eso `pinta(0)` se mantiene ANTES de cualquier espera
+           y `arranca()` ademas comprueba el rectangulo a mano: si el canvas
+           ya esta en pantalla cuando llega la imagen, no espera a nadie. */
+        if (pedidoArranque || enPantalla()) arranca();
         cv.addEventListener('pointermove', e => {
           const r = cv.getBoundingClientRect();
           puntero = { x: (e.clientX - r.left) * dpr };
@@ -254,11 +264,37 @@
       im.src = src;
     }
 
+    /* Dos observadores con papeles distintos, y la diferencia importa:
+         · el de 400 px DESCARGA la imagen con anticipacion;
+         · el de threshold 0,12 ARRANCA la caida cuando el recuadro ya se ve.
+       Separarlos es justo lo que pidio Sebastian el 26-10-2026. */
+    let pedidoArranque = false, arrancado = false;
+
+    function enPantalla() {
+      const r = cv.getBoundingClientRect();
+      return r.bottom > 0 && r.top < (innerHeight || 0);
+    }
+
+    function arranca() {
+      if (arrancado) return;
+      if (!listo) { pedidoArranque = true; return; }   // la imagen aun no llega
+      arrancado = true;
+      desfase = tAhora; t0 = 0;        // la caida empieza de cero AHORA
+      pinta(tAhora);
+      despierta();
+    }
+
     if ('IntersectionObserver' in window) {
       new IntersectionObserver((es, o) => es.forEach(e => {
         if (e.isIntersecting) { pedir(); o.disconnect(); }
       }), { rootMargin: '400px 0px' }).observe(cv);
-    } else pedir();
+
+      new IntersectionObserver((es, o) => es.forEach(e => {
+        if (!e.isIntersecting) return;
+        arranca();
+        if (arrancado) o.disconnect();
+      }), { threshold: 0.12 }).observe(cv);
+    } else { pedir(); arranca(); }
   }
 
   document.querySelectorAll('canvas.gcanvas[data-src]').forEach(monta);
