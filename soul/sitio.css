@@ -50,8 +50,8 @@
 .vp .quien-f{width:100%;max-width:340px;aspect-ratio:4/5;object-fit:cover;border-radius:10px}
 .vp .tres{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:28px;border-top:1px solid var(--ink);padding-top:28px}
 .vp .tres div{display:flex;flex-direction:column;gap:10px}
-.vp .tres .mn{color:var(--ac)}
-.vp .tres p{margin:0;font-size:19px;line-height:1.4}
+.vp .tres .mn{color:var(--ac);font-size:12px;line-height:1.4}
+.vp .tres p{margin:0;font-size:19px;line-height:1.4;overflow-wrap:anywhere}
 .vp p.t{margin:0;font-size:17px;line-height:1.5}
 .vp .tags{display:flex;gap:8px;flex-wrap:wrap}
 .vp .tag{padding:7px 12px;border-radius:999px;border:1px solid var(--ac);font-size:14px}

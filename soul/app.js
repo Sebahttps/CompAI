@@ -277,13 +277,13 @@
         '<textarea class="in" data-k="origen" rows="3" maxlength="220" placeholder="Ej: ' + esc(EJ().o) + '." aria-label="Cómo llegaste a tu oficio">' + esc(ST.origen) + '</textarea>';
     } else if (cur === 22) {
       h += kick(almaTag(2), 'kick-sun') + '<h1 class="q" tabindex="-1" id="foco">¿Qué haces tú que otros de tu oficio no hacen?</h1><p class="hint">Una línea, con tus palabras. Es el titular de tu sitio.</p>' +
-        '<input class="in" type="text" data-k="unico" value="' + esc(ST.unico) + '" maxlength="90" placeholder="Ej: ' + esc(EJ().u) + '." aria-label="Lo que haces distinto">';
+        '<textarea class="in" data-k="unico" rows="2" maxlength="160" placeholder="Ej: ' + esc(EJ().u) + '." aria-label="Lo que haces distinto">' + esc(ST.unico) + '</textarea>';
     } else if (cur === 23) {
       h += kick(almaTag(3), 'kick-sun') + '<h1 class="q" tabindex="-1" id="foco">¿Qué no harías nunca, aunque te paguen?</h1><p class="hint">Se entiende quién eres por lo que no aceptas. Si no se te ocurre, sigue: la puedes saltar.</p>' +
-        '<input class="in" type="text" data-k="nunca" value="' + esc(ST.nunca) + '" maxlength="90" placeholder="Ej: ' + esc(EJ().n) + '." aria-label="Lo que no harías nunca">';
+        '<textarea class="in" data-k="nunca" rows="2" maxlength="160" placeholder="Ej: ' + esc(EJ().n) + '." aria-label="Lo que no harías nunca">' + esc(ST.nunca) + '</textarea>';
     } else if (cur === 24) {
       h += kick(almaTag(4), 'kick-sun') + '<h1 class="q" tabindex="-1" id="foco">¿En qué momento sabes que el trabajo quedó bien?</h1><p class="hint">Esa escena que solo ve quien lo hace. Si no se te ocurre, sigue: la puedes saltar.</p>' +
-        '<input class="in" type="text" data-k="momento" value="' + esc(ST.momento) + '" maxlength="90" placeholder="Ej: ' + esc(EJ().m) + '." aria-label="Cuándo sabes que quedó bien">';
+        '<textarea class="in" data-k="momento" rows="2" maxlength="160" placeholder="Ej: ' + esc(EJ().m) + '." aria-label="Cuándo sabes que quedó bien">' + esc(ST.momento) + '</textarea>';
     } else if (cur === 25) {
       h += kick(almaTag(5), 'kick-sun') + '<h1 class="q" tabindex="-1" id="foco">Una cifra de la que estés orgulloso.</h1><p class="hint">Solo si es verdad: sale tal cual bajo el titular. Puedes dejarla en blanco.</p>' +
         campoTexto('El número', 'cifraN', ST.cifraN, 'Ej: +50', { attrs: ' maxlength="9" inputmode="text" autocomplete="off"' }) +
@@ -292,7 +292,7 @@
       if (ST.cifraU === 'Otro') h += '<input class="in" type="text" data-k="cifraOtro" value="' + esc(ST.cifraOtro) + '" maxlength="30" placeholder="Ej: matrimonios" aria-label="De qué es tu cifra">';
     } else if (cur === 26) {
       h += kick(almaTag(6), 'kick-sun') + '<h1 class="q" tabindex="-1" id="foco">¿Qué quieres que la gente diga de ti cuando no estás?</h1><p class="hint">Una línea. Es el cierre de tu sitio. Si no se te ocurre, sigue: la puedes saltar.</p>' +
-        '<input class="in" type="text" data-k="cierre" value="' + esc(ST.cierre) + '" maxlength="80" placeholder="Ej: ' + esc(EJ().c) + '" aria-label="Lo que quieres que digan de ti">';
+        '<textarea class="in" data-k="cierre" rows="2" maxlength="160" placeholder="Ej: ' + esc(EJ().c) + '" aria-label="Lo que quieres que digan de ti">' + esc(ST.cierre) + '</textarea>';
     } else if (cur === 10) {
       h += fichaHTML();
     }
