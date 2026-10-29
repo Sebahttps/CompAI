@@ -1,7 +1,7 @@
 {
- "fecha": "2026-10-28",
+ "fecha": "2026-10-29",
  "fuente": "API de Mercado Público · licitaciones activas, todas las modalidades",
- "barridas": 4947,
+ "barridas": 5018,
  "filas": [
   {
    "marca": "GO",
@@ -47,14 +47,6 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "SERVICIO DE APOYO AL DESARROLLO E IMPLEMENTACIÓN DEL …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
    "id": "INSTALACIÓN DE EQUIPO DE AIRE ACONDICIONADO SPLIT MURO …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
@@ -80,6 +72,14 @@
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
    "id": "MANTENIMIENTO CORRECTIVO Y/O CORRECTIVO DE SISTEMA DE …",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "ADQUISICIÓN DE UN SISTEMA DE COMUNICACIÓN SATELITAL DE …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   }

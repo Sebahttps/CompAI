@@ -191,6 +191,33 @@ console.log('vecino:', salida.map(([n, r]) => `${n} → «${r.h2}» (${r.dir}, $
   ok(antes !== despues, 'cambiar la dirección no cambió la tipografía');
   await ctx.close();
 }
+// rótulos del Manifiesto (28-10-2026, Waldo Castor): «01 — Manifiesto», «I · Mi límite» y «II · Mi vara» miden lo mismo
+// que los demás rótulos .num, y una respuesta larga (150 letras) no se corta ni desborda en 390 px
+{
+  const larga = 'Entregar un trabajo con una calidad inferior a la que yo mismo aceptaría en mi casa, aunque me paguen el doble';
+  const { ctx, p } = await flujo(b, 1, 390, { ...P1, nunca: larga, momento: larga });
+  const r = await p.evaluate(() => {
+    const f = (el) => { const c = getComputedStyle(el); return c.fontSize + '|' + c.fontFamily; };
+    const nums = [...document.querySelectorAll('.vp .num')].map(f);
+    const mns = [...document.querySelectorAll('.vp .tres .mn')].map(f);
+    const tres = document.querySelector('.vp .tres');
+    return { nums, mns, ancho: document.documentElement.scrollWidth, vw: innerWidth, texto: tres ? tres.textContent : '', desbordeTres: tres ? tres.scrollWidth - tres.clientWidth : 0 };
+  });
+  ok(r.mns.length === 2, `manifiesto: se esperaban 2 rótulos «I · / II ·» y hay ${r.mns.length}`);
+  ok(new Set(r.nums.concat(r.mns)).size === 1 && r.nums[0].startsWith('12px'), `manifiesto: rótulos con tamaños distintos → ${[...new Set(r.nums.concat(r.mns))].join(' ; ')}`);
+  ok(r.texto.includes('aunque me paguen el doble') || r.texto.toLowerCase().includes('aunque me paguen el doble'), 'manifiesto: la respuesta larga llegó cortada');
+  ok(r.ancho <= r.vw && r.desbordeTres <= 0, `manifiesto: desborde horizontal con texto largo (${r.ancho}/${r.vw}, tres ${r.desbordeTres})`);
+  await ctx.close();
+}
+// las preguntas de una línea del alma aguantan ≥ 160 letras: el maxlength de 90 cortó «...calidad infer» (Waldo, 28-10-2026)
+{
+  const { readFileSync } = await import('node:fs');
+  const src = readFileSync(new URL('./app.js', import.meta.url), 'utf8');
+  for (const k of ['unico', 'nunca', 'momento', 'cierre']) {
+    const m = src.match(new RegExp('<(?:input|textarea)[^>]*data-k="' + k + '"[^>]*maxlength="(\\d+)"'));
+    ok(m && Number(m[1]) >= 160, `alma «${k}»: maxlength ${m ? m[1] : 'ausente'} (< 160)`);
+  }
+}
 await b.close();
 console.log(fallos ? `probar_soul2: ${fallos} falla(s) de ${n}` : `probar_soul2: OK — ${n}/${n} comprobaciones`);
 process.exit(fallos ? 1 : 0);

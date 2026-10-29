@@ -13,6 +13,7 @@
   'use strict';
   var D = window.SOUL_DATA;
   var M = window.SOUL_MARCA;
+  var S = window.SOUL_SITIO;   // sitio.js: el render del sitio y el codigo del enlace, compartidos con soul/s/
   var CFG = window.SOUL_CFG || { endpoint: '', whatsapp: '56962469977' };
   var WSP = CFG.whatsapp || '56962469977';
   var WSP_TXT = '+56 9 6246 9977';
@@ -22,7 +23,6 @@
     { titulo: 'Mes a mes', desc: function (p) { return p.price + ' con IVA. Sin permanencia.'; }, resumen: function (p) { return 'Mes a mes · ' + pesos(p.mes) + ' al mes con IVA'; } },
     { titulo: 'El año de una vez', desc: function (p) { return pesos(p.anual) + ' (12 meses al precio de 10) y tu .cl propio desde el primer día.'; }, resumen: function (p) { return 'El año de una vez · ' + pesos(p.anual) + ', con .cl propio inmediato'; } }
   ];
-  var TONO_CTA = ['Cuéntame qué necesitas', 'Solicitar cotización', '¡Hablemos!', 'Cotizar'];
 
   /* ───────── utilidades ───────── */
   function $(s, r) { return (r || document).querySelector(s); }
@@ -37,18 +37,7 @@
   function digitos(s) { return String(s || '').replace(/\D/g, ''); }
 
   /* ───────── estado ───────── */
-  function nuevo() {
-    return {
-      step: 0, plan: 1, name: '', apodo: '', oficio: null, oficioOtro: '', likes: [], likeOtro: '',
-      palette: null, concept: 0, conceptText: '', style: 0, bg: 0, motion: 1, tone: 0, enfoque: 2,
-      myColors: ['#E8789A', '#FFF1B8', '#2A1D45'], photoName: '',
-      svcs: [0, 1, 2].map(function () { return { n: '', p: '', d: '', ph: 'lib', phName: '' }; }),
-      where: [], comunas: '', insta: '', fb: '', fields: [], email: '',
-      avg: null, reply: null, books: null, modalidad: null, tel: '', correo: '', result: null,
-      // el alma (SOUL 2) y la dirección de marca (null = la elige el borrador)
-      origen: '', unico: '', nunca: '', momento: '', cifraN: '', cifraU: '', cifraOtro: '', cierre: '', dir: null
-    };
-  }
+  function nuevo() { return S.nuevo(); }
   var ST = nuevo();
   // Las fotos viven solo en memoria: pesan, y no hace falta guardarlas en sessionStorage.
   var MEM = { photo: '', svcPh: {} };
@@ -56,28 +45,13 @@
 
   var VISTA = false;   // true cuando se abre el enlace «#borrador=…» del correo: solo mira, no guarda ni mide
   function guardar() { if (VISTA || (ST.result && ST.result.ok)) return; try { sessionStorage.setItem(KEY, JSON.stringify(ST)); } catch (_) { /* modo privado o lleno: se sigue en memoria */ } }
-  function mezclar(s) {
-    var base = nuevo();
-    Object.keys(base).forEach(function (k) {
-      if (s[k] === undefined || s[k] === null) { if (k === 'oficio' || k === 'dir' || k === 'palette' || k === 'avg' || k === 'reply' || k === 'books' || k === 'result' || k === 'modalidad') base[k] = null; return; }
-      if (Array.isArray(base[k]) !== Array.isArray(s[k])) return;
-      base[k] = s[k];
-    });
-    if (base.svcs.length < 1 || base.svcs.length > 6) base.svcs = nuevo().svcs;
-    return base;
-  }
+  function mezclar(s) { return S.mezclar(s); }
   function cargar() {
     try { var raw = sessionStorage.getItem(KEY); if (raw) ST = mezclar(JSON.parse(raw)); } catch (_) { ST = nuevo(); }
   }
   /* El borrador viaja en el enlace del correo: las respuestas (sin teléfono ni correos) en base64url. Sin servidor. */
-  function codificar() {
-    var o = {}; Object.keys(ST).forEach(function (k) { if (['tel', 'correo', 'email', 'result', 'step'].indexOf(k) < 0) o[k] = ST[k]; });
-    return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-  }
-  function decodificar(h) {
-    h = h.replace(/-/g, '+').replace(/_/g, '/'); while (h.length % 4) h += '=';
-    return JSON.parse(decodeURIComponent(escape(atob(h))));
-  }
+  function codificar() { return S.codificar(ST); }
+  function decodificar(h) { return S.decodificar(h); }
 
   /* ───────── la secuencia segun el plan ───────── */
   function seq() {
@@ -89,27 +63,26 @@
   function nPreg() { return total() - 1; }
 
   /* ───────── datos derivados ───────── */
-  function esOtro() { return ST.oficio === D.OFICIOS.length - 1; }
-  function ofi() { return D.OFICIOS[ST.oficio == null ? D.OFICIOS.length - 1 : ST.oficio]; }
+  function esOtro() { return S.esOtro(ST, D); }
+  function ofi() { return S.ofi(ST, D); }
   function oficioLabel() { return esOtro() ? (ST.oficioOtro || 'tu oficio') : ofi().label.toLowerCase(); }
-  function pal() { return ST.palette === CUSTOM_PAL ? ST.myColors : D.PALETTES[ST.palette == null ? 0 : ST.palette].c; }
+  function pal() { return S.pal(ST, D); }
   function concepto() { return ST.conceptText || ofi().concepts[ST.concept]; }
-  function oficioNombre() { return esOtro() ? (ST.oficioOtro || 'Otro oficio') : ofi().label; }
+  function oficioNombre() { return S.oficioNombre(ST, D); }
   // «Otro oficio» no lleva foto de un oficio concreto: fondo neutro de la marca.
   function fotoOficio() {
     var o = ofi(), n = o.img === undefined ? ST.oficio : o.img;
     return n == null ? '' : 'img/oficio-' + pad(n) + '.webp';
   }
   function fondo(url) { return url ? 'background-image:url(' + url + ')' : 'background-image:linear-gradient(135deg,#BFE3F5 0%,#FFE9A3 60%,#FFD3B4 100%)'; }
-  function slug() { return (ST.name || 'tu-negocio').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'tu-negocio'; }
+  function slug() { return S.slug(ST); }
   var DOMINIO = 'Partes en compai.cl/tu-negocio; tu propio .cl llega desde el segundo mes, o de inmediato si pagas el año.';
-  function svcsLlenos() { return ST.svcs.filter(function (x) { return x.n.trim(); }); }
-  var sobre = M.sobre;
+  function svcsLlenos() { return S.svcsLlenos(ST); }
 
   function EJ() { return D.EJEMPLOS[ST.oficio == null ? D.EJEMPLOS.length - 1 : ST.oficio]; }
-  function dirActual() { return ST.dir != null ? ST.dir : M.elegir(ST, D); }
+  function dirActual() { return S.dirActual(ST, D, M); }
   function cifraTxt() { var c = M.cifra(ST, D); return c ? c.texto : ''; }
-  function sup() { return M.superficies(M.DIRS[dirActual()], ST.bg === 0, pal()[0]); }
+  function sup() { return S.sup(ST, D, M); }
 
   /* ───────── piezas de HTML ───────── */
   function chip(label, on, a, i) { return '<button type="button" class="chip" aria-pressed="' + (on ? 'true' : 'false') + '" data-a="' + a + '" data-i="' + i + '">' + esc(label) + '</button>'; }
@@ -353,114 +326,7 @@
      SOUL 2: la dirección de marca (marca.js) pone tipografía y superficies; el titular, el manifiesto
      y el cierre salen de las respuestas del alma. Ninguna línea habla del sitio ni de cómo se hizo,
      y la misma foto de biblioteca ya no se reparte por rubro: foto propia o arte SVG con la paleta. */
-  function iniciales() {
-    var w = M.marcaNombre(ST).split(/\s+/).filter(Boolean);
-    return (w.length > 1 ? w[0].charAt(0) + w[1].charAt(0) : (w[0] || 'S').slice(0, 2)).toUpperCase();
-  }
-  function rgba(hex, a) {
-    var n = parseInt(hex.slice(1), 16); return 'rgba(' + (n >> 16) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')';
-  }
-  /* El arte de la portada y de las tarjetas: monograma gigante + el motivo del oficio + la trama de la dirección. */
-  function motivoG(tf, sw) {
-    var singer = ST.oficio === 0, m = D.MOTIFS[ST.oficio == null ? D.MOTIFS.length - 1 : ST.oficio];
-    return '<path d="' + m + '" transform="' + tf + '" fill="' + (singer ? 'var(--ac)' : 'none') + '" fill-opacity="' + (singer ? '.5' : '0') + '" stroke="' + (singer ? 'none' : 'var(--ac)') + '" stroke-width="' + sw + '" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" opacity=".6"></path>';
-  }
-  function arteSVG(d) {
-    var o = '<svg viewBox="0 0 400 760" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">', k;
-    if (d.trama === 'rayos') {
-      for (k = 0; k < 9; k++) o += '<line x1="200" y1="-40" x2="' + (k * 50 - 20) + '" y2="780" stroke="var(--ac)" stroke-opacity=".16" stroke-width="1.2"></line>';
-    } else if (d.trama === 'grano') {
-      o += '<defs><pattern id="vpg" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.4" fill="var(--ink)" fill-opacity=".16"></circle><circle cx="14" cy="14" r="1" fill="var(--ink)" fill-opacity=".1"></circle></pattern></defs><rect width="400" height="760" fill="url(#vpg)"></rect>';
-    } else {
-      for (k = 1; k < 10; k++) o += '<line x1="' + k * 40 + '" y1="0" x2="' + k * 40 + '" y2="760" stroke="var(--ink)" stroke-opacity=".08"></line>';
-      for (k = 1; k < 19; k++) o += '<line x1="0" y1="' + k * 40 + '" x2="400" y2="' + k * 40 + '" stroke="var(--ink)" stroke-opacity=".08"></line>';
-      o += '<path d="M40 40h40M40 40v40M360 720h-40M360 720v-40" stroke="var(--ac)" stroke-width="2" fill="none"></path>';
-    }
-    o += '<text x="-14" y="560" style="font-family:var(--display);font-weight:800;font-size:520px;letter-spacing:-.04em" fill="none" stroke="var(--ac)" stroke-opacity=".34" stroke-width="2">' + esc(iniciales()) + '</text>';
-    o += ST.oficio === 0 ? motivoG('translate(-38 120) scale(4.6)', 2) : motivoG('translate(88 190) scale(9)', 2.4);
-    return o + '</svg>';
-  }
-  function arteTarjeta() {
-    var m = D.MOTIFS[ST.oficio == null ? D.MOTIFS.length - 1 : ST.oficio];
-    var tf = ST.oficio === 0 ? 'translate(78 -2) scale(.95)' : 'translate(66 14) scale(2.6)';
-    return '<svg viewBox="0 0 200 140" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path d="' + m + '" transform="' + tf + '" fill="' + (ST.oficio === 0 ? 'var(--ac)' : 'none') + '" fill-opacity=".45" stroke="' + (ST.oficio === 0 ? 'none' : 'var(--ac)') + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" opacity=".7"></path></svg>';
-  }
-
-  /* Las últimas palabras del titular van en el acento: el remate se lee primero (vara de Miguel). */
-  function titHTML(t) {
-    var w = String(t).split(' '); if (w.length < 3) return esc(t);
-    var k = w.length > 5 ? 2 : 1;
-    return esc(w.slice(0, -k).join(' ')) + ' <em>' + esc(w.slice(-k).join(' ')) + '</em>';
-  }
-  function sitioBorrador() {
-    var dark = ST.bg === 0, di = dirActual(), d = M.DIRS[di], su = sup();
-    var anim = ST.motion === 0 ? '' : ST.motion === 1 ? ' kb1' : ' kb2';
-    var nombre = M.marcaNombre(ST);
-    var cta = TONO_CTA[ST.tone] || 'Cotizar';
-    var tel = digitos(ST.tel);
-    var wsp = 'https://wa.me/' + (tel.length >= 8 ? (tel.length === 9 && tel.charAt(0) === '9' ? '56' + tel : tel) : WSP);
-    var ci = M.cifra(ST, D), tit = M.titular(ST), cie = M.cierre(ST);
-    var n = 0; function num(t) { n++; return '<p class="mn num">' + pad(n) + ' — ' + esc(t) + '</p>'; }
-    var vars = '--display:' + d.display + ';--texto:' + d.texto + ';--mono:' + d.mono +
-      ';--bg:' + su.bg + ';--bg2:' + su.bg2 + ';--ink:' + su.ink + ';--mut:' + su.mut + ';--ac:' + su.ac + ';--on:' + sobre(su.ac) + ';--ln:' + rgba(su.ink, .22) +
-      ';--bgI:' + su.bgI + ';--bg2I:' + su.bg2I + ';--inkI:' + su.inkI + ';--mutI:' + su.mutI + ';--acI:' + su.acI + ';--onI:' + sobre(su.acI) + ';--lnI:' + rgba(su.inkI, .22);
-    var s = '<div class="vp' + (d.mayus ? ' my' : '') + '" data-dir="' + d.id + '" style="' + vars + '">';
-    // portada alta: nav + arte (foto propia si la hay; si no, arte SVG con la paleta) + titular
-    s += '<section class="hero sf-a" aria-label="Portada"><div class="arte' + anim + '"' + (MEM.photo ? ' style="' + fondo(MEM.photo) + '"' : '') + '>' + (MEM.photo ? '' : arteSVG(d)) + '</div><div class="scrim"></div>' +
-      '<div class="nav"><span class="logo"><i aria-hidden="true">' + esc(iniciales()) + '</i><b>' + esc(nombre) + '</b></span><a class="cta" href="#vp-cotiza" data-vp>' + esc(cta) + '</a></div>' +
-      '<div class="in-h"><p class="mn">' + esc(oficioNombre()) + '</p><h2 class="tit">' + titHTML(tit || nombre) + '</h2>' +
-      (ci ? '<p class="mn prueba">' + esc(ci.texto) + '</p>' : '') +
-      '<div class="acc"><a class="cta" href="#vp-cotiza" data-vp>' + esc(cta) + '</a><a class="cta sec" href="' + esc(wsp) + '" target="_blank" rel="noopener">WhatsApp</a></div></div></section>';
-    // manifiesto: origen + dos principios, todo con palabras de la persona
-    var ori = M.origen(ST), pr = [['I · Mi límite', M.nunca(ST)], ['II · Mi vara', M.momento(ST)]].filter(function (x) { return x[1]; });
-    if (ori || pr.length) {
-      s += '<section class="s sf-i" aria-label="Manifiesto">' + num('Manifiesto') + (ori ? '<p class="mani">' + esc(ori) + '</p>' : '') +
-        (pr.length ? '<div class="tres">' + pr.map(function (x) { return '<div><p class="mn">' + esc(x[0]) + '</p><p>' + esc(x[1]) + '</p></div>'; }).join('') + '</div>' : '') + '</section>';
-    }
-    // servicios
-    var lleno = svcsLlenos();
-    if (lleno.length) {
-      if (ST.plan === 0) {
-        s += '<section class="s sf-a" aria-label="Servicios">' + num('Servicios') + '<h3>Lo que hago por ti</h3><ul class="lista">' +
-          lleno.map(function (v) { return '<li><b>' + esc(v.n.trim()) + '</b>' + (v.p.trim() ? '<span class="pr">desde ' + esc(v.p.trim()) + '</span>' : '') + '</li>'; }).join('') + '</ul></section>';
-      } else {
-        var c = 0;
-        s += '<section class="s sf-a" aria-label="Servicios">' + num('Servicios') + '<h3>Lo que hago por ti</h3><div class="svcs">' +
-          ST.svcs.map(function (v, k) {
-            if (!v.n.trim()) return '';
-            c++;
-            var propia = v.ph === 'up' && MEM.svcPh[k];
-            return '<div class="svcc">' + (propia ? '<div class="ph" style="' + fondo(esc(MEM.svcPh[k])) + '"></div>' : '<div class="ph art">' + arteTarjeta() + '<p class="mn">' + pad(c) + '</p></div>') +
-              '<div class="bd"><b>' + esc(v.n.trim()) + '</b>' + (v.p.trim() ? '<span class="pr">desde ' + esc(v.p.trim()) + '</span>' : '') + (v.d.trim() ? '<p>' + esc(v.d.trim()) + '</p>' : '') + '</div></div>';
-          }).join('') + '</div></section>';
-      }
-    }
-    if (ST.plan >= 1) {
-      var dnd = ST.where.join(' · ');
-      s += '<section class="s sf-b" aria-label="Dónde trabajo">' + num('Dónde') + '<h3>' + esc(dnd || 'Dónde trabajo') + '</h3>' +
-        (ST.comunas.trim() ? '<p class="t">' + esc(ST.comunas.trim()) + '</p>' : '') +
-        ((ST.insta.trim() || ST.fb.trim()) ? '<div class="tags">' + [ST.insta.trim(), ST.fb.trim()].filter(Boolean).map(function (r) { return '<span class="tag">' + esc(r) + '</span>'; }).join('') + '</div>' : '') + '</section>';
-    }
-    // formulario de cotización
-    var campos = ['Nombre', 'Teléfono'].concat(ST.plan >= 1 ? ['Servicio'] : []).concat(ST.plan >= 1 ? ST.fields : []);
-    s += '<section class="s sf-a" id="vp-cotiza" aria-label="Cotiza">' + num('Contacto') + '<h3>' + esc(cta) + '</h3><div class="form" aria-hidden="true">' +
-      campos.map(function (c) { return '<label>' + esc(c) + '<span class="fake">' + (c === 'Servicio' ? 'Elige un servicio ▾' : '') + '</span></label>'; }).join('') +
-      '<span class="cta">Enviar</span></div><a class="wsp" href="' + esc(wsp) + '" target="_blank" rel="noopener">Escríbeme por WhatsApp</a></section>';
-    // el panel (vibe)
-    if (ST.plan === 2) {
-      s += '<section class="s sf-b" aria-label="Tu panel">' + num('Tu panel') + '<h3>Cada solicitud, guardada.</h3><p class="t">Entras con <b>' + esc(ST.email.trim() || 'tu correo') + '</b> y ves solo lo tuyo.</p><div class="panel">' +
-        '<div><b>0</b><span>solicitudes este mes</span></div>' +
-        '<div><b>' + esc(ST.avg == null ? '—' : D.AVGS[ST.avg]) + '</b><span>valor medio por trabajo</span></div>' +
-        '<div><b>' + esc(ST.reply == null ? '—' : D.REPLIES[ST.reply]) + '</b><span>tu meta de respuesta</span></div>' +
-        '<div><b>' + esc(ST.books == null ? '—' : D.BOOKS[ST.books]) + '</b><span>donde llevas hoy tus cuentas</span></div></div></section>';
-    }
-    // cierre: la frase que la persona quiere que digan de ella
-    if (cie) s += '<section class="s sf-i" aria-label="Cierre"><p class="cie">' + esc(cie) + '</p><a class="wsp" href="' + esc(wsp) + '" target="_blank" rel="noopener">Escríbeme por WhatsApp</a></section>';
-    // pie oficial (CLAUDE.md 4.b): solo la imagen «alma compAI», 40 px libres arriba y la línea. Oscuro → crema; claro → tinta.
-    var finOscuro = cie ? !dark : dark;
-    s += '<footer class="vf ' + (cie ? 'sf-i' : 'sf-a') + '"><div class="pie"><div class="pie-compai"><img src="img/' + (finOscuro ? 'pie-compai-claro' : 'pie-alma-compai-oscuro') + '.png" width="310" height="95" alt="alma compAI"></div></div></footer>';
-    return s + '</div>';
-  }
+  function sitioBorrador() { return S.html(ST, { D: D, M: M, cfg: CFG, mem: MEM, base: '', vivo: false }); }
 
   /* Nombre simple de un color, para decirlo como se dice en la calle. */
   function colorNombre(hex) {
@@ -501,6 +367,20 @@
     return t;
   }
   function waUrl() { return 'https://wa.me/' + WSP + '?text=' + encodeURIComponent(waTexto()); }
+  /* El enlace publico del sitio: las respuestas viajan en el # (sin servidor). Se muestra completo, se copia y se comparte por WhatsApp. */
+  function enlaceUrl() { return new URL('s/', location.href).href.replace(/[?#].*$/, '') + '#' + codificar(); }
+  function enlaceHTML() {
+    var u = enlaceUrl(), wa = 'https://wa.me/?text=' + encodeURIComponent('Mira mi sitio: ' + u);
+    return '<div class="enlace" role="group" aria-labelledby="l-enl"><h2 id="l-enl">Tu enlace</h2><p class="hint" style="margin:0">Ábrelo en el celular: tu sitio se ve armado, como lo verían tus clientes. Mándalo a quien quieras.</p>' +
+      '<textarea class="resp-txt" readonly rows="3" id="enl-txt" aria-label="Tu enlace">' + esc(u) + '</textarea>' +
+      '<div class="fila-b"><button type="button" class="btn-p" data-a="copiarenl">Copiar enlace</button><a class="btn-s" href="' + esc(wa) + '" target="_blank" rel="noopener" data-a="wsp">Compartir por WhatsApp</a><a class="btn-s" href="' + esc(u) + '" target="_blank" rel="noopener" data-a="wsp">Abrir mi sitio</a></div>' +
+      '<span id="copiado-enl" role="status" class="hint"></span></div>';
+  }
+  function copiarEnlace() {
+    var ta = $('#enl-txt'), msg = $('#copiado-enl'), txt = ta ? ta.value : enlaceUrl();
+    function listo(ok) { if (msg) msg.textContent = ok ? ' Copiado. Pégalo donde quieras.' : ' No pude copiar solo: selecciona el enlace y cópialo.'; if (!ok && ta) { ta.focus(); ta.select(); } }
+    try { navigator.clipboard.writeText(txt).then(function () { listo(true); }, function () { listo(false); }); } catch (_) { listo(false); }
+  }
   function finHTML() {
     var R = ST.result || { ok: false, motivo: 'sin-envio' }, h = '';
     h += '<h1 class="q" tabindex="-1" id="foco" style="font-size:26px">' + (VISTA ? 'Borrador de ' + esc(ST.name || 'la persona') : R.ok ? 'Tu sitio, en borrador.' : 'Tu borrador está listo.') + '</h1>';
@@ -516,6 +396,7 @@
         '<details><summary style="min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:600">Ver o copiar mis respuestas</summary><textarea class="resp-txt" readonly aria-label="Mis respuestas" id="resp-txt">' + esc(waTexto()) + '</textarea>' +
         '<button type="button" class="btn-s" data-a="copiar" style="margin-top:8px">Copiar mis respuestas</button><span id="copiado" role="status" class="hint"></span></details></div>';
     }
+    if (!VISTA) h += enlaceHTML();
     h += '<div class="borrador-t"><span class="mono">Borrador</span><span class="hint">Así se vería tu sitio. Es una vista previa: las fotos y los textos finales los afinamos contigo. ' + DOMINIO + '</span></div>' + dirsHTML() + sitioBorrador() + corpHTML();
     return h;
   }
@@ -653,6 +534,7 @@
       case 'editar': ST.result = null; ir(total()); return;
       case 'reintentar': enviar(); return;
       case 'copiar': copiar(); return;
+      case 'copiarenl': copiarEnlace(); return;
       case 'wsp': return;   // enlace normal a WhatsApp
       default: return;
     }
