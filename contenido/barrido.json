@@ -1,16 +1,8 @@
 {
- "fecha": "2026-10-29",
+ "fecha": "2026-10-30",
  "fuente": "API de Mercado Público · licitaciones activas, todas las modalidades",
- "barridas": 5018,
+ "barridas": 5105,
  "filas": [
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
-   "id": "PLATAFORMA DE GESTIÓN DE ESTABLECIMIENTOS EDUCACIONALES …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
   {
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
@@ -80,6 +72,14 @@
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
    "id": "REQUERIMIENTO DE SERVICIOS INFORMÁTICOS",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "SERVICIO CONTACTABILIDAD",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   }
