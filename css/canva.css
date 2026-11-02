@@ -592,7 +592,7 @@
    pagina deja de ser un plano absoluto para ser una columna. Las capas que
    solo existen para oscurecer o decorar no se apilan: se esconden. */
 @media (max-width:700px){
-  .cv{--u:0.1465128cqw}
+  .cv{--u:0.1289cqw} /* 02-11-2026, Sebastián: «bajaría un poco el zoom». Era 0.1465: todo el lienzo baja 12 %. */
   .cv .pg{aspect-ratio:auto;height:auto;min-height:0;
     display:flex;flex-direction:column;align-items:stretch;
     gap:calc(34*var(--u));padding:calc(70*var(--u)) calc(40*var(--u))}
@@ -685,7 +685,10 @@
     padding:calc(14*var(--u)) calc(22*var(--u))}
   /* La placa sube sobre el texto y se achica: a ancho completo pesaria mas
      que el servicio que anuncia. */
-  .cv .placa{order:-1;width:calc(300*var(--u));height:calc(300*var(--u));align-self:flex-start}
+  /* 02-11-2026: order:-1 subía TODAS las placas arriba y dejaba los textos juntos abajo. Cada icono va sobre su servicio. */
+  .cv .placa{order:calc(var(--ord)*2);width:calc(300*var(--u));height:calc(300*var(--u));align-self:flex-start}
+  .cv .servblock{order:calc(var(--ord)*2 + 1);margin-bottom:calc(40*var(--u))}
+  .cv .bcat{order:99}
   .placa-ic{width:calc(132*var(--u));height:calc(132*var(--u))}
   .placa-cod,.placa-lin{font-size:calc(20*var(--u))}
   .cv .placa-tick{width:calc(54*var(--u))}

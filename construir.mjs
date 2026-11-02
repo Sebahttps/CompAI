@@ -326,7 +326,7 @@ const ROT_LINEA = { automatizacion: 'L1', especificacion: 'L2', continuidad: 'L3
    bastan, y cuatro laminas con bajada eran un muro de texto—; la bajada
    sigue estando en la hoja, que es donde se va a leer. */
 const servTexto = (s, x, y) => `<button class="b servblock" type="button" data-slug="${esc(s.slug)}" aria-haspopup="dialog"
-        style="--x:${x};--y:${y};--w:583;text-align:left;display:block">
+        style="--x:${x};--y:${y};--w:583;text-align:left;display:block;--ord:${SERV.indexOf(s)}">
         <span class="serv-rot">${esc(s.codigo)} / ${esc(ROT_LINEA[s.slug] || '')}${s.sello ? ` · ${esc(s.sello)}` : ''}</span>
         <span class="serv-tit">${esc(s.titulo)}</span>
         <ul class="serv-vin">${s.vinetas.slice(0, 3).map(v => `<li>${esc(v)}</li>`).join('')}</ul>
@@ -337,7 +337,7 @@ const servTexto = (s, x, y) => `<button class="b servblock" type="button" data-s
    07-10-2026 tambien abre la lamina: Sebastian pidio que el titular O el
    icono la desplieguen. El boton de la izquierda es el accesible; la placa
    es un atajo para el mouse y el dedo, por eso sigue aria-hidden. */
-const placa = (s, x, y) => `<div class="b fh placa" data-slug="${esc(s.slug)}" style="--x:${x};--y:${y};--w:400;--hh:400" aria-hidden="true">
+const placa = (s, x, y) => `<div class="b fh placa" data-slug="${esc(s.slug)}" style="--x:${x};--y:${y};--w:400;--hh:400;--ord:${SERV.indexOf(s)}" aria-hidden="true">
         <svg class="placa-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"
              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">${ICONO[s.slug] || ''}</svg>
         <span class="placa-cod">${esc(s.codigo)}</span>
@@ -715,6 +715,11 @@ ${e.grupos.map((g, k) => grupo(e, g) + (k === 0 ? vig(e) : '')).join('\n')}
           <label>${esc(F.plazo.etiqueta)}<input name="plazo" maxlength="60" placeholder="${esc(F.plazo.placeholder)}"></label>
           ${F.codigo ? `<label>${esc(F.codigo.etiqueta)}<input name="codigo" maxlength="40" placeholder="${esc(F.codigo.placeholder)}"></label>` : ''}
           <span class="trampa" aria-hidden="true"><input name="sitioweb" tabindex="-1" autocomplete="off"></span>
+          <div class="adjunta">
+            <input class="arch" id="arch-${esc(e.id)}" type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.odt,.ods,.rtf,.txt,.jpg,.jpeg,.png,.webp,.zip">
+            <label for="arch-${esc(e.id)}"><b>${esc(S.inbox.adjunta.titulo)}</b><span>${esc(S.inbox.adjunta.nota)}</span></label>
+            <ul class="lista-arch" aria-live="polite"></ul>
+          </div>
         </div>
         <div class="envia">
           <button type="submit">${esc(F.cta)}</button><span class="cuenta" aria-live="polite"></span>

@@ -10,8 +10,8 @@
   "formulario": {
     "titulo_quien": "¿A quién le enviamos la cotización?",
     "cta": "Pedir cotización",
-    "nota": "Le respondemos al correo que deje aquí.",
-    "exito": "Listo, nos llegó. Le respondemos a {correo}. Si quiere adjuntar bases u orden de compra, se abrió su correo.",
+    "nota": "Le respondemos al correo que deje aquí. Puede adjuntar bases u orden de compra.",
+    "exito": "Listo, nos llegó. Le respondemos a {correo}.",
     "error": "No quedó registrado, pero le abrimos su correo con el requerimiento escrito: envíelo desde ahí.",
     "vacio": "Marque al menos una.",
     "sin_institucion": "Falta la institución.",

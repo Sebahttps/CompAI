@@ -573,6 +573,14 @@ html.hdr-chico .brand .logo{transform:scale(.737);
    escena de la panadera no le dice nada (Visu, 07-10-2026) */
 #p5:checked ~ .sala .confianza{display:none !important}
 /* el enlace a la agenda de 30 min, bajo el boton de la escena PyME */
+.adjunta{grid-column:1/-1}
+.adjunta .arch{position:absolute;width:1px;height:1px;opacity:0}
+.quien .adjunta label{display:flex;font-family:inherit;flex-direction:column;gap:3px;padding:12px 14px;border:1px dashed var(--crema-12);border-radius:6px;cursor:pointer;font-size:13px;text-transform:none;letter-spacing:0}
+.quien .adjunta label b{color:var(--crema);font-weight:600}
+.quien .adjunta label span{text-transform:none;letter-spacing:0;font-family:inherit;color:var(--crema-75);font-size:12px}
+.adjunta .arch:focus-visible + label{outline:2px solid var(--azul);outline-offset:1px}
+.lista-arch{list-style:none;margin:6px 0 0;padding:0;font-size:12px;color:var(--crema-75)}
+.lista-arch .mal{color:#F0A898}
 .envia .agenda{flex-basis:100%;font-size:13px;color:var(--azul-300);text-decoration:none;border-bottom:1px solid rgba(120,197,227,.4);width:max-content}
 .envia .agenda:hover{color:var(--crema)}
 /* y la promesa de licencias tampoco la recibe (ClAI-nte, 07-10-2026) */
@@ -967,10 +975,15 @@ html.hdr-chico .brand .logo{transform:scale(.737);
           <label>¿Para cuándo?<input name="plazo" maxlength="60" placeholder="Ej.: antes del 30 de octubre"></label>
           <label>Código de Compra Ágil, si ya la publicó<input name="codigo" maxlength="40" placeholder="Ej.: 1234-56-COT26"></label>
           <span class="trampa" aria-hidden="true"><input name="sitioweb" tabindex="-1" autocomplete="off"></span>
+          <div class="adjunta">
+            <input class="arch" id="arch-01" type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.odt,.ods,.rtf,.txt,.jpg,.jpeg,.png,.webp,.zip">
+            <label for="arch-01"><b>Bases, anexo u orden de compra</b><span>Súbelas aquí y quedan guardadas. PDF, Word, Excel o imagen.</span></label>
+            <ul class="lista-arch" aria-live="polite"></ul>
+          </div>
         </div>
         <div class="envia">
           <button type="submit">Pedir cotización</button><span class="cuenta" aria-live="polite"></span>
-          <p class="nota">Le respondemos al correo que deje aquí.</p>
+          <p class="nota">Le respondemos al correo que deje aquí. Puede adjuntar bases u orden de compra.</p>
           
         </div>
         <p class="aviso" role="status" hidden></p>
@@ -1007,10 +1020,15 @@ html.hdr-chico .brand .logo{transform:scale(.737);
           <label>¿Para cuándo?<input name="plazo" maxlength="60" placeholder="Ej.: antes del 30 de octubre"></label>
           <label>Código de Compra Ágil, si ya la publicó<input name="codigo" maxlength="40" placeholder="Ej.: 1234-56-COT26"></label>
           <span class="trampa" aria-hidden="true"><input name="sitioweb" tabindex="-1" autocomplete="off"></span>
+          <div class="adjunta">
+            <input class="arch" id="arch-02" type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.odt,.ods,.rtf,.txt,.jpg,.jpeg,.png,.webp,.zip">
+            <label for="arch-02"><b>Bases, anexo u orden de compra</b><span>Súbelas aquí y quedan guardadas. PDF, Word, Excel o imagen.</span></label>
+            <ul class="lista-arch" aria-live="polite"></ul>
+          </div>
         </div>
         <div class="envia">
           <button type="submit">Pedir cotización</button><span class="cuenta" aria-live="polite"></span>
-          <p class="nota">Le respondemos al correo que deje aquí.</p>
+          <p class="nota">Le respondemos al correo que deje aquí. Puede adjuntar bases u orden de compra.</p>
           
         </div>
         <p class="aviso" role="status" hidden></p>
@@ -1047,10 +1065,15 @@ html.hdr-chico .brand .logo{transform:scale(.737);
           <label>¿Para cuándo?<input name="plazo" maxlength="60" placeholder="Ej.: antes del 30 de octubre"></label>
           <label>Código de Compra Ágil, si ya la publicó<input name="codigo" maxlength="40" placeholder="Ej.: 1234-56-COT26"></label>
           <span class="trampa" aria-hidden="true"><input name="sitioweb" tabindex="-1" autocomplete="off"></span>
+          <div class="adjunta">
+            <input class="arch" id="arch-03" type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.odt,.ods,.rtf,.txt,.jpg,.jpeg,.png,.webp,.zip">
+            <label for="arch-03"><b>Bases, anexo u orden de compra</b><span>Súbelas aquí y quedan guardadas. PDF, Word, Excel o imagen.</span></label>
+            <ul class="lista-arch" aria-live="polite"></ul>
+          </div>
         </div>
         <div class="envia">
           <button type="submit">Pedir cotización</button><span class="cuenta" aria-live="polite"></span>
-          <p class="nota">Le respondemos al correo que deje aquí.</p>
+          <p class="nota">Le respondemos al correo que deje aquí. Puede adjuntar bases u orden de compra.</p>
           
         </div>
         <p class="aviso" role="status" hidden></p>
@@ -1087,10 +1110,15 @@ html.hdr-chico .brand .logo{transform:scale(.737);
           <label>¿Para cuándo?<input name="plazo" maxlength="60" placeholder="Ej.: antes del 30 de octubre"></label>
           <label>Código de Compra Ágil, si ya la publicó<input name="codigo" maxlength="40" placeholder="Ej.: 1234-56-COT26"></label>
           <span class="trampa" aria-hidden="true"><input name="sitioweb" tabindex="-1" autocomplete="off"></span>
+          <div class="adjunta">
+            <input class="arch" id="arch-04" type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.odt,.ods,.rtf,.txt,.jpg,.jpeg,.png,.webp,.zip">
+            <label for="arch-04"><b>Bases, anexo u orden de compra</b><span>Súbelas aquí y quedan guardadas. PDF, Word, Excel o imagen.</span></label>
+            <ul class="lista-arch" aria-live="polite"></ul>
+          </div>
         </div>
         <div class="envia">
           <button type="submit">Pedir cotización</button><span class="cuenta" aria-live="polite"></span>
-          <p class="nota">Le respondemos al correo que deje aquí.</p>
+          <p class="nota">Le respondemos al correo que deje aquí. Puede adjuntar bases u orden de compra.</p>
           
         </div>
         <p class="aviso" role="status" hidden></p>
@@ -1138,6 +1166,11 @@ html.hdr-chico .brand .logo{transform:scale(.737);
           <label>¿Para cuándo?<input name="plazo" maxlength="60" placeholder="Ej.: antes de diciembre"></label>
           
           <span class="trampa" aria-hidden="true"><input name="sitioweb" tabindex="-1" autocomplete="off"></span>
+          <div class="adjunta">
+            <input class="arch" id="arch-05" type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.odt,.ods,.rtf,.txt,.jpg,.jpeg,.png,.webp,.zip">
+            <label for="arch-05"><b>Bases, anexo u orden de compra</b><span>Súbelas aquí y quedan guardadas. PDF, Word, Excel o imagen.</span></label>
+            <ul class="lista-arch" aria-live="polite"></ul>
+          </div>
         </div>
         <div class="envia">
           <button type="submit">Quiero ver mi sitio</button><span class="cuenta" aria-live="polite"></span>
@@ -1151,7 +1184,7 @@ html.hdr-chico .brand .logo{transform:scale(.737);
     <p class="confianza abajo">Antes de emitir la orden de compra, revise si estamos hábiles. La ficha es pública. <a href="https://proveedor.mercadopublico.cl/ficha/78.491.451-8" target="_blank" rel="noopener">Ver la ficha de CompAI en Mercado Público →</a></p>
   </div>
 </main>
-<script>window.ESCENAS={"formulario":{"titulo_quien":"¿A quién le enviamos la cotización?","cta":"Pedir cotización","nota":"Le respondemos al correo que deje aquí.","exito":"Listo, nos llegó. Le respondemos a {correo}. Si quiere adjuntar bases u orden de compra, se abrió su correo.","error":"No quedó registrado, pero le abrimos su correo con el requerimiento escrito: envíelo desde ahí.","vacio":"Marque al menos una.","sin_institucion":"Falta la institución.","faltan":"Falta el nombre o el correo.","plazo":{"etiqueta":"¿Para cuándo?","placeholder":"Ej.: antes del 30 de octubre","obligatorio":false,"tipo":"texto libre, no selector de fecha"},"institucion":{"etiqueta":"Institución","placeholder":"Ej.: Municipalidad de …","obligatorio":true},"respaldo":{"linea":"¿No se abrió su correo? Escríbanos a hola@compai.cl","boton_copiar":"Copiar el requerimiento","copiado":"Copiado. Péguelo en un correo a hola@compai.cl"},"cuerpo":"Estimados:\n\nDesde {institucion} solicitamos cotización por:\n\n{items}\n\nLo necesitamos {plazo}.\n\nCódigo de la compra: {codigo}\n\nPor favor indicar valor neto, IVA y la glosa para la orden de compra.\n\nSaludos cordiales,\n\n\n— Enviado desde compai.cl/portafolio · {escena}","codigo":{"etiqueta":"Código de Compra Ágil, si ya la publicó","placeholder":"Ej.: 1234-56-COT26"},"correo_malo":"Revise el correo: así no le llega la respuesta.","exito_doc":"Listo. Le enviamos la cotización formal en PDF a {correo}, con valor neto, IVA y la glosa para la orden de compra."},"por":{"05":{"titulo_quien":"¿A quién le escribimos?","cta":"Quiero ver mi sitio","nota":"Te contestamos por WhatsApp. No pagas nada para partir: pagas el primer mes cuando decides quedártelo.","exito":"Listo, nos llegó. Se abrió WhatsApp con tu pedido escrito: envíalo y te contestamos por ahí.","error":"No quedó registrado, pero se abrió WhatsApp con tu pedido escrito: envíalo desde ahí.","vacio":"Elige un plan.","sin_institucion":"Falta el nombre de tu negocio.","faltan":"Falta tu nombre o tu WhatsApp.","plazo":{"etiqueta":"¿Para cuándo?","placeholder":"Ej.: antes de diciembre","obligatorio":false,"tipo":"texto libre, no selector de fecha"},"institucion":{"etiqueta":"Tu oficio o tu negocio","placeholder":"Ej.: Panadería La Espiga","obligatorio":true},"respaldo":{"linea":"¿No se abrió WhatsApp? Escríbenos al +56 9 6246 9977","boton_copiar":"Copiar el pedido","copiado":"Copiado. Pégalo en un WhatsApp al +56 9 6246 9977"},"cuerpo":"Hola:\n\nVivo de mi oficio ({institucion}) y me interesa:\n\n{items}\n\nLo necesito {plazo}.\n\nSaludos,\n\n\n— Enviado desde compai.cl/portafolio · {escena}","codigo":null,"correo_malo":"Revisa el correo: así no te llega la respuesta.","exito_doc":"Listo, nos llegó. Te enviamos la cotización en PDF a {correo} y se abrió WhatsApp con tu pedido escrito.","canal":"whatsapp","whatsapp":"https://wa.me/56962469977","telefono":{"etiqueta":"WhatsApp","placeholder":"+56 9 …","obligatorio":true},"agenda_cta":null}},"endpoint":"https://script.google.com/macros/s/AKfycbz9EDOC1XJu9ERRKHS7JyEM1Jz9op-jNRsfTLZWUgXxZoDw3t5q158VaJJap3RUfwJH/exec"};</script>
+<script>window.ESCENAS={"formulario":{"titulo_quien":"¿A quién le enviamos la cotización?","cta":"Pedir cotización","nota":"Le respondemos al correo que deje aquí. Puede adjuntar bases u orden de compra.","exito":"Listo, nos llegó. Le respondemos a {correo}.","error":"No quedó registrado, pero le abrimos su correo con el requerimiento escrito: envíelo desde ahí.","vacio":"Marque al menos una.","sin_institucion":"Falta la institución.","faltan":"Falta el nombre o el correo.","plazo":{"etiqueta":"¿Para cuándo?","placeholder":"Ej.: antes del 30 de octubre","obligatorio":false,"tipo":"texto libre, no selector de fecha"},"institucion":{"etiqueta":"Institución","placeholder":"Ej.: Municipalidad de …","obligatorio":true},"respaldo":{"linea":"¿No se abrió su correo? Escríbanos a hola@compai.cl","boton_copiar":"Copiar el requerimiento","copiado":"Copiado. Péguelo en un correo a hola@compai.cl"},"cuerpo":"Estimados:\n\nDesde {institucion} solicitamos cotización por:\n\n{items}\n\nLo necesitamos {plazo}.\n\nCódigo de la compra: {codigo}\n\nPor favor indicar valor neto, IVA y la glosa para la orden de compra.\n\nSaludos cordiales,\n\n\n— Enviado desde compai.cl/portafolio · {escena}","codigo":{"etiqueta":"Código de Compra Ágil, si ya la publicó","placeholder":"Ej.: 1234-56-COT26"},"correo_malo":"Revise el correo: así no le llega la respuesta.","exito_doc":"Listo. Le enviamos la cotización formal en PDF a {correo}, con valor neto, IVA y la glosa para la orden de compra."},"por":{"05":{"titulo_quien":"¿A quién le escribimos?","cta":"Quiero ver mi sitio","nota":"Te contestamos por WhatsApp. No pagas nada para partir: pagas el primer mes cuando decides quedártelo.","exito":"Listo, nos llegó. Se abrió WhatsApp con tu pedido escrito: envíalo y te contestamos por ahí.","error":"No quedó registrado, pero se abrió WhatsApp con tu pedido escrito: envíalo desde ahí.","vacio":"Elige un plan.","sin_institucion":"Falta el nombre de tu negocio.","faltan":"Falta tu nombre o tu WhatsApp.","plazo":{"etiqueta":"¿Para cuándo?","placeholder":"Ej.: antes de diciembre","obligatorio":false,"tipo":"texto libre, no selector de fecha"},"institucion":{"etiqueta":"Tu oficio o tu negocio","placeholder":"Ej.: Panadería La Espiga","obligatorio":true},"respaldo":{"linea":"¿No se abrió WhatsApp? Escríbenos al +56 9 6246 9977","boton_copiar":"Copiar el pedido","copiado":"Copiado. Pégalo en un WhatsApp al +56 9 6246 9977"},"cuerpo":"Hola:\n\nVivo de mi oficio ({institucion}) y me interesa:\n\n{items}\n\nLo necesito {plazo}.\n\nSaludos,\n\n\n— Enviado desde compai.cl/portafolio · {escena}","codigo":null,"correo_malo":"Revisa el correo: así no te llega la respuesta.","exito_doc":"Listo, nos llegó. Te enviamos la cotización en PDF a {correo} y se abrió WhatsApp con tu pedido escrito.","canal":"whatsapp","whatsapp":"https://wa.me/56962469977","telefono":{"etiqueta":"WhatsApp","placeholder":"+56 9 …","obligatorio":true},"agenda_cta":null}},"endpoint":"https://script.google.com/macros/s/AKfycbz9EDOC1XJu9ERRKHS7JyEM1Jz9op-jNRsfTLZWUgXxZoDw3t5q158VaJJap3RUfwJH/exec"};</script>
 <!-- ESCENAS:FIN -->
 
 <!-- 07-10-2026, Sebastian: sale «Trabajos construidos». El catalogo queda con
@@ -1277,6 +1310,30 @@ html.hdr-chico .brand .logo{transform:scale(.737);
     var F = (D.por || {})[f.dataset.id] || D.formulario || {};
     var aviso = f.querySelector(".aviso"), btn = f.querySelector("button[type=submit]"),
         cuenta = f.querySelector(".cuenta"), resp = f.querySelector(".respaldo"), texto = "";
+    /* 02-11-2026, Sebastián: el formulario abría además el correo y no traía el campo de
+       adjuntos. Ahora sube los archivos con la solicitud (mismos topes que el home y que
+       Code.gs) y el correo solo se abre como respaldo, si el envío falla. */
+    var campoA = f.querySelector(".arch"), listaA = f.querySelector(".lista-arch");
+    var OK_EXT = ["pdf","doc","docx","xls","xlsx","odt","ods","rtf","txt","jpg","jpeg","png","webp","zip"];
+    var elegidos = function(){
+      var r = { lista: [], malos: [] }, total = 0;
+      Array.from((campoA && campoA.files) || []).forEach(function(a){
+        var ext = (a.name.split(".").pop() || "").toLowerCase();
+        if(OK_EXT.indexOf(ext) < 0) r.malos.push(a.name + " — tipo no permitido");
+        else if(a.size > 10485760) r.malos.push(a.name + " — pasa de 10 MB");
+        else if(r.lista.length >= 5) r.malos.push(a.name + " — van 5, el tope");
+        else if(total + a.size > 20971520) r.malos.push(a.name + " — el envío pasa de 20 MB");
+        else { total += a.size; r.lista.push(a); }
+      });
+      return r;
+    };
+    var aBase64 = function(a){ return new Promise(function(ok, mal){ var l = new FileReader();
+      l.onload = function(){ ok(String(l.result).split(",")[1] || ""); }; l.onerror = function(){ mal(l.error); }; l.readAsDataURL(a); }); };
+    if(campoA) campoA.addEventListener("change", function(){
+      var e = elegidos(), lim = function(s){ return String(s).replace(/[<>&]/g, ""); };
+      listaA.innerHTML = e.lista.map(function(a){ return "<li>" + lim(a.name) + "</li>"; }).join("")
+        + e.malos.map(function(m){ return '<li class="mal">' + lim(m) + "</li>"; }).join("");
+    });
     f.noValidate = true;   /* valida el script, con mensajes propios; sin JS valida el navegador */
     function muestra(msg, mal){ aviso.textContent = msg; aviso.classList.toggle("mal", !!mal); aviso.hidden = false; }
     f.addEventListener("change", function(){
@@ -1327,21 +1384,29 @@ html.hdr-chico .brand .logo{transform:scale(.737);
         else location.href = "mailto:hola@compai.cl?subject=" + encodeURIComponent(asunto) + "&body=" + encodeURIComponent(cuerpo);
       };
       if(!D.endpoint){ abreCorreo(); muestra(rellena(F.exito, d)); return; }
+      var sel = elegidos();
+      if(sel.malos.length){ muestra("Revise los archivos: " + sel.malos.join(" · "), true); return; }
       btn.disabled = true;
-      fetch(D.endpoint, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" },
+      Promise.all(sel.lista.map(function(a){ return aBase64(a).then(function(b){ return { nombre: a.name, b64: b }; }); }))
+      .then(function(archivos){ return fetch(D.endpoint, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" },
         body: JSON.stringify({ nombre:d.nombre, correo:d.correo, telefono:d.telefono || "",
-          organismo:d.organismo, mensaje: asunto + "\n\n" + cuerpo, origen:"compai.cl/portafolio",
+          organismo:d.organismo, mensaje: asunto + "\n\n" + cuerpo, origen:"compai.cl/portafolio", archivos: archivos,
           /* la cotizacion en PDF: solo si TODO lo marcado tiene valor publicado
              (sin eso, no hay documento: Sebastian, 07-10-2026). Va el codigo,
              no el precio: el precio lo pone el servidor. */
           cotizacion: marcados.every(function(c){ return c.dataset.sp; }) ? {
             escena: f.dataset.titulo, plazo: d.plazo || "", codigoCompra: d.codigo || "",
-            items: marcados.map(function(c){ return { codigo: c.dataset.sp }; }) } : null }) })
+            items: marcados.map(function(c){ return { codigo: c.dataset.sp }; }) } : null }) }); })
         /* «llego» solo si el Apps Script contesto ok; cualquier otra cosa
            (error, respuesta ilegible) cae al aviso de error, y el correo se
            abre igual para que el pedido no se pierda */
         .then(function(r){ if(!r.ok) throw 0; return r.json(); })
-        .then(function(j){ if(!j || !j.ok) throw 0; abreCorreo(); muestra(rellena(j.folio && F.exito_doc ? F.exito_doc : F.exito, d)); })
+        .then(function(j){ if(!j || !j.ok) throw 0;
+          /* llegó: el correo NO se abre. WhatsApp sigue abriéndose en la escena que vive ahí (07-10-2026). */
+          if(F.canal === "whatsapp") abreCorreo();
+          var faltan = sel.lista.length - Number(j.adjuntos || 0);
+          muestra(faltan > 0 ? "Nos llegó su solicitud, pero " + faltan + " archivo(s) no se guardaron. Envíelos a hola@compai.cl." : rellena(j.folio && F.exito_doc ? F.exito_doc : F.exito, d), faltan > 0);
+          f.reset(); if(listaA) listaA.innerHTML = ""; })
         .catch(function(){ abreCorreo(); muestra(F.error, true); })
         .then(function(){ btn.disabled = false; });
     });
