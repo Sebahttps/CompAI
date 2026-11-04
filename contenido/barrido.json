@@ -1,16 +1,8 @@
 {
- "fecha": "2026-11-03",
+ "fecha": "2026-11-04",
  "fuente": "API de Mercado Público · licitaciones activas, todas las modalidades",
- "barridas": 4950,
+ "barridas": 5052,
  "filas": [
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
-   "id": "SUSCRIPCIÓN DE LICENCIAS DE PREVENCIÓN Y CONCIENTIZACIÓN …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
   {
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
@@ -80,6 +72,14 @@
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
    "id": "CONTRATACIÓN DE LA EXTENSIÓN ANUAL DE LAS GARANTÍAS DE …",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "MONITORES, IMPRESORAS TÉRMICAS PORTÁTIL PARA COMPROBANTES …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   }
