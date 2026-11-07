@@ -13,7 +13,6 @@
   unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 
 :root{
-  color-scheme:dark;
   --noche:#0B0806;        /* negro cálido */
   --noche2:#15100C;       /* superficie */
   --noche3:#13171C;       /* panel de servicios, como el Canva */
@@ -24,10 +23,49 @@
   --sol:#FFB25C;          /* acento de acción y precios (marca v2) */
   --petroleo:#2E8FB5;     /* azul check · traza */
   --petroleo2:#78C5E3;
+  --cobreclaro:#F2B45A;   /* nodo "abierto" del icosaedro del menu, distinto de --sol */
   --display:Archivo,"Arial Narrow",Arial,sans-serif;
   --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
   --barra:88px;
+
+  /* Companions en RGB decimal, SOLO para los canvas que pintan con alpha
+     (`rgba(${var},${alfa})` no acepta un hex de CSS). Un color, dos formas:
+     si --noche cambia, --noche-rgb tiene que cambiar con el, a mano, en el
+     mismo bloque -- no hay forma de derivar uno del otro en CSS puro. */
+  --noche-rgb:11,8,6;
+  --brasa-rgb:200,121,65;
+  --sol-rgb:255,178,92;
+  --petroleo-rgb:46,143,181;
+  --petroleo2-rgb:120,197,227;
+  --cobreclaro-rgb:242,180,90;
+
+  /* Paleta de la "lluvia" de Grace (materializa.js): tres azules que no son
+     ninguno de los de marca de arriba -- viven de grace-sitio2.html tal cual.
+     Hex, no rgb: ese efecto pinta solido, sin alpha variable. */
+  --grace-1:#2f6db0;
+  --grace-2:#5aa6e8;
+  --grace-3:#cfe9ff;
 }
+
+/* ── tema claro/oscuro ─────────────────────────────────────────────────
+   Mecanica: PAIton, 06-11-2026. `data-tema` lo escribe js/tema.js --
+   bloqueante en el <head>, antes del primer pintado -- a partir de
+   localStorage o de prefers-color-scheme si el visitante no eligio.
+   LOS VALORES DE ABAJO SON PLACEHOLDER: copia exacta de los de arriba.
+   Visu los reemplaza por la paleta clara; hasta entonces el tema "claro"
+   se ve igual al oscuro, a proposito -- cero regresion mientras no hay
+   paleta. Cambiar SOLO los valores, no la mecanica. */
+:root[data-tema="claro"]{
+  --noche:#0B0806; --noche2:#15100C; --noche3:#13171C; --linea:#2C221B;
+  --crema:#F5F0E4; --crema2:#B8AEA2;
+  --brasa:#C87941; --sol:#FFB25C; --petroleo:#2E8FB5; --petroleo2:#78C5E3;
+  --cobreclaro:#F2B45A;
+  --noche-rgb:11,8,6; --brasa-rgb:200,121,65; --sol-rgb:255,178,92;
+  --petroleo-rgb:46,143,181; --petroleo2-rgb:120,197,227; --cobreclaro-rgb:242,180,90;
+  --grace-1:#2f6db0; --grace-2:#5aa6e8; --grace-3:#cfe9ff;
+}
+:root{color-scheme:dark}
+:root[data-tema="claro"]{color-scheme:light}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
@@ -54,8 +92,13 @@ body.bloqueado{overflow:hidden}
 body.hero-sello:not(.menu-abierto) .bar .logo-link{opacity:0;pointer-events:none}
 .logo-link{transition:opacity .35s}
 .nodo{position:relative;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;
-  background:radial-gradient(circle,rgba(11,8,6,.72) 55%,transparent 72%)}
+  background:radial-gradient(circle,rgba(var(--noche-rgb),.72) 55%,transparent 72%)}
 .nodo canvas{width:64px;height:64px;display:block}
+/* Mecanica del toggle; sin decision visual (PAIton, 06-11-2026). La forma
+   final -icono, posicion exacta- la decide Visu con la paleta clara. */
+.tema-switch{display:flex;align-items:center;gap:6px;padding:8px 12px;border:1px solid var(--linea);
+  border-radius:999px;background:rgba(var(--noche-rgb),.5)}
+.tema-switch .lbl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--crema2)}
 .nodo .lbl{position:absolute;right:72px;top:50%;transform:translateY(-50%);white-space:nowrap;color:var(--crema2);opacity:0;transition:opacity .25s}
 .nodo:hover .lbl,.nodo:focus-visible .lbl,.menu-abierto .nodo .lbl{opacity:1}
 

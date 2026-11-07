@@ -483,6 +483,7 @@ const html = `<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<script>(function(){try{var t=localStorage.getItem('tema');if(!t)t=matchMedia('(prefers-color-scheme: light)').matches?'claro':'oscuro';document.documentElement.setAttribute('data-tema',t);}catch(e){}})();</script>
 <title>${esc(S.meta.title)}</title>
 <meta name="description" content="${esc(S.meta.description)}">
 <link rel="canonical" href="${esc(S.meta.url)}">
@@ -523,6 +524,9 @@ const html = `<!doctype html>
 
 <header class="bar">
   <a class="logo-link" href="#hero" aria-label="compAI, inicio">${LOGO}</a>
+  <button class="tema-switch" type="button" data-accion="alternar-tema" aria-pressed="false" aria-label="Cambiar a tema claro">
+    <span class="lbl mono">Tema</span>
+  </button>
   <button class="nodo" id="nodoBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">
     <span class="lbl mono" id="nodoLbl">Menú</span>
     <canvas id="nodoCv" width="128" height="128" aria-hidden="true"></canvas>
@@ -556,6 +560,7 @@ ${contacto}
 </div>
 
 <script>window.COMPAI=${JSON.stringify(datos).replace(/</g, '\\u003c')};</script>
+<script src="js/tema.js" defer></script>
 <script src="js/sitio.js" defer></script>
 <script src="js/materializa.js" defer></script>
 </body>
@@ -571,6 +576,7 @@ const c404 = `<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<script>(function(){try{var t=localStorage.getItem('tema');if(!t)t=matchMedia('(prefers-color-scheme: light)').matches?'claro':'oscuro';document.documentElement.setAttribute('data-tema',t);}catch(e){}})();</script>
 <title>Esta página no existe · compAI</title>
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#0B0806">

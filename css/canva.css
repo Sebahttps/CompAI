@@ -31,6 +31,9 @@
   --check:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 20" fill="none" stroke="%23000" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8.5 5 12.5 12 4"/><path d="M10 8.5 14 12.5 21 4"/></svg>');
 
 }
+/* PLACEHOLDER tema claro (ver css/sitio.css para la explicacion completa):
+   mismo valor que arriba, a proposito. Visu reemplaza el valor, no la regla. */
+:root[data-tema="claro"]{--cian:#05f8f9;--azul:#1d6688;--grafito:#14181f}
 
 /* ── armazon ───────────────────────────────────────────────────────────── */
 /* SIN scroll-margin-top aqui: esta hoja carga DESPUES de sitio.css (ver
@@ -173,11 +176,11 @@
 .gldcha li::before{content:"";position:absolute;left:0;top:calc(.62em - 2px);
   width:calc(5*var(--u));height:calc(5*var(--u));border-radius:50%;background:var(--cian)}
 .gldcha b{font-weight:700;color:var(--cian);font-style:normal}
-.gldcha b.no{color:#c87941}
+.gldcha b.no{color:var(--brasa)}
 /* El punto seguia cian en los NO-GO: el color vivia en el <b> y la vineta
    cuelga del <li>. Cian = traza, cobre = transaccion; un NO-GO con punto
    cian decia lo contrario de lo que dice la palabra al lado. 12-10-2026. */
-.gldcha li.no::before{background:#c87941}
+.gldcha li.no::before{background:var(--brasa)}
 .glcierre{color:#aeb9c2}
 .gllock{display:flex;align-items:center;justify-content:center;gap:calc(10*var(--u));
   font-family:var(--plex);font-weight:700;color:var(--cian);text-transform:uppercase;
@@ -267,10 +270,10 @@
 .gcaja{overflow-y:auto;
   background:rgba(2,6,10,.72);border:1px solid rgba(5,248,249,.14);
   border-radius:calc(3*var(--u));padding:0 calc(20*var(--u));
-  scrollbar-width:thin;scrollbar-color:#c87941 rgba(255,255,255,.06)}
+  scrollbar-width:thin;scrollbar-color:var(--brasa) rgba(255,255,255,.06)}
 .gcaja::-webkit-scrollbar{width:calc(6*var(--u))}
 .gcaja::-webkit-scrollbar-track{background:rgba(255,255,255,.06)}
-.gcaja::-webkit-scrollbar-thumb{background:#c87941;border-radius:999px}
+.gcaja::-webkit-scrollbar-thumb{background:var(--brasa);border-radius:999px}
 .glista{list-style:none;padding:0;margin:0;display:grid}
 .glista li{display:grid;grid-template-columns:calc(48*var(--u)) minmax(0,1fr) calc(96*var(--u));
   align-items:start;gap:calc(12*var(--u));
@@ -280,7 +283,7 @@
 /* El veredicto se lee de un vistazo: GO en azul de traza, NO-GO apagado.
    Tres NO-GO en ocho filas dicen que hay criterio y que sabe decir que no. */
 .glista li:has(.mkr:not(:empty)) .mkr{white-space:nowrap}
-.glista .mkr.no{color:#c87941}
+.glista .mkr.no{color:var(--brasa)}
 .glista .dt{min-width:0}
 /* rubro · licitacion · analisis. El rubro va primero porque es el filtro que
    Grace aplica antes de mirar nada mas. */
@@ -298,7 +301,7 @@
    construir.mjs), asi que el rotulo se centra; antes el boton cerraba 192 px
    del lienzo antes que la lista y el pie, y era el descuadre mas visible. */
 .gcta{display:inline-block;text-align:center;font-family:var(--plex);font-weight:700;font-size:calc(14*var(--u));
-  letter-spacing:.1em;text-transform:uppercase;color:#1a1208;background:#c87941;
+  letter-spacing:.1em;text-transform:uppercase;color:#1a1208;background:var(--brasa);
   padding:calc(14*var(--u)) calc(26*var(--u));border-radius:calc(3*var(--u));
   text-decoration:none;transition:filter .2s}
 .gcta:hover{filter:brightness(1.1)}
@@ -312,7 +315,7 @@
 .cvfondo{background:var(--grafito)}
 .ccirc{opacity:1}
 .cvelo{background:rgba(10,13,17,.96)}
-.cline{background:linear-gradient(#5b3a22,#c87941 35%,#c87941 65%,#5b3a22)}
+.cline{background:linear-gradient(#5b3a22,var(--brasa) 35%,var(--brasa) 65%,#5b3a22)}
 /* ── La ficha de / 04, medida por Visu el 05-10-2026 ───────────────────
    Encargo de Sebastian: «evitar mucho texto explicativo, si potenciar
    conceptos e imagenes». Lo que cambia, con numeros:
@@ -342,7 +345,7 @@
   margin-top:calc(4*var(--u));background:var(--azul);
   -webkit-mask:var(--check) center/contain no-repeat;mask:var(--check) center/contain no-repeat}
 .serv-acc{display:inline-block;margin-top:calc(34*var(--u));font-family:var(--courier);
-  font-size:calc(22*var(--u));letter-spacing:.12em;color:#c87941}
+  font-size:calc(22*var(--u));letter-spacing:.12em;color:var(--brasa)}
 .servblock:hover .serv-acc{color:#e0944f}
 
 /* ── La placa: lo que reemplaza al mockup de dispositivo ───────────────
@@ -358,7 +361,7 @@
 .placa-cod,.placa-lin{grid-area:1/1;font-family:var(--courier);font-size:calc(17*var(--u));
   letter-spacing:.18em;align-self:end;margin-bottom:calc(22*var(--u))}
 .placa-cod{justify-self:start;margin-left:calc(26*var(--u));color:rgba(245,240,228,.5)}
-.placa-lin{justify-self:end;margin-right:calc(26*var(--u));color:#c87941}
+.placa-lin{justify-self:end;margin-right:calc(26*var(--u));color:var(--brasa)}
 .placa-tick{grid-area:1/1;justify-self:end;align-self:start;
   width:calc(46*var(--u));height:auto;margin:calc(-16*var(--u)) calc(-16*var(--u)) 0 0;
   fill:none;stroke:var(--azul);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
@@ -428,7 +431,7 @@
 .banda-mas{position:absolute;left:calc(137*var(--u));top:50%;
   margin-top:calc(86*var(--u));width:calc(26*var(--u));height:calc(26*var(--u));
   transform:rotate(0deg);transition:transform .45s ease}
-.banda-mas::before,.banda-mas::after{content:"";position:absolute;background:#c87941;
+.banda-mas::before,.banda-mas::after{content:"";position:absolute;background:var(--brasa);
   left:50%;top:50%}
 .banda-mas::before{width:calc(26*var(--u));height:2px;transform:translate(-50%,-50%)}
 .banda-mas::after{width:2px;height:calc(26*var(--u));transform:translate(-50%,-50%)}
@@ -448,7 +451,7 @@
    ambar lo que ese nivel agrega: el ambar es lo unico que hay que mirar. */
 .esq{display:block;width:calc(400*var(--u));height:auto;max-width:100%}
 .esq .traza{stroke:var(--azul);color:var(--azul)}
-.esq .accion{stroke:#c87941;color:#c87941}
+.esq .accion{stroke:var(--brasa);color:var(--brasa)}
 /* Llamado para la PyME bajo las bandas (veto de ClAI-nte, 06-10-2026). */
 /* El banner del catalogo. Ancho completo bajo la lamina PyME: era una frase
    al pie («¿Cual es la tuya? Buscala en el catalogo») y nadie la leia como
@@ -457,14 +460,14 @@
   text-decoration:none;border:1px solid rgba(200,121,65,.45);
   border-radius:calc(4*var(--u));background:rgba(200,121,65,.06);
   font-family:var(--courier);font-size:calc(24*var(--u));letter-spacing:.14em;
-  color:#c87941;transition:background .3s ease,border-color .3s ease,color .3s ease}
+  color:var(--brasa);transition:background .3s ease,border-color .3s ease,color .3s ease}
 .bcat:hover{background:rgba(200,121,65,.14);border-color:rgba(200,121,65,.8);
   color:#e0944f}
-.banda-llamado a{color:#c87941;font-weight:700;text-decoration:none;border-bottom:2px solid rgba(200,121,65,.5)}
+.banda-llamado a{color:var(--brasa);font-weight:700;text-decoration:none;border-bottom:2px solid rgba(200,121,65,.5)}
 .banda-llamado a:hover{color:#e09a63;border-bottom-color:#e09a63}
 .esq-pie{margin:calc(16*var(--u)) 0 0;font-family:var(--plex);font-weight:300;
   font-size:calc(14*var(--u));line-height:1.5;color:#aeb8c0}
-.esq-pie b{font-weight:700;color:#c87941;text-transform:uppercase;
+.esq-pie b{font-weight:700;color:var(--brasa);text-transform:uppercase;
   letter-spacing:.14em;font-size:calc(12.5*var(--u));margin-right:calc(8*var(--u))}
 .banda-ficha h3{margin:0;font-family:Archivo,sans-serif;font-weight:800;
   font-size:calc(26*var(--u));line-height:1.18;color:#fff;letter-spacing:-.01em}
@@ -475,10 +478,10 @@
   font-family:var(--plex);font-weight:300;font-size:calc(12.5*var(--u));
   line-height:1.4;color:#aeb8c0}
 .banda-ficha li::before{content:"";position:absolute;left:0;top:calc(.55em - 1px);
-  width:calc(5*var(--u));height:calc(5*var(--u));background:#c87941}
+  width:calc(5*var(--u));height:calc(5*var(--u));background:var(--brasa)}
 .banda-ficha a{align-self:flex-start;margin-top:calc(6*var(--u));
   font-family:var(--plex);font-weight:700;font-size:calc(12*var(--u));
-  letter-spacing:.1em;text-transform:uppercase;color:#1a1208;background:#c87941;
+  letter-spacing:.1em;text-transform:uppercase;color:#1a1208;background:var(--brasa);
   padding:calc(11*var(--u)) calc(22*var(--u));border-radius:calc(3*var(--u));
   text-decoration:none;transition:filter .2s}
 .banda-ficha a:hover{filter:brightness(1.1)}
@@ -492,7 +495,7 @@
   color:#9aa0a6;text-transform:uppercase}
 .ititulo{font-family:var(--plex);font-weight:700;font-size:calc(44*var(--u));line-height:1.1;
   letter-spacing:.01em;color:#fff;margin:calc(34*var(--u)) 0 calc(52*var(--u));text-transform:uppercase}
-.ititulo em{font-style:normal;color:#c87941}
+.ititulo em{font-style:normal;color:var(--brasa)}
 #inbox .campos{display:grid;grid-template-columns:1fr 1fr;gap:calc(40*var(--u)) calc(30*var(--u))}
 #inbox .campo{display:grid;gap:calc(16*var(--u))}
 #inbox .campo.ancho2{grid-column:1/-1}
@@ -511,12 +514,12 @@
   border-radius:calc(3*var(--u));padding:calc(20*var(--u)) calc(24*var(--u));
   display:grid;grid-template-columns:auto 1fr;gap:calc(16*var(--u));align-items:center}
 .iadjunta label:hover{border-color:rgba(200,121,65,.6)}
-.iadjunta input[type=file]:focus-visible+label{outline:2px solid #c87941;outline-offset:2px}
+.iadjunta input[type=file]:focus-visible+label{outline:2px solid var(--brasa);outline-offset:2px}
 .ilista{list-style:none;margin:calc(12*var(--u)) 0 0;padding:0;display:grid;
   gap:calc(6*var(--u))}
 .ilista li{font-family:var(--plex);font-size:calc(12*var(--u));color:#c9ced3;
   letter-spacing:.04em;display:flex;justify-content:space-between;gap:calc(16*var(--u));
-  border-left:2px solid #c87941;padding-left:calc(10*var(--u))}
+  border-left:2px solid var(--brasa);padding-left:calc(10*var(--u))}
 .ilista li span{color:#8e949a}
 .ilista li.mal{color:#e8a0a0;border-left-color:#e8a0a0}
 .iadjunta svg{width:calc(22*var(--u));height:auto;object-fit:contain;color:#c9ced3}
@@ -524,7 +527,7 @@
 .iadjunta span{display:block;font-family:var(--plex);font-size:calc(11*var(--u));color:#8e949a;
   letter-spacing:.04em;margin-top:calc(6*var(--u))}
 #inbox .enviar{margin-top:calc(34*var(--u));display:flex;align-items:center;gap:calc(32*var(--u))}
-#inbox .btn{background:#c87941;color:#1a1208;border-radius:calc(3*var(--u));
+#inbox .btn{background:var(--brasa);color:#1a1208;border-radius:calc(3*var(--u));
   padding:calc(22*var(--u)) calc(38*var(--u));font-family:var(--plex);font-weight:700;
   font-size:calc(13*var(--u));letter-spacing:.18em;text-transform:uppercase}
 #inbox .nota{font-family:var(--plex);font-size:calc(12*var(--u));color:#9aa0a6;letter-spacing:.04em}
@@ -585,7 +588,7 @@
 .kpie{font-family:var(--plex);font-size:calc(11*var(--u));letter-spacing:.08em;color:#787d82;
   text-transform:uppercase;display:flex;justify-content:space-between;gap:calc(16*var(--u))}
 .kpie a{text-decoration:none}
-.kpie a:hover{color:#c87941}
+.kpie a:hover{color:var(--brasa)}
 
 /* ── telefono: bajo 700 px la maqueta se apila en una columna ───────────
    El lienzo se lee al doble de escala (--u pasa de 1/1366 a 1/683) y cada

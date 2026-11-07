@@ -48,7 +48,20 @@
     g.stroke();
   }
 
-  const AZULES = ['#2f6db0', '#5aa6e8', '#cfe9ff'];   // profundo · medio · brillante
+  // profundo · medio · brillante. Vienen de --grace-1/2/3 (css/sitio.css)
+  // para que un cambio de tema los pueda mover; `leeAzules()` se reconsulta
+  // en cada cambio, no en cada cuadro.
+  function leeAzules() {
+    const cs = getComputedStyle(document.documentElement);
+    const g = n => cs.getPropertyValue('--grace-' + n).trim();
+    return [g(1) || '#2f6db0', g(2) || '#5aa6e8', g(3) || '#cfe9ff'];
+  }
+  let AZULES = leeAzules();
+  const repintables = [];   // cada `monta()` registra como refrescarse
+  document.addEventListener('tema:cambio', () => {
+    AZULES = leeAzules();
+    repintables.forEach(r => r());
+  });
 
   function monta(cv) {
     const ctx = cv.getContext('2d', { alpha: true });
@@ -72,6 +85,11 @@
     // navegador dispara uno al capturar una seccion mas alta que la ventana—
     // rebobinaba la materializacion a cero y la foto desaparecia. (03-10-2026)
     let t0 = 0, desfase = 0, tAhora = 0, puntero = null;
+
+    // repinta con los AZULES nuevos sin reiniciar la caida; si todavia no
+    // hay nada que pintar (`listo` en falso) no hace nada -- se vera bien
+    // solo cuando a su tiempo arranque, igual que siempre.
+    repintables.push(() => { if (listo) pinta(tAhora); });
 
     function mide() {
       const r = cv.getBoundingClientRect();

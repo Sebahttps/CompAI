@@ -92,7 +92,8 @@
         const p = 2.6 / (2.6 - z2);
         return [cx + x1 * R * p, cy + y1 * R * p, z2];
       });
-      const col = abierto ? '200,121,65' : '46,143,181';          // abierto = cobre · cerrado = petróleo
+      const C = (window.CompAI && window.CompAI.colores()) || {};
+      const col = abierto ? C.brasa : C.petroleo;          // abierto = cobre · cerrado = petróleo
       E.forEach(([i, j]) => {
         const z = (P[i][2] + P[j][2]) / 2;
         ctx.strokeStyle = `rgba(${col},${.25 + .45 * (z + 1) / 2})`;
@@ -101,7 +102,7 @@
       });
       P.map((p, i) => [p, i]).sort((a, b) => a[0][2] - b[0][2]).forEach(([p]) => {
         const z = (p[2] + 1) / 2;
-        ctx.fillStyle = `rgba(${abierto ? '242,180,90' : '120,197,227'},${.45 + .55 * z})`;
+        ctx.fillStyle = `rgba(${abierto ? C.cobreclaro : C.petroleo2},${.45 + .55 * z})`;
         ctx.beginPath(); ctx.arc(p[0], p[1], W * (.028 + .03 * z) * esc, 0, 7); ctx.fill();
       });
     }
@@ -196,10 +197,11 @@
     }
     function cuadro() {
       if (!vivo) return;
-      ctx.fillStyle = 'rgba(11,8,6,.14)'; ctx.fillRect(0, 0, W, H);
+      const C = (window.CompAI && window.CompAI.colores()) || {};
+      ctx.fillStyle = `rgba(${C.noche},.14)`; ctx.fillRect(0, 0, W, H);
       for (let i = 0; i < cols.length; i++) {
         const y = cols[i];
-        ctx.fillStyle = Math.random() < .08 ? 'rgba(255,178,92,.9)' : 'rgba(120,197,227,.72)';
+        ctx.fillStyle = Math.random() < .08 ? `rgba(${C.sol},.9)` : `rgba(${C.petroleo2},.72)`;
         ctx.fillText(Math.random() < .5 ? '0' : '1', i * paso, y);
         cols[i] = y > H && Math.random() > .975 ? 0 : y + paso;
       }
@@ -222,10 +224,11 @@
       const r = cv.getBoundingClientRect();
       W = cv.width = Math.round(r.width * dpr); H = cv.height = Math.round(r.height * dpr);
       const n = Math.min(150, Math.round(W * H / (26000 * dpr)));
+      const C = (window.CompAI && window.CompAI.colores()) || {};
       pts = Array.from({ length: n }, () => ({
         x: Math.random() * W, y: Math.random() * H,
         v: (.1 + Math.random() * .45) * dpr, s: (8 + Math.random() * 9) * dpr,
-        c: Math.random() < .22 ? '200,121,65' : '46,143,181',
+        c: Math.random() < .22 ? C.brasa : C.petroleo,
         t: String(Math.floor(Math.random() * 10)), a: .12 + Math.random() * .35
       }));
     }
@@ -242,6 +245,12 @@
     }
     addEventListener('resize', mide, { passive: true });
     mide();
+    // los puntos ya existen con un color fijado en `mide()`; un cambio de
+    // tema no los reposiciona, solo les cambia el tono sin saltos.
+    document.addEventListener('tema:cambio', () => {
+      const C = window.CompAI.colores();
+      for (const p of pts) p.c = Math.random() < .22 ? C.brasa : C.petroleo;
+    });
     new IntersectionObserver(es => es.forEach(e => {
       if (e.isIntersecting && !vivo) { vivo = true; cuadro(); } else if (!e.isIntersecting) vivo = false;
     }), { threshold: .02 }).observe(cv);
