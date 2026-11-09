@@ -11,6 +11,11 @@ const raiz = dirname(fileURLToPath(import.meta.url));
 const lee = f => JSON.parse(readFileSync(join(raiz, f), 'utf8'));
 
 const S = lee('contenido/sitio.json');
+// N.º de la última actualización de este sitio (Sebastián, 08-11-2026). Lo da tools/actualizacion.py.
+const RUTA_ACT = join(raiz, '../../intranet-referencia/datos/actualizaciones.json');
+const ACT = existsSync(RUTA_ACT)
+  ? JSON.parse(readFileSync(RUTA_ACT, 'utf8')).registros.filter(r => r.sistema === 'Sitio compai.cl').pop()
+  : null;
 /* El barrido de RAIdar, si esta. `contenido/barrido.json` lo deja
    `traer_barrido.py` desde `radar/vitrina/ultimo.json`. Sin el archivo el
    panel cae a las filas de EJEMPLO de sitio.json: la pagina no se cae por
@@ -479,7 +484,7 @@ const html = `<!doctype html>
 <!-- compai.cl · armado por sitio/compai/construir.mjs desde contenido/*.json.
      fuente-del-sitio: sitio/compai
      No editar este archivo a mano: el siguiente build lo pisa. -->
-<html lang="${esc(S.meta.lang)}">
+${ACT ? `<!-- ${ACT.sistema} · Actualización N.º ${ACT.n} · ${ACT.fecha} -->\n` : ''}<html lang="${esc(S.meta.lang)}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
