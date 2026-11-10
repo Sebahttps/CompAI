@@ -1,24 +1,8 @@
 {
- "fecha": "2026-11-09",
+ "fecha": "2026-11-10",
  "fuente": "API de Mercado Público · licitaciones activas, todas las modalidades",
- "barridas": 5286,
+ "barridas": 4897,
  "filas": [
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
-   "id": "ACTUALIZACIÓN PLATAFORMA ERP",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
-   "id": "ADQUISICIÓN DE LICENCIA DE SOFTWARE PARA LA ELABORACIÓN DE …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
   {
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
@@ -80,6 +64,22 @@
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
    "id": "ADQUISICIÓN DE CUATRO (4) SERVIDORES PARA LA RENOVACIÓN DE …",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "CONVOCA A LICITACIÓN PÚBLICA Y DESIGNA COMISIÓN EVALUADORA …",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "AUMENTO DE CAPACIDAD DE RESPALDO Y RECUPERACIÓN DE …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   }
