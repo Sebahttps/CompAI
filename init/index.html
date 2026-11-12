@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>project.init(); · CompAI</title>
+<link rel="icon" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1A1D1B;--ink2:#3A3F3C;--ink3:#6F7572;--line:#D9D6CE;--amb:#95521F;--azul:#0F5C7A}
+*{box-sizing:border-box}
+body{margin:0;background:#EEECE6;color:var(--ink);font:16px/1.45 "Space Grotesk",Helvetica,Arial,sans-serif}
+.hoja{max-width:760px;margin:24px auto;background:#fff;padding:32px 36px 40px}
+.cab{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:16px;border-bottom:1.5px solid var(--amb);margin-bottom:20px;gap:16px}
+.cab img{height:44px;width:auto;display:block}
+.meta{text-align:right;font-family:"IBM Plex Mono",monospace;font-size:12px;line-height:1.7}
+.meta .f{color:var(--azul);letter-spacing:.14em;text-transform:uppercase}.meta .c{color:var(--amb)}
+.tit{display:flex;align-items:center;gap:12px;margin:8px 0 6px;flex-wrap:wrap}
+.cod{font-size:30px;font-weight:700;line-height:1}
+.tit input{flex:1;min-width:200px;font-weight:600}
+h2{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:500;color:var(--azul);text-transform:uppercase;margin:30px 0 10px}
+label.k{display:block;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin:10px 0 3px}
+input[type=text],input[type=email],input[type=tel],textarea{width:100%;font:inherit;color:var(--ink);border:1px solid var(--line);padding:9px 11px;background:#fff;border-radius:0}
+input:focus,textarea:focus{outline:2px solid var(--azul);outline-offset:-1px;border-color:var(--azul)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+.ops{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:4px}
+.ops label{display:flex;align-items:center;gap:7px;cursor:pointer}
+.ops input{width:18px;height:18px;accent-color:var(--azul);margin:0}
+.q{display:flex;gap:12px;margin:0 0 20px}.q .n{font-family:"IBM Plex Mono",monospace;color:var(--amb);font-size:13px;min-width:22px;padding-top:2px}
+.qb{flex:1}.qt{font-weight:600;margin-bottom:6px}.pista{font-size:14px;color:var(--ink3);margin:-3px 0 6px}
+.fila{display:flex;gap:16px;align-items:center;flex-wrap:wrap}.fila input[type=text]{flex:1;min-width:160px}
+.num{display:flex;gap:10px;align-items:center;margin-bottom:6px;font-family:"IBM Plex Mono",monospace;color:var(--ink3);font-size:13px}
+.cierre{border-top:1.5px solid var(--amb);margin-top:28px;padding-top:18px}
+button{font-family:"IBM Plex Mono",monospace;font-size:16px;font-weight:500;color:#fff;background:var(--amb);border:0;padding:12px 26px;cursor:pointer}
+button[disabled]{opacity:.55;cursor:wait}
+.msg{margin-top:12px;font-weight:600;min-height:1.4em}.msg.ok{color:var(--azul)}.msg.mal{color:#9B2C1F}
+.trampa{position:absolute;left:-9999px}
+.pie{margin-top:36px;border-top:1px solid var(--line);padding-top:12px;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;color:var(--ink3);text-transform:uppercase;line-height:1.7}
+@media (max-width:620px){.hoja{margin:0;padding:22px 16px 30px}.grid{grid-template-columns:1fr}.cod{font-size:26px}}
+</style>
+</head>
+<body>
+<form class="hoja" id="f" novalidate>
+  <header class="cab">
+    <img src="/media/marca/compai-logotipo-solido-dia.svg" alt="CompAI">
+    <div class="meta"><span class="f" id="vFolio">Cotización INIT</span><br><span class="c" id="vCodigo">Project.init()</span></div>
+  </header>
+
+  <div class="tit"><span class="cod">project.init();</span><input type="text" name="proyecto" aria-label="Nombre del proyecto"></div>
+
+  <h2>Project.billingDetails</h2>
+  <div class="grid">
+    <div><label class="k" for="nombre">Nombre / Razón social</label><input type="text" id="nombre" name="nombre" required></div>
+    <div><label class="k" for="rut">RUT</label><input type="text" id="rut" name="rut"></div>
+    <div><label class="k" for="giro">Giro</label><input type="text" id="giro" name="giro"></div>
+    <div><label class="k" for="telefono">Teléfono</label><input type="tel" id="telefono" name="telefono"></div>
+    <div><label class="k" for="direccion">Dirección</label><input type="text" id="direccion" name="direccion"></div>
+    <div><label class="k" for="correo">Correo electrónico</label><input type="email" id="correo" name="correo"></div>
+  </div>
+  <label class="k">Documento</label>
+  <div class="ops" data-g="Documento"><label><input type="checkbox" value="Boleta">Boleta</label><label><input type="checkbox" value="Factura">Factura</label></div>
+
+  <h2>Project.channel</h2>
+  <div class="ops" data-g="Canal"><label><input type="checkbox" value="Sitio web">1. Sitio web</label><label><input type="checkbox" value="LinkedIn">2. LinkedIn</label><label><input type="checkbox" value="Instagram">3. Instagram</label><label><input type="checkbox" value="WhatsApp">4. WhatsApp</label><label><input type="checkbox" value="Eventos">5. Eventos</label><label><input type="checkbox" value="Otro">6. Otro</label></div>
+
+  <h2>Project.readme</h2>
+  <div class="q"><span class="n">1</span><div class="qb"><div class="qt">¿Qué debe hacer la aplicación, en una frase?</div><div class="pista">Ejemplo: «registrar inspecciones en terreno y generar el informe en PDF».</div><input type="text" name="p01" data-k="1. Qué debe hacer"></div></div>
+  <div class="q"><span class="n">2</span><div class="qb"><div class="qt">¿Cuántas personas la usarán y dónde?</div><div class="fila"><input type="text" name="p02" data-k="2. Cuántas personas" style="max-width:120px"><div class="ops" data-g="2. Dónde"><label><input type="checkbox" value="Oficina">Oficina</label><label><input type="checkbox" value="Terreno">Terreno</label><label><input type="checkbox" value="Clientes externos">Clientes externos</label></div></div></div></div>
+  <div class="q"><span class="n">3</span><div class="qb"><div class="qt">¿Qué versión necesitas primero?</div><div class="ops" data-g="3. Versión"><label><input type="checkbox" value="Web">Web</label><label><input type="checkbox" value="Escritorio">Escritorio</label><label><input type="checkbox" value="Android">Android</label><label><input type="checkbox" value="Todas">Todas</label></div></div></div>
+  <div class="q"><span class="n">4</span><div class="qb"><div class="qt">¿Qué debe hacer desde el teléfono?</div><div class="ops" data-g="4. Desde el teléfono"><label><input type="checkbox" value="Funcionar sin señal">Funcionar sin señal</label><label><input type="checkbox" value="Tomar fotos">Tomar fotos</label><label><input type="checkbox" value="Registrar GPS">Registrar GPS</label><label><input type="checkbox" value="Firmar">Firmar</label><label><input type="checkbox" value="Leer QR">Leer QR</label><label><input type="checkbox" value="Enviar avisos">Enviar avisos</label></div></div></div>
+  <div class="q"><span class="n">5</span><div class="qb"><div class="qt">¿Cuáles son las 3 funciones indispensables?</div><div class="num"><span>1</span><input type="text" name="p05a" data-k="5. Función 1"></div><div class="num"><span>2</span><input type="text" name="p05b" data-k="5. Función 2"></div><div class="num"><span>3</span><input type="text" name="p05c" data-k="5. Función 3"></div></div></div>
+  <div class="q"><span class="n">6</span><div class="qb"><div class="qt">¿Qué debe entregar?</div><div class="ops" data-g="6. Qué entrega"><label><input type="checkbox" value="Informe PDF">Informe PDF</label><label><input type="checkbox" value="Planilla Excel">Planilla Excel</label><label><input type="checkbox" value="Panel con gráficos">Panel con gráficos</label></div></div></div>
+  <div class="q"><span class="n">7</span><div class="qb"><div class="qt">¿A quién debes informar con estos datos?</div><div class="ops" data-g="7. A quién informa"><label><input type="checkbox" value="Mutualidad">Mutualidad</label><label><input type="checkbox" value="Sernageomin">Sernageomin</label><label><input type="checkbox" value="Seremi de Salud">Seremi de Salud</label><label><input type="checkbox" value="Auditoría del mandante">Auditoría del mandante</label><label><input type="checkbox" value="A nadie">A nadie</label></div></div></div>
+  <div class="q"><span class="n">8</span><div class="qb"><div class="qt">¿Tienes una marca, sitio web o app de referencia?</div><div class="pista">Escribe el nombre o el enlace, y qué te gusta de ella.</div><input type="text" name="p08" data-k="8. Referencia"></div></div>
+  <div class="q"><span class="n">9</span><div class="qb"><div class="qt">¿Debe conectarse con otro sistema?</div><div class="fila"><div class="ops" data-g="9. Conexión"><label><input type="checkbox" value="No">No</label><label><input type="checkbox" value="Sí">Sí, con:</label></div><input type="text" name="p09" data-k="9. Sistema"></div></div></div>
+  <div class="q"><span class="n">10</span><div class="qb"><div class="qt">¿Qué necesitas después de la entrega?</div><div class="ops" data-g="10. Después"><label><input type="checkbox" value="Soporte mensual">Soporte mensual</label><label><input type="checkbox" value="Mejoras continuas">Mejoras continuas</label><label><input type="checkbox" value="Nuevas etapas">Nuevas etapas</label></div></div></div>
+  <div class="q"><span class="n">11</span><div class="qb"><div class="qt">¿En qué fecha debe estar en uso?</div><input type="text" name="p11" data-k="11. Fecha" style="max-width:220px"></div></div>
+  <div class="q"><span class="n">12</span><div class="qb"><div class="qt">¿Tienes un presupuesto asignado para la primera etapa?</div><div class="fila"><input type="text" name="p12" data-k="12. Presupuesto"><div class="ops" data-g="12. Sin monto"><label><input type="checkbox" value="Propónganme etapas">Sin monto: propónganme etapas</label></div></div></div></div>
+
+  <input class="trampa" type="text" name="sitioweb" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+  <div class="cierre">
+    <button type="submit" id="enviar" aria-label="Enviar mis respuestas a CompAI">SendForm()</button>
+    <div class="msg" id="msg" role="status"></div>
+  </div>
+
+  <div class="pie">COMPAI GLOBAL SOLUTIONS SpA · RUT 78.491.451-8<br>compai.cl · hola@compai.cl · Santiago, Chile</div>
+</form>
+<script>
+(function () {
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbz9EDOC1XJu9ERRKHS7JyEM1Jz9op-jNRsfTLZWUgXxZoDw3t5q158VaJJap3RUfwJH/exec';
+  var f = document.getElementById('f'), msg = document.getElementById('msg'), btn = document.getElementById('enviar');
+  // El PDF abre esta pagina con #f=FOLIO&k=CODIGO&p=PROYECTO&n=NOMBRE&c=CORREO
+  var h = new URLSearchParams(location.hash.slice(1));
+  var folio = (h.get('f') || '').slice(0, 30), codigo = (h.get('k') || '').slice(0, 40);
+  if (folio) document.getElementById('vFolio').textContent = 'Cotización ' + folio;
+  if (codigo) document.getElementById('vCodigo').textContent = codigo;
+  [['p', 'proyecto'], ['n', 'nombre'], ['c', 'correo']].forEach(function (x) { var v = h.get(x[0]); if (v) f.elements[x[1]].value = v.slice(0, 160); });
+
+  f.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var nombre = f.nombre.value.trim(), correo = f.correo.value.trim(), tel = f.telefono.value.trim();
+    if (!nombre || (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(correo) && tel.replace(/\D/g, '').length < 8)) {
+      msg.className = 'msg mal'; msg.textContent = 'Falta tu nombre y un correo o teléfono.'; return;
+    }
+    var resumen = [['Proyecto', f.proyecto.value], ['Nombre / Razón social', nombre], ['RUT', f.rut.value], ['Giro', f.giro.value],
+      ['Teléfono', tel], ['Dirección', f.direccion.value], ['Correo', correo]].map(function (x) { return { k: x[0], v: x[1].trim() }; });
+    var nodos = f.querySelectorAll('[data-g], input[data-k]');
+    for (var i = 0; i < nodos.length; i++) {
+      var n = nodos[i];
+      if (n.hasAttribute('data-g')) {
+        var m = [].map.call(n.querySelectorAll('input:checked'), function (c) { return c.value; });
+        resumen.push({ k: n.getAttribute('data-g'), v: m.join(', ') });
+      } else resumen.push({ k: n.getAttribute('data-k'), v: n.value.trim() });
+    }
+    var datos = { tipo: 'init', folio: folio, proyecto: f.proyecto.value.trim(), nombre: nombre, correo: correo, telefono: tel, sitioweb: f.sitioweb.value, resumen: resumen };
+    btn.disabled = true; msg.className = 'msg'; msg.textContent = '';
+    fetch(ENDPOINT, { method: 'POST', body: JSON.stringify(datos), headers: { 'Content-Type': 'text/plain;charset=utf-8' } })
+      .then(function (r) { return r.json(); })
+      .then(function (r) {
+        if (!r.ok) throw new Error(r.error);
+        msg.className = 'msg ok'; msg.textContent = 'Listo. Tus respuestas llegaron a hola@compai.cl.';
+      })
+      .catch(function () {
+        btn.disabled = false; msg.className = 'msg mal'; msg.textContent = 'No se pudo enviar. Escríbenos a hola@compai.cl.';
+      });
+  });
+})();
+</script>
+</body>
+</html>
