@@ -529,9 +529,8 @@ ${ACT ? `<!-- ${ACT.sistema} · Actualización N.º ${ACT.n} · ${ACT.fecha} -->
 
 <header class="bar">
   <a class="logo-link" href="#hero" aria-label="compAI, inicio">${LOGO}</a>
-  <button class="tema-switch" type="button" data-accion="alternar-tema" aria-pressed="false" aria-label="Cambiar a tema claro">
-    <span class="lbl mono">Tema</span>
-  </button>
+  <!-- 12-11-2026, Sebastian: «compai.cl tiene un boton que dice TEMA hay que eliminarlo».
+       El tema sigue el del sistema (prefers-color-scheme); js/tema.js queda sin boton que atar. -->
   <button class="nodo" id="nodoBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">
     <span class="lbl mono" id="nodoLbl">Menú</span>
     <canvas id="nodoCv" width="128" height="128" aria-hidden="true"></canvas>

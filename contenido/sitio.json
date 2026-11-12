@@ -74,8 +74,17 @@
    {
     "texto": "Ficha proveedores del Estado →",
     "url": "https://proveedor.mercadopublico.cl/ficha/78.491.451-8"
+   },
+   {
+    "texto": "Intranet",
+    "url": "/estado/"
+   },
+   {
+    "texto": "Soporte",
+    "url": "/soporte/"
    }
-  ]
+  ],
+  "_enlaces": "12-11-2026, Sebastian: «en el boton que despliega el menu, en la seccion paginas, anadir la intranet y otra que sera soporte». /soporte/ aun no tiene pagina."
  },
  "offenbar": {
   "codigo": "/ 01",
