@@ -7,22 +7,6 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "ADQUISICIÓN DE DOS SWITCH DE AGREGACIÓN CISCO 9300 STACK Y …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
-   "id": "ADQUISICIÓN DE ACCESORIOS COMPUTACIONALES PARA LAS OFICINAS …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
    "id": "REALIZAR MEJORAS Y NUEVOS DESARROLLOS DE TODO TIPO, PARA …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
@@ -80,6 +64,22 @@
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
    "id": "RENOVACIÓN DE SUSCRIPCIONES DE LICENCIAS CLOUDERA PARA …",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "SERVICIO DE CALL CENTER TELEFÓNICO",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "SOLUCIÓN DE PREVENCIÓN DE INTRUSIONES (IPS) CON SUS …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   }
