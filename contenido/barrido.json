@@ -1,16 +1,8 @@
 {
- "fecha": "2026-11-12",
+ "fecha": "2026-11-13",
  "fuente": "API de Mercado Público · licitaciones activas, todas las modalidades",
- "barridas": 5109,
+ "barridas": 5202,
  "filas": [
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
-   "id": "ADQ. SERV. SUSCRIPCION CELLEBRITE ONLINE UNLOCKS 40 POR 12 …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
   {
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
@@ -80,6 +72,14 @@
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
    "id": "CONTRATACIÓN DE UN SERVICIO DE PLATAFORMA AUTOADMINISTRABLE …",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "RENOVACIÓN DE SUSCRIPCIONES DE LICENCIAS CLOUDERA PARA …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   }
