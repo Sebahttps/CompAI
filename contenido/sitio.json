@@ -42,7 +42,7 @@
   {
    "codigo": "/ 03",
    "nombre": "L'Intelligence",
-   "titulo": "Grace",
+   "titulo": "Agentes",
    "ancla": "#grace"
   },
   {
@@ -121,8 +121,8 @@
  "grace": {
   "codigo": "/ 03",
   "nombre": "L'Intelligence",
-  "titulo": "Grace System",
-  "linea": "La agente Grace monitorea a diario las publicaciones de Mercado\nPúblico y filtra por rubro y presupuesto antes de que alguien mire.",
+  "titulo": "Agentes expertos",
+  "linea": "Un equipo de agentes expertos monitorea a diario las publicaciones de Mercado\nPúblico y filtra por rubro y presupuesto antes de que alguien mire.",
   "pie": "Materialización por código",
   "fondo": "media/campo-codigo.mp4",
   "fondo_poster": "media/campo-codigo.webp",
@@ -149,7 +149,7 @@
   ],
   "_leyendas": "Los pies «Grace ___ con efecto materialización por código» se quitaron el 02-10-2026: eran la instrucción del encargo, no información para el visitante.",
   "envivo": {
-   "titulo": "GRACE EN VIVO",
+   "titulo": "RADAR EN VIVO",
    "estado": "EJEMPLO",
    "barrido": "",
    "_barrido": "Se refresca a mano cuando RAIdar corre un barrido nuevo. Si la fecha envejece, se nota: no dejarla vieja.",
@@ -235,28 +235,92 @@
   ],
   "cta": "Ver los servicios, desde $360.000 neto",
   "lamina": {
-   "video": "media/grace-lamina.mp4",
-   "video_poster": "media/grace-lamina.webp",
+   "video": "media/campo-codigo.mp4",
+   "video_poster": "media/campo-codigo.webp",
    "titulo": [
     "CLASIFICA CADA",
     "LICITACIÓN",
     "DE MERCADO",
     "PÚBLICO"
    ],
-   "izquierda": "Grace revisa las publicaciones todos los días y filtra por rubro y presupuesto. De cada oportunidad pertinente emite un análisis breve y un veredicto:",
+   "izquierda": "El equipo revisa las publicaciones todos los días y filtra por rubro y presupuesto. De cada oportunidad pertinente emite un análisis, una ponderación y un veredicto:",
    "derecha": [
     {
      "marca": "GO",
-     "texto": "deja la propuesta lista para descargar y revisar por una persona."
+     "texto": "propuesta lista para su revisión."
     },
     {
      "marca": "NO-GO",
-     "texto": "deja escrita la justificación de no proceder."
+     "texto": "no ofertar. Detalle en la ficha."
     }
    ],
    "cierre": "El panel muestra cómo se ve ese resultado.",
-   "lockup": "GRACE SYSTEM"
-  }
+   "lockup": ""
+  },
+  "iconos": [
+   {
+    "svg": "<svg viewBox=\"0 0 24 24\"><path d=\"M2 13l4 4L13 9M9 13l4 4L22 9\"/></svg>",
+    "n": "Propuesta lista",
+    "d": "la oferta está redactada y espera revisión"
+   },
+   {
+    "svg": "<svg viewBox=\"0 0 24 24\"><path d=\"M13 2L4 14h7l-1 8 9-12h-7z\"/></svg>",
+    "n": "Rápida",
+    "d": "cierra en pocas horas"
+   },
+   {
+    "svg": "<i class=\"og-lin\">L4</i>",
+    "n": "Línea",
+    "d": "área de CompAI a la que pertenece"
+   },
+   {
+    "svg": "<i class=\"og-sc\">85</i>",
+    "n": "Ponderación",
+    "d": "puntaje de 0 a 100 del análisis"
+   },
+   {
+    "svg": "<i class=\"og-emo\">⛔ ⚠️ 🔒</i>",
+    "n": "Antecedentes",
+    "d": "condiciones de las bases que pesan en el veredicto"
+   },
+   {
+    "svg": "<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 6.5v11M14.8 9.6c0-1.3-1.2-2.2-2.8-2.2s-2.8.9-2.8 2.1c0 2.6 5.6 1.5 5.6 4.2 0 1.3-1.2 2.2-2.8 2.2s-2.8-1-2.8-2.3\"/></svg>",
+    "n": "Costo",
+    "d": "lo que cuesta cumplirla"
+   },
+   {
+    "svg": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 3h8l4 4v14H6zM14 3v4h4\"/><path d=\"M12 9.5v8M13.8 11.5c0-.9-.8-1.5-1.8-1.5s-1.8.6-1.8 1.4c0 1.8 3.6 1 3.6 2.8 0 .8-.8 1.5-1.8 1.5s-1.8-.7-1.8-1.5\"/></svg>",
+    "n": "Cotización",
+    "d": "el precio ofertado"
+   },
+   {
+    "svg": "<svg viewBox=\"0 0 24 24\"><path d=\"M7 4h10v5a5 5 0 0 1-10 0zM7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3M12 14v4M8 21h8M9 18h6\"/></svg><svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"15\" r=\"5\"/><path d=\"M8 3l4 7 4-7M9 3h6\"/></svg><svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M5.6 5.6l12.8 12.8\"/></svg>",
+    "n": "Margen",
+    "d": "trofeo, medalla o prohibido según el resultado"
+   },
+   {
+    "svg": "<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"13\" r=\"7\"/><path d=\"M12 9.5V13l2.5 1.8M5 4L2.5 6.5M19 4l2.5 2.5\"/></svg>",
+    "n": "Cierre",
+    "d": "fecha límite y horas que quedan"
+   }
+  ],
+  "procedimiento": [
+   {
+    "n": "1",
+    "t": "Agente Rai",
+    "d": "el radar: barre a diario las publicaciones"
+   },
+   {
+    "n": "2",
+    "t": "Análisis de datos",
+    "d": "ponderación de 0 a 100 de cada oportunidad"
+   },
+   {
+    "n": "3",
+    "t": "Clasificación & Propuestas",
+    "d": "listas para la gestión del humano"
+   }
+  ]
  },
  "creative": {
   "codigo": "/ 04",

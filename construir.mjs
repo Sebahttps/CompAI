@@ -250,11 +250,15 @@ const grace = (() => {
   const pie = vivo
     ? `${vivo.barridas.toLocaleString('es-CL')} licitaciones activas barridas · ${vivo.fuente}. Clasificadas por rubro; se desplaza para verlas todas.`
     : S.grace.envivo.pie;
-  const fila = f => `<li>
-            <span class="mkr${/^NO/.test(f.marca) ? ' no' : ''}">${esc(f.marca)}</span>
+  // /03 (Sebastián, 14-11-2026): veredicto ✓✓ + ponderación/100 cuando la fila trae score; ⛔ NO OFERTAR + «detalle en la ficha»;
+  // ✓ «propuesta lista para su revisión» solo con pdf. Sin score ni pdf: ✓✓ GO y el cierre del barrido, sin inventar números.
+  const fila = f => { const no = /^NO/.test(f.marca); return `<li>
+            <span class="mkr${no ? ' no' : ''}">${no ? '⛔ NO OFERTAR' : `${TICKS('mtk', 'GO')} ${f.score != null ? esc(f.score) + '/100' : 'GO'}`}</span>
             <span class="dt"><b>${esc(f.rubro)}</b><em>${esc(f.id)}</em><i>${esc(f.titulo)}</i></span>
-            <span class="ci">${esc(f.cierre)}</span>
-          </li>`;
+            <span class="ci${f.pdf ? ' ok' : ''}">${f.pdf ? TICKS('ctk', 'PDF') + 'propuesta lista para su revisión' : no ? 'detalle en la ficha' : esc(f.cierre)}</span>
+          </li>`; };
+  const iconos = S.grace.iconos.map(i => `<li><span class="ico">${i.svg}</span><b>${esc(i.n)}</b><span>${esc(i.d)}</span></li>`).join('');
+  const pasos = S.grace.procedimiento.map(x => `<li><b>${esc(x.n)}</b><strong>${esc(x.t)}</strong><span>${esc(x.d)}</span></li>`).join('');
   return `
   <section class="sec cv ap" id="grace">
     <div class="pg glam" style="--h:840">
@@ -272,11 +276,11 @@ const grace = (() => {
         ${L.derecha.map(d => { const no = /^NO/.test(d.marca); return `<li class="${no ? 'no' : ''}"><b class="${no ? 'no' : ''}">${esc(d.marca)}</b> ${esc(d.texto)}</li>`; }).join('')}
       </ul>
       <p class="b t glcierre" style="--x:904;--y:730;--w:400;--fs:14.5;--lh:1.62">${esc(L.cierre)}</p>
-      <p class="b gllock" style="--x:483;--y:772;--w:400"><img src="media/grace-logo.webp" alt="" width="512" height="512" loading="lazy" decoding="async"><span>${esc(L.lockup)}</span></p>
+      <p class="b gllock" style="--x:483;--y:772;--w:400">${TICKS('lktk', 'CompAI')}<span>EQUIPO DE AGENTES EXPERTOS</span></p>
     </div>
 
-    <div class="pg gviva" style="--h:800">
-      <div class="b fh gvfilm" style="--x:62;--y:62;--w:380;--hh:676">
+    <div class="pg gviva" style="--h:1130">
+      <div class="b fh gvfilm" style="--x:62;--y:62;--w:380;--hh:676;display:none">
         <video src="${esc(S.grace.envivo.video)}" poster="${esc(S.grace.envivo.video_poster)}"
                muted loop playsinline autoplay preload="none"
                disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
@@ -285,7 +289,7 @@ const grace = (() => {
           en el telefono caian en lineas distintas. Encendido en cian = Grace
           conectada, contra el apagado del lockup de la lamina 1 (Sebastian,
           08-10-2026). */""}
-      <p class="b t gmarca" style="--x:500;--y:122;--w:412;--fs:26;--lh:1.1"><img src="media/grace-logo.webp" alt="" width="512" height="512" loading="lazy" decoding="async"><span>(${esc(S.grace.envivo.titulo)})</span></p>
+      <p class="b t gmarca" style="--x:500;--y:122;--w:412;--fs:26;--lh:1.1">${TICKS('mktk', 'CompAI')}<span>${esc(S.grace.envivo.titulo)}</span></p>
       <p class="b t gvivo" style="--x:502;--y:160;--w:420;--fs:12">${esc(sello)}</p>
       <div class="b fh gcaja" style="--x:500;--y:186;--w:804;--hh:428">
         <ul class="glista">
@@ -293,6 +297,10 @@ const grace = (() => {
         </ul>
       </div>
       <p class="b gpie" style="--x:500;--y:642;--w:804">${esc(pie)}</p>
+      <p class="b t gsub" style="--x:62;--y:770;--w:600;--fs:12">ÓRDENES Y ANTECEDENTES · QUÉ SIGNIFICA CADA ICONO</p>
+      <ul class="b gicos" style="--x:62;--y:800;--w:1242">${iconos}</ul>
+      <p class="b t gsub" style="--x:62;--y:980;--w:400;--fs:12">TRES PASOS</p>
+      <ol class="b gpasos" style="--x:62;--y:1010;--w:1242">${pasos}</ol>
     </div>
 
     <div class="pg" style="--h:1115">

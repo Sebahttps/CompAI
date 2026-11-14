@@ -806,3 +806,32 @@ html.foto .cv .kintranet.anim{opacity:.4}
 /* la placa de / 04 tambien abre la lamina (07-10-2026) */
 .cv .placa[data-slug]{cursor:pointer;transition:border-color .2s}
 .cv .placa[data-slug]:hover{border-color:rgba(46,143,181,.6)}
+
+/* /03 Agentes expertos · 14-11-2026 (Sebastián aprobó la maqueta) */
+.glista li{grid-template-columns:calc(118*var(--u)) minmax(0,1fr) calc(196*var(--u))}
+.glista .mkr{display:flex;align-items:center;gap:calc(6*var(--u));color:#e6eaee;font-size:calc(12*var(--u))}
+.glista .mkr .mtk{width:calc(22*var(--u));height:calc(20*var(--u));fill:none;stroke:var(--cian);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.glista .mkr.no{color:var(--brasa);font-size:calc(10*var(--u));letter-spacing:.06em}
+.glista .ci{display:flex;justify-content:flex-end;align-items:center;gap:calc(6*var(--u))}
+.glista .ci.ok{color:var(--cian)}
+.glista .ci .ctk{width:calc(16*var(--u));height:calc(14*var(--u));fill:none;stroke:var(--cian);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.cv .gmarca .mktk,.cv .gllock .lktk{width:calc(30*var(--u));height:calc(28*var(--u));fill:none;stroke:var(--cian);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.gsub{font-family:var(--plex);font-weight:700;letter-spacing:.14em;color:#7f8a93;text-transform:uppercase}
+.gicos,.gpasos{list-style:none;margin:0;padding:0;display:grid;gap:calc(8*var(--u));font-family:var(--plex);font-size:calc(12.5*var(--u));line-height:1.4;color:#aeb8c0}
+.gicos li{display:grid;grid-template-columns:calc(28*var(--u)) calc(92*var(--u)) 1fr;gap:calc(10*var(--u));align-items:start;border-top:1px solid rgba(255,255,255,.07);padding-top:calc(7*var(--u))}
+.gicos .ico{font-size:calc(15*var(--u));line-height:1.2}
+.gicos b{color:#e6eaee;letter-spacing:.06em;text-transform:uppercase;font-size:calc(11*var(--u));padding-top:calc(2*var(--u))}
+.gpasos li{display:grid;grid-template-columns:calc(34*var(--u)) 1fr;grid-template-rows:auto auto;column-gap:calc(12*var(--u));border-top:1px solid rgba(255,255,255,.07);padding-top:calc(8*var(--u))}
+.gpasos b{grid-row:1/3;font-family:Archivo,sans-serif;font-weight:800;font-size:calc(30*var(--u));line-height:1;color:var(--brasa)}
+.gpasos strong{color:#e6eaee;letter-spacing:.06em;text-transform:uppercase;font-size:calc(12*var(--u))}
+
+/* /03 leyenda de iconos de la fila (ronda 2) */
+.gicos{grid-template-columns:repeat(3,1fr);column-gap:calc(28*var(--u))}
+.gicos li{grid-template-columns:calc(60*var(--u)) calc(96*var(--u)) 1fr}
+.gicos .ico{display:inline-flex;align-items:center;gap:calc(3*var(--u));color:var(--cian)}
+.gicos .ico svg{width:calc(18*var(--u));height:calc(18*var(--u));fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.gicos .og-lin,.gicos .og-sc{font-style:normal;font-family:var(--plex);font-weight:700;font-size:calc(11*var(--u));padding:calc(2*var(--u)) calc(5*var(--u));border-radius:calc(4*var(--u))}
+.gicos .og-lin{border:1px solid rgba(255,255,255,.25);color:#e6eaee}
+.gicos .og-sc{background:#1F7A9C;color:#fff}
+.gicos .og-emo{font-style:normal;font-size:calc(12*var(--u));letter-spacing:-.04em}
+.gpasos{grid-template-columns:repeat(3,1fr);column-gap:calc(28*var(--u))}
