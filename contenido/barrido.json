@@ -1,21 +1,13 @@
 {
- "fecha": "2026-11-13",
+ "fecha": "2026-11-14",
  "fuente": "API de Mercado Público · licitaciones activas, todas las modalidades",
- "barridas": 5202,
+ "barridas": 5266,
  "filas": [
   {
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
    "id": "REALIZAR MEJORAS Y NUEVOS DESARROLLOS DE TODO TIPO, PARA …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
-   "id": "ADQ. LICENCIAMIENTO FORTICLIENT VPN/ZTNA AGENT. LA OFERTA …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -80,6 +72,14 @@
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
    "id": "SOLUCIÓN DE PREVENCIÓN DE INTRUSIONES (IPS) CON SUS …",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "BARRA DE VIDEOCONFERENCIA INTELIGENTE CON IA, 180° FOV, 4K …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   }
