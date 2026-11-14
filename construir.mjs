@@ -13,9 +13,17 @@ const lee = f => JSON.parse(readFileSync(join(raiz, f), 'utf8'));
 const S = lee('contenido/sitio.json');
 // N.º de la última actualización de este sitio (Sebastián, 08-11-2026). Lo da tools/actualizacion.py.
 const RUTA_ACT = join(raiz, '../../intranet-referencia/datos/actualizaciones.json');
-const ACT = existsSync(RUTA_ACT)
-  ? JSON.parse(readFileSync(RUTA_ACT, 'utf8')).registros.filter(r => r.sistema === 'Sitio compai.cl').pop()
-  : null;
+// 14-11-2026: el CI de CompAI vuelve a correr este script sin kri-eit al lado y el sello
+// desaparecia en vivo (Act. N.º 3 se publico sin el). Aqui se deja una copia en
+// contenido/_actualizacion.json -que publicar.py sube con `contenido`- y el CI la lee.
+const RUTA_ACT_COPIA = join(raiz, 'contenido/_actualizacion.json');
+let ACT = null;
+if (existsSync(RUTA_ACT)) {
+  ACT = JSON.parse(readFileSync(RUTA_ACT, 'utf8')).registros.filter(r => r.sistema === 'Sitio compai.cl').pop() || null;
+  if (ACT) writeFileSync(RUTA_ACT_COPIA, JSON.stringify(ACT, null, 1) + '\n');
+} else if (existsSync(RUTA_ACT_COPIA)) {
+  ACT = JSON.parse(readFileSync(RUTA_ACT_COPIA, 'utf8'));
+}
 /* El barrido de RAIdar, si esta. `contenido/barrido.json` lo deja
    `traer_barrido.py` desde `radar/vitrina/ultimo.json`. Sin el archivo el
    panel cae a las filas de EJEMPLO de sitio.json: la pagina no se cae por
