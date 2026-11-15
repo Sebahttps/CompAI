@@ -323,6 +323,7 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;paddin
  .hero-nav .logo img{height:30px}
  .ibar a,.ibar .sin{width:30px;height:30px}.ibar svg{width:16px;height:16px}
  .hero-grid{display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px 24px 48px}
+ .hero-l,.hero-w{align-self:center;justify-self:center;max-width:100%}
  .hero-l{margin:0 0 8px;padding:0;text-align:center;font-size:10px}
  .hero-l2{margin-bottom:22px}
  .hero-w{width:auto;margin:0;padding:0;font-size:50px;white-space:normal;text-align:center;-webkit-text-stroke-width:1.5px}
