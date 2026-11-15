@@ -3,34 +3,8 @@
  "generado": "2026-11-14T21:32",
  "fecha": "14-11-2026 21:32",
  "fuente": "RAI-CA · API de Mercado Público, Compra Ágil",
- "candidatas": 172,
+ "candidatas": 169,
  "filas": [
-  {
-   "marca": "GO",
-   "nombre": "SE SOLICITA COTIZAR TÓNER PARA LAS IMPRESORAS, DESTINADAS AL DEPARTAMENTO DE ADQUISICIONES Y ABASTECIMIENTO L.2",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 100,
-   "codigo": "3179-327-COT26",
-   "monto": "$5.400.000",
-   "organismo": "DIRECCION DE LOGISTICA DE CARABINEROS · Región Metropolitana de Santiago",
-   "fecha": "15-11-2026 06:10",
-   "cierre_iso": "2026-11-15 06:10",
-   "quedan": "quedan 2 h"
-  },
-  {
-   "marca": "NO-GO",
-   "nombre": "COMPUTADOR , DEPTO SALUD TUCAPEL",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 45,
-   "codigo": "3309-397-COT26",
-   "monto": "$810.000",
-   "organismo": "Departamento Comunal de Salud · Región del Biobío ",
-   "fecha": "15-11-2026 10:00",
-   "cierre_iso": "2026-11-15 10:00",
-   "quedan": "quedan 6 h"
-  },
   {
    "marca": "GO",
    "nombre": "(TTV) INSUMO EQUIVALENTE A PLATAFORMA DE ACCESO TRANSANAL (TAMIS)",
@@ -42,7 +16,7 @@
    "organismo": "HOSPITAL DR GUSTAVO FRICKE DE VINA DEL MAR · Región de Valparaíso ",
    "fecha": "15-11-2026 15:48",
    "cierre_iso": "2026-11-15 15:48",
-   "quedan": "quedan 12 h"
+   "quedan": "quedan 4 h"
   },
   {
    "marca": "GO",
@@ -55,7 +29,7 @@
    "organismo": "GOBIERNO REGIONAL DE AYSEN · Región Aysén del General Carlos Ibáñez del Campo",
    "fecha": "15-11-2026 17:53",
    "cierre_iso": "2026-11-15 17:53",
-   "quedan": "quedan 14 h"
+   "quedan": "quedan 6 h"
   },
   {
    "marca": "GO",
@@ -68,7 +42,20 @@
    "organismo": "I MUNICIPALIDAD DE LAGO RANCO · Región de Los Ríos",
    "fecha": "16-11-2026 05:51",
    "cierre_iso": "2026-11-16 05:51",
-   "quedan": "quedan 26 h"
+   "quedan": "quedan 18 h"
+  },
+  {
+   "marca": "NO-GO",
+   "nombre": "COMPRA DE TONER, RRHH DAEM",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 45,
+   "codigo": "4161-429-COT26",
+   "monto": "$600.000",
+   "organismo": "I MUNICIPALIDAD DE DONIHUE · Región del Libertador General Bernardo O´Higgins",
+   "fecha": "16-11-2026 07:00",
+   "cierre_iso": "2026-11-16 07:00",
+   "quedan": "quedan 19 h"
   },
   {
    "marca": "GO",
@@ -81,7 +68,7 @@
    "organismo": "MUNICIPALIDAD DE OVALLE · Región de Coquimbo ",
    "fecha": "16-11-2026 09:00",
    "cierre_iso": "2026-11-16 09:00",
-   "quedan": "quedan 29 h"
+   "quedan": "quedan 21 h"
   },
   {
    "marca": "GO",
@@ -94,7 +81,7 @@
    "organismo": "Hospital Psiquiátrico El Peral · Región Metropolitana de Santiago",
    "fecha": "16-11-2026 09:00",
    "cierre_iso": "2026-11-16 09:00",
-   "quedan": "quedan 29 h"
+   "quedan": "quedan 21 h"
   },
   {
    "marca": "NO-GO",
@@ -107,7 +94,20 @@
    "organismo": "SERVICIO DE SALUD ATACAMA · Región de Atacama ",
    "fecha": "16-11-2026 09:00",
    "cierre_iso": "2026-11-16 09:00",
-   "quedan": "quedan 29 h"
+   "quedan": "quedan 21 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "FA 79 TIC 6 LICENCIAS/ SOFTWARE DE SERVICIO",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "1242138-7-COT26",
+   "monto": "$987.000",
+   "organismo": "Servicio de Salud Coquimbo Hospital de Ovalle · Región de Coquimbo ",
+   "fecha": "16-11-2026 10:00",
+   "cierre_iso": "2026-11-16 10:00",
+   "quedan": "quedan 22 h"
   }
  ]
 }

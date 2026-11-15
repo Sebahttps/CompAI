@@ -65,6 +65,21 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;paddin
 .fundido video,.fundido img{-webkit-mask-image:radial-gradient(ellipse 62% 62% at 50% 50%,#000 30%,rgba(0,0,0,.55) 62%,rgba(0,0,0,.15) 85%,transparent 100%);mask-image:radial-gradient(ellipse 62% 62% at 50% 50%,#000 30%,rgba(0,0,0,.55) 62%,rgba(0,0,0,.15) 85%,transparent 100%)}
 .fundido-suave video,.fundido-suave img{-webkit-mask-image:radial-gradient(ellipse 76% 74% at 50% 50%,#000 58%,rgba(0,0,0,.8) 80%,rgba(0,0,0,.35) 93%,transparent 100%);mask-image:radial-gradient(ellipse 76% 74% at 50% 50%,#000 58%,rgba(0,0,0,.8) 80%,rgba(0,0,0,.35) 93%,transparent 100%)}
 .fundido-lados video,.fundido-lados img{-webkit-mask-image:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.35) 8%,#000 24%,#000 76%,rgba(0,0,0,.35) 92%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.35) 8%,#000 24%,#000 76%,rgba(0,0,0,.35) 92%,transparent 100%)}
+/* 15-11-2026, Sebastián: el video 1 de / 03 se funde por los LATERALES (izquierda y
+   derecha), con el centro limpio: la misma rampa de .fundido-lados, girada a 90°. */
+.fundido-horiz video,.fundido-horiz img{-webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.35) 8%,#000 24%,#000 76%,rgba(0,0,0,.35) 92%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.35) 8%,#000 24%,#000 76%,rgba(0,0,0,.35) 92%,transparent 100%)}
+
+/* ── aparición al primer scroll (Sebastián, 15-11-2026) ──────────────────
+   .rv + data-rv="abajo|arriba" los pone construir.mjs; js/claro.js marca .en
+   UNA vez cuando el elemento entra a la vista (IntersectionObserver, .25) y
+   deja de observarlo. Solo se esconden si <html> lleva .js (script de una
+   línea en el head): sin JS todo se ve. «abajo» entra bajando (parte más
+   arriba), «arriba» entra subiendo (parte más abajo). */
+.js .rv{opacity:0;transition:opacity .6s ease-out,transform .6s ease-out;will-change:opacity,transform}
+.js .rv[data-rv="abajo"]{transform:translateY(-24px)}
+.js .rv[data-rv="arriba"]{transform:translateY(24px)}
+.js .rv.en{opacity:1;transform:none;will-change:auto}
+.serv .cod.rv{display:inline-block}
 
 /* ── barra de 8 iconos: secciones | herramienta, huella ─────────────── */
 .ibar{display:flex;align-items:center;gap:6px;padding:6px;border:1px solid rgba(255,255,255,.7);border-radius:999px;margin:0;list-style:none}
@@ -103,7 +118,8 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;paddin
 .of2-ficha a{font-family:var(--mono);font-size:12px;color:var(--gris);text-decoration:none;border-bottom:1px solid var(--gris)}
 .of2 h1{margin:0;font-size:64px;line-height:.98;font-weight:700;letter-spacing:-.02em;text-transform:uppercase;color:var(--tinta)}
 .of2 .sub{margin:12px 0 0;font-size:24px;font-weight:400;letter-spacing:-.01em;color:var(--gris)}
-.of2 .pill{margin-top:32px;width:84px;font-size:11px;justify-content:center}
+/* 15-11-2026: sin ancho fijo (el width:84px del lienzo montaba el texto); el padding lo da .pill */
+.of2 .pill{margin-top:32px;font-size:11px;justify-content:center}
 
 /* ── / 02 Il Cuore ───────────────────────────────────────────────────── */
 #il-cuore{padding-top:200px}
@@ -134,7 +150,14 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;paddin
 .lam2{position:relative;display:grid;grid-template-columns:repeat(10,minmax(0,1fr));padding:64px 0 96px}
 .lam2-fig{grid-column:3/6;margin:0;height:994px;overflow:hidden;align-self:start}
 .lam2-fig video{object-position:50% 56%}
-.lam2-list{grid-column:6/10;padding:0 0 0 40px;align-self:start}
+/* 15-11-2026, Sebastián: el listado no supera el alto del video RAI-CA de al lado
+   (994 px): la columna mide lo mismo y la lista lleva su propio desplazador fino. */
+.lam2-list{grid-column:6/10;padding:0 0 0 40px;align-self:start;height:994px;display:flex;flex-direction:column;min-height:0}
+.lam2-list .radar-cab,.lam2-list .radar-pie{flex:0 0 auto}
+.glista{flex:1 1 auto;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--filete) transparent;padding-right:8px}
+.glista::-webkit-scrollbar{width:6px}
+.glista::-webkit-scrollbar-thumb{background:var(--filete);border-radius:3px}
+.glista::-webkit-scrollbar-track{background:transparent}
 .radar-cab{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:20px}
 .radar-cab .tit{margin:0;font-family:var(--mono);font-size:26px;line-height:1.1;font-weight:500}
 .radar-cab .sello{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--gris2)}
@@ -311,6 +334,7 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;paddin
   html{scroll-behavior:auto}
   .rail{scroll-behavior:auto}
   .ibar-dock,.card{transition:none}
+  .js .rv{opacity:1;transform:none;transition:none;will-change:auto}
 }
 
 /* ── móvil: el mismo HTML, a 390 px ──────────────────────────────────── */
@@ -325,7 +349,10 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;paddin
  .hero-grid{display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px 24px 48px}
  .hero-l,.hero-w{align-self:center;justify-self:center;max-width:100%}
  .hero-l{margin:0 0 8px;padding:0;text-align:center;font-size:10px}
- .hero-l2{margin-bottom:22px}
+ /* 15-11-2026, Sebastián: en móvil el rótulo izquierdo va a la IZQUIERDA y el derecho a la
+    DERECHA; solo el wordmark sigue centrado */
+ .hero-l1{align-self:flex-start;text-align:left}
+ .hero-l2{align-self:flex-end;text-align:right;margin-bottom:22px}
  .hero-w{width:auto;margin:0;padding:0;font-size:50px;white-space:normal;text-align:center;-webkit-text-stroke-width:1.5px}
  .hero-foot{padding:0 24px 20px}
  .of2{padding:72px 24px;min-height:0}
@@ -339,7 +366,8 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;paddin
  .lam1-txt p{width:auto}
  .lam2{display:block;padding:48px 0}
  .lam2-fig{height:auto;aspect-ratio:3/4;margin:0 24px}
- .lam2-list{padding:32px 24px 0}
+ .lam2-list{padding:32px 24px 0;height:auto;display:block}
+ .glista{overflow:visible;padding-right:0}
  .ante{padding:48px 0 0}
  .ante .kick{padding:0 24px}
  .gicos li,.gpasos li{padding-left:24px;padding-right:24px}

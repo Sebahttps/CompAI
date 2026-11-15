@@ -55,6 +55,12 @@ const SITEMAP_ANTES = existsSync(join(raiz, 'sitemap.xml')) ? readFileSync(join(
 const LASTMODS_ANTES = [...SITEMAP_ANTES.matchAll(/<lastmod>(\d{4}-\d{2}-\d{2})<\/lastmod>/g)].map(m => m[1]);
 
 /* ── piezas ──────────────────────────────────────────────────────────── */
+/* Aparición al primer scroll (Sebastián, 15-11-2026): `.rv` + data-rv marca lo
+   que entra «bajando» (abajo) o «subiendo» (arriba); css/claro.css lo esconde
+   solo si <html> lleva .js y js/claro.js lo muestra una vez a la vista.
+   RV va dentro de class="…", RV_ATR va suelto en la etiqueta. */
+const RV = { abajo: ' rv" data-rv="abajo', arriba: ' rv" data-rv="arriba' };
+const RV_ATR = { abajo: ' class="rv" data-rv="abajo"', arriba: ' class="rv" data-rv="arriba"' };
 const LINEAS = (clase = '') => `<div class="lineas${clase ? ' ' + clase : ''}" aria-hidden="true"><span></span><span></span><span></span><span></span></div>`;
 
 // los 8 iconos de la barra: 6 secciones | herramienta, huella (lienzo v360)
@@ -109,9 +115,9 @@ const offenbar = `
   ${ibar('ibar-hero')}
  </header>
  <div class="hero-grid">
-  <p class="hero-l hero-l1">${O.rotulo_izq.map(esc).join('<br>')}</p>
-  <p class="hero-l hero-l2">${O.rotulo_der.map(esc).join('<br>')}</p>
-  <p class="hero-w">${O.wordmark.map(esc).join('<br>')}</p>
+  <p class="hero-l hero-l1${RV.abajo}">${O.rotulo_izq.map(esc).join('<br>')}</p>
+  <p class="hero-l hero-l2${RV.abajo}">${O.rotulo_der.map(esc).join('<br>')}</p>
+  <p class="hero-w${RV.abajo}">${O.wordmark.map(esc).join('<br>')}</p>
  </div>
  <div class="hero-foot"><span class="mono">${esc(O.codigo)} ${esc(O.nombre)}</span></div>
 </section>
@@ -119,9 +125,9 @@ const offenbar = `
 <section id="offenbar-2" class="of2">
  <div class="of2-in">
   <p class="of2-ficha"><a href="${esc(S.contacto.ficha)}" target="_blank" rel="noopener">${esc(O.enlace_texto)}</a></p>
-  <h1 class="hero-t">${esc(O.titulo_1)}</h1>
-  <p class="sub">${esc(O.titulo_2)}</p>
-  <a class="pill pill-lleno" href="#inbox">${esc(O.boton)}</a>
+  <h1 class="hero-t${RV.abajo}">${esc(O.titulo_1)}</h1>
+  <p class="sub${RV.abajo}">${esc(O.titulo_2)}</p>
+  <a class="pill pill-lleno${RV.arriba}" href="#inbox">${esc(O.boton)}</a>
  </div>
 </section>
 ${ibar('ibar-dock')}`;
@@ -134,9 +140,9 @@ const ilCuore = `
  <figure class="fundido fundido-lados cuore-fig">${video(C.video, C.video_poster)}</figure>
  <div class="cuore-esp"></div>
  <div class="cuore-txt">
-  <h2>${C.ia.titulo.map(esc).join('<br>')}</h2>
+  <h2${RV_ATR.abajo}>${C.ia.titulo.map(esc).join('<br>')}</h2>
   <p>${esc(C.ia.parrafo)}</p>
-  <div class="cuore-acc">${C.accesos.map(a => `<a class="pill" href="${esc(a.ancla)}">${esc(a.texto)}</a>`).join('\n   ')}</div>
+  <div class="cuore-acc">${C.accesos.map(a => `<a class="pill${RV.arriba}" href="${esc(a.ancla)}">${esc(a.texto)}</a>`).join('\n   ')}</div>
  </div>
 </section>`;
 
@@ -153,16 +159,16 @@ const grace = (() => {
      <span class="org">${esc(f.organismo)}</span>
      <span class="f2"><span class="fec">${esc(f.fecha)}</span><span class="que"${f.cierre_iso ? ` data-cierre="${esc(f.cierre_iso)}"` : ''}>${REL}<span class="qt">${esc(f.quedan)}</span></span></span>
     </span></li>`; };
-  const iconos = G.iconos.map(i => `<li><span class="ico">${i.svg}</span><b>${esc(i.n)}</b><span>${esc(i.d)}</span></li>`).join('');
-  const pasos = G.procedimiento.map(x => `<li><b>${esc(x.n)}</b><strong>${esc(x.t)}</strong><span>${esc(x.d)}</span></li>`).join('');
+  const iconos = G.iconos.map(i => `<li><span class="ico${RV.abajo}">${i.svg}</span><b>${esc(i.n)}</b><span>${esc(i.d)}</span></li>`).join('');
+  const pasos = G.procedimiento.map(x => `<li><b${RV_ATR.abajo}>${esc(x.n)}</b><strong>${esc(x.t)}</strong><span>${esc(x.d)}</span></li>`).join('');
   return `
 <section id="grace">
  <div class="lam1">
-  <figure class="fundido lam1-fig">${video(L.video, L.video_poster)}</figure>
+  <figure class="fundido fundido-horiz lam1-fig">${video(L.video, L.video_poster)}</figure>
   <div class="lam1-over">
    <p class="kick">${esc(G.codigo)} ${esc(G.nombre)}</p>
    <div class="lam1-txt">
-    <h2>${L.titulo.map(esc).join('<br>')}</h2>
+    <h2${RV_ATR.abajo}>${L.titulo.map(esc).join('<br>')}</h2>
     <p>${esc(L.izquierda)}</p>
    </div>
    <ul class="gldcha">${L.derecha.map(d => `<li>${/^NO/.test(d.marca) ? MK_NOGO : MK_GO}<span>${esc(d.texto)}</span></li>`).join('')}</ul>
@@ -172,7 +178,7 @@ const grace = (() => {
  <div class="lam2">
   <figure class="fundido fundido-suave lam2-fig">${video(G.radar_video, G.radar_video_poster)}</figure>
   <div class="lam2-list">
-   <div class="radar-cab"><p class="tit">${esc(G.envivo.titulo)}</p><span class="sello">${esc(sello)}</span></div>
+   <div class="radar-cab"><p class="tit${RV.abajo}">${esc(G.envivo.titulo)}</p><span class="sello">${esc(sello)}</span></div>
    <ul class="glista">
     ${filas.map(fila).join('\n    ')}
    </ul>
@@ -191,7 +197,7 @@ const grace = (() => {
    ${video(G.flor_video, G.flor_video_poster)}
    ${LINEAS('lineas-blancas')}
    <div class="lam3-velo" aria-hidden="true"></div>
-   <div class="gcifras-sobre">${G.franja.map(f => `<div><b>${esc(f.cifra)}</b><span>${esc(f.glosa)}</span></div>`).join('')}</div>
+   <div class="gcifras-sobre">${G.franja.map(f => `<div${RV_ATR.arriba}><b>${esc(f.cifra)}</b><span>${esc(f.glosa)}</span></div>`).join('')}</div>
   </figure>
   <p class="lam3-pie">${esc(G.pie)}</p>
  </div>
@@ -204,13 +210,13 @@ const creative = `
  <div class="cre-kick"><p class="kick">${esc(S.creative.codigo)} ${esc(S.creative.nombre)}</p></div>
  <div class="serv5">
 ${LIN.map(l => `  <div class="serv">
-   <span class="cod">${esc(l.codigo)}</span>
-   <h3><a href="portafolio.html#${esc(l.codigo)}">${esc(l.titulo)}</a></h3>
+   <span class="cod${RV.abajo}">${esc(l.codigo)}</span>
+   <h3${RV_ATR.abajo}><a href="portafolio.html#${esc(l.codigo)}">${esc(l.titulo)}</a></h3>
    <p>${esc(l.descripcion)}</p>${l.soul ? `
    ${selloSoul(S.creative.soul_sello)}` : ''}
   </div>`).join('\n')}
  </div>
- <div class="cre-btn"><a class="btn" href="${esc(S.creative.llamado.url)}">${esc(S.creative.llamado.enlace)}</a></div>
+ <div class="cre-btn"><a class="btn${RV.arriba}" href="${esc(S.creative.llamado.url)}">${esc(S.creative.llamado.enlace)}</a></div>
 </section>`;
 
 /* ── / 05 Run · el formulario (mismo mecanismo: Apps Script + adjuntos) ── */
@@ -221,7 +227,7 @@ const inbox = `
  <p class="kick">${esc(I.codigo)} ${esc(I.nombre)}</p>
  <div class="col2 run-col">
   <div class="run-txt">
-   <h2>${esc(I.titulo_1)}<br>${esc(I.titulo_2)}</h2>
+   <h2${RV_ATR.abajo}>${esc(I.titulo_1)}<br>${esc(I.titulo_2)}</h2>
    <p>${esc(I.bajada)}</p>
   </div>
   <form class="run-form" id="formLead" novalidate>
@@ -236,7 +242,7 @@ const inbox = `
     <ul class="ilista" id="f-lista" aria-live="polite"></ul>
    </div>
    <p class="trampa" aria-hidden="true"><label for="f-sitioweb">No llenar</label><input id="f-sitioweb" name="sitioweb" type="text" tabindex="-1" autocomplete="off"></p>
-   <div class="enviar"><button type="submit" class="btn btn-lleno" id="formBtn">${esc(I.boton)}</button><span class="nota">${esc(I.nota)}</span></div>
+   <div class="enviar"><button type="submit" class="btn btn-lleno${RV.arriba}" id="formBtn">${esc(I.boton)}</button><span class="nota">${esc(I.nota)}</span></div>
    <p class="aviso" id="formAviso" role="status" aria-live="polite" hidden></p>
   </form>
  </div>
@@ -248,7 +254,7 @@ const contacto = `
 <footer id="contacto" class="sec">
  <p class="kick">${esc(K.codigo)} ${esc(K.nombre)}</p>
  <div class="col2 pie-col">
-  <a class="pie-mail" href="mailto:${esc(S.contacto.correo)}">${esc(S.contacto.correo)}</a>
+  <a class="pie-mail${RV.arriba}" href="mailto:${esc(S.contacto.correo)}">${esc(S.contacto.correo)}</a>
   <div class="pie-dat">${esc(S.contacto.razon_social)}<br>RUT ${esc(S.contacto.rut)}<br>${esc(S.contacto.lugar)}</div>
  </div>
  <p class="kick k-ag">${esc(K.agentes_rotulo)}</p>
@@ -292,6 +298,7 @@ const html = `<!doctype html>
      No editar este archivo a mano: el siguiente build lo pisa. -->
 ${ACT ? `<!-- ${ACT.sistema} · Actualización N.º ${ACT.n} · ${ACT.fecha} -->\n` : ''}<html lang="${esc(S.meta.lang)}">
 <head>
+<script>document.documentElement.className+=' js'</script>
 ${cabeza(S.meta.title, S.meta.description, S.meta.url, `<link rel="preload" as="image" href="${esc(O.video_poster)}" fetchpriority="high">\n`)}
 <script type="application/ld+json">${JSON.stringify({
   '@context': 'https://schema.org', '@type': 'ProfessionalService',

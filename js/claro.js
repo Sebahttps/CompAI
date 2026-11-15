@@ -35,6 +35,30 @@
     if (hero) alCalmarse(() => arranca(hero));
   })();
 
+  /* ── aparición al primer scroll (Sebastián, 15-11-2026) ──────────────────
+     Los .rv los esconde css/claro.css solo si <html> lleva .js. Aquí cada uno
+     recibe .en UNA vez, cuando un cuarto de él entra a la vista, y se deja de
+     observar. Los que aparecen juntos se escalonan 80 ms. Con movimiento
+     reducido, o sin IntersectionObserver, se muestran todos de inmediato. */
+  (() => {
+    const rv = $$('.rv');
+    if (!rv.length) return;
+    const todos = () => rv.forEach(e => e.classList.add('en'));
+    if (quieto.matches || !('IntersectionObserver' in window)) { todos(); return; }
+    const io = new IntersectionObserver(es => {
+      let i = 0;
+      for (const e of es) {
+        if (!e.isIntersecting) continue;
+        const el = e.target;
+        el.style.transitionDelay = Math.min(i++, 6) * 80 + 'ms';
+        el.classList.add('en');
+        io.unobserve(el);
+      }
+    }, { threshold: .25 });
+    rv.forEach(e => io.observe(e));
+    if (quieto.addEventListener) quieto.addEventListener('change', () => { if (quieto.matches) { io.disconnect(); todos(); } });
+  })();
+
   /* ── la barra de iconos: en el hero arriba; al bajar, atracada a la izquierda ── */
   (() => {
     const nav = $('.hero-nav'), dock = $('.ibar-dock');
