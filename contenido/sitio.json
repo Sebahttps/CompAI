@@ -1,12 +1,13 @@
 {
- "_leeme": "Única fuente de los textos del sitio. Cambiar un texto = editar este archivo y hacer push. El workflow .github/workflows/sitio-compai.yml vuelve a armar index.html solo.",
+ "_leeme": "Única fuente de los textos del sitio (tema claro «compAI Claro Minimal», aprobado por Sebastián el 15-11-2026). Cambiar un texto = editar este archivo y volver a armar. Las líneas L1–L5 viven en lineas.json.",
  "meta": {
   "lang": "es-CL",
   "title": "compAI — Servicios TI para el Estado, con precio publicado",
   "description": "Servicios de TI con su valor neto publicado, el que va en la orden de compra. Compra Ágil bajo 100 UTM. Santiago, Chile.",
   "url": "https://compai.cl/",
   "og_image": "https://compai.cl/media/og.jpg",
-  "og_image_alt": "compAI — Tecnología para Chile, ejecutada por IA"
+  "og_image_alt": "compAI — Tecnología para Chile, ejecutada por IA",
+  "theme_color": "#F5F0E4"
  },
  "hero": "franjas",
  "hero_sello": "media/compai-sello.svg",
@@ -53,13 +54,13 @@
   },
   {
    "codigo": "/ 05",
-   "nombre": "Inbox",
+   "nombre": "Run",
    "titulo": "Cotizar",
    "ancla": "#inbox"
   },
   {
    "codigo": "/ 06",
-   "nombre": "Hablemos",
+   "nombre": "Inbox",
    "titulo": "Contacto",
    "ancla": "#contacto"
   }
@@ -91,13 +92,29 @@
   "nombre": "Offenbar",
   "titulo_1": "TECNOLOGÍA PARA CHILE",
   "titulo_2": "ejecutada por IA.",
-  "enlace_texto": "Ficha proveedores del Estado →"
+  "enlace_texto": "Ficha proveedores del Estado →",
+  "video": "media/hero-claro.mp4",
+  "video_poster": "media/hero-claro.webp",
+  "_video": "«00 — Hero compAI Complete.mp4» (compai_workspace/.../compai-cl/vid), 1440×810 exacto: las cuatro líneas del video son las del diseño (20/40/60/80 %). Sin sello en la esquina.",
+  "rotulo_izq": [
+   "Servicios TI",
+   "para el Estado"
+  ],
+  "rotulo_der": [
+   "Santiago, Chile",
+   "Compra Ágil < 100 UTM"
+  ],
+  "wordmark": [
+   "COMPAI",
+   "GLOBAL SOLUTIONS"
+  ],
+  "boton": "Compra Ágil"
  },
  "il_cuore": {
   "codigo": "/ 02",
   "nombre": "Il Cuore",
-  "video": "media/il-cuore.mp4",
-  "video_poster": "media/il-cuore.webp",
+  "video": "media/il-cuore-claro.mp4",
+  "video_poster": "media/il-cuore-claro.webp",
   "ia": {
    "titulo": [
     "Hablamos humano",
@@ -116,7 +133,8 @@
     "texto": "Contacto",
     "ancla": "#contacto"
    }
-  ]
+  ],
+  "_video": "«02 — Il Cuore.mp4» (mariposa blanca sobre crema), el del lienzo aprobado; sello Gemini parchado cuadro a cuadro. El anterior (azul sobre negro) sigue en media/il-cuore.mp4."
  },
  "grace": {
   "codigo": "/ 03",
@@ -156,64 +174,106 @@
    "filas": [
     {
      "marca": "GO",
-     "id": "LICENCIAS DE OFICINA · 40 PUESTOS",
-     "titulo": "Calza con el rubro y el presupuesto alcanza: propuesta armada",
-     "cierre": "propuesta lista",
-     "rubro": "SOFTWARE"
+     "nombre": "S27-26/DEPARTAMENTO DE PROGRAMAS DE INTERVENCIÓN COMUNITARIA/ADQ. DE NOTEBOOK Y SUSCRIPCIÓN ANUAL DE NUBE MULTIPROPÓSITO.",
+     "linea": "L4",
+     "linea_nombre": "Hardware y Licenciamiento",
+     "score": 85,
+     "codigo": "1658-1764-COT26",
+     "monto": "$1.700.000",
+     "organismo": "I MUNICIPALIDAD DE TEMUCO · Región de la Araucanía",
+     "fecha": "15-11-2026 01:10",
+     "quedan": "quedan 1 h"
     },
     {
      "marca": "GO",
-     "id": "PUESTA EN MARCHA DE SERVIDORES COMPRADOS",
-     "titulo": "Entregable cerrado y sin bulto que despachar: se oferta",
-     "cierre": "propuesta lista",
-     "rubro": "INFRAESTRUCTURA"
+     "nombre": "SERVICIO DE INFORMACIÓN DE LA GESTIÓN MUNICIPAL - DIRECCIÓN DE ADM. Y FINANZAS",
+     "linea": "L5",
+     "linea_nombre": "Soluciones Web y Desarrollo Customizado",
+     "score": 90,
+     "codigo": "4454-821-COT26",
+     "monto": "$6.500.000",
+     "organismo": "I MUNICIPALIDAD DE HUALQUI · Región del Biobío",
+     "fecha": "17-11-2026 12:00",
+     "quedan": "quedan 2 d"
+    },
+    {
+     "marca": "GO",
+     "nombre": "SC 7706 COMPUTADOR NOTEBOOK",
+     "linea": "L4",
+     "linea_nombre": "Hardware y Licenciamiento",
+     "score": 78,
+     "codigo": "2704-2248-COT26",
+     "monto": "$2.613.980",
+     "organismo": "UNIVERSIDAD DEL BIO BIO · Región del Biobío",
+     "fecha": "16-11-2026 12:00",
+     "quedan": "quedan 1 d"
+    },
+    {
+     "marca": "GO",
+     "nombre": "ADQUISICIÓN KIT DE EQUIPOS TIC'S CESFAM TALCAHUANO SUR, COMUNA DE HUALPÉN.",
+     "linea": "L4",
+     "linea_nombre": "Hardware y Licenciamiento",
+     "score": 81,
+     "codigo": "1057931-45-COT26",
+     "monto": "$3.400.000",
+     "organismo": "DIRECCION SERVICIO DE SALUD TALCAHUANO · Región del Biobío",
+     "fecha": "17-11-2026 17:00",
+     "quedan": "quedan 2 d"
     },
     {
      "marca": "NO-GO",
-     "id": "CABLEADO Y PUNTOS DE RED EN TERRENO",
-     "titulo": "Es obra física de cuadrilla: queda fuera del alcance declarado",
-     "cierre": "justificado",
-     "rubro": "OBRA DE REDES"
+     "nombre": "TELEVISOR, SOPORTE, SPLITTER, CCTV EN CABLEADO FIBRA CON CONVERSORES HDMI, PARLANTES Y SET DE MICROFONOS",
+     "linea": "L2",
+     "linea_nombre": "Arquitectura TI y Consultoría Especializada",
+     "score": 31,
+     "codigo": "2773-404-COT26",
+     "monto": "$3.050.000",
+     "organismo": "I MUNICIPALIDAD DE CHIGUAYANTE · Región del Biobío",
+     "fecha": "16-11-2026 10:28",
+     "quedan": "quedan 1 d"
     },
     {
      "marca": "GO",
-     "id": "HOSPEDAJE Y CORREO · 12 MESES",
-     "titulo": "Se pide por capacidad y plazo, que es como se cotiza aquí",
-     "cierre": "propuesta lista",
-     "rubro": "SERVICIOS DE NUBE"
+     "nombre": "NOTEBOOK, CELULARES PROGRAMA SALUD MENTAL",
+     "linea": "L4",
+     "linea_nombre": "Hardware y Licenciamiento",
+     "score": 72,
+     "codigo": "4238-112-COT26",
+     "monto": "$2.100.000",
+     "organismo": "Ilustre Municipalidad de Curanilahue - Salud · Región del Biobío",
+     "fecha": "16-11-2026 14:00",
+     "quedan": "quedan 1 d"
     },
     {
      "marca": "NO-GO",
-     "id": "ENLACE DE INTERNET · FIBRA, 36 MESES",
-     "titulo": "Lo provee una empresa de telecomunicaciones, no un proveedor de nube",
-     "cierre": "justificado",
-     "rubro": "TELECOMUNICACIONES"
+     "nombre": "SG GAV SOLICITUD DE MANTENIMIENTO CORRECTIVO PARA EQUIPOS RAYOS X PORTATIL MARCA SANSUNG, CON REPUESTOS INCLUIDOS",
+     "linea": "L2",
+     "linea_nombre": "Arquitectura TI y Consultoría Especializada",
+     "score": 12,
+     "codigo": "1057417-4481-COT26",
+     "monto": "$4.437.510",
+     "organismo": "COMPLEJO ASISTENCIAL DR.VICTOR RIOS RUIZ · Región del Biobío",
+     "fecha": "17-11-2026 00:00",
+     "quedan": "quedan 2 d"
     },
     {
      "marca": "GO",
-     "id": "INFORME DE ESPECIFICACIÓN TÉCNICA",
-     "titulo": "Se entrega por informe y no hay un tercero a quien pagarle",
-     "cierre": "propuesta lista",
-     "rubro": "CONSULTORÍA TI"
-    },
-    {
-     "marca": "NO-GO",
-     "id": "EQUIPOS A DESPACHAR EN CINCO REGIONES",
-     "titulo": "Fuera del radio de despacho: le sirve un proveedor con bodega",
-     "cierre": "justificado",
-     "rubro": "EQUIPAMIENTO"
-    },
-    {
-     "marca": "GO",
-     "id": "MIGRACIÓN DE SITIO, DOMINIO Y CERTIFICADO",
-     "titulo": "Un solo responsable para el corte y para lo que queda andando",
-     "cierre": "propuesta lista",
-     "rubro": "SITIOS Y DOMINIOS"
+     "nombre": "PIZARRA INTERACTIVA PARA ESTABLECIMIENTO G-850-FONDOS SEP 90% ORD 110",
+     "linea": "L4",
+     "linea_nombre": "Hardware y Licenciamiento",
+     "score": 58,
+     "codigo": "4034-812-COT26",
+     "monto": "$4.000.000",
+     "organismo": "Ilustre Municipalidad de Cañete - Educación · Región del Biobío",
+     "fecha": "16-11-2026 08:30",
+     "quedan": "quedan 1 d"
     }
    ],
    "video": "media/grace-vivo.mp4",
    "video_poster": "media/grace-vivo.webp",
-   "pie": "Clasificadas por rubro. Se desplaza para ver el barrido completo."
+   "pie": "Clasificadas por rubro. Se desplaza para ver el barrido completo.",
+   "_filas": "Las 8 del lienzo (compras reales del 15-11-2026, puntajes ilustrativos salvo Temuco). Se muestran SOLO si no hay contenido/radar.json fresco (lo deja traer_radar.py desde la salida de RAI-CA); con radar.json el sello pasa a «actualizado <fecha>».",
+   "copiar": "Copiar ID"
   },
   "franja": [
    {
@@ -235,23 +295,23 @@
   ],
   "cta": "Ver los servicios, desde $360.000 neto",
   "lamina": {
-   "video": "media/campo-codigo.mp4",
-   "video_poster": "media/campo-codigo.webp",
+   "video": "media/intel-1.mp4",
+   "video_poster": "media/intel-1.webp",
    "titulo": [
     "CLASIFICA CADA",
     "LICITACIÓN",
     "DE MERCADO",
     "PÚBLICO"
    ],
-   "izquierda": "El equipo revisa las publicaciones todos los días y filtra por rubro y presupuesto. De cada oportunidad pertinente emite un análisis, una ponderación y un veredicto:",
+   "izquierda": "El equipo revisa las publicaciones todos los días y filtra por rubro y presupuesto. De cada oportunidad emite un análisis, una ponderación y un veredicto:",
    "derecha": [
     {
      "marca": "GO",
-     "texto": "propuesta lista para su revisión."
+     "texto": "Propuesta lista para su revisión."
     },
     {
      "marca": "NO-GO",
-     "texto": "no ofertar. Detalle en la ficha."
+     "texto": "No ofertar. Detalle en la ficha"
     }
    ],
    "cierre": "El panel muestra cómo se ve ese resultado.",
@@ -279,7 +339,7 @@
     "d": "puntaje de 0 a 100 del análisis"
    },
    {
-    "svg": "<i class=\"og-emo\">⛔ ⚠️ 🔒</i>",
+    "svg": "<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M7 12h10\"/></svg><svg viewBox=\"0 0 24 24\"><path d=\"M12 3l10 18H2z\"/><path d=\"M12 10v5M12 18v.5\"/></svg><svg viewBox=\"0 0 24 24\"><rect x=\"5\" y=\"11\" width=\"14\" height=\"10\" rx=\"1.5\"/><path d=\"M8 11V8a4 4 0 0 1 8 0v3\"/></svg>",
     "n": "Antecedentes",
     "d": "condiciones de las bases que pesan en el veredicto"
    },
@@ -320,7 +380,14 @@
     "t": "Clasificación & Propuestas",
     "d": "listas para la gestión del humano"
    }
-  ]
+  ],
+  "radar_video": "media/intel-2.mp4",
+  "radar_video_poster": "media/intel-2.webp",
+  "_radar_video": "«03 — L'Intelligence 2 RAI-CA.mp4» recortado a la franja vertical 52,8–77 % del ancho (object-view-box del lienzo); el sello queda fuera del recorte.",
+  "flor_video": "media/intel-3.mp4",
+  "flor_video_poster": "media/intel-3.webp",
+  "antecedentes_rotulo": "ANTECEDENTES",
+  "procedimiento_rotulo": "PROCEDIMIENTO"
  },
  "creative": {
   "codigo": "/ 04",
@@ -357,17 +424,23 @@
    "antes": "",
    "enlace": "Revisar catálogo →",
    "despues": "",
-   "url": "portafolio.html#escena-01"
+   "url": "portafolio.html"
   },
-  "_llamado": "Bajo las tres bandas. 07-10-2026, Sebastian: el llamado pasa de «escribenos» a revisar el catalogo (portafolio). 08-10-2026, Sebastian: abre en la escena 01 y no en la 05 — «es el catalogo de todo». Deroga el veto de ClAI-nte del 07-10 que mandaba al visitante directo a la escena de la panadera. 13-10-2026: como este llamado cuelga de la ficha PyME, vuelve a la escena 05 por la pasada de ClAI-nte (la ficha PyME llevaba a «La licencia venció el martes»); revertir a #escena-01 si Sebastian prefiere el catalogo general. 14-10-2026, Sebastian: se mantiene en la escena 01 (se revirtio el cambio a la 05 del 13-10).",
+  "_llamado": "Bajo las tres bandas. 07-10-2026, Sebastian: el llamado pasa de «escribenos» a revisar el catalogo (portafolio). 08-10-2026, Sebastian: abre en la escena 01 y no en la 05 — «es el catalogo de todo». Deroga el veto de ClAI-nte del 07-10 que mandaba al visitante directo a la escena de la panadera. 13-10-2026: como este llamado cuelga de la ficha PyME, vuelve a la escena 05 por la pasada de ClAI-nte (la ficha PyME llevaba a «La licencia venció el martes»); revertir a #escena-01 si Sebastian prefiere el catalogo general. 14-10-2026, Sebastian: se mantiene en la escena 01 (se revirtio el cambio a la 05 del 13-10). 15-11-2026: el catálogo nuevo (carrusel L1–L5) abre en L1; cada columna de / 04 enlaza a su línea (#L1…#L5).",
   "whatsapp_pyme": "https://wa.me/56962469977",
   "_whatsapp_pyme": "Solo para SOUL (lamina / 05 y escena 05). Decision de Sebastian del 07-10-2026: «a la panadera se le contesta por WhatsApp». El campo general «whatsapp» sigue vacio: / 06 no muestra el movil.",
   "agenda_url": "",
-  "_agenda_url": "Pagina de reserva de Google Calendar (asesoria de 30 min, sin costo). Vacio = el boton no aparece. Sebastian, 07-10-2026."
+  "_agenda_url": "Pagina de reserva de Google Calendar (asesoria de 30 min, sin costo). Vacio = el boton no aparece. Sebastian, 07-10-2026.",
+  "soul_sello": {
+   "url": "soul/",
+   "palabra": "soul",
+   "texto": "El alma de tu oficio.",
+   "aria": "SOUL, el alma de tu oficio"
+  }
  },
  "inbox": {
   "codigo": "/ 05",
-  "nombre": "Inbox",
+  "nombre": "Run",
   "titulo": "Gestiona una Compra Ágil",
   "bajada": "Cuéntanos qué necesitas. Respondemos con una propuesta, no con un acuse de recibo.",
   "campos": {
@@ -382,8 +455,8 @@
   "exito": "Listo. Tu mensaje llegó a hola@compai.cl — te respondemos hoy mismo.",
   "error": "No se pudo enviar. Escríbenos directo a hola@compai.cl.",
   "antetitulo": "RUN · FORMULARIO DE COTIZACIÓN",
-  "titulo_1": "GESTIONA UNA",
-  "titulo_2": "COMPRA ÁGIL",
+  "titulo_1": "Gestiona una",
+  "titulo_2": "Compra Ágil",
   "placeholders": {
    "nombre": "Cómo te llamas",
    "correo": "nombre@institucion.cl",
@@ -398,12 +471,108 @@
  },
  "contacto_seccion": {
   "codigo": "/ 06",
-  "nombre": "Hablemos",
+  "nombre": "Inbox",
   "pregunta": "¿Necesitas ayuda con un proyecto?",
   "intranet_texto": "Intranet",
   "pregunta_lineas": [
    "¿Necesitas ayuda con un proyecto?",
    "Envíanos un correo a"
-  ]
+  ],
+  "agentes_rotulo": "AGENTES",
+  "agentes": [
+   [
+    "Tauro",
+    "coordinador de gabinete"
+   ],
+   [
+    "Rai",
+    "el radar de operaciones"
+   ],
+   [
+    "Grace",
+    "ciberseguridad"
+   ],
+   [
+    "GAIn",
+    "dirección comercial"
+   ],
+   [
+    "Jun",
+    "gestión comercial & exp. clientes"
+   ],
+   [
+    "Clain",
+    "el cliente final"
+   ],
+   [
+    "PAIton",
+    "dirección de tecnología, arquitectura y código"
+   ],
+   [
+    "Visu",
+    "dirección de artes, comunicaciones & prod. audiovisual"
+   ],
+   [
+    "Cínema",
+    "producción audiovisual"
+   ],
+   [
+    "Laier",
+    "dirección jurídica"
+   ],
+   [
+    "Admain",
+    "dirección de administración"
+   ],
+   [
+    "Namber",
+    "gestión tributaria y contabilidad"
+   ],
+   [
+    "Tesora",
+    "dirección de finanzas"
+   ],
+   [
+    "Oper",
+    "dirección de operaciones"
+   ],
+   [
+    "Kriai",
+    "gestión de nuevos proyectos"
+   ]
+  ],
+  "_agentes": "Los 15, tal cual el lienzo. Grace dice «ciberseguridad» por decisión de Sebastián del 15-11-2026.",
+  "pie_marca": {
+   "logo": "media/logo-compai-mono.svg",
+   "separador": "·",
+   "negrita": "B2G",
+   "resto": "Smart"
+  },
+  "_pie": "Pie definitivo dictado el 15-11-2026: logo mono + «· B2G Smart» (Arial) a la izquierda; «TECNOLOGÍA PARA CHILE» (Space Grotesk) + «ejecutada por IA.» (Helvetica) a la derecha. El rótulo «tema claro · futuro minimalista» NO va."
+ },
+ "_menu": "Los seis códigos van en la barra de iconos (hero y, al bajar, el atracadero de la izquierda). «titulo» es el texto accesible.",
+ "herramientas": [
+  {
+   "nombre": "Soporte",
+   "url": "",
+   "_nota": "15-11-2026: el icono de herramienta queda SIN enlace. compai.cl/soporte/ no existe todavía (Sebastián lo pidió como «próximo sitio de soporte TI»); cuando exista, poner la URL aquí."
+  },
+  {
+   "nombre": "Intranet",
+   "url": "https://compai.cl/estado/"
+  }
+ ],
+ "catalogo": {
+  "title": "Catálogo de servicios — CompAI",
+  "_title": "PROPUESTO, falta el visto de Sebastián: el anterior decía «Catálogo de servicios y precios — CompAI» y el catálogo nuevo no publica precios.",
+  "description": "Servicios TI de CompAI para el Estado, de la cotización a la orden de compra: integración, arquitectura TI, cloud, hardware y licenciamiento, desarrollo web.",
+  "_description": "PROPUESTA, falta el visto de Sebastián (la anterior hablaba de valores publicados).",
+  "kicker": "/ 04 Creative · Catálogo",
+  "titulo": [
+   "Servicios TI",
+   "para el Estado"
+  ],
+  "anterior": "Anterior",
+  "siguiente": "Siguiente"
  }
 }

@@ -1,0 +1,113 @@
+{
+ "_que_es": "RADAR EN VIVO de la portada. Lo escribe traer_radar.py desde la salida de RAI-CA; no se edita a mano.",
+ "generado": "2026-11-14T21:32",
+ "fecha": "14-11-2026 21:32",
+ "fuente": "RAI-CA · API de Mercado Público, Compra Ágil",
+ "candidatas": 172,
+ "filas": [
+  {
+   "marca": "GO",
+   "nombre": "SE SOLICITA COTIZAR TÓNER PARA LAS IMPRESORAS, DESTINADAS AL DEPARTAMENTO DE ADQUISICIONES Y ABASTECIMIENTO L.2",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "3179-327-COT26",
+   "monto": "$5.400.000",
+   "organismo": "DIRECCION DE LOGISTICA DE CARABINEROS · Región Metropolitana de Santiago",
+   "fecha": "15-11-2026 06:10",
+   "cierre_iso": "2026-11-15 06:10",
+   "quedan": "quedan 2 h"
+  },
+  {
+   "marca": "NO-GO",
+   "nombre": "COMPUTADOR , DEPTO SALUD TUCAPEL",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 45,
+   "codigo": "3309-397-COT26",
+   "monto": "$810.000",
+   "organismo": "Departamento Comunal de Salud · Región del Biobío ",
+   "fecha": "15-11-2026 10:00",
+   "cierre_iso": "2026-11-15 10:00",
+   "quedan": "quedan 6 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "(TTV) INSUMO EQUIVALENTE A PLATAFORMA DE ACCESO TRANSANAL (TAMIS)",
+   "linea": "L5",
+   "linea_nombre": "Soluciones Web y Desarrollo Customizado",
+   "score": 100,
+   "codigo": "608-7034-COT26",
+   "monto": "$1.500.000",
+   "organismo": "HOSPITAL DR GUSTAVO FRICKE DE VINA DEL MAR · Región de Valparaíso ",
+   "fecha": "15-11-2026 15:48",
+   "cierre_iso": "2026-11-15 15:48",
+   "quedan": "quedan 12 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "CAPACITACIÓN “PYTHON APLICADO: PROGRAMACIÓN, DATOS E INTELIGENCIA ARTIFICIAL”",
+   "linea": "L2",
+   "linea_nombre": "Arquitectura TI y Consultoría Especializada",
+   "score": 100,
+   "codigo": "868-101-COT26",
+   "monto": "$390.000",
+   "organismo": "GOBIERNO REGIONAL DE AYSEN · Región Aysén del General Carlos Ibáñez del Campo",
+   "fecha": "15-11-2026 17:53",
+   "cierre_iso": "2026-11-15 17:53",
+   "quedan": "quedan 14 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "COTIZACION LICENCIA ED. BASICA, ESC. RURAL ILIHUE",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "630424-736-COT26",
+   "monto": "$15.000",
+   "organismo": "I MUNICIPALIDAD DE LAGO RANCO · Región de Los Ríos",
+   "fecha": "16-11-2026 05:51",
+   "cierre_iso": "2026-11-16 05:51",
+   "quedan": "quedan 26 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "SERVICIO DE APLICACION DE EVALUACION PSICOLABORAL MODALIDAD PRESENCIAL O VIRTUAL (TEST DE PERSONALIDAD, COMPETENCIAS, CONDUCTUALES) PARA EL PROVEER EL CARGO DE DIRCETOR DE SALUD MUNICIPAL,",
+   "linea": "L5",
+   "linea_nombre": "Soluciones Web y Desarrollo Customizado",
+   "score": 100,
+   "codigo": "2710-823-COT26",
+   "monto": "$743.813",
+   "organismo": "MUNICIPALIDAD DE OVALLE · Región de Coquimbo ",
+   "fecha": "16-11-2026 09:00",
+   "cierre_iso": "2026-11-16 09:00",
+   "quedan": "quedan 29 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "proyecto mel  MOCHILAS \tPORTA NOTEBOOK IMPERMEABLE -ANTIRROBO",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "2196-359-COT26",
+   "monto": "$140.000",
+   "organismo": "Hospital Psiquiátrico El Peral · Región Metropolitana de Santiago",
+   "fecha": "16-11-2026 09:00",
+   "cierre_iso": "2026-11-16 09:00",
+   "quedan": "quedan 29 h"
+  },
+  {
+   "marca": "NO-GO",
+   "nombre": "ADQUISICIÓN DE CARTUCHOS DE TÓNER PARA IMPRESORA XEROX B215 – SAMU ATACAMA",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 30,
+   "codigo": "1552-194-COT26",
+   "monto": "$170.000",
+   "organismo": "SERVICIO DE SALUD ATACAMA · Región de Atacama ",
+   "fecha": "16-11-2026 09:00",
+   "cierre_iso": "2026-11-16 09:00",
+   "quedan": "quedan 29 h"
+  }
+ ]
+}

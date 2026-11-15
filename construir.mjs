@@ -1,8 +1,16 @@
-/* compai.cl · armador del sitio.
-   Lee contenido/sitio.json + contenido/servicios.json y escribe index.html,
-   sitemap.xml y robots.txt. Cambiar un texto = editar el JSON y volver a correr:
+/* compai.cl · armador del sitio (tema claro «compAI Claro Minimal», 15-11-2026).
+   Lee contenido/sitio.json + contenido/lineas.json (+ radar.json si está) y
+   escribe index.html, portafolio.html, 404.html, sitemap.xml y robots.txt.
+   Cambiar un texto = editar el JSON y volver a correr:
        node construir.mjs
-   El workflow .github/workflows/sitio-compai.yml lo corre solo en cada push. */
+   El workflow del repo que publica (publicacion/workflow-sitio.yml) lo corre
+   solo en cada push que toque contenido/ o este archivo.
+
+   La portada es el lienzo que Sebastián aprobó el 15-11-2026 («listo!») tras
+   dos días y más de 60 comentarios: un solo HTML responsivo, cuatro líneas al
+   20/40/60/80 % que vienen del video del hero, videos fundidos al fondo, barra
+   de 8 iconos que al bajar pasa a la izquierda. Los textos son los del lienzo:
+   ninguno nuevo sin su visto. */
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -11,11 +19,13 @@ const raiz = dirname(fileURLToPath(import.meta.url));
 const lee = f => JSON.parse(readFileSync(join(raiz, f), 'utf8'));
 
 const S = lee('contenido/sitio.json');
+const LIN = lee('contenido/lineas.json').lineas;
+const ESC = lee('contenido/escenas.json');
 // N.º de la última actualización de este sitio (Sebastián, 08-11-2026). Lo da tools/actualizacion.py.
 const RUTA_ACT = join(raiz, '../../intranet-referencia/datos/actualizaciones.json');
 // 14-11-2026: el CI de CompAI vuelve a correr este script sin kri-eit al lado y el sello
-// desaparecia en vivo (Act. N.º 3 se publico sin el). Aqui se deja una copia en
-// contenido/_actualizacion.json -que publicar.py sube con `contenido`- y el CI la lee.
+// desaparecia en vivo. Aqui se deja una copia en contenido/_actualizacion.json -que
+// publicar.py sube con `contenido`- y el CI la lee.
 const RUTA_ACT_COPIA = join(raiz, 'contenido/_actualizacion.json');
 let ACT = null;
 if (existsSync(RUTA_ACT)) {
@@ -24,497 +34,245 @@ if (existsSync(RUTA_ACT)) {
 } else if (existsSync(RUTA_ACT_COPIA)) {
   ACT = JSON.parse(readFileSync(RUTA_ACT_COPIA, 'utf8'));
 }
-/* El barrido de RAIdar, si esta. `contenido/barrido.json` lo deja
-   `traer_barrido.py` desde `radar/vitrina/ultimo.json`. Sin el archivo el
-   panel cae a las filas de EJEMPLO de sitio.json: la pagina no se cae por
-   un barrido que no corrio, pero tampoco finge que el dato es de hoy. */
-const BARRIDO = existsSync(join(raiz, 'contenido/barrido.json'))
-  ? lee('contenido/barrido.json') : null;
-const SERV = lee('contenido/servicios.json');
-const LOGO = readFileSync(join(raiz, 'media/logo-compai.svg'), 'utf8')
-  .replace(/<\?xml[^>]*\?>\s*/, '').trim();
+/* RADAR EN VIVO: `contenido/radar.json` lo deja `traer_radar.py` desde la
+   salida de RAI-CA (intranet-referencia/datos/compra-agil.json). Sin el
+   archivo, o con uno viejo, el panel cae a las 8 filas de EJEMPLO de
+   sitio.json: la página no se cae por un radar que no corrió, y tampoco
+   finge que el dato es de hoy (el sello dice EJEMPLO). */
+const RADAR = existsSync(join(raiz, 'contenido/radar.json')) ? lee('contenido/radar.json') : null;
+const DIAS_RADAR = 2;
+const radarFresco = RADAR && Array.isArray(RADAR.filas) && RADAR.filas.length
+  && (Date.now() - Date.parse(RADAR.generado || RADAR.fecha || 0)) / 864e5 <= DIAS_RADAR;
 
 const esc = t => String(t ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-// en UTC: el merge de un PR trae la hora de Chile (-03:00) y entre las 21:00 y
-// las 24:00 el slice daba otro dia que el commit del PR, y el CI fallaba.
 const hoy = new Date(process.env.FECHA_SITIO || Date.now()).toISOString().slice(0, 10);
 
-/* 13-10-2026: el lastmod del sitemap NO se recalcula en cada corrida nomas
-   porque cambio el dia. `hoy` solo se usa si el contenido REAL de la pagina
-   cambio respecto a lo que ya esta commiteado (index.html/portafolio.html);
-   si no cambio, se conserva el lastmod que el sitemap commiteado ya trae.
-   Por que: `hoy` depende de CUANDO se corre el armador, no de CUANDO cambio
-   la pagina — un commit que toca sitio/compai/** sin tocar estas dos (p.ej.
-   `contenido/barrido.json` solo, o cualquier commit de otro dia) adelantaba
-   el lastmod sin que el contenido se hubiera movido, y el guardian de CI
-   («El index.html versionado esta al dia») lo leia como desincronizado: 11
-   corridas rojas seguidas desde el 12-10, confirmado con `gh run list` y
-   `gh run view --log-failed` (el unico diff era `sitemap.xml`, 4 lineas).
-   `INDEX_ANTES`/`SITEMAP_ANTES` se leen ACA, antes de escribir nada. */
+/* 13-10-2026: el lastmod del sitemap solo se mueve si el contenido REAL cambió
+   respecto de lo commiteado (ver nota larga en la historia de este archivo). */
 const INDEX_ANTES = existsSync(join(raiz, 'index.html')) ? readFileSync(join(raiz, 'index.html'), 'utf8') : null;
+const PORT_ANTES = existsSync(join(raiz, 'portafolio.html')) ? readFileSync(join(raiz, 'portafolio.html'), 'utf8') : null;
 const SITEMAP_ANTES = existsSync(join(raiz, 'sitemap.xml')) ? readFileSync(join(raiz, 'sitemap.xml'), 'utf8') : '';
 const LASTMODS_ANTES = [...SITEMAP_ANTES.matchAll(/<lastmod>(\d{4}-\d{2}-\d{2})<\/lastmod>/g)].map(m => m[1]);
 
-/* ── el isotipo: el doble check de la marca, suelto y en neón ─────────── */
-const TICKS = (clase, etiqueta) => `<svg class="${clase}" viewBox="0 0 22 20" role="img" aria-label="${etiqueta}">
-      <title>${etiqueta}</title>
-      <path d="M2.56 7.37 4.86 9.68 9.83 3.64"/><path d="M1 8.5 5 12.5 12 4"/><path d="M.22 10.41 5.14 15.32 12.26 6.67"/>
-      <path d="M11.56 7.37 13.86 9.68 18.83 3.64"/><path d="M10 8.5 14 12.5 21 4"/><path d="M9.22 10.41 14.14 15.32 21.26 6.67"/>
-    </svg>`;
+/* ── piezas ──────────────────────────────────────────────────────────── */
+const LINEAS = (clase = '') => `<div class="lineas${clase ? ' ' + clase : ''}" aria-hidden="true"><span></span><span></span><span></span><span></span></div>`;
 
-/* ── la traza de circuito: el mismo cobre de la piel de Grace ───────
-   Dos copias del patron, una detras de otra, y el grupo se corre un patron
-   completo en bucle: el paneo lento que pidio Sebastian el 04-10-2026 sin un
-   solo fotograma de video. El patron mide 300 de ancho en su propio viewBox. */
-const PATRON_TRAZA = `
-        <circle cx="4" cy="12" r="3"/>
-        <path d="M7 12h26l8-7h34l8 7h22"/>
-        <path d="M105 12h18l7 6h40l7-6h20"/>
-        <circle cx="197" cy="12" r="2.4"/>
-        <path d="M200 12h22l9-8h30"/>
-        <path d="M261 4h16"/>
-        <path d="M231 12h28l8 8h26"/>`;
-const TRAZA = (clase, x, y, w) => `<span class="${clase} traza" style="--x:${x};--y:${y};--w:${w}" aria-hidden="true">
-        <svg viewBox="0 0 600 24" preserveAspectRatio="none" focusable="false">
-          <g class="t1">${PATRON_TRAZA}</g>
-          <g class="t1" transform="translate(300 0)">${PATRON_TRAZA}</g>
-        </svg>
-      </span>`;
+// los 8 iconos de la barra: 6 secciones | herramienta, huella (lienzo v360)
+const ICO = [
+  '<rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M10 7V4M14 7V4M10 20v-3M14 20v-3M7 10H4M7 14H4M20 10h-3M20 14h-3"/>',
+  '<path d="M12 7v11"/><path d="M12 9C10 5 4 4 3 7c-1 3 3 6 6 6-3 0-6 3-5 6 1 2 6 0 8-4"/><path d="M12 9c2-4 8-5 9-2 1 3-3 6-6 6 3 0 6 3 5 6-1 2-6 0-8-4"/>',
+  '<circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="18" r="2.5"/><circle cx="12" cy="6" r="2.5"/><path d="M8 16.5l3-8M16 16.5l-3-8M8.5 18h7"/>',
+  '<rect x="3" y="8" width="18" height="12" rx="2"/><path d="M9 8V5h6v3M3 13h18"/>',
+  '<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
+  '<circle cx="12" cy="12" r="4"/><path d="M16 12v1.5a2.5 2.5 0 0 0 5 0V12a9 9 0 1 0-3.5 7.1"/>',
+];
+const ICO_HERR = '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>';
+const ICO_HUELLA = '<path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4M14 13.12c0 2.38 0 6.38-1 8.88M17.29 21.02c.12-.6.43-2.3.5-3.02M2 12a10 10 0 0 1 18-6M2 16h.01M21.8 16c.2-2 .131-5.354 0-6M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2M8.65 22c.21-.66.45-1.32.57-2M9 6.8a6 6 0 0 1 9 5.2v2"/>';
+const svg = p => `<svg viewBox="0 0 24 24" aria-hidden="true">${p}</svg>`;
+const ibar = (clase, base = '') => {
+  const secs = S.menu.map((m, i) => `<a href="${base}${esc(m.ancla)}" aria-label="${esc(m.codigo)} ${esc(m.nombre)}" title="${esc(m.codigo)} ${esc(m.nombre)}">${svg(ICO[i])}</a>`).join('');
+  const [herr, huella] = S.herramientas;
+  // 15-11-2026: /soporte/ no existe todavia; el icono queda sin enlace, no se inventa la pagina
+  const h1 = herr.url
+    ? `<a href="${esc(herr.url)}" aria-label="${esc(herr.nombre)}" title="${esc(herr.nombre)}">${svg(ICO_HERR)}</a>`
+    : `<span class="sin" aria-label="${esc(herr.nombre)}" title="${esc(herr.nombre)}">${svg(ICO_HERR)}</span>`;
+  const h2 = `<a href="${esc(huella.url)}" aria-label="${esc(huella.nombre)}" title="${esc(huella.nombre)}">${svg(ICO_HUELLA)}</a>`;
+  return `<nav class="ibar ${clase}" aria-label="Secciones">${secs}<i class="sep" aria-hidden="true"></i>${h1}${h2}</nav>`;
+};
 
-/* ── la mariposa: dibujada, no tomada de ninguna parte ───────────────── */
-const MARIPOSA = `<svg class="mariposa" viewBox="0 0 400 310" role="img" aria-label="Mariposa">
-      <title>Mariposa</title>
-      <defs>
-        <linearGradient id="alaSup" x1=".1" y1="0" x2=".9" y2="1">
-          <stop offset="0" stop-color="#2BE6F5"/><stop offset=".42" stop-color="#1F9CC4"/>
-          <stop offset="1" stop-color="#0C3A4E"/>
-        </linearGradient>
-        <linearGradient id="alaInf" x1=".2" y1="0" x2=".8" y2="1">
-          <stop offset="0" stop-color="#1A8DB6"/><stop offset="1" stop-color="#07222E"/>
-        </linearGradient>
-        <radialGradient id="brilloAla" cx=".22" cy=".22" r=".6">
-          <stop offset="0" stop-color="#8FF4FF" stop-opacity=".95"/><stop offset="1" stop-color="#8FF4FF" stop-opacity="0"/>
-        </radialGradient>
-      </defs>
-      <g class="ala i">
-        <path d="M199 141 L68 46 C40 42 20 72 29 108 C38 146 86 170 130 174 C158 176 186 154 199 148 Z" fill="url(#alaSup)" stroke="#0A2F3E" stroke-width="2"/>
-        <path d="M199 141 L68 46 C40 42 20 72 29 108 Z" fill="url(#brilloAla)"/>
-        <path d="M197 157 L92 236 C72 258 82 284 110 287 C142 290 174 260 186 228 C194 206 197 176 197 157 Z" fill="url(#alaInf)" stroke="#0A2F3E" stroke-width="2"/>
-        <g fill="#EFF9FF">
-          <ellipse cx="134" cy="120" rx="9" ry="13" transform="rotate(-18 134 120)"/>
-          <ellipse cx="152" cy="140" rx="7" ry="11" transform="rotate(-16 152 140)"/>
-          <ellipse cx="166" cy="162" rx="6" ry="10" transform="rotate(-12 166 162)"/>
-          <ellipse cx="172" cy="186" rx="6" ry="11" transform="rotate(-8 172 186)"/>
-          <ellipse cx="174" cy="210" rx="5" ry="10"/>
-        </g>
-        <g fill="#C87941" opacity=".85">
-          <rect x="146" y="106" width="7" height="13" rx="2" transform="rotate(-20 146 106)"/>
-          <rect x="157" y="112" width="6" height="12" rx="2" transform="rotate(-20 157 112)"/>
-        </g>
-      </g>
-      <g class="ala d">
-        <path d="M201 141 L332 46 C360 42 380 72 371 108 C362 146 314 170 270 174 C242 176 214 154 201 148 Z" fill="url(#alaSup)" stroke="#0A2F3E" stroke-width="2"/>
-        <path d="M201 141 L332 46 C360 42 380 72 371 108 Z" fill="url(#brilloAla)"/>
-        <path d="M203 157 L308 236 C328 258 318 284 290 287 C258 290 226 260 214 228 C206 206 203 176 203 157 Z" fill="url(#alaInf)" stroke="#0A2F3E" stroke-width="2"/>
-        <g fill="#EFF9FF">
-          <ellipse cx="266" cy="120" rx="9" ry="13" transform="rotate(18 266 120)"/>
-          <ellipse cx="248" cy="140" rx="7" ry="11" transform="rotate(16 248 140)"/>
-          <ellipse cx="234" cy="162" rx="6" ry="10" transform="rotate(12 234 162)"/>
-          <ellipse cx="228" cy="186" rx="6" ry="11" transform="rotate(8 228 186)"/>
-          <ellipse cx="226" cy="210" rx="5" ry="10"/>
-        </g>
-        <g fill="#C87941" opacity=".85">
-          <rect x="247" y="106" width="7" height="13" rx="2" transform="rotate(20 247 106)"/>
-          <rect x="236" y="112" width="6" height="12" rx="2" transform="rotate(20 236 112)"/>
-        </g>
-      </g>
-      <g stroke="#BFE6F5" stroke-width="2.2" fill="none" stroke-linecap="round">
-        <path d="M197 118c-8-20-22-32-38-37"/><path d="M203 118c8-20 22-32 38-37"/>
-      </g>
-      <ellipse cx="200" cy="176" rx="7" ry="62" fill="#0B2A38" stroke="#7FC4DF" stroke-width="1.4"/>
-      <circle cx="200" cy="118" r="9" fill="#0B2A38" stroke="#7FC4DF" stroke-width="1.4"/>
-    </svg>`;
+const MK_GO = '<svg class="mk go" viewBox="0 0 24 24" role="img" aria-label="GO"><path d="M2 13l4 4L13 9M9 13l4 4L22 9"/></svg>';
+const MK_NOGO = '<svg class="mk nogo" viewBox="0 0 24 24" role="img" aria-label="NO-GO"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg>';
+const REL = '<svg class="rel" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg>';
+const SOUL_ICO = '<svg class="sl-ico" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#5BA8D6"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/><circle cx="74" cy="24" r="9" fill="#FFD966"/></svg>';
+const selloSoul = s => `<a class="sello-soul" href="${esc(s.url)}" aria-label="${esc(s.aria)}">${SOUL_ICO}<span class="sl-w">${esc(s.palabra)}</span><span class="sl-t">${esc(s.texto)}</span></a>`;
 
-/* ── las secciones · maqueta exacta del Canva (kit-canva/PLANO-CANVA.md) ──
-   Lienzo 1366 px. Cada elemento lleva --x/--y/--w/--hh en px del lienzo y la
-   hoja css/canva.css los convierte con --u. No se interpreta ninguna medida. */
+const video = (src, poster, extra = '') => `<video src="${esc(src)}" poster="${esc(poster)}" muted loop playsinline preload="none" data-auto
+        disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"${extra}></video>`;
 
-const heroFranjas = `
-  <section class="hero cv" id="hero" aria-label="compAI">
-    <div class="pg" style="--h:1256">
-      <div class="b fh hfranjas" style="--x:0;--y:0;--w:1366;--hh:627">
-        <video id="heroVideo" src="media/hero-franjas.mp4" poster="media/hero-franjas.webp"
-               muted loop playsinline autoplay preload="metadata"
-               disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
-      </div>
-      <div class="b fh harco" style="--x:-139;--y:549;--w:1633;--hh:158" aria-hidden="true"></div>
-      <div class="b hsello" style="--x:518;--y:524;--w:330">
-        <img src="${esc(S.hero_sello)}" alt="compAI" width="512" height="512">
-      </div>
-      <a class="baja mono" href="#offenbar"><span>Bajar</span><i aria-hidden="true"></i></a>
-    </div>
-  </section>`;
+const pieBar = () => {
+  const P = S.contacto_seccion.pie_marca;
+  return `<div class="pie-bar">
+  <span class="pie-izq"><img src="${esc(P.logo)}" alt="compAI" width="372" height="131"><span class="b2g">&nbsp; &nbsp;${esc(P.separador)} <b>${esc(P.negrita)}</b> ${esc(P.resto)}</span></span>
+  <span class="pie-der"><span class="tpc">${esc(S.offenbar.titulo_1)}</span> <span class="eia">${esc(S.offenbar.titulo_2)}</span></span>
+ </div>`;
+};
 
-const heroNucleo = `
-  <section class="hero hero-nucleo" id="hero" aria-label="compAI">
-    <div class="nucleo" aria-hidden="true">
-      <video id="heroVideo" src="media/hero-nucleo.mp4" poster="media/hero-nucleo.webp"
-             muted loop playsinline autoplay preload="metadata"
-             disablepictureinpicture controlslist="nodownload noplaybackrate"></video>
-    </div>
-    <a class="baja mono" href="#offenbar"><span>Bajar</span><i aria-hidden="true"></i></a>
-  </section>`;
-
-const menu = `
-  <nav class="menu" id="menu" aria-label="Menú principal" aria-hidden="true">
-    <ol>
-      ${S.menu.map(m => `<li><a class="it" href="${esc(m.ancla)}"><span class="c mono">${esc(m.codigo)} — ${esc(m.nombre)}</span><b>${esc(m.titulo)}</b></a></li>`).join('\n      ')}
-    </ol>
-    <aside>
-      <div><p class="mono">${esc(S.menu_aside.kicker)}</p><p class="big"><a href="mailto:${esc(S.contacto.correo)}">${esc(S.contacto.correo)}</a></p></div>
-      <div class="pags">
-        <span class="mono">Páginas</span>
-        ${S.menu_aside.enlaces.map(e => `<a href="${esc(e.url)}"${e.url.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${esc(e.texto)}</a>`).join('\n        ')}
-      </div>
-      <div><p class="big">${esc(S.contacto.ciudad)}</p><p class="mono">${esc(S.contacto.lugar)}</p></div>
-    </aside>
-  </nav>`;
-
-const fondoVid = (src, poster) => `<video src="${src}" poster="${poster}"
-               muted loop playsinline autoplay preload="none"
-               disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
-      <span class="velo-vid" aria-hidden="true"></span>`;
-
-/* rótulo de sección: «/ 0X — NOMBRE», IBM Plex Mono 24 extralight */
-const rot = (o, x, y) => `<p class="b rot" style="--x:${x};--y:${y};--w:420">${esc(o.codigo)} — ${esc(o.nombre)}</p>`;
-
+/* ── / 01 Offenbar ───────────────────────────────────────────────────── */
+const O = S.offenbar;
 const offenbar = `
-  <section class="sec cv" id="offenbar">
-    <div class="pg" style="--h:1114">
-      <div class="b fh ofondo" style="--x:0;--y:0;--w:1366;--hh:1114" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
-      <img class="b fh ocod" style="--x:829;--y:-4;--w:816;--hh:164" src="media/codigo-detalle.webp" alt="" width="1366" height="274" loading="lazy" decoding="async">
-      <img class="b fh ocod" style="--x:805;--y:159;--w:816;--hh:164" src="media/codigo-detalle.webp" alt="" width="1366" height="274" loading="lazy" decoding="async">
-      ${rot(S.offenbar, 48, 38)}
-      <h1 class="b t otit" style="--x:279;--y:174;--w:816;--fs:57.3;--lh:1.19;--tr:0.038">${esc(S.offenbar.titulo_1)}</h1>
-      <p class="b t osub" style="--x:346;--y:256;--w:683;--fs:49.3;--lh:1.19;--tr:0.021">ejecutada por <b>IA</b>.</p>
-      <a class="b t oenl" style="--x:667;--y:372;--w:420;--fs:20.7;--lh:1.12"
-         href="${esc(S.contacto.ficha)}" target="_blank" rel="noopener">${esc(S.offenbar.enlace_texto)}</a>
-    </div>
-  </section>`;
+<section id="offenbar">
+ <video id="heroVideo" class="hvid" src="${esc(O.video)}" poster="${esc(O.video_poster)}" muted loop playsinline autoplay preload="metadata" data-auto
+        disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
+ <div class="hvelo" aria-hidden="true"></div>
+ <header class="hero-nav">
+  <a class="logo" href="#offenbar" aria-label="compAI, inicio"><img src="media/logo-compai-noche.svg" alt="compAI" width="372" height="131"></a>
+  ${ibar('ibar-hero')}
+ </header>
+ <div class="hero-grid">
+  <p class="hero-l hero-l1">${O.rotulo_izq.map(esc).join('<br>')}</p>
+  <p class="hero-l hero-l2">${O.rotulo_der.map(esc).join('<br>')}</p>
+  <p class="hero-w">${O.wordmark.map(esc).join('<br>')}</p>
+ </div>
+ <div class="hero-foot"><span class="mono">${esc(O.codigo)} ${esc(O.nombre)}</span></div>
+</section>
 
+<section id="offenbar-2" class="of2">
+ <div class="of2-in">
+  <p class="of2-ficha"><a href="${esc(S.contacto.ficha)}" target="_blank" rel="noopener">${esc(O.enlace_texto)}</a></p>
+  <h1 class="hero-t">${esc(O.titulo_1)}</h1>
+  <p class="sub">${esc(O.titulo_2)}</p>
+  <a class="pill pill-lleno" href="#inbox">${esc(O.boton)}</a>
+ </div>
+</section>
+${ibar('ibar-dock')}`;
+
+/* ── / 02 Il Cuore ───────────────────────────────────────────────────── */
+const C = S.il_cuore;
 const ilCuore = `
-  <section class="sec cv ap" id="il-cuore">
-    <div class="pg" style="--h:2112">
-      <div class="b fh ccirc" style="--x:0;--y:1000;--w:1366;--hh:1112" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
-      <div class="b fh cuore-fondo" style="--x:0;--y:0;--w:1366;--hh:960" aria-hidden="true"></div>
-      <div class="b fh cuore" style="--x:0;--y:96;--w:1366;--hh:768">
-        <video src="${esc(S.il_cuore.video)}" poster="${esc(S.il_cuore.video_poster)}"
-               muted loop playsinline autoplay preload="none"
-               disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
-      </div>
-      ${rot(S.il_cuore, 48, 222)}
-      ${/* el titular era tres lineas cableadas; ahora lo manda el JSON, y el
-          «&» de adorno solo aparece si la linea de verdad empieza con uno */""}
-      <h2 class="b t ctit" style="--x:178;--y:930;--w:1034;--fs:41;--lh:1.32;--tr:0.158">${
-        S.il_cuore.ia.titulo.map(t => /^&\s*/.test(t)
-          ? `<span><i class="amp">&amp;</i> ${esc(t.replace(/^&\s*/, ''))}</span>`
-          : `<span>${esc(t)}</span>`).join('')}</h2>
-      <p class="b t cpar" style="--x:248;--y:1120;--w:914;--fs:24.1;--lh:1.3">${esc(S.il_cuore.ia.parrafo).replace(/\n/g, '<br>')}</p>
-      <a class="b cacc" style="--x:269;--y:1548;--w:330;--fs:15;--tr:0.14;font-size:calc(15*var(--u))" href="${esc(S.il_cuore.accesos[0].ancla)}"><span>/</span><span class="ic" aria-hidden="true"><svg viewBox="0 0 16 13" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 3.2V11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4.4a1 1 0 0 0-1-1H8L6.4 1.4A1 1 0 0 0 5.7 1H2a1 1 0 0 0-1 1z"/></svg></span><span>— ${esc(S.il_cuore.accesos[0].texto)}</span></a>
-      <a class="b cacc" style="--x:766;--y:1543;--w:330;--fs:15;--tr:0.14;font-size:calc(15*var(--u))" href="${esc(S.il_cuore.accesos[1].ancla)}"><span>/</span><span class="ic red" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5.6" r="2.7"/><path d="M2.6 14c.5-3 2.7-4.6 5.4-4.6S12.9 11 13.4 14"/></svg></span><span>— ${esc(S.il_cuore.accesos[1].texto)}</span></a>
-    </div>
-  </section>`;
+<section id="il-cuore" class="sec">
+ <p class="kick">${esc(C.codigo)} ${esc(C.nombre)}</p>
+ <figure class="fundido fundido-lados cuore-fig">${video(C.video, C.video_poster)}</figure>
+ <div class="cuore-esp"></div>
+ <div class="cuore-txt">
+  <h2>${C.ia.titulo.map(esc).join('<br>')}</h2>
+  <p>${esc(C.ia.parrafo)}</p>
+  <div class="cuore-acc">${C.accesos.map(a => `<a class="pill" href="${esc(a.ancla)}">${esc(a.texto)}</a>`).join('\n   ')}</div>
+ </div>
+</section>`;
 
+/* ── / 03 L'Intelligence ─────────────────────────────────────────────── */
 const grace = (() => {
-  /* ENCUADRE CORREGIDO POR VISU, 04-10-2026. Medido por CDP a 1440x900 sobre
-     el index.html construido. Solo se movieron cajas; ni un texto ni un color.
-       · rot / 03: 59,0 -> 62,38. A y=0 el rotulo salia cortado contra el borde
-         superior de la seccion; /04 y /05 ya estaban a x=62 y=38.
-       · gpanel 258/478 -> 222/578. El borde superior del panel pasaba por la
-         mitad del lockup GRACE SYSTEM (emblema 234..274 contra panel 258) y su
-         borde inferior (736) dejaba el boton AFUERA (752..801).
-       · emblema/gmarca/gvivo +6 y glista 286 -> 300: el lockup queda dentro del
-         panel con 18 px de aire y la lista arranca 20 px bajo el.
-       · gpie 688 -> 658 y gcta 752 -> 730: el hueco entre la lista y el pie era
-         de 88 px del lienzo, el doble que cualquier otro aire del panel.
-       · gcta w 560 -> 752: su borde derecho quedaba 192 px del lienzo mas corto
-         que el de la lista y el del pie. Ahora los tres cierran en 1184.
-       · gtit/gsub x 44 -> 62: alineados con el rotulo de la seccion.
-     ARRASTRE DEL CUERPO DE LETRA, 04-10-2026: la lista pasa de 8-10 px a
-     11-14 px (css/canva.css, bloque .glista) y crece 68 px de lienzo. Lo
-     acompanan gpanel 578->646, gpie 658->726, gcta 730->798 y la pagina
-     932->1000; si no, el pie se mete dentro de la ultima fila.
-       · gcifras 45/1275 -> 62/1242: el cuarto margen izquierdo distinto
-         dentro de 19 px. Ahora los cuatro cierran en 62. */
-  const im = S.grace.imagenes;
-  const L = S.grace.lamina;
-  const vivo = BARRIDO && Array.isArray(BARRIDO.filas) && BARRIDO.filas.length
-    ? BARRIDO : null;
-  const filas = vivo ? vivo.filas : S.grace.envivo.filas;
-  // 12-10-2026, Sebastian: el sello decia «(( BARRIDO DEL 2026-10-12 ))».
-  // «Barrido» es vocabulario del estudio, no del comprador, y los parentesis
-  // dobles lo hacian leer como una nota al pie en vez de un dato fresco.
-  const sello = vivo ? `actualizado ${vivo.fecha}` : S.grace.envivo.estado;
-  const pie = vivo
-    ? `${vivo.barridas.toLocaleString('es-CL')} licitaciones activas barridas · ${vivo.fuente}. Clasificadas por rubro; se desplaza para verlas todas.`
-    : S.grace.envivo.pie;
-  // /03 (Sebastián, 14-11-2026): veredicto ✓✓ + ponderación/100 cuando la fila trae score; ⛔ NO OFERTAR + «detalle en la ficha»;
-  // ✓ «propuesta lista para su revisión» solo con pdf. Sin score ni pdf: ✓✓ GO y el cierre del barrido, sin inventar números.
-  const fila = f => { const no = /^NO/.test(f.marca); return `<li>
-            <span class="mkr${no ? ' no' : ''}">${no ? '⛔ NO OFERTAR' : `${TICKS('mtk', 'GO')} ${f.score != null ? esc(f.score) + '/100' : 'GO'}`}</span>
-            <span class="dt"><b>${esc(f.rubro)}</b><em>${esc(f.id)}</em><i>${esc(f.titulo)}</i></span>
-            <span class="ci${f.pdf ? ' ok' : ''}">${f.pdf ? TICKS('ctk', 'PDF') + 'propuesta lista para su revisión' : no ? 'detalle en la ficha' : esc(f.cierre)}</span>
-          </li>`; };
-  const iconos = S.grace.iconos.map(i => `<li><span class="ico">${i.svg}</span><b>${esc(i.n)}</b><span>${esc(i.d)}</span></li>`).join('');
-  const pasos = S.grace.procedimiento.map(x => `<li><b>${esc(x.n)}</b><strong>${esc(x.t)}</strong><span>${esc(x.d)}</span></li>`).join('');
+  const G = S.grace, L = G.lamina;
+  const filas = radarFresco ? RADAR.filas : G.envivo.filas;
+  // 12-10-2026, Sebastian: «actualizado <fecha>», no «barrido»: vocabulario del comprador
+  const sello = radarFresco ? `actualizado ${RADAR.fecha}` : G.envivo.estado;
+  const fila = f => { const no = /^NO/.test(f.marca); return `<li><span class="mkr">${no ? MK_NOGO : MK_GO}</span><span class="dt">
+     <b class="nom">${esc(f.nombre)}</b>
+     <span class="f2"><i class="lin">${esc(f.linea)}</i><span class="lnom">${esc(f.linea_nombre)}</span></span>
+     <span class="f2"><i class="sc">${esc(f.score)}</i><span class="cod">${esc(f.codigo)} <button type="button" class="cp" data-id="${esc(f.codigo)}" title="${esc(G.envivo.copiar)}" aria-label="${esc(G.envivo.copiar)} ${esc(f.codigo)}">⧉</button></span><b class="monto">${esc(f.monto)}</b></span>
+     <span class="org">${esc(f.organismo)}</span>
+     <span class="f2"><span class="fec">${esc(f.fecha)}</span><span class="que"${f.cierre_iso ? ` data-cierre="${esc(f.cierre_iso)}"` : ''}>${REL}<span class="qt">${esc(f.quedan)}</span></span></span>
+    </span></li>`; };
+  const iconos = G.iconos.map(i => `<li><span class="ico">${i.svg}</span><b>${esc(i.n)}</b><span>${esc(i.d)}</span></li>`).join('');
+  const pasos = G.procedimiento.map(x => `<li><b>${esc(x.n)}</b><strong>${esc(x.t)}</strong><span>${esc(x.d)}</span></li>`).join('');
   return `
-  <section class="sec cv ap" id="grace">
-    <div class="pg glam" style="--h:840">
-      <div class="b fh gvideo" style="--x:439;--y:0;--w:488;--hh:840">
-        <video id="graceFondo" src="${esc(L.video)}" poster="${esc(L.video_poster)}"
-               muted loop playsinline autoplay preload="none"
-               disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
-      </div>
-      ${rot(S.grace, 62, 44)}
-      <h2 class="b t gltit" style="--x:64;--y:160;--w:300;--fs:26;--lh:1.26">${L.titulo.map(l => `<span>${esc(l)}</span>`).join('')}</h2>
-      <p class="b t glpar" style="--x:64;--y:296;--w:268;--fs:14.5;--lh:1.62">${esc(L.izquierda)}</p>
-      ${TRAZA('b glzurda', 228, 452, 150)}
-      ${TRAZA('b gldiestra', 904, 528, 150)}
-      <ul class="b gldcha" style="--x:904;--y:584;--w:400;--fs:14.5;--lh:1.62">
-        ${L.derecha.map(d => { const no = /^NO/.test(d.marca); return `<li class="${no ? 'no' : ''}"><b class="${no ? 'no' : ''}">${esc(d.marca)}</b> ${esc(d.texto)}</li>`; }).join('')}
-      </ul>
-      <p class="b t glcierre" style="--x:904;--y:730;--w:400;--fs:14.5;--lh:1.62">${esc(L.cierre)}</p>
-      <p class="b gllock" style="--x:483;--y:772;--w:400">${TICKS('lktk', 'CompAI')}<span>EQUIPO DE AGENTES EXPERTOS</span></p>
-    </div>
+<section id="grace">
+ <div class="lam1">
+  <figure class="fundido lam1-fig">${video(L.video, L.video_poster)}</figure>
+  <div class="lam1-over">
+   <p class="kick">${esc(G.codigo)} ${esc(G.nombre)}</p>
+   <div class="lam1-txt">
+    <h2>${L.titulo.map(esc).join('<br>')}</h2>
+    <p>${esc(L.izquierda)}</p>
+   </div>
+   <ul class="gldcha">${L.derecha.map(d => `<li>${/^NO/.test(d.marca) ? MK_NOGO : MK_GO}<span>${esc(d.texto)}</span></li>`).join('')}</ul>
+  </div>
+ </div>
 
-    <div class="pg gviva" style="--h:1130">
-      <div class="b fh gvfilm" style="--x:62;--y:62;--w:380;--hh:676;display:none">
-        <video src="${esc(S.grace.envivo.video)}" poster="${esc(S.grace.envivo.video_poster)}"
-               muted loop playsinline autoplay preload="none"
-               disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
-      </div>
-      ${/* el emblema va DENTRO del rotulo y no como bloque aparte: separados,
-          en el telefono caian en lineas distintas. Encendido en cian = Grace
-          conectada, contra el apagado del lockup de la lamina 1 (Sebastian,
-          08-10-2026). */""}
-      <p class="b t gmarca" style="--x:500;--y:122;--w:412;--fs:26;--lh:1.1">${TICKS('mktk', 'CompAI')}<span>${esc(S.grace.envivo.titulo)}</span></p>
-      <p class="b t gvivo" style="--x:502;--y:160;--w:420;--fs:12">${esc(sello)}</p>
-      <div class="b fh gcaja" style="--x:500;--y:186;--w:804;--hh:428">
-        <ul class="glista">
-          ${filas.map(fila).join('')}
-        </ul>
-      </div>
-      <p class="b gpie" style="--x:500;--y:642;--w:804">${esc(pie)}</p>
-      <p class="b t gsub" style="--x:62;--y:770;--w:600;--fs:12">ÓRDENES Y ANTECEDENTES · QUÉ SIGNIFICA CADA ICONO</p>
-      <ul class="b gicos" style="--x:62;--y:800;--w:1242">${iconos}</ul>
-      <p class="b t gsub" style="--x:62;--y:980;--w:400;--fs:12">TRES PASOS</p>
-      <ol class="b gpasos" style="--x:62;--y:1010;--w:1242">${pasos}</ol>
-    </div>
+ <div class="lam2">
+  <figure class="fundido fundido-suave lam2-fig">${video(G.radar_video, G.radar_video_poster)}</figure>
+  <div class="lam2-list">
+   <div class="radar-cab"><p class="tit">${esc(G.envivo.titulo)}</p><span class="sello">${esc(sello)}</span></div>
+   <ul class="glista">
+    ${filas.map(fila).join('\n    ')}
+   </ul>
+   <p class="radar-pie">${esc(G.envivo.pie)}</p>
+  </div>
+  <div class="ante">
+   <p class="kick">${esc(G.antecedentes_rotulo)}</p>
+   <ul class="gicos">${iconos}</ul>
+   <p class="kick k2">${esc(G.procedimiento_rotulo)}</p>
+   <ol class="gpasos">${pasos}</ol>
+  </div>
+ </div>
 
-    <div class="pg" style="--h:1115">
-      <div class="b gcifras fh" style="--x:62;--y:57;--w:1242;--hh:152">
-        ${S.grace.franja.map(f => `<div><b>${esc(f.cifra)}</b><span>${esc(f.glosa)}</span></div>`).join('')}
-      </div>
-      <figure class="b fh" style="--x:0;--y:258;--w:1366;--hh:772;margin:0">
-        <canvas class="gcanvas" data-src="${esc(im[2].src)}" data-anclaje="cubrir" data-revelado="0.74" role="img" aria-label="${esc(im[2].alt)}"></canvas>
-      </figure>
-    </div>
-  </section>`;
+ <div class="lam3">
+  <figure class="lam3-fig">
+   ${video(G.flor_video, G.flor_video_poster)}
+   ${LINEAS('lineas-blancas')}
+   <div class="lam3-velo" aria-hidden="true"></div>
+   <div class="gcifras-sobre">${G.franja.map(f => `<div><b>${esc(f.cifra)}</b><span>${esc(f.glosa)}</span></div>`).join('')}</div>
+  </figure>
+  <p class="lam3-pie">${esc(G.pie)}</p>
+ </div>
+</section>`;
 })();
 
-/* Los cinco servicios (el numero es el de la escena del catalogo, 14-10-2026): texto a la izquierda, mockup a la derecha.
-   La línea de las viñetas alterna azul y ámbar, igual que la referencia. */
-/* ── La ficha de servicio de / 04, segun Visu (05-10-2026) ─────────────
-   Encabezado 44 px, bajada 24, TRES checks de los cinco y un llamado. Lo que
-   sostiene la columna derecha no es el icono sino la PLACA: 400x400, marco de
-   1 px azul al 28 %, el icono de 168 dentro, y el doble check mordiendo la
-   esquina, que es la firma. Las otras dos vinetas no se pierden: estan en la
-   lamina que abre al tocar la ficha. */
-const ICONO = {
-  automatizacion: '<rect x="2.5" y="7" width="7" height="7" rx="1"/><rect x="14.5" y="7" width="7" height="7" rx="1"/><path d="M9.5 10.5h5"/><path d="M12.5 8.5 14.5 10.5 12.5 12.5"/>',
-  especificacion: '<path d="M5.5 2.5h8l5 5v14h-13z"/><path d="M13.5 2.5v5h5"/><path d="M8.5 12.5h7"/><path d="M8.5 16.5h4.5"/>',
-  continuidad: '<circle cx="7" cy="12" r="4"/><path d="M11 12h10"/><path d="M17.5 12v3.5"/><path d="M20.5 12v2.5"/>',
-  licencias: '<path d="M5.5 2.5h8l5 5v14h-13z"/><path d="M13.5 2.5v5h5"/><circle cx="10" cy="13" r="2.2"/><path d="M10 15.2v3.3"/><path d="M10 17h1.8"/>',
-  soul: '<path d="M3.5 9.5 5 4h14l1.5 5.5"/><path d="M3.5 9.5h17v1a2.8 2.8 0 0 1-5.7 0 2.8 2.8 0 0 1-5.6 0 2.8 2.8 0 0 1-5.7 0z"/><path d="M5 13v7.5h14V13"/><path d="M10 20.5v-5h4v5"/>',
-};
-const ROT_LINEA = { automatizacion: 'L1', especificacion: 'L2', continuidad: 'L3', licencias: 'L4', soul: 'SOUL' };
-
-/* La lamina abre una hoja con el detalle y el precio de referencia. Hasta el
-   08-10-2026 nada lo anunciaba: se le quito el «Ver precio» y quedo sin accion
-   visible, asi que en las pruebas con gente NADIE supo que era clicable
-   (Sebastian, 08-10-2026). Vuelve el renglon de accion, sin el numero.
-   En el telefono ademas se esconde la bajada —titular + 3 checks + accion
-   bastan, y cuatro laminas con bajada eran un muro de texto—; la bajada
-   sigue estando en la hoja, que es donde se va a leer. */
-const servTexto = (s, x, y) => `<button class="b servblock" type="button" data-slug="${esc(s.slug)}" aria-haspopup="dialog"
-        style="--x:${x};--y:${y};--w:583;text-align:left;display:block;--ord:${SERV.indexOf(s)}">
-        <span class="serv-rot">${esc(s.codigo)} / ${esc(ROT_LINEA[s.slug] || '')}${s.sello ? ` · ${esc(s.sello)}` : ''}</span>
-        <span class="serv-tit">${esc(s.titulo)}</span>
-        <ul class="serv-vin">${s.vinetas.slice(0, 3).map(v => `<li>${esc(v)}</li>`).join('')}</ul>
-        <span class="serv-acc">Ver el detalle <i aria-hidden="true">&rarr;</i></span>
-      </button>`;
-
-/* La placa reemplaza al mockup de telefono, monitor y notebook. Desde el
-   07-10-2026 tambien abre la lamina: Sebastian pidio que el titular O el
-   icono la desplieguen. El boton de la izquierda es el accesible; la placa
-   es un atajo para el mouse y el dedo, por eso sigue aria-hidden. */
-const placa = (s, x, y) => `<div class="b fh placa" data-slug="${esc(s.slug)}" style="--x:${x};--y:${y};--w:400;--hh:400;--ord:${SERV.indexOf(s)}" aria-hidden="true">
-        <svg class="placa-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">${ICONO[s.slug] || ''}</svg>
-        <span class="placa-cod">${esc(s.codigo)}</span>
-        <span class="placa-lin">${esc(ROT_LINEA[s.slug] || '')}</span>
-        ${TICKS('placa-tick', '')}
-      </div>`;
-
-const mkTel = (x, y, n) => `<div class="mk tel p${n}" style="--x:${x};--y:${y};--w:289;--hh:572" aria-hidden="true"><span class="muesca"></span><span class="pantalla"></span></div>`;
-const mkMon = (x, y, n) => `<div class="mk mon p${n}" style="--x:${x};--y:${y};--w:458;--hh:368;--mh:300" aria-hidden="true"><span class="marco"><span class="pantalla"></span></span><span class="cuello"></span><span class="base"></span></div>`;
-const mkLap = (x, y, n) => `<div class="mk lap p${n}" style="--x:${x};--y:${y};--w:463;--hh:265;--mh:248" aria-hidden="true"><span class="marco"><span class="pantalla"></span></span><span class="base"></span></div>`;
-
+/* ── / 04 Creative · las cinco líneas en las cinco columnas ──────────── */
 const creative = `
-  <section class="sec cv ap" id="creative">
-    <div class="pg cvfondo" style="--h:2680">
-      <div class="b fh ccirc" style="--x:704;--y:0;--w:662;--hh:3000" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
-      <div class="b fh cline" style="--x:657;--y:0;--w:7;--hh:2680" aria-hidden="true"></div>
-      ${rot(S.creative, 62, 38)}
-      ${servTexto(SERV[0], 79, 192)}
-      ${placa(SERV[0], 836, 152)}
-      ${servTexto(SERV[1], 79, 812)}
-      ${placa(SERV[1], 836, 772)}
-      ${servTexto(SERV[2], 79, 1432)}
-      ${placa(SERV[2], 836, 1392)}
-      ${/* 14-10-2026, GAIn: cuarta lamina del Estado. La escena 01 del catalogo
-            («La licencia vencio el martes») apuntaba a una linea que el home no
-            publicaba: el caso abria un enlace a nada. El paso entre laminas es
-            620 px (192, 812, 1432, 2052) y la pagina crecio lo mismo. */''}
-      ${servTexto(SERV[3], 79, 2052)}
-      ${placa(SERV[3], 836, 2012)}
-    </div>
+<section id="creative">
+ <div class="cre-kick"><p class="kick">${esc(S.creative.codigo)} ${esc(S.creative.nombre)}</p></div>
+ <div class="serv5">
+${LIN.map(l => `  <div class="serv">
+   <span class="cod">${esc(l.codigo)}</span>
+   <h3><a href="portafolio.html#${esc(l.codigo)}">${esc(l.titulo)}</a></h3>
+   <p>${esc(l.descripcion)}</p>${l.soul ? `
+   ${selloSoul(S.creative.soul_sello)}` : ''}
+  </div>`).join('\n')}
+ </div>
+ <div class="cre-btn"><a class="btn" href="${esc(S.creative.llamado.url)}">${esc(S.creative.llamado.enlace)}</a></div>
+</section>`;
 
-    ${/* 07-10-2026, Sebastian: las bandas del plan salen del home. Los tres
-          planes se explican juntos en la ficha 05 (SOUL: fresh, sun y vibe) y
-          su lamina; la historia de la panadera vive en el catalogo (escena 05).
-          La linea sigue la de la pagina de arriba (657, 7 px): antes era
-          659/9 y en la union se veia el escalon. */ ''}
-    <div class="pg cvfondo" style="--h:880">
-      ${/* El fondo corta donde corta la linea (636), no 324 px mas abajo:
-          con dos bordes distintos el banner quedaba a medio camino entre
-          los dos. Sebastian, 12-10-2026. */''}
-      <div class="b fh ccirc" style="--x:704;--y:0;--w:662;--hh:636" aria-hidden="true">${fondoVid('media/circuitos.mp4', 'media/circuitos.webp')}</div>
-      <div class="b fh cline" style="--x:657;--y:0;--w:7;--hh:636" aria-hidden="true"></div>
-      ${servTexto(SERV[4], 79, 203)}
-      ${placa(SERV[4], 836, 163)}
-      ${/* 12-10-2026, Sebastian: «¿Cual es la tuya? Buscala en el catalogo»
-          era una frase suelta al pie y nadie la veia como una accion. Pasa a
-          banner propio, ancho completo, bajo la lamina PyME. */""}
-      ${S.creative.llamado ? `<a class="b bcat" href="${esc(S.creative.llamado.url)}"
-         style="--x:79;--y:700;--w:1157;--hh:92">${esc(S.creative.llamado.enlace)}</a>` : ''}
-    </div>
-  </section>`;
-
+/* ── / 05 Run · el formulario (mismo mecanismo: Apps Script + adjuntos) ── */
+const I = S.inbox;
 const inbox = `
-  <section class="sec cv ap" id="inbox">
-    <div class="pg" style="--h:1491">
-      ${rot(S.inbox, 62, 82)}
-      <div class="b fh icaja" style="--x:189;--y:193;--w:988;--hh:1106">
-        <form id="formLead" novalidate>
-          <p class="ikick">${esc(S.inbox.antetitulo)}</p>
-          <h2 class="ititulo">${esc(S.inbox.titulo_1)} <em>${esc(S.inbox.titulo_2)}</em></h2>
-          <div class="campos">
-            <p class="campo ancho2"><label for="f-nombre">${esc(S.inbox.campos.nombre)}</label><input id="f-nombre" name="nombre" type="text" autocomplete="name" placeholder="${esc(S.inbox.placeholders.nombre)}" required></p>
-            <p class="campo"><label for="f-correo">${esc(S.inbox.campos.correo)}</label><input id="f-correo" name="correo" type="email" autocomplete="email" placeholder="${esc(S.inbox.placeholders.correo)}" required></p>
-            <p class="campo"><label for="f-telefono">${esc(S.inbox.campos.telefono)}</label><input id="f-telefono" name="telefono" type="tel" autocomplete="tel" inputmode="tel" placeholder="${esc(S.inbox.placeholders.telefono)}" required></p>
-            <p class="campo ancho2"><label for="f-mensaje">${esc(S.inbox.campos.mensaje)}</label><textarea id="f-mensaje" name="mensaje" rows="4" placeholder="${esc(S.inbox.placeholders.mensaje)}" required></textarea></p>
-            <p class="campo ancho2 mono"><label for="f-idmp">${esc(S.inbox.campos.idmp)}</label><input id="f-idmp" name="idmp" type="text" placeholder="${esc(S.inbox.placeholders.idmp)}"></p>
-            <div class="iadjunta">
-              <input id="f-archivos" name="archivos" type="file" multiple
-                     accept=".pdf,.doc,.docx,.xls,.xlsx,.odt,.ods,.rtf,.txt,.jpg,.jpeg,.png,.webp,.zip">
-              <label for="f-archivos">
-                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M13.5 6.5 7.9 12a2.1 2.1 0 0 0 3 3l5.6-5.6a4 4 0 1 0-5.7-5.7L5 9.6a5.9 5.9 0 0 0 8.4 8.4l4.3-4.3"/></svg>
-                <span><b>${esc(S.inbox.adjunta.titulo)}</b><span>${esc(S.inbox.adjunta.nota)}</span></span>
-              </label>
-              <ul class="ilista" id="f-lista" aria-live="polite"></ul>
-            </div>
-          </div>
-          <p class="trampa" aria-hidden="true"><label for="f-sitioweb">No llenar</label><input id="f-sitioweb" name="sitioweb" type="text" tabindex="-1" autocomplete="off"></p>
-          <div class="enviar">
-            <button class="btn" id="formBtn" type="submit">${esc(S.inbox.boton)}</button>
-            <span class="nota">${esc(S.inbox.nota)}</span>
-          </div>
-          <p class="aviso" id="formAviso" role="status" aria-live="polite" hidden></p>
-        </form>
-      </div>
-    </div>
-  </section>`;
+<section id="inbox" class="sec">
+ ${LINEAS('lineas-blancas lineas-sec')}
+ <p class="kick">${esc(I.codigo)} ${esc(I.nombre)}</p>
+ <div class="col2 run-col">
+  <div class="run-txt">
+   <h2>${esc(I.titulo_1)}<br>${esc(I.titulo_2)}</h2>
+   <p>${esc(I.bajada)}</p>
+  </div>
+  <form class="run-form" id="formLead" novalidate>
+   <div class="campo"><label for="f-nombre">${esc(I.campos.nombre)}</label><input id="f-nombre" name="nombre" type="text" autocomplete="name" placeholder="${esc(I.placeholders.nombre)}" required></div>
+   <div class="campo"><label for="f-correo">${esc(I.campos.correo)}</label><input id="f-correo" name="correo" type="email" autocomplete="email" placeholder="${esc(I.placeholders.correo)}" required></div>
+   <div class="campo"><label for="f-telefono">${esc(I.campos.telefono)}</label><input id="f-telefono" name="telefono" type="tel" autocomplete="tel" inputmode="tel" placeholder="${esc(I.placeholders.telefono)}"></div>
+   <div class="campo"><label for="f-idmp">${esc(I.campos.idmp)}</label><input id="f-idmp" name="idmp" type="text" placeholder="${esc(I.placeholders.idmp)}"></div>
+   <div class="campo"><label for="f-mensaje">${esc(I.campos.mensaje)}</label><textarea id="f-mensaje" name="mensaje" rows="4" placeholder="${esc(I.placeholders.mensaje)}" required></textarea></div>
+   <div class="iadjunta">
+    <input id="f-archivos" name="archivos" type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.odt,.ods,.rtf,.txt,.jpg,.jpeg,.png,.webp,.zip">
+    <label for="f-archivos"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M13.5 6.5 7.9 12a2.1 2.1 0 0 0 3 3l5.6-5.6a4 4 0 1 0-5.7-5.7L5 9.6a5.9 5.9 0 0 0 8.4 8.4l4.3-4.3"/></svg><b>${esc(I.adjunta.titulo)}</b><span>${esc(I.adjunta.nota)}</span></label>
+    <ul class="ilista" id="f-lista" aria-live="polite"></ul>
+   </div>
+   <p class="trampa" aria-hidden="true"><label for="f-sitioweb">No llenar</label><input id="f-sitioweb" name="sitioweb" type="text" tabindex="-1" autocomplete="off"></p>
+   <div class="enviar"><button type="submit" class="btn btn-lleno" id="formBtn">${esc(I.boton)}</button><span class="nota">${esc(I.nota)}</span></div>
+   <p class="aviso" id="formAviso" role="status" aria-live="polite" hidden></p>
+  </form>
+ </div>
+</section>`;
 
+/* ── / 06 Inbox · el pie ─────────────────────────────────────────────── */
+const K = S.contacto_seccion;
 const contacto = `
-  <section class="sec cv ap" id="contacto">
-    <div class="pg" style="--h:525">
-      <div class="b fh korbe" style="--x:1121;--y:0;--w:385;--hh:527" aria-hidden="true"></div>
-      ${rot(S.contacto_seccion, 41, 96)}
-      <p class="b t kpreg" style="--x:171;--y:250;--w:1024;--fs:25.7;--lh:1.45">${S.contacto_seccion.pregunta_lineas.map(l => esc(l)).join('<br>')}</p>
-      <a class="b t kcorreo" style="--x:171;--y:348;--w:1024;--fs:32.3;--lh:1.21" href="mailto:${esc(S.contacto.correo)}">${esc(S.contacto.correo)}</a>
-    </div>
-
-    ${/* 13-10-2026, Sebastian: «el corte del sitio en la parte inferior
-        deberia cortar a la altura del video de los colibries, sino al darles
-        movimiento, uno de ellos se corta de igual manera por el limite de su
-        encuadre». El lienzo media 1006 y el picaflor terminaba en 813: 193 px
-        de negro muerto que convertian el borde del encuadre en un recorte a
-        media pagina. Ahora el lienzo cierra EN 813 —el borde del video es el
-        borde del sitio— y el pie legal se corre a la derecha, al vacio que
-        queda junto a SCL. */""}
-    <div class="pg" style="--h:813">
-      ${/* 12-10-2026, Sebastian: el acceso a la intranet deja de ser una
-          compuerta dibujada con la palabra «Intranet» al lado y pasa a ser el
-          picaflor. Al tocarlo se le encienden los circuitos del cuerpo y
-          recien entonces navega: el encendido ES el acuse del clic, en una
-          pieza que hasta hoy era pura decoracion (aria-hidden). */""}
-      <a class="b fh kpicaflor" style="--x:0;--y:320;--w:493;--hh:493"
-         href="${esc(S.contacto.intranet)}" target="_blank" rel="noopener"
-         aria-label="${esc(S.contacto_seccion.intranet_texto)} — acceso del equipo">
-        <img src="media/picaflor-intranet.webp" alt="" width="900" height="900" loading="lazy" decoding="async">
-        ${/* preload=none: pesa 500 KB y no se ve hasta que alguien toca. El
-            video NO lleva loop: suena una vez, como un interruptor. */""}
-        <video src="media/picaflor-intranet.mp4" muted playsinline preload="none"
-               disablepictureinpicture controlslist="nodownload noplaybackrate" aria-hidden="true"></video>
-      </a>
-      <p class="b t kscl" style="--x:425;--y:215;--w:515;--fs:236;--lh:1.21;--tr:-0.031">${esc(S.contacto.ciudad)}</p>
-      <p class="b t klugar" style="--x:555;--y:499;--w:256;--fs:26.7;--lh:1.21;--tr:-0.031">${esc(S.contacto.lugar)}</p>
-      <p class="b kpie" style="--x:520;--y:752;--w:805">
-        <span>${esc(S.contacto.razon_social)} · RUT ${esc(S.contacto.rut)}</span>
-        <span><a href="${esc(S.contacto.ficha)}" target="_blank" rel="noopener">Ficha proveedores del Estado</a> · <a href="/portafolio.html">Portafolio</a></span>
-      </p>
-    </div>
-  </section>`;
+<footer id="contacto" class="sec">
+ <p class="kick">${esc(K.codigo)} ${esc(K.nombre)}</p>
+ <div class="col2 pie-col">
+  <a class="pie-mail" href="mailto:${esc(S.contacto.correo)}">${esc(S.contacto.correo)}</a>
+  <div class="pie-dat">${esc(S.contacto.razon_social)}<br>RUT ${esc(S.contacto.rut)}<br>${esc(S.contacto.lugar)}</div>
+ </div>
+ <p class="kick k-ag">${esc(K.agentes_rotulo)}</p>
+ <ul class="agentes">
+${K.agentes.map(([n, d]) => `  <li><b>${esc(n)}</b><span>${esc(d)}</span></li>`).join('\n')}
+ </ul>
+ ${pieBar()}
+</footer>`;
 
 /* ── el documento ────────────────────────────────────────────────────── */
-const datos = {
-  // la agenda de PyME (asesoria de 30 min, sin costo) vive en sitio.json y se
-  // le cuelga a la hoja que la ofrece; sin URL el boton no aparece.
-  servicios: SERV.map(s => s.hoja && s.hoja.siguiente && s.hoja.siguiente.agenda_cta
-    ? { ...s, hoja: { ...s.hoja, siguiente: { ...s.hoja.siguiente, agenda_url: S.creative.agenda_url || '' } } } : s),
-  sitio: { formEndpoint: S.formEndpoint, inbox: { exito: S.inbox.exito, error: S.inbox.error, boton: S.inbox.boton } }
-};
+const datos = { sitio: { formEndpoint: S.formEndpoint, inbox: { exito: I.exito, error: I.error, boton: I.boton } } };
 
-const html = `<!doctype html>
-<!-- compai.cl · armado por sitio/compai/construir.mjs desde contenido/*.json.
-     fuente-del-sitio: sitio/compai
-     No editar este archivo a mano: el siguiente build lo pisa. -->
-${ACT ? `<!-- ${ACT.sistema} · Actualización N.º ${ACT.n} · ${ACT.fecha} -->\n` : ''}<html lang="${esc(S.meta.lang)}">
-<head>
-<meta charset="utf-8">
+const cabeza = (titulo, descripcion, url, extra = '') => `<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<script>(function(){try{var t=localStorage.getItem('tema');if(!t)t=matchMedia('(prefers-color-scheme: light)').matches?'claro':'oscuro';document.documentElement.setAttribute('data-tema',t);}catch(e){}})();</script>
-<title>${esc(S.meta.title)}</title>
-<meta name="description" content="${esc(S.meta.description)}">
-<link rel="canonical" href="${esc(S.meta.url)}">
-<meta name="theme-color" content="#0B0806">
+<title>${esc(titulo)}</title>
+<meta name="description" content="${esc(descripcion)}">
+<link rel="canonical" href="${esc(url)}">
+<meta name="theme-color" content="${esc(S.meta.theme_color)}">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_CL">
 <meta property="og:site_name" content="compAI">
-<meta property="og:title" content="${esc(S.meta.title)}">
-<meta property="og:description" content="${esc(S.meta.description)}">
-<meta property="og:url" content="${esc(S.meta.url)}">
+<meta property="og:title" content="${esc(titulo)}">
+<meta property="og:description" content="${esc(descripcion)}">
+<meta property="og:url" content="${esc(url)}">
 <meta property="og:image" content="${esc(S.meta.og_image)}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -524,12 +282,17 @@ ${ACT ? `<!-- ${ACT.sistema} · Actualización N.º ${ACT.n} · ${ACT.fecha} -->
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="preload" as="font" type="font/woff2" href="css/fuentes/archivo-var-latin.woff2" crossorigin>
-<link rel="preload" as="image" href="media/hero-franjas.webp" fetchpriority="high">
-<link rel="stylesheet" href="css/sitio.css">
-<link rel="stylesheet" href="css/canva.css">
-<link rel="preload" as="font" type="font/woff2" href="css/fuentes/plexmono-700-latin.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="css/fuentes/plexmono-200-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="css/fuentes/spacegrotesk-var-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="css/fuentes/plexmono-400-latin.woff2" crossorigin>
+${extra}<link rel="stylesheet" href="css/claro.css">`;
+
+const html = `<!doctype html>
+<!-- compai.cl · armado por sitio/compai/construir.mjs desde contenido/*.json.
+     fuente-del-sitio: sitio/compai
+     No editar este archivo a mano: el siguiente build lo pisa. -->
+${ACT ? `<!-- ${ACT.sistema} · Actualización N.º ${ACT.n} · ${ACT.fecha} -->\n` : ''}<html lang="${esc(S.meta.lang)}">
+<head>
+${cabeza(S.meta.title, S.meta.description, S.meta.url, `<link rel="preload" as="image" href="${esc(O.video_poster)}" fetchpriority="high">\n`)}
 <script type="application/ld+json">${JSON.stringify({
   '@context': 'https://schema.org', '@type': 'ProfessionalService',
   name: 'compAI', legalName: S.contacto.razon_social, taxID: S.contacto.rut,
@@ -537,56 +300,27 @@ ${ACT ? `<!-- ${ACT.sistema} · Actualización N.º ${ACT.n} · ${ACT.fecha} -->
   description: S.meta.description,
   address: { '@type': 'PostalAddress', addressLocality: 'Santiago', addressCountry: 'CL' },
   areaServed: 'CL', sameAs: [S.contacto.ficha],
-  makesOffer: SERV.map(s => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: s.titulo, description: s.bajada } }))
+  makesOffer: LIN.map(l => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: `${l.codigo} · ${l.titulo}`, description: l.descripcion } }))
 })}</script>
 </head>
 <body>
-<a class="salto" href="#offenbar">Saltar al contenido</a>
-
-<header class="bar">
-  <a class="logo-link" href="#hero" aria-label="compAI, inicio">${LOGO}</a>
-  <!-- 12-11-2026, Sebastian: «compai.cl tiene un boton que dice TEMA hay que eliminarlo».
-       El tema sigue el del sistema (prefers-color-scheme); js/tema.js queda sin boton que atar. -->
-  <button class="nodo" id="nodoBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">
-    <span class="lbl mono" id="nodoLbl">Menú</span>
-    <canvas id="nodoCv" width="128" height="128" aria-hidden="true"></canvas>
-  </button>
-</header>
-${menu}
+<a class="salto" href="#offenbar-2">Saltar al contenido</a>
+<div class="pg">
+${LINEAS()}
 <main>
-${S.hero === 'nucleo' ? heroNucleo : heroFranjas}
 ${offenbar}
 ${ilCuore}
 ${grace}
 ${creative}
 ${inbox}
-${contacto}
 </main>
-
-<div class="lamina" id="lamina" role="dialog" aria-modal="true" aria-labelledby="lamTit" aria-hidden="true">
-  <div class="lam-top">
-    <span id="lamCod"></span>
-    <button class="lam-x" id="lamX" type="button" aria-label="Cerrar">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3l10 10M13 3L3 13"/></svg>
-    </button>
-  </div>
-  <div class="lam-cuerpo">
-    <!-- La lamina es una hoja con la forma de la propuesta comercial PC-2026-001:
-         rotulo, titular, bajada, «como trabajamos», tabla de tres, pasos y el
-         siguiente paso. Sin precios: el precio vive en el catalogo. Sebastian,
-         07-10-2026. La pinta js/sitio.js desde servicios.json (campo «hoja»). -->
-    <article class="hoja" id="lamHoja" aria-labelledby="lamTit"></article>
-  </div>
+${contacto}
 </div>
-
 <script>window.COMPAI=${JSON.stringify(datos).replace(/</g, '\\u003c')};</script>
-<script src="js/tema.js" defer></script>
-<script src="js/sitio.js" defer></script>
-<script src="js/materializa.js" defer></script>
+<script src="js/claro.js" defer></script>
 </body>
 </html>
 `;
-
 writeFileSync(join(raiz, 'index.html'), html, 'utf8');
 
 /* ── 404 ─────────────────────────────────────────────────────────────── */
@@ -596,58 +330,44 @@ const c404 = `<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<script>(function(){try{var t=localStorage.getItem('tema');if(!t)t=matchMedia('(prefers-color-scheme: light)').matches?'claro':'oscuro';document.documentElement.setAttribute('data-tema',t);}catch(e){}})();</script>
 <title>Esta página no existe · compAI</title>
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#0B0806">
+<meta name="theme-color" content="${esc(S.meta.theme_color)}">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="stylesheet" href="/css/sitio.css">
-<style>
-body{display:grid;place-items:center;min-height:100svh;padding:clamp(24px,6vw,64px);text-align:center}
-.e404 .cod{font-family:var(--mono);font-size:clamp(72px,20vw,180px);line-height:.9;color:var(--brasa);margin:0}
-.e404 h1{font-family:var(--display);font-variation-settings:"wdth" 110;font-weight:700;
-  font-size:clamp(24px,4.4vw,44px);margin:18px 0 0;letter-spacing:-.02em}
-.e404 p{color:var(--crema2);margin:14px auto 0;max-width:46ch}
-.e404 .vol{margin-top:34px}
-.e404 .lg{width:min(220px,60vw);margin:0 auto 26px;display:block}
-</style>
+<link rel="stylesheet" href="/css/claro.css">
 </head>
 <body>
+<div class="pg">
+${LINEAS()}
 <main class="e404">
-  <span class="lg">${LOGO.replace('class="logo-svg"', 'class="logo-svg" style="height:auto;width:100%;margin:0"')}</span>
+ <div>
+  <img class="lg" src="/media/logo-compai-mono.svg" alt="compAI" width="372" height="131">
   <p class="cod">404</p>
   <h1>Esta página no existe.</h1>
   <p>Puede que el enlace esté viejo. Lo que sí está: el sitio, el portafolio y una casilla que alguien lee.</p>
-  <div class="contactos vol">
-    <a class="cbtn" href="/">Volver al inicio</a>
-    <a class="cbtn" href="/portafolio.html">Portafolio</a>
-    <a class="cbtn" href="mailto:${esc(S.contacto.correo)}">${esc(S.contacto.correo)}</a>
+  <div class="vol">
+   <a class="btn" href="/">Volver al inicio</a>
+   <a class="btn" href="/portafolio.html">Portafolio</a>
+   <a class="btn" href="mailto:${esc(S.contacto.correo)}">${esc(S.contacto.correo)}</a>
   </div>
+ </div>
 </main>
+</div>
 </body>
 </html>
 `;
 writeFileSync(join(raiz, '404.html'), c404, 'utf8');
 
-// lastmod de la home: solo se mueve a `hoy` si el index.html generado AHORA
-// difiere del que ya estaba commiteado (INDEX_ANTES, leido al principio,
-// antes de escribir nada). Si no cambio, se conserva el que ya traia el
-// sitemap commiteado — el sitemap se escribe mas abajo, despues de resolver
-// tambien el de portafolio.html, que se sabe mas tarde en este script.
 const cambioHome = INDEX_ANTES !== html;
 const lastmodHome = (!cambioHome && LASTMODS_ANTES[0]) ? LASTMODS_ANTES[0] : hoy;
 
 writeFileSync(join(raiz, 'robots.txt'),
   `User-agent: *\nAllow: /\nDisallow: /estado/\n\nSitemap: https://compai.cl/sitemap.xml\n`, 'utf8');
 
-/* ── soul/ · el enlace de SOUL (compai.cl/soul), 26-10-2026 ───────────────
-   Las paginas de soul/ se escriben a mano; lo unico que sale de aca es
-   soul/config.js, para que la URL del Apps Script viva en UN solo lugar
-   (contenido/sitio.json). Sin URL, las preguntas igual se recorren y, al
-   confirmar, avisan en pantalla y ofrecen WhatsApp: nunca un error mudo. */
+/* ── soul/ · compai.cl/soul (26-10-2026): solo su config.js sale de acá ── */
 const SOUL_DIR = join(raiz, 'soul');
 if (existsSync(SOUL_DIR)) {
   const wa = String((S.creative && S.creative.whatsapp_pyme) || 'https://wa.me/56962469977').replace(/\D/g, '');
@@ -657,160 +377,88 @@ if (existsSync(SOUL_DIR)) {
 }
 
 const kb = n => Math.round(n / 102.4) / 10;
-console.log(`index.html  ${kb(Buffer.byteLength(html))} KB · ${SERV.length} servicios · hero "${S.hero}" · formEndpoint ${S.formEndpoint ? 'configurado' : 'VACÍO (mailto de respaldo)'}`);
+console.log(`index.html  ${kb(Buffer.byteLength(html))} KB · ${LIN.length} líneas · radar ${radarFresco ? `en vivo (${RADAR.fecha})` : 'EJEMPLO'} · formEndpoint ${S.formEndpoint ? 'configurado' : 'VACÍO (mailto de respaldo)'}`);
 if (!existsSync(join(raiz, 'media/og.jpg'))) console.warn('AVISO: falta media/og.jpg (Open Graph 1200×630)');
 
-/* ── portafolio.html: las escenas ─────────────────────────────────────────
-   05-10-2026. Escena = video + lo que se pide debajo. La fuente es
-   `contenido/escenas.json` (copy de Visu) y se reescribe SOLO lo que hay
-   entre las marcas ESCENAS:INICIO / ESCENAS:FIN; el resto del portafolio
-   sigue a mano. Las licencias van SIN precio: se cotizan. */
-// mismo criterio que lastmodHome, resuelto por defecto y ajustado dentro del
-// bloque (ahi se sabe si portafolio.html cambio de verdad).
-let lastmodPort = LASTMODS_ANTES[1] || hoy;
-{
-  const PORT = join(raiz, 'portafolio.html');
-  const E = lee('contenido/escenas.json');
-  const F = E.formulario;
-  const precio = it => {
-    const s = E.servicios[it.sp]; if (!s) return '';
-    // «al mes» va pegado a la cifra, antes del IVA (pasada de Visu, 13-10-2026)
-    const base = s.cond === 'desde' ? `desde ${s.bruto} con IVA`
-      : s.cond === 'al mes' ? `${s.bruto} al mes con IVA`
-      : `${s.bruto} con IVA · ${s.cond}`;
-    return it.precio_sufijo ? `${base}, ${it.precio_sufijo}` : base;
-  };
-  // g.unico: los planes de una escalera se excluyen (cada uno trae lo del anterior),
-  // asi que se elige UNO: radio y no casilla (GAIn C2, 13-10-2026)
-  const item = (e, it, g) => {
-    const idc = `i${e.id}-${it.id}`.replace(/[^a-zA-Z0-9_-]/g, '');
-    const px = it.sp ? `<span class="px">${esc(precio(it))}</span>` : it.precio ? `<span class="px">${esc(it.precio)}</span>` : '';
-    const cant = it.cantidad
-      ? `<input class="cant" type="number" name="cant-${esc(it.id)}" min="1" step="1" inputmode="numeric" placeholder="${esc(it.unidad || 'cant.')}" data-unidad="${esc(it.unidad || '')}" aria-label="Cantidad de ${esc(it.unidad || 'unidades')} · ${esc(it.nombre)}">`
-      : '';
-    const cual = it.campo_texto
-      ? `<input class="cual" type="text" name="cual-${esc(it.id)}" maxlength="80" placeholder="${esc(it.campo_texto)}" aria-label="${esc(it.campo_texto)} · ${esc(it.nombre)}">`
-      : '';
-    return `          <li><div class="it"><input type="${g.unico ? 'radio' : 'checkbox'}" id="${idc}" name="item" value="${esc(it.id)}" data-nombre="${esc(it.nombre)}"${it.sp ? ` data-sp="${esc(it.sp)}"` : ''}${it.vigencia ? ' data-vigencia="1"' : ''}>
-            <label class="tx" for="${idc}"><span class="nm">${esc(it.nombre)}</span><span class="dt">${esc(it.detalle)}</span>${px}</label>${cant}${cual}</div></li>`;
-  };
-  const grupo = (e, g) => `        <fieldset>
-          <legend>${esc(g.pregunta)}</legend>
-          <ul class="items">
-${g.items.map(it => item(e, it, g)).join('\n')}
-          </ul>
-        </fieldset>`;
-  const vig = e => e.vigencia ? `
-        <label class="vig">${esc(e.vigencia.etiqueta)}<select name="vigencia">${e.vigencia.opciones.map(o => `<option${o === e.vigencia.defecto ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select></label>` : '';
-  /* Una escena puede traer su propio formulario (la 05, la panadera, le
-     habla de tu y no pide institucion ni codigo de Compra Agil). Lo que no
-     trae lo hereda del formulario comun. 07-10-2026. */
-  const mezcla = e => {
-    const o = e.formulario || {}, r = { ...F, ...o };
-    for (const k of ['institucion', 'plazo', 'respaldo']) if (o[k]) r[k] = { ...F[k], ...o[k] };
-    return r;
-  };
-  /* Muestras bajo el comic: el sitio de ejemplo de la escena, uno por plan.
-     Solo la escena que trae "muestras" en escenas.json. 07-10-2026. */
-  const muestras = e => !e.muestras ? '' : `      <section class="muestras" aria-label="${esc(e.muestras.titulo)}">
-        <p class="mu-t">${esc(e.muestras.titulo)}</p>
-        <p class="mu-b">${esc(e.muestras.bajada)}</p>
-        <ul>
-${e.muestras.items.map(m => `          <li><a href="${esc(m.url)}"><img src="${esc(m.img)}" width="640" height="400" loading="lazy" alt="${esc(m.alt)}"><span class="mu-p">${esc(m.plan)}</span><span class="mu-q">${esc(m.que)}</span><span class="mu-v">Ver la muestra →</span></a></li>`).join('\n')}
-        </ul>
-        <p class="mu-n">${esc(e.muestras.nota)}</p>
-      </section>
+/* ── portafolio.html · el catálogo carrusel (vista A, elegida por Sebastián el 15-11-2026) ──
+   Cinco tarjetas con scroll-snap, flechas, puntos y el detalle de sub-servicios
+   de la línea elegida. La escena de cada tarjeta es el video del catálogo vivo
+   (contenido/escenas.json): L1 ← escena 04, L2 ← 02, L3 ← 03, L4 ← 01, L5 ← 05
+   más las muestras SOUL. Reemplaza al portafolio con formularios y precios del
+   05-10-2026, que queda en sitio/_archivo/oscuro-2026-11-14/. */
+const CAT = S.catalogo;
+const escena = id => ESC.escenas.find(e => e.id === id) || {};
+const tarjeta = (l, i) => { const e = escena(l.escena); return `   <label class="card" for="t${i + 1}" id="card-${i + 1}" data-i="${i + 1}" data-escena="${esc(l.escena)}">
+    <video src="${esc(e.video)}" poster="${esc(e.poster)}" muted loop playsinline preload="none" disablepictureinpicture controlslist="nodownload noplaybackrate" aria-label="${esc(e.titulo || e.carrete || l.titulo)}"></video>
+    <span class="card-v"></span>
+    <span class="card-t"><i class="cat-cod">${esc(l.codigo)}</i><b>${esc(l.titulo)}</b><small>${esc(l.descripcion)}</small></span>
+   </label>`; };
+const detalle = (l, i) => `   <div class="det d${i + 1}" id="${esc(l.codigo)}">
+    <div class="det-l"><i class="cat-cod">${esc(l.codigo)}</i><h2>${esc(l.titulo)}</h2><p>${esc(l.descripcion)}</p></div>
+    <ul class="cat-subs">
+${l.subservicios.map(s => `     <li><b>${esc(s.nombre)}</b><span>${esc(s.detalle)}</span></li>`).join('\n')}
+    </ul>${l.muestras ? `
+    <div class="cat-muestras">
+     <p class="kick">${esc(l.muestras.titulo)}</p>
+${l.muestras.items.map(m => `     <figure><a href="${esc(m.url)}"><img src="${esc(m.img)}" alt="${esc(m.alt)}" width="640" height="400" loading="lazy" decoding="async"></a></figure>`).join('\n')}
+    </div>` : ''}${l.soul ? `
+    <p class="det-soul">${selloSoul(S.creative.soul_sello)}</p>` : ''}
+   </div>`;
+const portafolio = `<!doctype html>
+<!-- compai.cl · catálogo, armado por sitio/compai/construir.mjs desde contenido/lineas.json + escenas.json.
+     fuente-del-sitio: sitio/compai
+     No editar este archivo a mano: el siguiente build lo pisa. -->
+${ACT ? `<!-- ${ACT.sistema} · Actualización N.º ${ACT.n} · ${ACT.fecha} -->\n` : ''}<html lang="${esc(S.meta.lang)}">
+<head>
+${cabeza(CAT.title, CAT.description, 'https://compai.cl/portafolio.html')}
+</head>
+<body>
+<a class="salto" href="#servicios">Saltar al contenido</a>
+<div class="pg">
+${LINEAS()}
+ <header class="cat-head">
+  <a class="logo" href="/" aria-label="compAI, inicio"><img src="media/logo-compai-dia.svg" alt="compAI" width="372" height="131"></a>
+  ${ibar('ibar-cat', '/')}
+ </header>
+ <main id="servicios">
+ <div class="cat-top">
+  <p class="kick">${esc(CAT.kicker)}</p>
+  <h1>${CAT.titulo.map(esc).join('<br>')}</h1>
+  <div class="nav"><button type="button" class="arr" id="prev" aria-label="${esc(CAT.anterior)}"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><button type="button" class="arr" id="next" aria-label="${esc(CAT.siguiente)}"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button></div>
+ </div>
+ <div class="cat-wrap">
+${LIN.map((l, i) => `<input type="radio" name="cat" id="t${i + 1}" class="cat-r"${i === 0 ? ' checked' : ''} aria-label="${esc(l.codigo)}">`).join('\n')}
+  <div class="rail" id="rail">
+${LIN.map(tarjeta).join('\n')}
+  </div>
+  <div class="dots">${LIN.map((l, i) => `<label class="dot" for="t${i + 1}" data-i="${i + 1}" aria-label="${esc(l.codigo)}"></label>`).join('')}</div>
+  <div class="dets">
+${LIN.map(detalle).join('\n')}
+  </div>
+ </div>
+ </main>
+ <div class="cat-pie">
+ ${pieBar()}
+ </div>
+</div>
+<script src="js/claro.js" defer></script>
+</body>
+</html>
 `;
-  const pieza = (e, i) => { const F = mezcla(e); return `    <!-- ---------- ${e.id} ---------- -->
-    <div class="pieza" data-p="${i + 1}">
-      <figure class="marco"><video muted loop playsinline ${i === 0 ? 'autoplay preload="metadata"' : 'preload="none"'} poster="${esc(e.poster)}" aria-label="${esc(e.alt)}"><source src="${esc(e.video)}" type="video/mp4"></video></figure>
-      <div class="pieplaca">
-        <p class="linea">${esc(e.linea)}</p>
-        <h2>${esc(e.titulo)}</h2>
-        <p>${esc(e.bajada)}</p>
-      </div>
-${e.soul ? `      <div class="soul-cta"><p>${esc(e.soul.texto)}</p><a class="soul-b" href="${esc(e.soul.url)}">${esc(e.soul.cta)}</a></div>
-` : ''}${muestras(e)}      <form class="pide" data-id="${esc(e.id)}" data-titulo="${esc(e.carrete)}" data-asunto="${esc(e.asunto)}" action="mailto:hola@compai.cl" method="post" enctype="text/plain">
-${e.grupos.map((g, k) => grupo(e, g) + (k === 0 ? vig(e) : '')).join('\n')}
-        <div class="quien">
-          <p class="tq">${esc(F.titulo_quien)}</p>
-          <label>${esc(F.institucion.etiqueta)}<input name="organismo" autocomplete="organization"${F.institucion.obligatorio === false ? '' : ' required'} maxlength="120" placeholder="${esc(F.institucion.placeholder)}"></label>
-          <label>Nombre<input name="nombre" autocomplete="name" required maxlength="80"></label>
-          <label>Correo<input name="correo" type="email" autocomplete="email" required maxlength="120"></label>
-          <label>${esc((F.telefono || {}).etiqueta || 'Teléfono')}<input name="telefono" type="tel" autocomplete="tel" maxlength="30"${(F.telefono || {}).obligatorio ? ' required' : ''}${(F.telefono || {}).placeholder ? ` placeholder="${esc(F.telefono.placeholder)}"` : ''}></label>
-          <label>${esc(F.plazo.etiqueta)}<input name="plazo" maxlength="60" placeholder="${esc(F.plazo.placeholder)}"></label>
-          ${F.codigo ? `<label>${esc(F.codigo.etiqueta)}<input name="codigo" maxlength="40" placeholder="${esc(F.codigo.placeholder)}"></label>` : ''}
-          <span class="trampa" aria-hidden="true"><input name="sitioweb" tabindex="-1" autocomplete="off"></span>
-          <div class="adjunta">
-            <input class="arch" id="arch-${esc(e.id)}" type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.odt,.ods,.rtf,.txt,.jpg,.jpeg,.png,.webp,.zip">
-            <label for="arch-${esc(e.id)}"><b>${esc(S.inbox.adjunta.titulo)}</b><span>${esc(S.inbox.adjunta.nota)}</span></label>
-            <ul class="lista-arch" aria-live="polite"></ul>
-          </div>
-        </div>
-        <div class="envia">
-          <button type="submit">${esc(F.cta)}</button><span class="cuenta" aria-live="polite"></span>
-          <p class="nota">${esc(F.nota)}</p>
-          ${F.agenda_cta && S.creative.agenda_url ? `<a class="agenda" href="${esc(S.creative.agenda_url)}" target="_blank" rel="noopener">${esc(F.agenda_cta)}</a>` : ''}
-        </div>
-        <p class="aviso" role="status" hidden></p>
-        <p class="respaldo" hidden>${esc(F.respaldo.linea)} <button type="button" class="copia">${esc(F.respaldo.boton_copiar)}</button></p>
-      </form>
-    </div>`; };
-  const conf = c => `<p class="confianza${c ? ' ' + c : ''}">${esc(E.confianza.texto)} <a href="${esc(E.confianza.url)}" target="_blank" rel="noopener">${esc(E.confianza.enlace)}</a></p>`;
-  const bloque = `<!-- ESCENAS:INICIO · lo arma construir.mjs desde contenido/escenas.json — NO SE EDITA A MANO -->
-${E.escenas.map((e, i) => `<input type="radio" name="pieza" id="p${i + 1}" class="sel"${i === 0 ? ' checked' : ''}>`).join('\n')}
+writeFileSync(join(raiz, 'portafolio.html'), portafolio, 'utf8');
+const lastmodPort = (PORT_ANTES === portafolio && LASTMODS_ANTES[1]) ? LASTMODS_ANTES[1] : hoy;
+console.log(`portafolio.html · ${LIN.length} líneas · ${LIN.reduce((a, l) => a + l.subservicios.length, 0)} sub-servicios`);
 
-<main class="sala" id="servicios">
-
-  <!-- ================= EL CARRETE ================= -->
-  <div>
-    <div class="carrete">
-      <p class="promesa">${esc(E.promesa)}</p>
-      <div class="tope">${esc(E.tope)}</div>
-      <ul>
-${E.escenas.map((e, i) => `        <li><label for="p${i + 1}"><span class="n">${esc(e.id)}</span><span class="tt">${esc(e.carrete)}</span></label></li>`).join('\n')}
-      </ul>
-      ${conf('')}
-    </div>
-  </div>
-
-  <!-- ================= EL ESCENARIO ================= -->
-  <div class="escenario">
-${E.escenas.map(pieza).join('\n\n')}
-    ${conf('abajo')}
-  </div>
-</main>
-<script>window.ESCENAS=${JSON.stringify({ formulario: F, por: Object.fromEntries(E.escenas.filter(e => e.formulario).map(e => [e.id, mezcla(e)])), endpoint: S.formEndpoint || '' }).replace(/</g, '\\u003c')};</script>
-<!-- ESCENAS:FIN -->`;
-  const t = readFileSync(PORT, 'utf8');
-  const re = /<!-- ESCENAS:INICIO[\s\S]*?<!-- ESCENAS:FIN -->/;
-  if (re.test(t)) {
-    const nuevoPort = t.replace(re, () => bloque);
-    if (nuevoPort !== t) { writeFileSync(PORT, nuevoPort, 'utf8'); lastmodPort = hoy; }
-    const n = E.escenas.reduce((a, e) => a + e.grupos.reduce((b, g) => b + g.items.length, 0), 0);
-    console.log(`portafolio.html · ${E.escenas.length} escenas · ${n} cosas para pedir`);
-  } else console.warn('AVISO: portafolio.html no tiene las marcas ESCENAS:INICIO/FIN — no se tocaron las escenas');
-
-  /* Los precios que usa el Apps Script para armar la cotizacion en PDF salen
-     de aqui mismo: el servidor no confia en los que manda el navegador.
-     07-10-2026. Tras cambiarlos hay que volver a desplegar el Apps Script.
-
-     apps-script/ NO viaja al repo publico a proposito (publicar.py, lista
-     VIAJAN): es la logica de servidor de la cotizacion (folio, PDF, margen),
-     y el despliegue es manual desde el escritorio
-     (Desktop/DESPLEGAR-FORMULARIO-COMPAI.bat), nunca desde CI ni desde el
-     repo publico. Por eso esto se salta con una guarda en vez de "arreglarse"
-     publicando el archivo: publicarlo expondria esa logica sin necesidad,
-     porque nadie despliega desde ahi. Sin la guarda, 12-10-2026: CI roto del
-     07-10 al 11-10 en Sebahttps/CompAI, ENOENT al faltar la carpeta — la
-     correccion es esta guarda, confirmada con la corrida real que sigue. */
+/* ── apps-script/Code.gs · precios de la cotización en PDF ───────────────
+   Salen de contenido/escenas.json (SP-01..SP-09 y SOUL): el servidor no confía
+   en los que manda el navegador. apps-script/ NO viaja al repo público (ver
+   publicar.py, VIAJAN) y se despliega a mano; por eso la guarda existsSync. */
+{
   const GS = join(raiz, 'apps-script/Code.gs');
   if (existsSync(GS)) {
     const PRE = {};
-    // de la ultima escena a la primera: el SP-07 toma el nombre de la 03
-    // («Puesta en marcha de lo comprado»), no el de la 01
-    for (const e of [...E.escenas].reverse()) for (const g of e.grupos) for (const it of g.items) {
-      const s = it.sp && E.servicios[it.sp]; if (!s || PRE[it.sp]) continue;
+    for (const e of [...ESC.escenas].reverse()) for (const g of e.grupos || []) for (const it of g.items || []) {
+      const s = it.sp && ESC.servicios[it.sp]; if (!s || PRE[it.sp]) continue;
       PRE[it.sp] = { nombre: it.nombre, detalle: it.detalle || '', bruto: Number(String(s.bruto).replace(/[^0-9]/g, '')), cond: s.cond };
       if (s.anual) PRE[it.sp].anual = Number(String(s.anual).replace(/[^0-9]/g, ''));
     }
@@ -824,12 +472,7 @@ ${E.escenas.map(pieza).join('\n\n')}
   }
 }
 
-// El sitemap se escribe ACA, al final: recien aqui estan resueltos lastmodHome
-// (comparado contra INDEX_ANTES, arriba) y lastmodPort (comparado dentro del
-// bloque de portafolio.html). Ninguno de los dos depende de `hoy` salvo que
-// el contenido real haya cambiado en ESTA corrida.
-// lastmod de /soul/: se conserva el que ya traia el sitemap commiteado (la
-// pagina es a mano y no hay HTML generado que comparar); si es nueva, `hoy`.
+/* ── sitemap: al final, con los lastmod ya resueltos ─────────────────── */
 const lastmodSoul = (SITEMAP_ANTES.match(/<loc>https:\/\/compai\.cl\/soul\/<\/loc><lastmod>(\d{4}-\d{2}-\d{2})<\/lastmod>/) || [])[1] || hoy;
 const lastmodEj = (SITEMAP_ANTES.match(/<loc>https:\/\/compai\.cl\/soul\/ejemplo\/<\/loc><lastmod>(\d{4}-\d{2}-\d{2})<\/lastmod>/) || [])[1] || hoy;
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

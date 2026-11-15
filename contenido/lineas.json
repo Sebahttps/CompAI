@@ -1,0 +1,71 @@
+{
+ "_leeme": "Las cinco líneas de negocio de CompAI (L1–L5), dictadas por Sebastián el 15-11-2026 en el lienzo «compAI Claro Minimal». Son las mismas de la intranet (LINEAS_CA) y del radar. Alimentan / 04 Creative del home y el catálogo (portafolio.html). Título y descripción acotada van tal cual; los sub-servicios se citan completos. `escena` es la escena del catálogo vivo (contenido/escenas.json) cuyo video ilustra la línea.",
+ "lineas": [
+  {
+   "codigo": "L1",
+   "titulo": "Integración y Automatización",
+   "descripcion": "Servicios enfocados en eliminar el papeleo y conectar sistemas institucionales aislados.",
+   "escena": "04",
+   "subservicios": [
+    {"nombre": "Automatización de Flujos (RPA)", "detalle": "Bots para extracción de datos, consolidación de planillas Excel o carga automática de información entre plataformas públicas."},
+    {"nombre": "Integración de APIs Gubernamentales", "detalle": "Conexión de sistemas internos con servicios transversales del Estado (ej. ClaveÚnica, Registro Civil, interoperabilidad MINSEGPRES)."},
+    {"nombre": "Digitalización de Flujos Documentales (Cero Papel)", "detalle": "Implementación de flujos de aprobación digital y firmas electrónicas para procesos administrativos (decretos, resoluciones, RRHH)."}
+   ]
+  },
+  {
+   "codigo": "L2",
+   "titulo": "Arquitectura TI y Consultoría Especializada",
+   "descripcion": "Servicios consultivos de alto valor (horas hombre) que abren la puerta a proyectos más grandes.",
+   "escena": "02",
+   "subservicios": [
+    {"nombre": "Elaboración de Bases Técnicas", "detalle": "Redacción de especificaciones técnicas neutrales y profesionales para que la institución pueda levantar licitaciones complejas en el futuro sin cometer errores normativos."},
+    {"nombre": "Auditorías de Brechas y Ciberseguridad (Assessment)", "detalle": "Análisis rápido del estado de la red, vulnerabilidades y cumplimiento normativo de la institución."},
+    {"nombre": "Consultoría en Transformación Digital", "detalle": "Asesoría para el cumplimiento de la Ley N° 21.180 (Ley de Transformación Digital del Estado), evaluando el nivel de madurez digital del servicio público."}
+   ]
+  },
+  {
+   "codigo": "L3",
+   "titulo": "Cloud, Data & Operations",
+   "descripcion": "Servicios de pago recurrente o despliegue rápido para asegurar la continuidad institucional.",
+   "escena": "03",
+   "subservicios": [
+    {"nombre": "Migración a la Nube (Lift & Shift)", "detalle": "Traslado de servidores físicos obsoletos a entornos cloud seguros (AWS, Azure, Google Cloud) bajo normativas de gobierno."},
+    {"nombre": "Planes de Respaldo y Recuperación (BaaS / DRaaS)", "detalle": "Configuración de copias de seguridad automatizadas y cifradas para bases de datos críticas institucionales."},
+    {"nombre": "Monitoreo y Continuidad Operativa", "detalle": "Implementación de tableros (dashboards) de monitoreo 24/7 para alertar sobre caídas de portales ciudadanos o saturación de servidores."}
+   ]
+  },
+  {
+   "codigo": "L4",
+   "titulo": "Hardware y Licenciamiento",
+   "descripcion": "Provisión transaccional rápida. El catálogo debe centrarse en lo que las instituciones compran por urgencia bajo las 100 UTM.",
+   "escena": "01",
+   "subservicios": [
+    {"nombre": "Kits de Renovación de Puestos de Trabajo", "detalle": "Venta rápida de laptops corporativos, monitores, periféricos y docking stations para funcionarios."},
+    {"nombre": "Licenciamiento de Ofimática y Productividad", "detalle": "Renovación y provisión de licencias de Microsoft 365, Google Workspace y herramientas de colaboración institucional."},
+    {"nombre": "Licenciamiento de Ciberseguridad", "detalle": "Antivirus corporativos (Endpoints), firewalls virtuales y soluciones de protección de correo electrónico (antiphishing)."},
+    {"nombre": "Equipamiento de Redes y Conectividad Menor", "detalle": "Routers, switches de acceso, puntos de acceso Wi-Fi (Access Points) para oficinas gubernamentales."}
+   ]
+  },
+  {
+   "codigo": "L5",
+   "titulo": "Soluciones Web y Desarrollo Customizado",
+   "descripcion": "Desarrollos acotados y rápidos que no requieran meses de programación, ideales para el tope de 100 UTM.",
+   "escena": "05",
+   "soul": {"url": "soul/", "texto": "El alma de tu oficio.", "aria": "SOUL, el alma de tu oficio"},
+   "muestras": {
+    "titulo": "Pruébala antes de pedirla",
+    "items": [
+     {"img": "media/muestra-pista.webp", "alt": "Muestra SOUL · pista", "url": "muestras/maria-tapia/fresh.html"},
+     {"img": "media/muestra-nodo.webp", "alt": "Muestra SOUL · nodo", "url": "muestras/maria-tapia/sun.html"},
+     {"img": "media/muestra-nucleo.webp", "alt": "Muestra SOUL · núcleo", "url": "muestras/maria-tapia/vibe.html"}
+    ]
+   },
+   "subservicios": [
+    {"nombre": "Portales Informativos y Campañas Ciudadanas", "detalle": "Diseño web de sitios para campañas específicas del gobierno, cumpliendo con la Guía de Estándares Web del Estado."},
+    {"nombre": "Módulos de Atención Ciudadana (OIRS Digital)", "detalle": "Desarrollo de formularios inteligentes, agendas de reservas de horas o portales de reclamos/sugerencias."},
+    {"nombre": "Intranets Institucionales", "detalle": "Plataformas de comunicación interna, repositorios de documentos y directorios de funcionarios."},
+    {"nombre": "Remodelación de UI/UX", "detalle": "Auditoría y rediseño de interfaces de sistemas antiguos del Estado para hacerlos accesibles y \"humanos\", cumpliendo normativas W3C de inclusión."}
+   ]
+  }
+ ]
+}
