@@ -298,11 +298,9 @@
    "video": "media/intel-1.mp4",
    "video_poster": "media/intel-1.webp",
    "titulo": [
-    "CLASIFICA CADA",
-    "LICITACIÓN",
-    "DE MERCADO",
-    "PÚBLICO"
-   ],
+     "CLASIFICA CADA LICITACIÓN",
+     "DE MERCADO PÚBLICO"
+    ],
    "izquierda": "El equipo revisa las publicaciones todos los días y filtra por rubro y presupuesto. De cada oportunidad emite un análisis, una ponderación y un veredicto:",
    "derecha": [
     {

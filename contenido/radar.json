@@ -16,7 +16,7 @@
    "organismo": "HOSPITAL DR GUSTAVO FRICKE DE VINA DEL MAR · Región de Valparaíso ",
    "fecha": "15-11-2026 15:48",
    "cierre_iso": "2026-11-15 15:48",
-   "quedan": "quedan 4 h"
+   "quedan": "quedan 1 h"
   },
   {
    "marca": "GO",
@@ -29,7 +29,7 @@
    "organismo": "GOBIERNO REGIONAL DE AYSEN · Región Aysén del General Carlos Ibáñez del Campo",
    "fecha": "15-11-2026 17:53",
    "cierre_iso": "2026-11-15 17:53",
-   "quedan": "quedan 6 h"
+   "quedan": "quedan 3 h"
   },
   {
    "marca": "GO",
@@ -42,7 +42,7 @@
    "organismo": "I MUNICIPALIDAD DE LAGO RANCO · Región de Los Ríos",
    "fecha": "16-11-2026 05:51",
    "cierre_iso": "2026-11-16 05:51",
-   "quedan": "quedan 18 h"
+   "quedan": "quedan 15 h"
   },
   {
    "marca": "NO-GO",
@@ -55,7 +55,7 @@
    "organismo": "I MUNICIPALIDAD DE DONIHUE · Región del Libertador General Bernardo O´Higgins",
    "fecha": "16-11-2026 07:00",
    "cierre_iso": "2026-11-16 07:00",
-   "quedan": "quedan 19 h"
+   "quedan": "quedan 16 h"
   },
   {
    "marca": "GO",
@@ -68,7 +68,7 @@
    "organismo": "MUNICIPALIDAD DE OVALLE · Región de Coquimbo ",
    "fecha": "16-11-2026 09:00",
    "cierre_iso": "2026-11-16 09:00",
-   "quedan": "quedan 21 h"
+   "quedan": "quedan 18 h"
   },
   {
    "marca": "GO",
@@ -81,7 +81,7 @@
    "organismo": "Hospital Psiquiátrico El Peral · Región Metropolitana de Santiago",
    "fecha": "16-11-2026 09:00",
    "cierre_iso": "2026-11-16 09:00",
-   "quedan": "quedan 21 h"
+   "quedan": "quedan 18 h"
   },
   {
    "marca": "NO-GO",
@@ -94,7 +94,7 @@
    "organismo": "SERVICIO DE SALUD ATACAMA · Región de Atacama ",
    "fecha": "16-11-2026 09:00",
    "cierre_iso": "2026-11-16 09:00",
-   "quedan": "quedan 21 h"
+   "quedan": "quedan 18 h"
   },
   {
    "marca": "GO",
@@ -107,7 +107,7 @@
    "organismo": "Servicio de Salud Coquimbo Hospital de Ovalle · Región de Coquimbo ",
    "fecha": "16-11-2026 10:00",
    "cierre_iso": "2026-11-16 10:00",
-   "quedan": "quedan 22 h"
+   "quedan": "quedan 19 h"
   }
  ]
 }

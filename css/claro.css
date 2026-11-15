@@ -134,13 +134,16 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;paddin
 /* ── / 03 L'Intelligence ─────────────────────────────────────────────── */
 #grace{position:relative;z-index:1;border-radius:146px;background-color:rgba(255,255,255,.85);padding-bottom:120px}
 .lam1{position:relative;padding:120px 0 48px}
+/* 15-11-2026, Sebastián: el rótulo va ENCIMA del video con el mismo aire que en / 02
+   (24 px), y el encabezado se ajusta al borde superior izquierdo del video, en dos líneas */
+.lam1-kick{margin:0 10% 24px 20%}
+.lam1-cuadro{position:relative}
 .lam1-fig{margin:0 10% 0 20%;aspect-ratio:16/9}
 .lam1-fig video{object-fit:contain}
-.lam1-over{position:absolute;inset:120px 0 48px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:auto 1fr auto;pointer-events:none}
+.lam1-over{position:absolute;inset:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:1fr auto;pointer-events:none}
 .lam1-over>*{pointer-events:auto}
-.lam1-over .kick{grid-column:2/3;grid-row:1;margin:0;padding:0 24px}
-.lam1-txt{grid-column:2/3;grid-row:2;padding:64px 24px 0}
-.lam1-txt h2{margin:0 0 24px;font-size:26px;line-height:1.26;font-weight:600;letter-spacing:-.01em;text-transform:uppercase}
+.lam1-txt{grid-column:2/4;grid-row:1;padding:0}
+.lam1-txt h2{margin:0 0 24px;font-size:26px;line-height:1.26;font-weight:600;letter-spacing:-.01em;text-transform:uppercase;width:max-content;max-width:100%}
 .lam1-txt p{margin:0;font-size:14.5px;line-height:1.62;color:var(--gris);width:252px;max-width:100%}
 .gldcha{grid-column:5;grid-row:3;align-self:end;margin:0;padding:0 24px 16px 0;list-style:none;width:281px;max-width:100%;font-size:14.5px;line-height:1.62;color:var(--gris)}
 .gldcha li{margin:0 0 10px;display:flex;align-items:flex-start;gap:8px}
@@ -361,9 +364,10 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;paddin
  #grace{border-radius:40px;padding-bottom:64px}
  .lam1{padding:56px 0 0}
  .lam1-fig{margin:0 24px}
+ .lam1-kick{margin:0 24px 24px}
  .lam1-over{position:static;display:block;padding:24px 24px 0}
- .lam1-over .kick,.lam1-txt,.gldcha{padding:0;width:auto;margin:0 0 16px}
- .lam1-txt p{width:auto}
+ .lam1-txt,.gldcha{padding:0;width:auto;margin:0 0 16px}
+ .lam1-txt h2,.lam1-txt p{width:auto}
  .lam2{display:block;padding:48px 0}
  .lam2-fig{height:auto;aspect-ratio:3/4;margin:0 24px}
  .lam2-list{padding:32px 24px 0;height:auto;display:block}

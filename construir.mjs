@@ -164,14 +164,16 @@ const grace = (() => {
   return `
 <section id="grace">
  <div class="lam1">
-  <figure class="fundido fundido-horiz lam1-fig">${video(L.video, L.video_poster)}</figure>
-  <div class="lam1-over">
-   <p class="kick">${esc(G.codigo)} ${esc(G.nombre)}</p>
-   <div class="lam1-txt">
-    <h2${RV_ATR.abajo}>${L.titulo.map(esc).join('<br>')}</h2>
-    <p>${esc(L.izquierda)}</p>
+  <p class="kick lam1-kick">${esc(G.codigo)} ${esc(G.nombre)}</p>
+  <div class="lam1-cuadro">
+   <figure class="fundido fundido-horiz lam1-fig">${video(L.video, L.video_poster)}</figure>
+   <div class="lam1-over">
+    <div class="lam1-txt">
+     <h2${RV_ATR.abajo}>${L.titulo.map(esc).join('<br>')}</h2>
+     <p>${esc(L.izquierda)}</p>
+    </div>
+    <ul class="gldcha">${L.derecha.map(d => `<li>${/^NO/.test(d.marca) ? MK_NOGO : MK_GO}<span>${esc(d.texto)}</span></li>`).join('')}</ul>
    </div>
-   <ul class="gldcha">${L.derecha.map(d => `<li>${/^NO/.test(d.marca) ? MK_NOGO : MK_GO}<span>${esc(d.texto)}</span></li>`).join('')}</ul>
   </div>
  </div>
 

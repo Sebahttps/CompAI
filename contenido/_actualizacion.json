@@ -1,8 +1,8 @@
 {
  "sistema": "Sitio compai.cl",
- "n": 5,
+ "n": 6,
  "fecha": "2026-11-15",
- "hora": "11:14",
+ "hora": "14:01",
  "sitio": "compai.cl",
- "que": "Aparición de textos al primer scroll (bajando/subiendo) en las seis láminas; hero móvil con rótulos a izquierda y derecha; botón Compra Ágil sin ancho fijo; / 02 «Contacto» pasa a «Inbox»; video 1 de / 03 fundido por los laterales; RADAR EN VIVO con desplazador propio al alto del video RAI-CA"
+ "que": "/ 03: rótulo encima del video con el mismo aire que / 02 (24 px), encabezado en dos líneas al borde superior izquierdo del video; video del RADAR EN VIVO reemplazado por RAI-CA v6 paneo suave (recorte vertical 464×1080, 16,6 s, 1,2 MB)"
 }
