@@ -1,7 +1,7 @@
 {
  "_que_es": "RADAR EN VIVO de la portada. Lo escribe traer_radar.py desde la salida de RAI-CA; no se edita a mano.",
- "generado": "2026-11-14T21:32",
- "fecha": "14-11-2026 21:32",
+ "generado": "2026-11-16T01:24",
+ "fecha": "16-11-2026 01:24",
  "fuente": "RAI-CA · API de Mercado Público, Compra Ágil",
  "candidatas": 163,
  "filas": [
@@ -16,7 +16,7 @@
    "organismo": "I MUNICIPALIDAD DE LAGO RANCO · Región de Los Ríos",
    "fecha": "16-11-2026 05:51",
    "cierre_iso": "2026-11-16 05:51",
-   "quedan": "quedan 5 h"
+   "quedan": "quedan 3 h"
   },
   {
    "marca": "NO-GO",
@@ -29,7 +29,7 @@
    "organismo": "I MUNICIPALIDAD DE DONIHUE · Región del Libertador General Bernardo O´Higgins",
    "fecha": "16-11-2026 07:00",
    "cierre_iso": "2026-11-16 07:00",
-   "quedan": "quedan 6 h"
+   "quedan": "quedan 4 h"
   },
   {
    "marca": "GO",
@@ -42,7 +42,7 @@
    "organismo": "MUNICIPALIDAD DE OVALLE · Región de Coquimbo ",
    "fecha": "16-11-2026 09:00",
    "cierre_iso": "2026-11-16 09:00",
-   "quedan": "quedan 8 h"
+   "quedan": "quedan 6 h"
   },
   {
    "marca": "GO",
@@ -55,7 +55,7 @@
    "organismo": "Hospital Psiquiátrico El Peral · Región Metropolitana de Santiago",
    "fecha": "16-11-2026 09:00",
    "cierre_iso": "2026-11-16 09:00",
-   "quedan": "quedan 8 h"
+   "quedan": "quedan 6 h"
   },
   {
    "marca": "NO-GO",
@@ -68,7 +68,7 @@
    "organismo": "SERVICIO DE SALUD ATACAMA · Región de Atacama ",
    "fecha": "16-11-2026 09:00",
    "cierre_iso": "2026-11-16 09:00",
-   "quedan": "quedan 8 h"
+   "quedan": "quedan 6 h"
   },
   {
    "marca": "GO",
@@ -81,7 +81,7 @@
    "organismo": "Servicio de Salud Coquimbo Hospital de Ovalle · Región de Coquimbo ",
    "fecha": "16-11-2026 10:00",
    "cierre_iso": "2026-11-16 10:00",
-   "quedan": "quedan 9 h"
+   "quedan": "quedan 7 h"
   },
   {
    "marca": "GO",
@@ -94,7 +94,7 @@
    "organismo": "CENTRO DE INFORMACION DE RECURSOS NATURALES · Región Metropolitana de Santiago",
    "fecha": "16-11-2026 10:00",
    "cierre_iso": "2026-11-16 10:00",
-   "quedan": "quedan 9 h"
+   "quedan": "quedan 7 h"
   },
   {
    "marca": "GO",
@@ -107,7 +107,7 @@
    "organismo": "I MUNICIPALIDAD DE OSORNO · Región de los Lagos ",
    "fecha": "16-11-2026 11:00",
    "cierre_iso": "2026-11-16 11:00",
-   "quedan": "quedan 10 h"
+   "quedan": "quedan 8 h"
   }
  ]
 }
