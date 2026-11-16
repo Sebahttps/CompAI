@@ -1,8 +1,8 @@
 {
  "sistema": "Sitio compai.cl",
- "n": 6,
+ "n": 7,
  "fecha": "2026-11-15",
- "hora": "14:01",
+ "hora": "21:34",
  "sitio": "compai.cl",
- "que": "/ 03: rótulo encima del video con el mismo aire que / 02 (24 px), encabezado en dos líneas al borde superior izquierdo del video; video del RADAR EN VIVO reemplazado por RAI-CA v6 paneo suave (recorte vertical 464×1080, 16,6 s, 1,2 MB)"
+ "que": "Icono herramienta con role=img (Lighthouse accesibilidad: ARIA prohibido en span); PageSpeed movil 98/96/100/100"
 }

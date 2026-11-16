@@ -3,34 +3,8 @@
  "generado": "2026-11-14T21:32",
  "fecha": "14-11-2026 21:32",
  "fuente": "RAI-CA · API de Mercado Público, Compra Ágil",
- "candidatas": 168,
+ "candidatas": 163,
  "filas": [
-  {
-   "marca": "GO",
-   "nombre": "(TTV) INSUMO EQUIVALENTE A PLATAFORMA DE ACCESO TRANSANAL (TAMIS)",
-   "linea": "L5",
-   "linea_nombre": "Soluciones Web y Desarrollo Customizado",
-   "score": 100,
-   "codigo": "608-7034-COT26",
-   "monto": "$1.500.000",
-   "organismo": "HOSPITAL DR GUSTAVO FRICKE DE VINA DEL MAR · Región de Valparaíso ",
-   "fecha": "15-11-2026 15:48",
-   "cierre_iso": "2026-11-15 15:48",
-   "quedan": "quedan 1 h"
-  },
-  {
-   "marca": "GO",
-   "nombre": "CAPACITACIÓN “PYTHON APLICADO: PROGRAMACIÓN, DATOS E INTELIGENCIA ARTIFICIAL”",
-   "linea": "L2",
-   "linea_nombre": "Arquitectura TI y Consultoría Especializada",
-   "score": 100,
-   "codigo": "868-101-COT26",
-   "monto": "$390.000",
-   "organismo": "GOBIERNO REGIONAL DE AYSEN · Región Aysén del General Carlos Ibáñez del Campo",
-   "fecha": "15-11-2026 17:53",
-   "cierre_iso": "2026-11-15 17:53",
-   "quedan": "quedan 3 h"
-  },
   {
    "marca": "GO",
    "nombre": "COTIZACION LICENCIA ED. BASICA, ESC. RURAL ILIHUE",
@@ -42,7 +16,7 @@
    "organismo": "I MUNICIPALIDAD DE LAGO RANCO · Región de Los Ríos",
    "fecha": "16-11-2026 05:51",
    "cierre_iso": "2026-11-16 05:51",
-   "quedan": "quedan 15 h"
+   "quedan": "quedan 8 h"
   },
   {
    "marca": "NO-GO",
@@ -55,7 +29,7 @@
    "organismo": "I MUNICIPALIDAD DE DONIHUE · Región del Libertador General Bernardo O´Higgins",
    "fecha": "16-11-2026 07:00",
    "cierre_iso": "2026-11-16 07:00",
-   "quedan": "quedan 16 h"
+   "quedan": "quedan 9 h"
   },
   {
    "marca": "GO",
@@ -68,7 +42,7 @@
    "organismo": "MUNICIPALIDAD DE OVALLE · Región de Coquimbo ",
    "fecha": "16-11-2026 09:00",
    "cierre_iso": "2026-11-16 09:00",
-   "quedan": "quedan 18 h"
+   "quedan": "quedan 11 h"
   },
   {
    "marca": "GO",
@@ -81,7 +55,7 @@
    "organismo": "Hospital Psiquiátrico El Peral · Región Metropolitana de Santiago",
    "fecha": "16-11-2026 09:00",
    "cierre_iso": "2026-11-16 09:00",
-   "quedan": "quedan 18 h"
+   "quedan": "quedan 11 h"
   },
   {
    "marca": "NO-GO",
@@ -94,7 +68,7 @@
    "organismo": "SERVICIO DE SALUD ATACAMA · Región de Atacama ",
    "fecha": "16-11-2026 09:00",
    "cierre_iso": "2026-11-16 09:00",
-   "quedan": "quedan 18 h"
+   "quedan": "quedan 11 h"
   },
   {
    "marca": "GO",
@@ -107,7 +81,33 @@
    "organismo": "Servicio de Salud Coquimbo Hospital de Ovalle · Región de Coquimbo ",
    "fecha": "16-11-2026 10:00",
    "cierre_iso": "2026-11-16 10:00",
-   "quedan": "quedan 19 h"
+   "quedan": "quedan 12 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "Renovacion licenciamiento Microsoft Windows Server CAL – 1 User CAL – 1 year",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "463-78-COT26",
+   "monto": "$1.300.000",
+   "organismo": "CENTRO DE INFORMACION DE RECURSOS NATURALES · Región Metropolitana de Santiago",
+   "fecha": "16-11-2026 10:00",
+   "cierre_iso": "2026-11-16 10:00",
+   "quedan": "quedan 12 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "ADQUISICION DE DOMINIO PARA PAGINA WEB DE TARJETA VECINA OSORNO",
+   "linea": "L5",
+   "linea_nombre": "Soluciones Web y Desarrollo Customizado",
+   "score": 100,
+   "codigo": "2297-1505-COT26",
+   "monto": "$49.950",
+   "organismo": "I MUNICIPALIDAD DE OSORNO · Región de los Lagos ",
+   "fecha": "16-11-2026 11:00",
+   "cierre_iso": "2026-11-16 11:00",
+   "quedan": "quedan 13 h"
   }
  ]
 }

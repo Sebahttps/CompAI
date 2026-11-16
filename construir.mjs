@@ -81,7 +81,7 @@ const ibar = (clase, base = '') => {
   // 15-11-2026: /soporte/ no existe todavia; el icono queda sin enlace, no se inventa la pagina
   const h1 = herr.url
     ? `<a href="${esc(herr.url)}" aria-label="${esc(herr.nombre)}" title="${esc(herr.nombre)}">${svg(ICO_HERR)}</a>`
-    : `<span class="sin" aria-label="${esc(herr.nombre)}" title="${esc(herr.nombre)}">${svg(ICO_HERR)}</span>`;
+    : `<span class="sin" role="img" aria-label="${esc(herr.nombre)}" title="${esc(herr.nombre)}">${svg(ICO_HERR)}</span>`;
   const h2 = `<a href="${esc(huella.url)}" aria-label="${esc(huella.nombre)}" title="${esc(huella.nombre)}">${svg(ICO_HUELLA)}</a>`;
   return `<nav class="ibar ${clase}" aria-label="Secciones">${secs}<i class="sep" aria-hidden="true"></i>${h1}${h2}</nav>`;
 };
