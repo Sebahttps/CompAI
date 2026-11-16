@@ -3,73 +3,8 @@
  "generado": "2026-11-16T01:24",
  "fecha": "16-11-2026 01:24",
  "fuente": "RAI-CA · API de Mercado Público, Compra Ágil",
- "candidatas": 163,
+ "candidatas": 129,
  "filas": [
-  {
-   "marca": "GO",
-   "nombre": "COTIZACION LICENCIA ED. BASICA, ESC. RURAL ILIHUE",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 100,
-   "codigo": "630424-736-COT26",
-   "monto": "$15.000",
-   "organismo": "I MUNICIPALIDAD DE LAGO RANCO · Región de Los Ríos",
-   "fecha": "16-11-2026 05:51",
-   "cierre_iso": "2026-11-16 05:51",
-   "quedan": "quedan 3 h"
-  },
-  {
-   "marca": "NO-GO",
-   "nombre": "COMPRA DE TONER, RRHH DAEM",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 45,
-   "codigo": "4161-429-COT26",
-   "monto": "$600.000",
-   "organismo": "I MUNICIPALIDAD DE DONIHUE · Región del Libertador General Bernardo O´Higgins",
-   "fecha": "16-11-2026 07:00",
-   "cierre_iso": "2026-11-16 07:00",
-   "quedan": "quedan 4 h"
-  },
-  {
-   "marca": "GO",
-   "nombre": "SERVICIO DE APLICACION DE EVALUACION PSICOLABORAL MODALIDAD PRESENCIAL O VIRTUAL (TEST DE PERSONALIDAD, COMPETENCIAS, CONDUCTUALES) PARA EL PROVEER EL CARGO DE DIRCETOR DE SALUD MUNICIPAL,",
-   "linea": "L5",
-   "linea_nombre": "Soluciones Web y Desarrollo Customizado",
-   "score": 100,
-   "codigo": "2710-823-COT26",
-   "monto": "$743.813",
-   "organismo": "MUNICIPALIDAD DE OVALLE · Región de Coquimbo ",
-   "fecha": "16-11-2026 09:00",
-   "cierre_iso": "2026-11-16 09:00",
-   "quedan": "quedan 6 h"
-  },
-  {
-   "marca": "GO",
-   "nombre": "proyecto mel  MOCHILAS \tPORTA NOTEBOOK IMPERMEABLE -ANTIRROBO",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 100,
-   "codigo": "2196-359-COT26",
-   "monto": "$140.000",
-   "organismo": "Hospital Psiquiátrico El Peral · Región Metropolitana de Santiago",
-   "fecha": "16-11-2026 09:00",
-   "cierre_iso": "2026-11-16 09:00",
-   "quedan": "quedan 6 h"
-  },
-  {
-   "marca": "NO-GO",
-   "nombre": "ADQUISICIÓN DE CARTUCHOS DE TÓNER PARA IMPRESORA XEROX B215 – SAMU ATACAMA",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 30,
-   "codigo": "1552-194-COT26",
-   "monto": "$170.000",
-   "organismo": "SERVICIO DE SALUD ATACAMA · Región de Atacama ",
-   "fecha": "16-11-2026 09:00",
-   "cierre_iso": "2026-11-16 09:00",
-   "quedan": "quedan 6 h"
-  },
   {
    "marca": "GO",
    "nombre": "FA 79 TIC 6 LICENCIAS/ SOFTWARE DE SERVICIO",
@@ -81,7 +16,7 @@
    "organismo": "Servicio de Salud Coquimbo Hospital de Ovalle · Región de Coquimbo ",
    "fecha": "16-11-2026 10:00",
    "cierre_iso": "2026-11-16 10:00",
-   "quedan": "quedan 7 h"
+   "quedan": "queda menos de 1 h"
   },
   {
    "marca": "GO",
@@ -94,7 +29,33 @@
    "organismo": "CENTRO DE INFORMACION DE RECURSOS NATURALES · Región Metropolitana de Santiago",
    "fecha": "16-11-2026 10:00",
    "cierre_iso": "2026-11-16 10:00",
-   "quedan": "quedan 7 h"
+   "quedan": "queda menos de 1 h"
+  },
+  {
+   "marca": "NO-GO",
+   "nombre": "ADQUISICIÓN DE NOTEBOOK",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 45,
+   "codigo": "2905-662-COT26",
+   "monto": "$2.033.669",
+   "organismo": "I MUNICIPALIDAD DE LANCO · Región de Los Ríos",
+   "fecha": "16-11-2026 10:00",
+   "cierre_iso": "2026-11-16 10:00",
+   "quedan": "queda menos de 1 h"
+  },
+  {
+   "marca": "NO-GO",
+   "nombre": "Computador de Escritorio, ULS 24991",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 45,
+   "codigo": "1232565-269-COT26",
+   "monto": "$4.200.000",
+   "organismo": "UNIVERSIDAD DE LA SERENA · Región de Coquimbo ",
+   "fecha": "16-11-2026 10:00",
+   "cierre_iso": "2026-11-16 10:00",
+   "quedan": "queda menos de 1 h"
   },
   {
    "marca": "GO",
@@ -107,7 +68,46 @@
    "organismo": "I MUNICIPALIDAD DE OSORNO · Región de los Lagos ",
    "fecha": "16-11-2026 11:00",
    "cierre_iso": "2026-11-16 11:00",
-   "quedan": "quedan 8 h"
+   "quedan": "quedan 1 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "Capacitación en la Gestión y Administración Moodle",
+   "linea": "L2",
+   "linea_nombre": "Arquitectura TI y Consultoría Especializada",
+   "score": 100,
+   "codigo": "870-91-COT26",
+   "monto": "$1.500.000",
+   "organismo": "COMISION NACIONAL DE RIEGO · Región Metropolitana de Santiago",
+   "fecha": "16-11-2026 13:00",
+   "cierre_iso": "2026-11-16 13:00",
+   "quedan": "quedan 3 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "ADQUISICIÓN TONER IMPRESORAS (TINTA)",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "1515304-323-COT26",
+   "monto": "$726.003",
+   "organismo": "Carabineros de Chile · Región Metropolitana de Santiago",
+   "fecha": "16-11-2026 15:00",
+   "cierre_iso": "2026-11-16 15:00",
+   "quedan": "quedan 5 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "ADQUISICION DE LICENCIAS MICROSOFT OFFICE PARA DEAOPERPOL Y SECCIÓN CRIMINALISTICA",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "1079689-545-COT26",
+   "monto": "$2.354.144",
+   "organismo": "SECCIÓN COMPRAS XI ZONA · Región Aysén del General Carlos Ibáñez del Campo",
+   "fecha": "16-11-2026 15:30",
+   "cierre_iso": "2026-11-16 15:30",
+   "quedan": "quedan 6 h"
   }
  ]
 }

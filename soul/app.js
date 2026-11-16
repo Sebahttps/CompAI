@@ -381,6 +381,40 @@
     function listo(ok) { if (msg) msg.textContent = ok ? ' Copiado. Pégalo donde quieras.' : ' No pude copiar solo: selecciona el enlace y cópialo.'; if (!ok && ta) { ta.focus(); ta.select(); } }
     try { navigator.clipboard.writeText(txt).then(function () { listo(true); }, function () { listo(false); }); } catch (_) { listo(false); }
   }
+
+  /* ───────── tus imágenes: el generador de arte (arte.js) ─────────
+     La ilustración sale de tus respuestas; «otra versión» cambia la semilla (y con ella el enlace).
+     Póster, historia y afiche se dibujan en el navegador y se descargan como PNG; la historia animada, como video. */
+  var KIT = [['post', 'Póster para Instagram'], ['historia', 'Historia'], ['afiche', 'Afiche para imprimir'], ['video', 'Historia animada']];
+  function imagenesHTML() {
+    if (!window.SOUL_ARTE) return '';
+    var o = S.opcionesArte(ST, D, M, { w: 400, h: 500, anim: false, sufijo: 'k' });
+    return '<div class="kit" role="group" aria-labelledby="l-kit"><h2 id="l-kit">Tus imágenes</h2>' +
+      '<p class="hint" style="margin:0">Hechas con tu marca. Descárgalas para tu WhatsApp, tu Instagram o para imprimir.</p>' +
+      '<div class="kit-prev">' + window.SOUL_ARTE.escena(o) + '</div>' +
+      '<button type="button" class="btn-s" data-a="arte" data-i="0">Otra versión</button>' +
+      '<div class="kit-b">' + KIT.map(function (k) { return '<button type="button" class="btn-s" data-a="kit" data-m="' + k[0] + '">' + k[1] + '</button>'; }).join('') + '</div>' +
+      '<span id="kit-msg" role="status" class="hint"></span></div>';
+  }
+  function descargarKit(fmt, btn) {
+    var A = window.SOUL_ARTE, msg = $('#kit-msg'), k = S.kit(ST, D, M, CFG);
+    k.formato = fmt;
+    k.pie = 'img/' + (M.sobre(k.tintas.bg) === '#FFFFFF' ? 'pie-compai-claro' : 'pie-alma-compai-oscuro') + '.png';
+    function nombre(ext) { return S.slug(ST) + '-' + fmt + '.' + ext; }
+    function bajar(blob, archivo) {
+      var u = URL.createObjectURL(blob), a = document.createElement('a');
+      a.href = u; a.download = archivo; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(u); }, 4000);
+    }
+    if (btn) btn.disabled = true;
+    if (msg) msg.textContent = fmt === 'video' ? ' Grabando tu historia (6 segundos)…' : ' Armando tu imagen…';
+    var tarea = fmt === 'video'
+      ? A.video(k).then(function (r) { bajar(r.blob, nombre(r.ext)); })
+      : A.poster(k).then(function (c) { return new Promise(function (ok) { c.toBlob(function (b) { bajar(b, nombre('png')); ok(); }, 'image/png'); }); });
+    tarea.then(function () { if (msg) msg.textContent = ' Listo: quedó en tus descargas.'; })
+      .catch(function () { if (msg) msg.textContent = fmt === 'video' ? ' Este navegador no graba video. Prueba con Chrome o descarga el póster.' : ' No pude armar la imagen. Prueba otra vez.'; })
+      .then(function () { if (btn) btn.disabled = false; });
+  }
   function finHTML() {
     var R = ST.result || { ok: false, motivo: 'sin-envio' }, h = '';
     h += '<h1 class="q" tabindex="-1" id="foco" style="font-size:26px">' + (VISTA ? 'Borrador de ' + esc(ST.name || 'la persona') : R.ok ? 'Tu sitio, en borrador.' : 'Tu borrador está listo.') + '</h1>';
@@ -397,6 +431,7 @@
         '<button type="button" class="btn-s" data-a="copiar" style="margin-top:8px">Copiar mis respuestas</button><span id="copiado" role="status" class="hint"></span></details></div>';
     }
     if (!VISTA) h += enlaceHTML();
+    h += imagenesHTML();
     h += '<div class="borrador-t"><span class="mono">Borrador</span><span class="hint">Así se vería tu sitio. Es una vista previa: las fotos y los textos finales los afinamos contigo. ' + DOMINIO + '</span></div>' + dirsHTML() + sitioBorrador() + corpHTML();
     return h;
   }
@@ -535,6 +570,8 @@
       case 'reintentar': enviar(); return;
       case 'copiar': copiar(); return;
       case 'copiarenl': copiarEnlace(); return;
+      case 'kit': descargarKit(el.dataset.m, el); return;
+      case 'arte': ST.arte = (ST.arte || 0) + 1; break;
       case 'wsp': return;   // enlace normal a WhatsApp
       default: return;
     }

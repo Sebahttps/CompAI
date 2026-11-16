@@ -92,6 +92,15 @@ for (const c of casos) {
   urls[t] = enl.txt;
   console.log(`${t}: código de ${enl.txt.split('#')[1].length} caracteres · ${enl.txt.length} la URL entera`);
   await p.screenshot({ path: `${SALIDA}/enlace-final-${t}-390.png` });
+  // tus imágenes (arte.js): el panel está, trae la ilustración, y «otra versión» cambia el enlace
+  const kit = await p.$('.kit');
+  ok(!!kit && !!(await p.$('.kit-prev svg')), `${t}: falta el panel «Tus imágenes» o su ilustración`);
+  ok((await p.$$('.kit [data-a="kit"]')).length === 4, `${t}: el panel no trae las 4 descargas`);
+  if (kit) { await kit.scrollIntoViewIfNeeded(); await kit.screenshot({ path: `${SALIDA}/kit-${t}-390.png` }); }
+  const antes = await p.$eval('#enl-txt', (x) => x.value);
+  await p.click('[data-a="arte"]');
+  const despues = await p.$eval('#enl-txt', (x) => x.value);
+  ok(antes !== despues && /#/.test(despues), `${t}: «Otra versión» no cambió el enlace`);
   await ctx.close();
 }
 

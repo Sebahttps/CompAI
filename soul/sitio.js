@@ -41,7 +41,8 @@
       where: [], comunas: '', insta: '', fb: '', fields: [], email: '',
       avg: null, reply: null, books: null, modalidad: null, tel: '', correo: '', result: null,
       // el alma (SOUL 2) y la dirección de marca (null = la elige el borrador)
-      origen: '', unico: '', nunca: '', momento: '', cifraN: '', cifraU: '', cifraOtro: '', cierre: '', dir: null
+      origen: '', unico: '', nunca: '', momento: '', cifraN: '', cifraU: '', cifraOtro: '', cierre: '', dir: null,
+      arte: 0   // la versión de la ilustración (botón «otra versión»): misma semilla, misma imagen
     };
   }
   /* Une unas respuestas leidas (de sessionStorage o de un enlace) con los valores por defecto: lo que falta se completa. */
@@ -77,6 +78,31 @@
   }
   function decodificar(h) { return mezclar(JSON.parse(deB64u(h))); }
 
+
+  /* ───────── el arte generado (arte.js): las opciones salen de las respuestas ───────── */
+  function opcionesArte(ST, D, M, extra) {
+    var di = dirActual(ST, D, M), d = M.DIRS[di], su = sup(ST, D, M), p = pal(ST, D);
+    var i = ST.oficio == null ? D.MOTIFS.length - 1 : ST.oficio;
+    var w = M.marcaNombre(ST).split(/\s+/).filter(Boolean);
+    var ini = (w.length > 1 ? w[0].charAt(0) + w[1].charAt(0) : (w[0] || 'S').slice(0, 2)).toUpperCase();
+    var A = W.SOUL_ARTE;
+    return Object.assign({
+      motivo: D.MOTIFS[i], relleno: ST.oficio === 0, trama: d.trama, dir: d.id, display: d.display, ini: ini,
+      seed: (A ? A.semilla(M.marcaNombre(ST) + '|' + i) : 1) + (ST.arte || 0) * 7919,
+      tintas: { bg: su.bg, bg2: su.bg2, ink: su.ink, ac: su.ac, c2: p[1], c3: p[2], sobreAc: M.sobre(su.ac) }
+    }, extra || {});
+  }
+  /* Lo que necesita el póster y la historia animada: la escena + el texto, todo dato de la persona. */
+  function kit(ST, D, M, cfg) {
+    var d = M.DIRS[dirActual(ST, D, M)], tel = digitos(ST.tel);
+    return {
+      escena: opcionesArte(ST, D, M, { ini: '' }), tintas: opcionesArte(ST, D, M).tintas,
+      fuentes: { display: d.display, texto: d.texto, mono: d.mono }, mayus: !!d.mayus,
+      oficio: oficioNombre(ST, D), titular: M.titular(ST) || M.marcaNombre(ST), nombre: M.marcaNombre(ST),
+      cta: TONO_CTA[ST.tone] || 'Cotizar', contacto: tel.length >= 8 ? '+' + (tel.length === 9 && tel.charAt(0) === '9' ? '56 ' + tel.charAt(0) + ' ' + tel.slice(1, 5) + ' ' + tel.slice(5) : tel) : '',
+      pie: ''
+    };
+  }
 
   /* ───────── el render ───────── */
   function html(ST, o) {
@@ -139,7 +165,7 @@
       ';--bgI:' + su.bgI + ';--bg2I:' + su.bg2I + ';--inkI:' + su.inkI + ';--mutI:' + su.mutI + ';--acI:' + su.acI + ';--onI:' + sobre(su.acI) + ';--lnI:' + rgba(su.inkI, .22);
     var s = '<div class="vp' + (d.mayus ? ' my' : '') + '" data-dir="' + d.id + '" style="' + vars + '">';
     // portada alta: nav + arte (foto propia si la hay; si no, arte SVG con la paleta) + titular
-    s += '<section class="hero sf-a" aria-label="Portada"><div class="arte' + anim + '"' + (MEM.photo ? ' style="' + fondo(MEM.photo) + '"' : '') + '>' + (MEM.photo ? '' : arteSVG(d)) + '</div><div class="scrim"></div>' +
+    s += '<section class="hero sf-a" aria-label="Portada"><div class="arte' + anim + '"' + (MEM.photo ? ' style="' + fondo(MEM.photo) + '"' : '') + '>' + (MEM.photo ? '' : (W.SOUL_ARTE ? W.SOUL_ARTE.escena(opcionesArte(ST, D, M, { w: 400, h: 760, anim: ST.motion !== 0 })) : arteSVG(d))) + '</div><div class="scrim"></div>' +
       '<div class="nav"><span class="logo"><i aria-hidden="true">' + esc(iniciales()) + '</i><b>' + esc(nombre) + '</b></span><a class="cta" href="#vp-cotiza" data-vp>' + esc(cta) + '</a></div>' +
       '<div class="in-h"><p class="mn">' + esc(oficioNombre_()) + '</p><h2 class="tit">' + titHTML(tit || nombre) + '</h2>' +
       (ci ? '<p class="mn prueba">' + esc(ci.texto) + '</p>' : '') +
@@ -163,7 +189,7 @@
             if (!v.n.trim()) return '';
             c++;
             var propia = v.ph === 'up' && MEM.svcPh[k];
-            return '<div class="svcc">' + (propia ? '<div class="ph" style="' + fondo(esc(MEM.svcPh[k])) + '"></div>' : '<div class="ph art">' + arteTarjeta() + '<p class="mn">' + pad(c) + '</p></div>') +
+            return '<div class="svcc">' + (propia ? '<div class="ph" style="' + fondo(esc(MEM.svcPh[k])) + '"></div>' : '<div class="ph art">' + (W.SOUL_ARTE ? W.SOUL_ARTE.escena(opcionesArte(ST, D, M, { w: 400, h: 280, ini: '', grano: false, sufijo: 't' + k, seed: opcionesArte(ST, D, M).seed + (k + 1) * 104729 })) : arteTarjeta()) + '<p class="mn">' + pad(c) + '</p></div>') +
               '<div class="bd"><b>' + esc(v.n.trim()) + '</b>' + (v.p.trim() ? '<span class="pr">desde ' + esc(v.p.trim()) + '</span>' : '') + (v.d.trim() ? '<p>' + esc(v.d.trim()) + '</p>' : '') + '</div></div>';
           }).join('') + '</div></section>';
       }
@@ -217,7 +243,7 @@
   W.SOUL_SITIO = {
     html: html, nuevo: nuevo, mezclar: mezclar, codificar: codificar, decodificar: decodificar,
     esc: esc, pad: pad, digitos: digitos, slug: slug, pal: pal, ofi: ofi, esOtro: esOtro, oficioNombre: oficioNombre,
-    dirActual: dirActual, sup: sup, svcsLlenos: svcsLlenos, TONO_CTA: TONO_CTA
+    dirActual: dirActual, sup: sup, svcsLlenos: svcsLlenos, TONO_CTA: TONO_CTA, opcionesArte: opcionesArte, kit: kit
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = W.SOUL_SITIO;
 })(typeof window !== 'undefined' ? window : globalThis);
