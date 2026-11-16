@@ -155,19 +155,26 @@
       '<rect width="' + B.w + '" height="' + B.h + '" filter="url(#' + id + 'n)" opacity=".16" style="mix-blend-mode:multiply"/>';
   }
 
-  function abre(w, h, extra) { return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" height="' + h + '" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"' + (extra || '') + '>'; }
+  function abre(w, h, extra, par) { return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" height="' + h + '" preserveAspectRatio="' + (par || 'xMidYMid slice') + '" aria-hidden="true" focusable="false"' + (extra || '') + '>'; }
+
+  /* Escena icónica (escenas.js) cuando está cargado y se sabe el oficio; si no, el motivo de siempre. */
+  function icono(o) { return W.SOUL_ESCENAS && o.oficioN != null ? W.SOUL_ESCENAS.capas(o) : null; }
+  function hzG(s) { return /vpa-hz/.test(s) ? s : '<g class="vpa-hz" style="--i:0">' + s + '</g>'; }
 
   /* La escena completa, en un solo SVG. */
   function escena(o) {
-    var B = base(o);
-    var s = abre(B.w, B.h, o.anim ? ' class="vpa"' : '');
-    s += capaFondo(o, B) + '<g class="vpa-sol">' + capaSol(o, B) + '</g>' + capaConfeti(o, B) + capaFigura(o, B) + capaHorizonte(o, B);
+    var B = base(o), I = icono(o);
+    var s = abre(B.w, B.h, o.anim ? ' class="vpa"' : '', I && B.h > B.w ? 'xMidYMin slice' : null);   // escena alta: si sobra, se corta abajo, nunca la cabeza
+    if (I) s += I.fondo + '<g class="vpa-sol">' + I.sol + '</g>' + I.confeti + I.figura + hzG(I.horizonte);
+    else s += capaFondo(o, B) + '<g class="vpa-sol">' + capaSol(o, B) + '</g>' + capaConfeti(o, B) + capaFigura(o, B) + capaHorizonte(o, B);
     if (o.grano !== false) s += capaGrano(o, B);
     return s + '</svg>';
   }
   /* Las mismas capas por separado (mismo azar, misma composición): las usa el video para moverlas. */
   function capas(o) {
-    var B = base(o), w = B.w, h = B.h;
+    var B = base(o), w = B.w, h = B.h, I = icono(o);
+    if (I) return { fondo: abre(w, h) + I.fondo + '</svg>', sol: abre(w, h) + I.sol + '</svg>', confeti: abre(w, h) + I.confeti + '</svg>',
+      figura: abre(w, h) + I.figura + '</svg>', horizonte: abre(w, h) + I.horizonte + capaGrano(o, B) + '</svg>', sol0: I.sol0, hz: I.hz };
     var fondo = capaFondo(o, B), sol = capaSol(o, B), conf = capaConfeti(o, B), fig = capaFigura(o, B), hz = capaHorizonte(o, B);
     return {
       fondo: abre(w, h) + fondo + '</svg>',
@@ -188,16 +195,24 @@
       im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
     });
   }
-  function cargarFuentes(fu) {
+  function cargarFuentes(fu, T) {
     if (!document.fonts || !document.fonts.load) return Promise.resolve();
     return Promise.all([
-      document.fonts.load('800 80px ' + fu.display), document.fonts.load('400 30px ' + fu.texto), document.fonts.load('400 24px ' + fu.mono)
+      document.fonts.load('800 80px ' + fu.display), document.fonts.load('400 30px ' + fu.texto), document.fonts.load('400 24px ' + fu.mono),
+      W.SOUL_ESCENAS && T ? W.SOUL_ESCENAS.cargar(T) : null
     ]).catch(function () { /* con la de sistema */ });
   }
+  /* La tipografía de cartel de la escena (o la de la marca si no hay escena). */
+  var LIVIANAS = { 'SOUL Anton': 400, 'SOUL Bangers': 400, 'SOUL Monoton': 400, 'SOUL Marker': 400, 'SOUL Stencil': 400 };
+  function tipoDe(o) { return o.T || (W.SOUL_ESCENAS && o.escena && o.escena.oficioN != null ? W.SOUL_ESCENAS.tipo(o.escena) : null); }
+  function fuente(fam, tam, def, defPeso) { return fam ? (LIVIANAS[fam] || 700) + ' ' + tam + "px '" + fam + "', " + def : (defPeso || 800) + ' ' + tam + 'px ' + def; }
+  function espaciar(ctx, em) { if ('letterSpacing' in ctx) ctx.letterSpacing = em ? em + 'em' : '0px'; }
+  function textoTitular(o, T) { var x = String(o.titular || ''); return T && T.minus ? x.toLowerCase() : (T ? T.mayus : o.mayus) ? x.toUpperCase() : x; }
   /* Parte un texto en líneas que caben en un ancho. */
-  function lineas(ctx, txt, ancho, max) {
+  function lineas(ctx, txt, ancho, max, sep) {
+    sep = sep || ' ';
     var ws = String(txt || '').split(/\s+/).filter(Boolean), out = [], cur = '';
-    ws.forEach(function (wd) { var p = cur ? cur + ' ' + wd : wd; if (ctx.measureText(p).width > ancho && cur) { out.push(cur); cur = wd; } else cur = p; });
+    ws.forEach(function (wd) { var p = cur ? cur + sep + wd : wd; if (ctx.measureText(p).width > ancho && cur) { out.push(cur); cur = wd; } else cur = p; });
     if (cur) out.push(cur);
     if (out.length > max) { out = out.slice(0, max); out[max - 1] = out[max - 1].replace(/\s*\S*$/, '') + '…'; }
     return out;
@@ -206,48 +221,148 @@
 
   /* El bloque de texto del póster se MIDE primero, de abajo hacia arriba: pie, botón, nombre, titular, oficio.
      Lo que sobra arriba es para la ilustración. Así el botón nunca se corta ni pisa el pie, sea cual sea el largo. */
+  /* T = la tipografía de cartel de la escena: familia, mayúsculas, giro, globo, filetes, cinta… */
   function medirTexto(o, W2, H2) {
-    var c = document.createElement('canvas').getContext('2d'), fu = o.fuentes, m = W2 * 0.075, ancho = W2 - m * 2;
-    var tam = Math.round(W2 * (o.formato === 'historia' ? 0.088 : o.formato === 'post' ? 0.07 : 0.078));
-    c.font = '800 ' + tam + 'px ' + fu.display;
-    var ls = lineas(c, o.mayus ? String(o.titular).toUpperCase() : o.titular, ancho, o.formato === 'post' ? 3 : 4);
-    var kick = Math.round(W2 * 0.026), nom = Math.round(W2 * 0.034), ct = Math.round(W2 * 0.03), ch = ct * 2.2;
+    var c = document.createElement('canvas').getContext('2d'), fu = o.fuentes, T = tipoDe(o), m = W2 * 0.075, ancho = W2 - m * 2;
+    var tam = Math.round(W2 * (o.formato === 'historia' ? 0.088 : o.formato === 'post' ? 0.07 : 0.078) * (T ? T.tamF : 1));
+    var anchoT = ancho * (T && (T.globo || T.marco) ? 0.84 : T && T.rot ? 0.9 : 1), interl = T ? T.interl : 1.04;
+    // la frase de la persona no se corta: primero se achica la letra (hasta ~55 %), recién después los puntos suspensivos
+    var maxL = o.formato === 'post' ? 3 : 4, txt = textoTitular(o, T), ls;
+    for (var it = 0; it < 6; it++) {
+      c.font = fuente(T && T.tit, tam, fu.display, T && T.w); espaciar(c, T && T.esp);
+      ls = lineas(c, txt, anchoT, 99, T && T.sep); if (ls.length <= maxL) break; tam = Math.round(tam * 0.9);
+    }
+    if (ls.length > maxL) ls = lineas(c, txt, anchoT, maxL, T && T.sep);
+    var kick = Math.round(W2 * (T && /Teko|Bangers|Marker/.test(T.kick) ? 0.034 : 0.026));
+    var nom = Math.round(W2 * (T && /Teko|Bangers|Marker|Cormorant/.test(T.nom) ? 0.044 : 0.034)), ct = Math.round(W2 * 0.03), ch = ct * 2.2;
     var pieAlto = W2 / 1080 * 2.4 * 14.4 + W2 * 0.075 * 0.75 + W2 * 0.04;
-    var L = { m: m, ancho: ancho, tam: tam, ls: ls, kick: kick, nom: nom, ct: ct, ch: ch };
+    var L = { m: m, ancho: ancho, anchoT: anchoT, tam: tam, ls: ls, kick: kick, nom: nom, ct: ct, ch: ch, T: T, interl: interl };
+    var pad = T && T.globo ? tam * 0.55 : T && T.marco ? tam * 0.7 : T && T.filetes ? tam * 0.5 : T && T.bloque ? tam * 0.2 : 0;
+    var inc = T && T.rot ? Math.abs(Math.sin(T.rot * Math.PI / 180)) * anchoT : 0;
     // de abajo hacia arriba
     var y = H2 - pieAlto;
     L.yCta = o.contacto ? y - ch : y; y = L.yCta - (o.contacto ? W2 * 0.03 : 0);
-    L.yNom = y; y -= nom * 1.4 + W2 * 0.035;
-    L.yTit = y - (ls.length - 1) * tam * 1.04; y = L.yTit - tam * 1.15;
+    if (T && T.cinta) y -= nom * 0.35;
+    L.yNom = y; y -= nom * 1.4 + W2 * 0.035 + pad;
+    L.yTit = y - (ls.length - 1) * tam * interl; L.pad = pad;
+    y = L.yTit - tam * 0.95 - inc - pad - W2 * 0.012;
     L.yKick = y; y -= kick + W2 * 0.05;
     L.alto = Math.max(Math.round(H2 * 0.4), Math.min(Math.round(H2 * 0.64), Math.round(y)));
     return L;
   }
   /* Dibuja el bloque. p = progreso 0..1 por elemento (para el video); en el póster quieto todo en 1. */
   function textoPoster(ctx, o, W2, H2, L, prog) {
-    var t = o.tintas, fu = o.fuentes, m = L.m;
+    var t = o.tintas, fu = o.fuentes, m = L.m, T = L.T || {}, cen = T.alinea === 'center', x0 = cen ? W2 / 2 : m, tam = L.tam, il = L.interl;
+    var E = W.SOUL_ESCENAS, oscuro = E ? E.luz(t.bg) < 0.45 : true, tinta = t.ink;
     prog = prog || { kick: 1, tit: 1, pie: 1 };
-    ctx.textBaseline = 'alphabetic';
+    ctx.textBaseline = 'alphabetic'; ctx.textAlign = cen ? 'center' : 'left';
+    // el oficio, arriba, chico y espaciado
     ctx.globalAlpha = prog.kick; ctx.fillStyle = t.ac;
-    ctx.font = '400 ' + L.kick + 'px ' + fu.mono;
-    ctx.fillText(String(o.oficio || '').toUpperCase().split('').join(String.fromCharCode(8202)), m, L.yKick, L.ancho);
-    ctx.fillStyle = t.ink; ctx.font = '800 ' + L.tam + 'px ' + fu.display;
+    ctx.font = T.kick ? fuente(T.kick, L.kick, fu.mono) : '400 ' + L.kick + 'px ' + fu.mono;
+    espaciar(ctx, T.kesp != null ? T.kesp : T.kick ? 0.12 : 0);
+    var kick = String(o.oficio || '').toUpperCase();
+    ctx.fillText(T.kick ? kick : kick.split('').join(String.fromCharCode(8202)), x0, L.yKick, L.ancho);
+    espaciar(ctx, 0);
+    var yBase = L.yTit + (L.ls.length - 1) * tam * il;
+    if (T.filetes || T.marco) {   // los filetes del cartel clásico: una línea, un rombo, una línea
+      ctx.globalAlpha = prog.kick * 0.9; ctx.strokeStyle = t.ac; ctx.fillStyle = t.ac; ctx.lineWidth = Math.max(1.5, W2 / 540);
+      var d = W2 * 0.008;
+      [L.yKick + L.kick * 0.75, yBase + L.pad * 0.8].forEach(function (yy) {
+        ctx.beginPath(); ctx.moveTo(W2 / 2 - W2 * 0.22, yy); ctx.lineTo(W2 / 2 - d * 2.5, yy); ctx.moveTo(W2 / 2 + d * 2.5, yy); ctx.lineTo(W2 / 2 + W2 * 0.22, yy); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(W2 / 2, yy - d); ctx.lineTo(W2 / 2 + d, yy); ctx.lineTo(W2 / 2, yy + d); ctx.lineTo(W2 / 2 - d, yy); ctx.fill();
+      });
+      if (T.marco) ctx.strokeRect(m * 0.55, L.yKick - L.kick * 1.7, W2 - m * 1.1, yBase + L.pad * 1.3 - L.yKick + L.kick * 1.7);
+    }
+    // el titular
+    ctx.font = fuente(T.tit, tam, fu.display, T.w); espaciar(ctx, T.esp);
+    var anchos = L.ls.map(function (l) { return Math.min(ctx.measureText(l).width, L.anchoT); }), maxA = Math.max.apply(null, anchos.concat([1]));
+    if (T.globo && prog.tit > 0) {   // el globo de diálogo (pop) o la franja del cartel (propaganda)
+      var gx = (cen ? W2 / 2 - maxA / 2 : m) - tam * 0.4, gy = L.yTit - tam * 0.95 - L.pad * 0.5, gw = maxA + tam * 0.8, gh = (L.ls.length - 1) * tam * il + tam * 1.25 + L.pad;
+      ctx.globalAlpha = Math.min(1, prog.tit * 2);
+      if (T.globo === 'pop') {
+        ctx.fillStyle = '#FFFDF4'; ctx.strokeStyle = '#141414'; ctx.lineWidth = W2 / 180;
+        ctx.beginPath(); ctx.moveTo(gx + gw * 0.62, gy + 2); ctx.lineTo(gx + gw * 0.82, gy - tam * 0.9); ctx.lineTo(gx + gw * 0.76, gy + 2); ctx.closePath(); ctx.fill(); ctx.stroke();
+        redondo(ctx, gx, gy, gw, gh, tam * 0.6); ctx.fill(); ctx.stroke();
+        tinta = '#141414';
+      } else {
+        ctx.fillStyle = oscuro ? t.ac : t.ink; redondo(ctx, gx, gy, gw, gh, tam * 0.15); ctx.fill();
+        tinta = oscuro ? t.sobreAc : t.bg;
+      }
+    }
     var visibles = L.ls.length * prog.tit;
+    ctx.save();
+    if (T.rot) { ctx.translate(m, yBase); ctx.rotate(T.rot * Math.PI / 180); ctx.translate(-m, -yBase); }
+    if (T.barras) { ctx.globalAlpha = prog.tit; ctx.fillStyle = t.ac; ctx.fillRect(m, yBase + tam * 0.32, W2 * 0.16, tam * 0.13); }
     L.ls.forEach(function (l, i) {
       var u = Math.max(0, Math.min(1, visibles - i)); if (!u) return;
-      ctx.globalAlpha = u; ctx.fillText(l, m, L.yTit + i * L.tam * 1.04 + (1 - u) * L.tam * 0.4, L.ancho);
+      var yy = L.yTit + i * tam * il + (1 - u) * tam * 0.4;
+      ctx.globalAlpha = u;
+      if (T.bloque) {   // cada línea sobre su barra de color, como recortada del cartel
+        ctx.fillStyle = t.ac; ctx.fillRect(m - tam * 0.12, yy - tam * 0.86, anchos[i] + tam * 0.24, tam * 1.0);
+        ctx.fillStyle = t.sobreAc; ctx.fillText(l, x0, yy, L.anchoT); return;
+      }
+      if (T.raya) { ctx.fillStyle = t.ac; ctx.fillRect(cen ? W2 / 2 - anchos[i] / 2 : m, yy + tam * 0.08, anchos[i], tam * 0.09); }
+      if (T.letras) {   // recortes: cada letra con su giro y su color, pegadas a mano
+        var xx = cen ? W2 / 2 - anchos[i] / 2 : m, sem = String(o.nombre || '').length * 31 + i * 7;
+        ctx.textAlign = 'left';
+        l.split('').forEach(function (ch, j) {
+          var a = Math.sin(sem + j * 2.3) * 0.08, dy = Math.cos(sem + j * 1.7) * tam * 0.05, cw = ctx.measureText(ch).width;
+          ctx.save(); ctx.translate(xx + cw / 2, yy + dy); ctx.rotate(a); ctx.fillStyle = j % 4 === 1 ? t.ac : tinta; ctx.fillText(ch, -cw / 2, 0); ctx.restore(); xx += cw;
+        });
+        ctx.textAlign = cen ? 'center' : 'left'; return;
+      }
+      if (T.sombra) { ctx.fillStyle = t.ac; ctx.fillText(l, x0 + tam * 0.05, yy + tam * 0.05, L.anchoT); }
+      if (T.brillo) { ctx.shadowColor = t.ac; ctx.shadowBlur = tam * 0.35; }
+      ctx.fillStyle = tinta; ctx.fillText(l, x0, yy, L.anchoT);
+      if (T.brillo) { ctx.fillText(l, x0, yy, L.anchoT); ctx.shadowBlur = 0; ctx.shadowColor = 'transparent'; }
     });
+    ctx.restore(); espaciar(ctx, 0);
+    // el nombre (sobre una cinta de tatuaje si la escena lo pide) y el botón
     ctx.globalAlpha = prog.pie;
-    ctx.font = '600 ' + L.nom + 'px ' + fu.texto; ctx.fillStyle = t.ink;
-    ctx.fillText(o.nombre, m, L.yNom, L.ancho);
+    ctx.font = T.nom ? fuente(T.nom, L.nom, fu.texto) : '600 ' + L.nom + 'px ' + fu.texto;
+    if (T.cinta) {
+      var nw = Math.min(ctx.measureText(o.nombre).width, L.ancho - L.nom * 3), cx0 = cen ? W2 / 2 - nw / 2 : m + L.nom * 1.6, cy = L.yNom - L.nom * 1.0, chh = L.nom * 1.4;
+      ctx.fillStyle = E ? E.mix(t.ac, '#000000', 0.35) : t.ac;
+      [[-1, cx0 - L.nom * 0.6], [1, cx0 + nw + L.nom * 0.6]].forEach(function (g) {
+        ctx.beginPath(); ctx.moveTo(g[1], cy + chh * 0.25); ctx.lineTo(g[1] + g[0] * L.nom * 1.3, cy + chh * 0.25); ctx.lineTo(g[1] + g[0] * L.nom * 0.85, cy + chh * 0.75);
+        ctx.lineTo(g[1] + g[0] * L.nom * 1.3, cy + chh * 1.25); ctx.lineTo(g[1], cy + chh * 1.25); ctx.fill();
+      });
+      ctx.fillStyle = t.ac; ctx.fillRect(cx0 - L.nom * 0.6, cy, nw + L.nom * 1.2, chh);
+      ctx.fillStyle = t.sobreAc; ctx.textAlign = 'left'; ctx.fillText(o.nombre, cx0, L.yNom, nw);
+    } else { ctx.fillStyle = t.ink; ctx.fillText(o.nombre, x0, L.yNom, L.ancho); }
+    ctx.textAlign = 'left';
     if (o.contacto) {
       var cta = o.cta + ' · ' + o.contacto;
       ctx.font = '600 ' + L.ct + 'px ' + fu.texto;
-      var cw = Math.min(ctx.measureText(cta).width + L.ct * 1.6, L.ancho);
-      ctx.fillStyle = t.ac; redondo(ctx, m, L.yCta, cw, L.ch, L.ch / 2); ctx.fill();
-      ctx.fillStyle = t.sobreAc; ctx.fillText(cta, m + L.ct * 0.8, L.yCta + L.ch * 0.66, cw - L.ct * 1.6);
+      var cw = Math.min(ctx.measureText(cta).width + L.ct * 1.6, L.ancho), bx = cen ? (W2 - cw) / 2 : m;
+      ctx.fillStyle = t.ac; redondo(ctx, bx, L.yCta, cw, L.ch, T.tit && /Cinzel|Bodoni|Teko|Stencil|Grotesk|Anton/.test(T.tit) ? L.ch * 0.12 : L.ch / 2); ctx.fill();
+      ctx.fillStyle = t.sobreAc; ctx.fillText(cta, bx + L.ct * 0.8, L.yCta + L.ch * 0.66, cw - L.ct * 1.6);
     }
     ctx.globalAlpha = 1;
+  }
+  /* La ilustración entra en la zona del texto (como en un afiche de cine): la figura gana tamaño y un velo del color de
+     fondo la funde antes del titular, para que el texto se siga leyendo. */
+  function altoEscena(L, H2, o) {
+    var E = W.SOUL_ESCENAS, d = E && o && o.escena && o.escena.oficioN != null ? E.elegir(o.escena).def : null;
+    return d && d.sinVelo ? L.alto : Math.round(Math.min(H2, L.alto + (H2 - L.alto) * 0.55));   // si lo importante está abajo (la camilla), no se vela
+  }
+  function velo(ctx, o, W2, L, alto) {
+    if (alto <= L.alto) return;
+    var y0 = L.alto - (alto - L.alto) * 0.7, y1 = L.alto + (alto - L.alto) * 0.3, g = ctx.createLinearGradient(0, y0, 0, y1), bg = o.tintas.bg;
+    g.addColorStop(0, bg + "00"); g.addColorStop(0.55, bg + "C0"); g.addColorStop(1, bg);
+    ctx.fillStyle = g; ctx.fillRect(0, y0, W2, alto - y0 + 2);
+  }
+  /* El sello vertical de la estampa japonesa: el nombre en columna, sobre la imagen. */
+  function cartucho(ctx, o, W2, alto, L) {
+    var T = L.T, E = W.SOUL_ESCENAS; if (!T || !T.cartucho || !E) return;
+    var pal = String(o.nombre || '').split(/\s+/)[0].slice(0, 8), n = pal.length, s = Math.round(W2 * 0.042), m = W2 * 0.05;
+    if (!n || s * 1.12 * n + m * 2 > alto * 0.85) return;
+    var x = m, y = m, w = s * 1.7, h = s * 1.12 * n + s * 0.8, tinta = E.luz(o.tintas.c2) > 0.5 ? '#1A1A1A' : '#F5F0E4';
+    ctx.fillStyle = o.tintas.c2; ctx.fillRect(x, y, w, h);
+    ctx.strokeStyle = tinta; ctx.lineWidth = Math.max(1.5, W2 / 400); ctx.strokeRect(x + W2 * 0.005, y + W2 * 0.005, w - W2 * 0.01, h - W2 * 0.01);
+    ctx.fillStyle = tinta; ctx.font = fuente(T.nom, s, o.fuentes.texto); ctx.textAlign = 'center';
+    pal.split('').forEach(function (ch, i) { ctx.fillText(ch.toUpperCase(), x + w / 2, y + s * 1.2 + i * s * 1.12); });
+    ctx.textAlign = 'left';
   }
   function redondo(ctx, x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
   /* El pie «alma compAI» (§4.b): la misma máscara del sitio, a escala del lienzo, a la derecha y con su línea. */
@@ -266,8 +381,9 @@
   /* o = { formato, escena: {…opciones de escena sin w/h}, tintas, fuentes:{display,texto,mono}, oficio, titular, nombre, cta, contacto, mayus, pie (url) } */
   function poster(o) {
     var fm = FORMATOS[o.formato] || FORMATOS.post, W2 = fm[0], H2 = fm[1], L, alto;
-    return Promise.all([cargarFuentes(o.fuentes), cargarPie(o.pie)]).then(function (r0) {
-      L = medirTexto(o, W2, H2); alto = L.alto;
+    o.T = tipoDe(o);
+    return Promise.all([cargarFuentes(o.fuentes, o.T), cargarPie(o.pie)]).then(function (r0) {
+      L = medirTexto(o, W2, H2); alto = altoEscena(L, H2, o);
       return Promise.all([imagen(escena(Object.assign({}, o.escena, { w: W2, h: alto, anim: false, sufijo: 'p' }))), null, r0[1]]);
     }).then(function (r) {
       var c = document.createElement('canvas'); c.width = W2; c.height = H2;
@@ -275,6 +391,7 @@
       ctx.fillStyle = o.tintas.bg; ctx.fillRect(0, 0, W2, H2);
       ctx.drawImage(r[0], 0, 0, W2, alto);
       o.pieImg = r[2];
+      velo(ctx, o, W2, L, alto); cartucho(ctx, o, W2, alto, L);
       textoPoster(ctx, o, W2, H2, L, null);
       pie(ctx, o, W2, H2);
       return c;
@@ -285,9 +402,9 @@
   function video(o) {
     if (typeof MediaRecorder === 'undefined') return Promise.reject(new Error('Este navegador no graba video'));
     var W2 = 1080, H2 = 1920, dur = 6000, L, alto, cp;
-    o = Object.assign({}, o, { formato: 'historia' });
-    return cargarFuentes(o.fuentes).then(function () {
-      L = medirTexto(o, W2, H2); alto = L.alto;
+    o = Object.assign({}, o, { formato: 'historia' }); o.T = tipoDe(o);
+    return cargarFuentes(o.fuentes, o.T).then(function () {
+      L = medirTexto(o, W2, H2); alto = altoEscena(L, H2, o);
       cp = capas(Object.assign({}, o.escena, { w: W2, h: alto, anim: false, sufijo: 'v' }));
       return Promise.all([imagen(cp.fondo), imagen(cp.sol), imagen(cp.confeti), imagen(cp.figura), imagen(cp.horizonte), null, cargarPie(o.pie)]);
     }).then(function (im) {
@@ -313,7 +430,8 @@
         var kf = rebote((tt - 0.9) / 0.9), fy = (1 - ease((tt - 0.9) / 0.9)) * -120;   // la figura cae y rebota
         if (tt > 0.9) { ctx.save(); ctx.translate(s.x, s.y + fy); ctx.scale(kf, kf); ctx.translate(-s.x, -s.y); ctx.drawImage(im[3], 0, 0); ctx.restore(); }
         ctx.drawImage(im[4], 0, (1 - ease(tt / 0.9)) * 300);                          // el horizonte sube
-        ctx.restore();
+        ctx.restore(); velo(ctx, o, W2, L, alto);
+        if (tt > 1.6) { ctx.globalAlpha = ease((tt - 1.6) / 0.5); cartucho(ctx, o, W2, alto, L); ctx.globalAlpha = 1; }
         textoPoster(ctx, o, W2, H2, L, { kick: ease((tt - 1.8) / 0.5), tit: ease((tt - 2.2) / 1.4), pie: ease((tt - 3.8) / 0.6) });
         if (tt > 4.2) { ctx.globalAlpha = ease((tt - 4.2) / 0.5); pie(ctx, o, W2, H2); ctx.globalAlpha = 1; }
       }
@@ -332,5 +450,5 @@
     });
   }
 
-  W.SOUL_ARTE = { semilla: semilla, escena: escena, capas: capas, poster: poster, video: video, FORMATOS: FORMATOS };
+  W.SOUL_ARTE = { semilla: semilla, escena: escena, capas: capas, poster: poster, video: video, FORMATOS: FORMATOS, tipoDe: tipoDe };
 })(window);

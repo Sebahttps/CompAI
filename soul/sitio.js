@@ -87,7 +87,7 @@
     var ini = (w.length > 1 ? w[0].charAt(0) + w[1].charAt(0) : (w[0] || 'S').slice(0, 2)).toUpperCase();
     var A = W.SOUL_ARTE;
     return Object.assign({
-      motivo: D.MOTIFS[i], relleno: ST.oficio === 0, trama: d.trama, dir: d.id, display: d.display, ini: ini,
+      motivo: D.MOTIFS[i], relleno: ST.oficio === 0, trama: d.trama, dir: d.id, display: d.display, ini: ini, oficioN: i, version: ST.arte || 0,
       seed: (A ? A.semilla(M.marcaNombre(ST) + '|' + i) : 1) + (ST.arte || 0) * 7919,
       tintas: { bg: su.bg, bg2: su.bg2, ink: su.ink, ac: su.ac, c2: p[1], c3: p[2], sobreAc: M.sobre(su.ac) }
     }, extra || {});

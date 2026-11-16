@@ -138,7 +138,7 @@ if (!/@media \(prefers-reduced-motion:reduce\)/.test(css.replace(/\s+/g, ' ').re
 if (!/prefers-reduced-motion/.test(leer('js/claro.js'))) mal('js/claro.js no mira prefers-reduced-motion.');
 
 /* ── soul/ · compai.cl/soul (26-10-2026) ─────────────────────────────── */
-for (const f of ['soul/index.html', 'soul/preguntas.html', 'soul/sitio.js', 'soul/arte.js', 'soul/sitio.css', 'soul/s/index.html', 'soul/s/sitio-publico.js', 'soul/app.js', 'soul/datos.js', 'soul/marca.js', 'soul/config.js',
+for (const f of ['soul/index.html', 'soul/preguntas.html', 'soul/sitio.js', 'soul/arte.js', 'soul/escenas.js', 'soul/sitio.css', 'soul/s/index.html', 'soul/s/sitio-publico.js', 'soul/app.js', 'soul/datos.js', 'soul/marca.js', 'soul/config.js',
                  'soul/img/pie-compai-claro.png', 'soul/img/pie-alma-compai-oscuro.png',
                  'soul/ejemplo/index.html', 'soul/ejemplo/cotizacion.html', 'soul/ejemplo/agenda.html'])
   if (!existsSync(join(raiz, f))) mal(`falta ${f}.`);

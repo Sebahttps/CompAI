@@ -381,7 +381,7 @@ const SOUL_DIR = join(raiz, 'soul');
 if (existsSync(SOUL_DIR)) {
   const wa = String((S.creative && S.creative.whatsapp_pyme) || 'https://wa.me/56962469977').replace(/\D/g, '');
   writeFileSync(join(SOUL_DIR, 'config.js'),
-    `/* LO ESCRIBE construir.mjs desde contenido/sitio.json — NO SE EDITA A MANO. */\nwindow.SOUL_CFG = ${JSON.stringify({ endpoint: S.formEndpoint || '', whatsapp: wa })};\n`, 'utf8');
+    `/* LO ESCRIBE construir.mjs desde contenido/sitio.json — NO SE EDITA A MANO. */\nwindow.SOUL_CFG = ${JSON.stringify({ endpoint: S.formEndpoint || '', whatsapp: wa, googleId: S.soulGoogleId || '' })};\n`, 'utf8');
   console.log(`soul/config.js · endpoint ${S.formEndpoint ? 'configurado' : 'VACIO (las preguntas ofreceran WhatsApp)'}`);
 }
 

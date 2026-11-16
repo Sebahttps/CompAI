@@ -94,7 +94,7 @@ for (const c of casos) {
   await p.screenshot({ path: `${SALIDA}/enlace-final-${t}-390.png` });
   // tus imágenes (arte.js): el panel está, trae la ilustración, y «otra versión» cambia el enlace
   const kit = await p.$('.kit');
-  ok(!!kit && !!(await p.$('.kit-prev svg')), `${t}: falta el panel «Tus imágenes» o su ilustración`);
+  ok(!!kit && !!(await p.$('.kit-prev svg, .kit-prev img')), `${t}: falta el panel «Tus imágenes» o su ilustración`);
   ok((await p.$$('.kit [data-a="kit"]')).length === 4, `${t}: el panel no trae las 4 descargas`);
   if (kit) { await kit.scrollIntoViewIfNeeded(); await kit.screenshot({ path: `${SALIDA}/kit-${t}-390.png` }); }
   const antes = await p.$eval('#enl-txt', (x) => x.value);

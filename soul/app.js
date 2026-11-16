@@ -394,7 +394,88 @@
       '<div class="kit-prev">' + window.SOUL_ARTE.escena(o) + '</div>' +
       '<button type="button" class="btn-s" data-a="arte" data-i="0">Otra versión</button>' +
       '<div class="kit-b">' + KIT.map(function (k) { return '<button type="button" class="btn-s" data-a="kit" data-m="' + k[0] + '">' + k[1] + '</button>'; }).join('') + '</div>' +
-      '<span id="kit-msg" role="status" class="hint"></span></div>';
+      '<span id="kit-msg" role="status" class="hint"></span>' + retratoHTML() + '</div>';
+  }
+  /* Retrato con estilo (16-11-2026): SU foto, la misma cara, en el estilo que elija. Lo hace Gemini desde el
+     Apps Script del formulario; la foto no se guarda. TEXTOS PROPUESTOS: esperan el visto de Sebastián. */
+  var ESTILOS_RET = [['facetado', 'Póster facetado'], ['bn', 'Blanco y negro'], ['retro', 'Retro'], ['revista', 'Portada de revista'], ['anime', 'Dibujo japonés']];
+  var ERR_RET = { tope: 'Por hoy ya se crearon todos los retratos. Vuelve mañana.', foto: 'Esa foto no sirve. Prueba con otra.',
+    'tope-persona': 'Ya creaste tus 3 retratos de hoy. Vuelve mañana.', cuenta: 'Vuelve a entrar con tu cuenta de Google.' };
+  /* Cada persona entra con su cuenta de Google antes de crear (Sebastián, 16-11-2026): así el tope de 3 al día es
+     por persona. El botón lo dibuja Google (accounts.google.com/gsi/client); el token vive solo en memoria. */
+  function conCuenta() { return !!MEM.gtoken && Date.now() < (MEM.gexp || 0); }
+  var gsi = null;
+  function cargarGoogle() {
+    if (gsi) return gsi;
+    gsi = new Promise(function (ok, mal) {
+      if (window.google && window.google.accounts && window.google.accounts.id) return ok(window.google.accounts.id);
+      var sc = document.createElement('script'); sc.src = 'https://accounts.google.com/gsi/client'; sc.async = true;
+      sc.onload = function () { ok(window.google.accounts.id); }; sc.onerror = function () { gsi = null; mal(new Error('gsi')); };
+      document.head.appendChild(sc);
+    });
+    return gsi;
+  }
+  function montarGoogle() {
+    var caja = $('#g-btn'); if (!caja) return;
+    cargarGoogle().then(function (id) {
+      if (!document.body.contains(caja)) return;
+      id.initialize({ client_id: CFG.googleId, callback: function (r) {
+        if (!r || !r.credential) return;
+        MEM.gtoken = r.credential; MEM.gexp = Date.now() + 50 * 60 * 1000; render(false, '[data-a="retrato"]');
+      } });
+      id.renderButton(caja, { type: 'standard', theme: 'outline', size: 'large', text: 'continue_with', shape: 'pill', locale: 'es-419' });
+    }).catch(function () { var m = $('#ret-msg'); if (m) m.textContent = ' No se pudo abrir la cuenta de Google ahora. Prueba en un rato.'; });
+  }
+  function retratoHTML() {
+    if (VISTA || !CFG.endpoint || !CFG.googleId) return '';
+    var h = '<div class="ret" role="group" aria-labelledby="l-ret"><h2 id="l-ret">Tu retrato con estilo</h2>';
+    if (!MEM.photo) return h + '<p class="hint" style="margin:0">Sube una foto tuya y te devolvemos la misma cara, en el estilo que elijas.</p>' +
+      '<button type="button" class="btn-s" data-a="photoup">Subir mi foto</button></div>';
+    var est = MEM.retEst || 'facetado';
+    h += '<div class="ret-chips">' + ESTILOS_RET.map(function (e) { return '<button type="button" class="chip' + (e[0] === est ? ' on' : '') + '" aria-pressed="' + (e[0] === est) + '" data-a="estilo" data-i="' + e[0] + '">' + e[1] + '</button>'; }).join('') + '</div>';
+    if (MEM.retrato) h += '<div class="ret-res"><img src="' + esc(MEM.retrato) + '" alt="Tu retrato, estilo ' + esc((ESTILOS_RET.filter(function (e) { return e[0] === MEM.retHecho; })[0] || ['', ''])[1]) + '"></div>' +
+      '<div class="kit-b"><button type="button" class="btn-s" data-a="retuse">Usar en mi portada</button><button type="button" class="btn-s" data-a="retdl">Descargar</button></div>';
+    if (conCuenta()) h += '<button type="button" class="btn-s" data-a="retrato">' + (MEM.retrato ? 'Crear otro' : 'Crear mi retrato') + '</button>';
+    else h += '<p class="hint" style="margin:0">Para crear tu retrato, entra con tu cuenta de Google.</p><div id="g-btn" class="ret-g"></div>';
+    return h + '<p class="hint" style="margin:0">Tu foto se usa solo para crear el retrato y no se guarda.</p><span id="ret-msg" role="status" class="hint"></span></div>';
+  }
+  function crearRetrato(btn) {
+    var msg = $('#ret-msg'), est = MEM.retEst || 'facetado';
+    if (!MEM.photo || !CFG.endpoint) return;
+    if (!conCuenta()) { MEM.gtoken = ''; render(false); return; }
+    btn.disabled = true; if (msg) msg.textContent = ' Creando tu retrato… tarda unos 20 segundos.';
+    var ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null, reloj = ctrl ? setTimeout(function () { ctrl.abort(); }, 90000) : 0;
+    fetch(CFG.endpoint, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, signal: ctrl ? ctrl.signal : undefined,
+      body: JSON.stringify({ tipo: 'retrato', estilo: est, foto: MEM.photo, oficio: oficioNombre(), colores: S.pal(ST, D) || [], idToken: MEM.gtoken }) })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        clearTimeout(reloj);
+        if (j && j.ok && /^data:image\//.test(j.img || '')) { MEM.retrato = j.img; MEM.retHecho = est; render(false, '[data-a="retrato"]'); return; }
+        var txt = ERR_RET[j && j.error] || 'No se pudo crear el retrato ahora. Prueba en un rato.';
+        if (j && j.error === 'tope-persona' && j.tope) txt = 'Ya creaste tus ' + j.tope + ' retratos de hoy. Vuelve mañana.';
+        if (j && j.error === 'cuenta') { MEM.gtoken = ''; render(false); msg = $('#ret-msg'); }
+        else btn.disabled = false;
+        if (msg) msg.textContent = ' ' + txt;
+      })
+      .catch(function () { clearTimeout(reloj); btn.disabled = false; if (msg) msg.textContent = ' No se pudo crear el retrato ahora. Prueba en un rato.'; });
+  }
+  function bajarRetrato() {
+    if (!MEM.retrato) return;
+    var a = document.createElement('a'), ext = /image\/png/.test(MEM.retrato) ? 'png' : 'jpg';
+    a.href = MEM.retrato; a.download = slug() + '-retrato-' + (MEM.retHecho || 'estilo') + '.' + ext; document.body.appendChild(a); a.click(); a.remove();
+  }
+  /* La vista previa del panel muestra el póster terminado (con su tipografía de cartel), no solo la ilustración.
+     Mientras se arma queda la ilustración; si algo falla, también. */
+  var turnoKit = 0;
+  function pintarKit() {
+    var A = window.SOUL_ARTE, caja = $('.kit-prev'); if (!A || !caja) return;
+    var yo = ++turnoKit, k = S.kit(ST, D, M, CFG);
+    k.formato = 'post'; k.pie = 'img/' + (M.sobre(k.tintas.bg) === '#FFFFFF' ? 'pie-compai-claro' : 'pie-alma-compai-oscuro') + '.png';
+    A.poster(k).then(function (c) {
+      if (yo !== turnoKit || !document.body.contains(caja)) return;
+      var im = new Image(); im.alt = ''; im.width = 1080; im.height = 1350; im.src = c.toDataURL('image/jpeg', 0.86);
+      caja.classList.add('lista'); caja.innerHTML = ''; caja.appendChild(im);
+    }).catch(function () { /* queda la ilustración */ });
   }
   function descargarKit(fmt, btn) {
     var A = window.SOUL_ARTE, msg = $('#kit-msg'), k = S.kit(ST, D, M, CFG);
@@ -488,6 +569,7 @@
     var fin = cur === 'fin';
     appEl.classList.toggle('ancho', fin);
     pasoEl.innerHTML = fin ? finHTML() : pasoHTML(cur);
+    if (fin) { pintarKit(); montarGoogle(); }
     var etiqueta = fin ? 'Tu borrador' : ST.step === 0 ? 'Bienvenida' : ST.step === T ? 'Listo' : pad(ST.step) + ' / ' + pad(nPreg());
     $('#etiqueta').textContent = etiqueta;
     var pct = fin ? 100 : Math.round(ST.step / T * 100);
@@ -572,6 +654,10 @@
       case 'copiarenl': copiarEnlace(); return;
       case 'kit': descargarKit(el.dataset.m, el); return;
       case 'arte': ST.arte = (ST.arte || 0) + 1; break;
+      case 'estilo': MEM.retEst = el.dataset.i; break;
+      case 'retrato': crearRetrato(el); return;
+      case 'retdl': bajarRetrato(); return;
+      case 'retuse': MEM.photo = MEM.retrato; ST.photoName = 'retrato-' + (MEM.retHecho || 'estilo') + '.jpg'; break;
       case 'wsp': return;   // enlace normal a WhatsApp
       default: return;
     }

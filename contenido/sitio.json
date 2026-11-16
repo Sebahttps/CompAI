@@ -14,6 +14,8 @@
  "_hero_opciones": "franjas = video de 5 franjas con el logo al centro como sello · nucleo = video del sol con el logo arriba a la izquierda",
  "formEndpoint": "https://script.google.com/macros/s/AKfycbz9EDOC1XJu9ERRKHS7JyEM1Jz9op-jNRsfTLZWUgXxZoDw3t5q158VaJJap3RUfwJH/exec",
  "_formEndpoint": "URL del web app de Google Apps Script (apps-script/Code.gs). Mientras esté vacía, el formulario envía por mailto:hola@compai.cl.",
+ "soulGoogleId": "473593989723-kv081o0c0a8fejp37caicbda0dhf8nqe.apps.googleusercontent.com",
+ "_soulGoogleId": "ID de cliente OAuth (Google Cloud, tipo Aplicación web) para el retrato de SOUL. Es público. Vacío: el retrato no se muestra.",
  "contacto": {
   "correo": "hola@compai.cl",
   "whatsapp": "",
