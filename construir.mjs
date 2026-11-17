@@ -78,7 +78,7 @@ const svg = p => `<svg viewBox="0 0 24 24" aria-hidden="true">${p}</svg>`;
 const ibar = (clase, base = '') => {
   const secs = S.menu.map((m, i) => `<a href="${base}${esc(m.ancla)}" aria-label="${esc(m.codigo)} ${esc(m.nombre)}" title="${esc(m.codigo)} ${esc(m.nombre)}">${svg(ICO[i])}</a>`).join('');
   const [herr, huella] = S.herramientas;
-  // 15-11-2026: /soporte/ no existe todavia; el icono queda sin enlace, no se inventa la pagina
+  // 17-11-2026: /soporte/ existe (IT OK!); sin url en sitio.json el icono vuelve a quedar sin enlace
   const h1 = herr.url
     ? `<a href="${esc(herr.url)}" aria-label="${esc(herr.nombre)}" title="${esc(herr.nombre)}">${svg(ICO_HERR)}</a>`
     : `<span class="sin" role="img" aria-label="${esc(herr.nombre)}" title="${esc(herr.nombre)}">${svg(ICO_HERR)}</span>`;

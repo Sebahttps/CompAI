@@ -63,7 +63,7 @@ for (const b of barras) {
   const n = (b.match(/<a\b|<span class="sin"/g) || []).length;
   if (n !== 8) mal(`una barra de iconos trae ${n} iconos; son 8.`);
   if (!/href="https:\/\/compai\.cl\/estado\/"/.test(b)) mal('la huella de la barra no lleva a https://compai.cl/estado/.');
-  if (/href="https:\/\/compai\.cl\/soporte\/"/.test(b)) mal('la barra enlaza /soporte/, que no existe: el icono va sin enlace hasta que exista.');
+  if (/href="https:\/\/compai\.cl\/soporte\/"/.test(b) && !existsSync(join(raiz, 'soporte/index.html'))) mal('la barra enlaza /soporte/, que no existe: el icono va sin enlace hasta que exista.');
 }
 
 /* ── las cuatro líneas y el 16:9 del hero ────────────────────────────── */

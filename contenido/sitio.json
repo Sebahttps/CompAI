@@ -554,8 +554,8 @@
  "herramientas": [
   {
    "nombre": "Soporte",
-   "url": "",
-   "_nota": "15-11-2026: el icono de herramienta queda SIN enlace. compai.cl/soporte/ no existe todavía (Sebastián lo pidió como «próximo sitio de soporte TI»); cuando exista, poner la URL aquí."
+   "url": "https://compai.cl/soporte/",
+   "_nota": "17-11-2026: compai.cl/soporte/ existe (IT OK!, sitio/compai/soporte/index.html, desde el HTML de Sebastián del 16-11)."
   },
   {
    "nombre": "Intranet",

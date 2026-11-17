@@ -3,46 +3,33 @@
  "generado": "2026-11-17T10:41",
  "fecha": "17-11-2026 10:41",
  "fuente": "RAI-CA · API de Mercado Público, Compra Ágil",
- "candidatas": 73,
+ "candidatas": 57,
  "filas": [
   {
-   "marca": "GO",
-   "nombre": "ADQUISICIÓN LICENCIAS DE SOFTWARE GESTIÓN DE IMAGENES ODONTOLÓGICAS 2D.",
+   "marca": "NO-GO",
+   "nombre": "Toner de Impresora",
    "linea": "L4",
    "linea_nombre": "Hardware y Licenciamiento",
-   "score": 100,
-   "codigo": "2013-2079-COT26",
-   "monto": "$2.173.000",
-   "organismo": "UNIVERSIDAD ARTURO PRAT · Región de Tarapacá  ",
-   "fecha": "17-11-2026 13:30",
-   "cierre_iso": "2026-11-17 13:30",
+   "score": 45,
+   "codigo": "1242021-1-COT26",
+   "monto": "$1.500.000",
+   "organismo": "FUNDACION CULTURAL DE SIERRA GORDA · Región de Antofagasta ",
+   "fecha": "17-11-2026 17:30",
+   "cierre_iso": "2026-11-17 17:30",
    "quedan": "queda menos de 1 h"
   },
   {
    "marca": "NO-GO",
-   "nombre": "SERVICIO DE SERVIDOR VPS",
+   "nombre": "Tintas y Toners",
    "linea": "L4",
    "linea_nombre": "Hardware y Licenciamiento",
    "score": 45,
-   "codigo": "1035685-395-COT26",
-   "monto": "$3.000.000",
-   "organismo": "CENTRO DE FORMACION TECNICA ESTATAL DE LA REGION DE LOS RIOS · Región de Los Ríos",
-   "fecha": "17-11-2026 14:00",
-   "cierre_iso": "2026-11-17 14:00",
+   "codigo": "2859-1520-COT26",
+   "monto": "$7.197.820",
+   "organismo": "UNIVERSIDAD DE ATACAMA · Región de Atacama ",
+   "fecha": "17-11-2026 17:35",
+   "cierre_iso": "2026-11-17 17:35",
    "quedan": "quedan 1 h"
-  },
-  {
-   "marca": "NO-GO",
-   "nombre": "COMPUTADORES Y NOTEBOOK Atención Integral al Desarrollo Infanto Adolescente año 2026, Resolución Exenta N° 807, 23 de marzo de 2026",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 45,
-   "codigo": "5350-594-COT26",
-   "monto": "$4.500.000",
-   "organismo": "I MUNICIPALIDAD DE VALLENAR · Región de Atacama ",
-   "fecha": "17-11-2026 15:00",
-   "cierre_iso": "2026-11-17 15:00",
-   "quedan": "quedan 2 h"
   },
   {
    "marca": "GO",
@@ -55,7 +42,7 @@
    "organismo": "CORP MUNICIPAL DE SERVICIOS PUBLICOS TRASPASADOS DE RANCAGUA · Región del Libertador General Bernardo O´Higgins",
    "fecha": "18-11-2026 07:54",
    "cierre_iso": "2026-11-18 07:54",
-   "quedan": "quedan 18 h"
+   "quedan": "quedan 15 h"
   },
   {
    "marca": "GO",
@@ -68,7 +55,7 @@
    "organismo": "I.Municipalidad de El Carmen · Región del Ñuble",
    "fecha": "18-11-2026 09:30",
    "cierre_iso": "2026-11-18 09:30",
-   "quedan": "quedan 20 h"
+   "quedan": "quedan 16 h"
   },
   {
    "marca": "GO",
@@ -81,7 +68,7 @@
    "organismo": "UNIVERSIDAD DEL BIO BIO · Región del Ñuble",
    "fecha": "18-11-2026 09:58",
    "cierre_iso": "2026-11-18 09:58",
-   "quedan": "quedan 21 h"
+   "quedan": "quedan 17 h"
   },
   {
    "marca": "GO",
@@ -94,7 +81,7 @@
    "organismo": "I MUNICIPALIDAD DE LLANQUIHUE · Región de los Lagos ",
    "fecha": "18-11-2026 11:00",
    "cierre_iso": "2026-11-18 11:00",
-   "quedan": "quedan 22 h"
+   "quedan": "quedan 18 h"
   },
   {
    "marca": "GO",
@@ -107,7 +94,20 @@
    "organismo": "SERVICIO DE SALUD AYSEN CARLOS IBANEZ DEL CAMPO · Región Aysén del General Carlos Ibáñez del Campo",
    "fecha": "19-11-2026 09:28",
    "cierre_iso": "2026-11-19 09:28",
-   "quedan": "quedan 44 h"
+   "quedan": "quedan 40 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "SUSCRIPCIÓN ANUAL DE DOS LICENCIA DE ADOBE CREATIVE CLOUD PRO PARA LA CMF",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "1005498-92-COT26",
+   "monto": "$2.600.000",
+   "organismo": "COMISION PARA EL MERCADO FINANCIERO · Región Metropolitana de Santiago",
+   "fecha": "19-11-2026 10:00",
+   "cierre_iso": "2026-11-19 10:00",
+   "quedan": "quedan 41 h"
   }
  ]
 }
