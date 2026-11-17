@@ -3,34 +3,8 @@
  "generado": "2026-11-17T10:41",
  "fecha": "17-11-2026 10:41",
  "fuente": "RAI-CA · API de Mercado Público, Compra Ágil",
- "candidatas": 56,
+ "candidatas": 52,
  "filas": [
-  {
-   "marca": "NO-GO",
-   "nombre": "Toner de Impresora",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 45,
-   "codigo": "1242021-1-COT26",
-   "monto": "$1.500.000",
-   "organismo": "FUNDACION CULTURAL DE SIERRA GORDA · Región de Antofagasta ",
-   "fecha": "17-11-2026 17:30",
-   "cierre_iso": "2026-11-17 17:30",
-   "quedan": "queda menos de 1 h"
-  },
-  {
-   "marca": "NO-GO",
-   "nombre": "Tintas y Toners",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 45,
-   "codigo": "2859-1520-COT26",
-   "monto": "$7.197.820",
-   "organismo": "UNIVERSIDAD DE ATACAMA · Región de Atacama ",
-   "fecha": "17-11-2026 17:35",
-   "cierre_iso": "2026-11-17 17:35",
-   "quedan": "queda menos de 1 h"
-  },
   {
    "marca": "GO",
    "nombre": "Servicio de contratación de plataforma jurisprudencial - CORMUN",
@@ -42,7 +16,7 @@
    "organismo": "CORP MUNICIPAL DE SERVICIOS PUBLICOS TRASPASADOS DE RANCAGUA · Región del Libertador General Bernardo O´Higgins",
    "fecha": "18-11-2026 07:54",
    "cierre_iso": "2026-11-18 07:54",
-   "quedan": "quedan 14 h"
+   "quedan": "quedan 11 h"
   },
   {
    "marca": "GO",
@@ -55,7 +29,7 @@
    "organismo": "I.Municipalidad de El Carmen · Región del Ñuble",
    "fecha": "18-11-2026 09:30",
    "cierre_iso": "2026-11-18 09:30",
-   "quedan": "quedan 16 h"
+   "quedan": "quedan 12 h"
   },
   {
    "marca": "GO",
@@ -68,7 +42,7 @@
    "organismo": "UNIVERSIDAD DEL BIO BIO · Región del Ñuble",
    "fecha": "18-11-2026 09:58",
    "cierre_iso": "2026-11-18 09:58",
-   "quedan": "quedan 16 h"
+   "quedan": "quedan 13 h"
   },
   {
    "marca": "GO",
@@ -81,7 +55,33 @@
    "organismo": "I MUNICIPALIDAD DE LLANQUIHUE · Región de los Lagos ",
    "fecha": "18-11-2026 11:00",
    "cierre_iso": "2026-11-18 11:00",
-   "quedan": "quedan 17 h"
+   "quedan": "quedan 14 h"
+  },
+  {
+   "marca": "NO-GO",
+   "nombre": "ADQUISICION DE DISCO DURO PARA DIRECCION DE CONTROL",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 45,
+   "codigo": "2905-675-COT26",
+   "monto": "$150.000",
+   "organismo": "I MUNICIPALIDAD DE LANCO · Región de Los Ríos",
+   "fecha": "18-11-2026 11:00",
+   "cierre_iso": "2026-11-18 11:00",
+   "quedan": "quedan 14 h"
+  },
+  {
+   "marca": "NO-GO",
+   "nombre": "Compra de Tóner",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 45,
+   "codigo": "4884-35-COT26",
+   "monto": "$400.000",
+   "organismo": "Subsecretaria de las Culturas y las Artes Región del Libertador Gral. Bernardo O´higgins · Región del Libertador General Bernardo O´Higgins",
+   "fecha": "18-11-2026 13:00",
+   "cierre_iso": "2026-11-18 13:00",
+   "quedan": "quedan 16 h"
   },
   {
    "marca": "GO",
@@ -94,7 +94,7 @@
    "organismo": "SERVICIO DE SALUD AYSEN CARLOS IBANEZ DEL CAMPO · Región Aysén del General Carlos Ibáñez del Campo",
    "fecha": "19-11-2026 09:28",
    "cierre_iso": "2026-11-19 09:28",
-   "quedan": "quedan 40 h"
+   "quedan": "quedan 36 h"
   },
   {
    "marca": "GO",
@@ -107,7 +107,7 @@
    "organismo": "COMISION PARA EL MERCADO FINANCIERO · Región Metropolitana de Santiago",
    "fecha": "19-11-2026 10:00",
    "cierre_iso": "2026-11-19 10:00",
-   "quedan": "quedan 40 h"
+   "quedan": "quedan 37 h"
   }
  ]
 }
