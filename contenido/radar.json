@@ -3,7 +3,7 @@
  "generado": "2026-11-17T10:41",
  "fecha": "17-11-2026 10:41",
  "fuente": "RAI-CA · API de Mercado Público, Compra Ágil",
- "candidatas": 57,
+ "candidatas": 56,
  "filas": [
   {
    "marca": "NO-GO",
@@ -29,7 +29,7 @@
    "organismo": "UNIVERSIDAD DE ATACAMA · Región de Atacama ",
    "fecha": "17-11-2026 17:35",
    "cierre_iso": "2026-11-17 17:35",
-   "quedan": "quedan 1 h"
+   "quedan": "queda menos de 1 h"
   },
   {
    "marca": "GO",
@@ -42,7 +42,7 @@
    "organismo": "CORP MUNICIPAL DE SERVICIOS PUBLICOS TRASPASADOS DE RANCAGUA · Región del Libertador General Bernardo O´Higgins",
    "fecha": "18-11-2026 07:54",
    "cierre_iso": "2026-11-18 07:54",
-   "quedan": "quedan 15 h"
+   "quedan": "quedan 14 h"
   },
   {
    "marca": "GO",
@@ -68,7 +68,7 @@
    "organismo": "UNIVERSIDAD DEL BIO BIO · Región del Ñuble",
    "fecha": "18-11-2026 09:58",
    "cierre_iso": "2026-11-18 09:58",
-   "quedan": "quedan 17 h"
+   "quedan": "quedan 16 h"
   },
   {
    "marca": "GO",
@@ -81,7 +81,7 @@
    "organismo": "I MUNICIPALIDAD DE LLANQUIHUE · Región de los Lagos ",
    "fecha": "18-11-2026 11:00",
    "cierre_iso": "2026-11-18 11:00",
-   "quedan": "quedan 18 h"
+   "quedan": "quedan 17 h"
   },
   {
    "marca": "GO",
@@ -107,7 +107,7 @@
    "organismo": "COMISION PARA EL MERCADO FINANCIERO · Región Metropolitana de Santiago",
    "fecha": "19-11-2026 10:00",
    "cierre_iso": "2026-11-19 10:00",
-   "quedan": "quedan 41 h"
+   "quedan": "quedan 40 h"
   }
  ]
 }
