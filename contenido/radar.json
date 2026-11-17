@@ -3,60 +3,8 @@
  "generado": "2026-11-17T10:41",
  "fecha": "17-11-2026 10:41",
  "fuente": "RAI-CA · API de Mercado Público, Compra Ágil",
- "candidatas": 84,
+ "candidatas": 73,
  "filas": [
-  {
-   "marca": "GO",
-   "nombre": "ADQUISICION DE NOTEBOOK ASUS - PROGRAMA ATENCION INICIAL",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 100,
-   "codigo": "1516-398-COT26",
-   "monto": "$1.990.000",
-   "organismo": "DELEGACIÓN PRESIDENCIAL PROVINCIAL DE CORDILLERA · Región Metropolitana de Santiago",
-   "fecha": "17-11-2026 12:00",
-   "cierre_iso": "2026-11-17 12:00",
-   "quedan": "queda menos de 1 h"
-  },
-  {
-   "marca": "NO-GO",
-   "nombre": "COMPRA DE COMPUTADOR PARA PERSONAL DEL PROGRAMA ANUN. SOLICITUD DE COMPRA N°781/DIDECO",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 45,
-   "codigo": "2759-791-COT26",
-   "monto": "$2.200.000",
-   "organismo": "I MUNICIPALIDAD DE CORONEL · Región del Biobío ",
-   "fecha": "17-11-2026 12:00",
-   "cierre_iso": "2026-11-17 12:00",
-   "quedan": "queda menos de 1 h"
-  },
-  {
-   "marca": "GO",
-   "nombre": "ADQUISICION DEL SERVICIO DE PAGINA WEB",
-   "linea": "L5",
-   "linea_nombre": "Soluciones Web y Desarrollo Customizado",
-   "score": 100,
-   "codigo": "1211992-257-COT26",
-   "monto": "$400.000",
-   "organismo": "CORPORACIÓN YUNUS · Región Metropolitana de Santiago",
-   "fecha": "17-11-2026 12:10",
-   "cierre_iso": "2026-11-17 12:10",
-   "quedan": "queda menos de 1 h"
-  },
-  {
-   "marca": "NO-GO",
-   "nombre": "NOTEBOOK - CECOSF PUNTRA DEGAÑ",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 45,
-   "codigo": "1224953-635-COT26",
-   "monto": "$400.000",
-   "organismo": "CORP MUNICIP ANCUD PARA LA EDUCAC SALUD · Región de los Lagos ",
-   "fecha": "17-11-2026 12:10",
-   "cierre_iso": "2026-11-17 12:10",
-   "quedan": "queda menos de 1 h"
-  },
   {
    "marca": "GO",
    "nombre": "ADQUISICIÓN LICENCIAS DE SOFTWARE GESTIÓN DE IMAGENES ODONTOLÓGICAS 2D.",
@@ -68,7 +16,33 @@
    "organismo": "UNIVERSIDAD ARTURO PRAT · Región de Tarapacá  ",
    "fecha": "17-11-2026 13:30",
    "cierre_iso": "2026-11-17 13:30",
+   "quedan": "queda menos de 1 h"
+  },
+  {
+   "marca": "NO-GO",
+   "nombre": "SERVICIO DE SERVIDOR VPS",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 45,
+   "codigo": "1035685-395-COT26",
+   "monto": "$3.000.000",
+   "organismo": "CENTRO DE FORMACION TECNICA ESTATAL DE LA REGION DE LOS RIOS · Región de Los Ríos",
+   "fecha": "17-11-2026 14:00",
+   "cierre_iso": "2026-11-17 14:00",
    "quedan": "quedan 1 h"
+  },
+  {
+   "marca": "NO-GO",
+   "nombre": "COMPUTADORES Y NOTEBOOK Atención Integral al Desarrollo Infanto Adolescente año 2026, Resolución Exenta N° 807, 23 de marzo de 2026",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 45,
+   "codigo": "5350-594-COT26",
+   "monto": "$4.500.000",
+   "organismo": "I MUNICIPALIDAD DE VALLENAR · Región de Atacama ",
+   "fecha": "17-11-2026 15:00",
+   "cierre_iso": "2026-11-17 15:00",
+   "quedan": "quedan 2 h"
   },
   {
    "marca": "GO",
@@ -81,7 +55,7 @@
    "organismo": "CORP MUNICIPAL DE SERVICIOS PUBLICOS TRASPASADOS DE RANCAGUA · Región del Libertador General Bernardo O´Higgins",
    "fecha": "18-11-2026 07:54",
    "cierre_iso": "2026-11-18 07:54",
-   "quedan": "quedan 20 h"
+   "quedan": "quedan 18 h"
   },
   {
    "marca": "GO",
@@ -94,7 +68,7 @@
    "organismo": "I.Municipalidad de El Carmen · Región del Ñuble",
    "fecha": "18-11-2026 09:30",
    "cierre_iso": "2026-11-18 09:30",
-   "quedan": "quedan 21 h"
+   "quedan": "quedan 20 h"
   },
   {
    "marca": "GO",
@@ -107,7 +81,33 @@
    "organismo": "UNIVERSIDAD DEL BIO BIO · Región del Ñuble",
    "fecha": "18-11-2026 09:58",
    "cierre_iso": "2026-11-18 09:58",
+   "quedan": "quedan 21 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "ADQUISICION DE LICENCIA ANUAL DE ADOBE CREATIVE CLOUD BIBLIOTECA DE APLICACIONES.",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "1437-821-COT26",
+   "monto": "$1.500.000",
+   "organismo": "I MUNICIPALIDAD DE LLANQUIHUE · Región de los Lagos ",
+   "fecha": "18-11-2026 11:00",
+   "cierre_iso": "2026-11-18 11:00",
    "quedan": "quedan 22 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "LICENCIAS DE SOFTWARE DE ASISTENCIA LEGAL CON IA",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "734-212-COT26",
+   "monto": "$6.366.382",
+   "organismo": "SERVICIO DE SALUD AYSEN CARLOS IBANEZ DEL CAMPO · Región Aysén del General Carlos Ibáñez del Campo",
+   "fecha": "19-11-2026 09:28",
+   "cierre_iso": "2026-11-19 09:28",
+   "quedan": "quedan 44 h"
   }
  ]
 }
