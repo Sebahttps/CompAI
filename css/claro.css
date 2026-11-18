@@ -267,7 +267,7 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;paddin
 .pie-mail{font-size:44px;font-weight:600;letter-spacing:-.02em;color:var(--tinta);text-decoration:none;border-bottom:2px solid var(--ambar);display:inline-block;align-self:start;justify-self:start}
 .pie-mail:hover{color:var(--petroleo)}
 .pie-dat{font-family:var(--mono);font-size:12px;line-height:1.8;color:var(--gris);padding-left:10px}
-#contacto .kick.k-ag{margin:104px 0 10px}/* 16-11: Sebastian pidio aire entre el correo y el rotulo */
+#contacto .kick.k-ag{margin:168px 0 10px}/* 16-11 y 17-11: Sebastian pidio mas aire entre el correo y el rotulo */
 .agentes{margin:0 -14.2857% 0 0;padding:12px 0 0;list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px 0;border-top:1px solid var(--filete)}
 .agentes li{display:block;padding:0 10px;font-size:12px;line-height:1.35}
 .agentes b{display:block;font-weight:600;color:var(--tinta);font-size:12.5px}

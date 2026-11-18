@@ -141,7 +141,7 @@ const ilCuore = `
  <div class="cuore-esp"></div>
  <div class="cuore-txt">
   <h2${RV_ATR.abajo}>${C.ia.titulo.map(esc).join('<br>')}</h2>
-  <p>${esc(C.ia.parrafo)}</p>
+  <p>${C.ia.parrafo.split(String.fromCharCode(10)).map(esc).join('<br>')}</p>
   <div class="cuore-acc">${C.accesos.map(a => `<a class="pill${RV.arriba}" href="${esc(a.ancla)}">${esc(a.texto)}</a>`).join('\n   ')}</div>
  </div>
 </section>`;
