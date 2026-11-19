@@ -1,36 +1,10 @@
 {
  "_que_es": "RADAR EN VIVO de la portada. Lo escribe traer_radar.py desde la salida de RAI-CA; no se edita a mano.",
- "generado": "2026-11-18T16:30",
- "fecha": "18-11-2026 16:30",
+ "generado": "2026-11-19T10:40",
+ "fecha": "19-11-2026 10:40",
  "fuente": "RAI-CA · API de Mercado Público, Compra Ágil",
- "candidatas": 32,
+ "candidatas": 97,
  "filas": [
-  {
-   "marca": "GO",
-   "nombre": "ADQUISICIÓN  PLATAFORMA JURÍDICA CON ACCESO A DATOS E INFORMACION  LEGAL - SLEP SANTA CORINA",
-   "linea": "L5",
-   "linea_nombre": "Soluciones Web y Desarrollo Customizado",
-   "score": 100,
-   "codigo": "1305544-93-COT26",
-   "monto": "$2.000.000",
-   "organismo": "SERVICIO LOCAL DE EDUCACIÓN PÚBLICA SANTA CORINA · Región Metropolitana de Santiago",
-   "fecha": "19-11-2026 10:54",
-   "cierre_iso": "2026-11-19 10:54",
-   "quedan": "queda menos de 1 h"
-  },
-  {
-   "marca": "GO",
-   "nombre": "EDG, SC INT-2026-00068, PG01, 2211002, CAPACITACION POWER BI PARA FUNCIONARIOS SLEP VALDIVIA",
-   "linea": "L2",
-   "linea_nombre": "Arquitectura TI y Consultoría Especializada",
-   "score": 100,
-   "codigo": "1305560-68-COT26",
-   "monto": "$2.500.000",
-   "organismo": "SERVICIO LOCAL DE EDUCACIÓN PÚBLICA DE VALDIVIA · Región de Los Ríos",
-   "fecha": "19-11-2026 11:00",
-   "cierre_iso": "2026-11-19 11:00",
-   "quedan": "queda menos de 1 h"
-  },
   {
    "marca": "GO",
    "nombre": "MTS ADQUISICIÓN DE 100 USOS DE PLATAFORMA DIGITAL DE EVALUACIÓN PSICOPEDAGÓGICA Y APOYO A LA INCLUSIÓN – ESCUELA BÁSICA NAHUELBUTA",
@@ -42,7 +16,20 @@
    "organismo": "I MUNICIPALIDAD DE ANGOL · Región de la Araucanía ",
    "fecha": "19-11-2026 12:00",
    "cierre_iso": "2026-11-19 12:00",
-   "quedan": "quedan 1 h"
+   "quedan": "queda menos de 1 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "ADQUISICIÓN DE LICENCIA PERPETUA  OFFICE HOGAR Y EMPRESA 2024 FONDOS EMTP 2026",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "1126922-1086-COT26",
+   "monto": "$280.000",
+   "organismo": "SERVICIO LOCAL DE EDUCACION PUBLICA DE LLANQUIHUE · Región de los Lagos ",
+   "fecha": "19-11-2026 12:00",
+   "cierre_iso": "2026-11-19 12:00",
+   "quedan": "queda menos de 1 h"
   },
   {
    "marca": "NO-GO",
@@ -55,20 +42,46 @@
    "organismo": "UNIVERSIDAD DE ATACAMA · Región de Atacama ",
    "fecha": "19-11-2026 12:00",
    "cierre_iso": "2026-11-19 12:00",
-   "quedan": "quedan 1 h"
+   "quedan": "queda menos de 1 h"
   },
   {
    "marca": "NO-GO",
-   "nombre": "MATERIALES DE BODEGA Y DISCO DURO 2",
+   "nombre": "OP26-1673 Servidor, UPS y NAS para sistema de gestion de pago de honorarios DAF (SIFIM 2026)",
    "linea": "L4",
    "linea_nombre": "Hardware y Licenciamiento",
-   "score": 60,
-   "codigo": "1057390-338-COT26",
-   "monto": "$2.500.000",
-   "organismo": "SERVICIO DE SALUD ARAUCANIA NORTE · Región de la Araucanía ",
-   "fecha": "19-11-2026 12:00",
-   "cierre_iso": "2026-11-19 12:00",
+   "score": 45,
+   "codigo": "3904-1070-COT26",
+   "monto": "$6.600.000",
+   "organismo": "I MUNICIPALIDAD DE BULNES · Región del Ñuble",
+   "fecha": "19-11-2026 12:15",
+   "cierre_iso": "2026-11-19 12:15",
    "quedan": "quedan 1 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "HOSTING Y SOPORTE",
+   "linea": "L3",
+   "linea_nombre": "Cloud, Data & Operations",
+   "score": 100,
+   "codigo": "3791-1182-COT26",
+   "monto": "$357.000",
+   "organismo": "I MUNICIPALIDAD DE CISNES · Región Aysén del General Carlos Ibáñez del Campo",
+   "fecha": "19-11-2026 13:30",
+   "cierre_iso": "2026-11-19 13:30",
+   "quedan": "quedan 2 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "Disco duro externo portátil (unidad de almacenamiento externa).",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "354-127-COT26",
+   "monto": "$80.000",
+   "organismo": "DELEGACIÓN PRESIDENCIAL PROVINCIAL DE CHACABUCO · Región Metropolitana de Santiago",
+   "fecha": "19-11-2026 15:00",
+   "cierre_iso": "2026-11-19 15:00",
+   "quedan": "quedan 3 h"
   },
   {
    "marca": "GO",
@@ -81,33 +94,20 @@
    "organismo": "HOSPITAL PUERTO MONTT SERVICIO DE SALUD DEL RELONCAVI · Región de los Lagos ",
    "fecha": "19-11-2026 15:00",
    "cierre_iso": "2026-11-19 15:00",
-   "quedan": "quedan 4 h"
+   "quedan": "quedan 3 h"
   },
   {
    "marca": "GO",
-   "nombre": "(TTV) INSUMO EQUIVALENTE A PLATAFORMA DE ACCESO TRANSANAL (TAMIS)",
-   "linea": "L5",
-   "linea_nombre": "Soluciones Web y Desarrollo Customizado",
-   "score": 100,
-   "codigo": "608-7062-COT26",
-   "monto": "$1.500.000",
-   "organismo": "HOSPITAL DR GUSTAVO FRICKE DE VINA DEL MAR · Región de Valparaíso ",
-   "fecha": "19-11-2026 16:11",
-   "cierre_iso": "2026-11-19 16:11",
-   "quedan": "quedan 5 h"
-  },
-  {
-   "marca": "GO",
-   "nombre": "Licencias para uso de inteligencia artificial - GAF Tecnología de la Información",
+   "nombre": "FORMULARIOS DE LICENCIA DIGITAL PARA USO GABINETE TRÁNSITO. SEGÚN REQ TTO N°20",
    "linea": "L4",
    "linea_nombre": "Hardware y Licenciamiento",
    "score": 100,
-   "codigo": "1457282-165-COT26",
-   "monto": "$2.450.000",
-   "organismo": "CORPORACION CENTRO CULTURAL GABRIELA MISTRAL · Región Metropolitana de Santiago",
-   "fecha": "20-11-2026 13:00",
-   "cierre_iso": "2026-11-20 13:00",
-   "quedan": "quedan 26 h"
+   "codigo": "5615-840-COT26",
+   "monto": "$1.000.000",
+   "organismo": "I.Municipalidad de El Carmen · Región del Ñuble",
+   "fecha": "19-11-2026 15:40",
+   "cierre_iso": "2026-11-19 15:40",
+   "quedan": "quedan 4 h"
   }
  ]
 }
