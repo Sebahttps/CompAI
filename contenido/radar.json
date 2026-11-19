@@ -3,73 +3,8 @@
  "generado": "2026-11-19T10:40",
  "fecha": "19-11-2026 10:40",
  "fuente": "RAI-CA · API de Mercado Público, Compra Ágil",
- "candidatas": 72,
+ "candidatas": 62,
  "filas": [
-  {
-   "marca": "GO",
-   "nombre": "Disco duro externo portátil (unidad de almacenamiento externa).",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 100,
-   "codigo": "354-127-COT26",
-   "monto": "$80.000",
-   "organismo": "DELEGACIÓN PRESIDENCIAL PROVINCIAL DE CHACABUCO · Región Metropolitana de Santiago",
-   "fecha": "19-11-2026 15:00",
-   "cierre_iso": "2026-11-19 15:00",
-   "quedan": "queda menos de 1 h"
-  },
-  {
-   "marca": "GO",
-   "nombre": "LICENCIA DE SOFTWARE, DE REHABILITACION PARA PACIENTES BASADO EN REALIDAD VIRTUAL",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 100,
-   "codigo": "1057539-5033-COT26",
-   "monto": "$6.875.496",
-   "organismo": "HOSPITAL PUERTO MONTT SERVICIO DE SALUD DEL RELONCAVI · Región de los Lagos ",
-   "fecha": "19-11-2026 15:00",
-   "cierre_iso": "2026-11-19 15:00",
-   "quedan": "queda menos de 1 h"
-  },
-  {
-   "marca": "GO",
-   "nombre": "FORMULARIOS DE LICENCIA DIGITAL PARA USO GABINETE TRÁNSITO. SEGÚN REQ TTO N°20",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 100,
-   "codigo": "5615-840-COT26",
-   "monto": "$1.000.000",
-   "organismo": "I.Municipalidad de El Carmen · Región del Ñuble",
-   "fecha": "19-11-2026 15:40",
-   "cierre_iso": "2026-11-19 15:40",
-   "quedan": "quedan 1 h"
-  },
-  {
-   "marca": "GO",
-   "nombre": "(TTV) INSUMO EQUIVALENTE A PLATAFORMA DE ACCESO TRANSANAL (TAMIS)",
-   "linea": "L5",
-   "linea_nombre": "Soluciones Web y Desarrollo Customizado",
-   "score": 100,
-   "codigo": "608-7062-COT26",
-   "monto": "$1.500.000",
-   "organismo": "HOSPITAL DR GUSTAVO FRICKE DE VINA DEL MAR · Región de Valparaíso ",
-   "fecha": "19-11-2026 16:11",
-   "cierre_iso": "2026-11-19 16:11",
-   "quedan": "quedan 1 h"
-  },
-  {
-   "marca": "GO",
-   "nombre": "Renovación de licencia para “PRTG Network Monitor 500 sensores por 1 año",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 100,
-   "codigo": "1607-120-COT26",
-   "monto": "$2.300.000",
-   "organismo": "SUPERINTENDENCIA DE SEGURIDAD SOCIAL · Región Metropolitana de Santiago",
-   "fecha": "19-11-2026 16:30",
-   "cierre_iso": "2026-11-19 16:30",
-   "quedan": "quedan 1 h"
-  },
   {
    "marca": "GO",
    "nombre": "Renovación de licencia on-premise para “Tenable Nessus Professional Subscription” por 1 año.",
@@ -81,7 +16,20 @@
    "organismo": "SUPERINTENDENCIA DE SEGURIDAD SOCIAL · Región Metropolitana de Santiago",
    "fecha": "19-11-2026 17:00",
    "cierre_iso": "2026-11-19 17:00",
-   "quedan": "quedan 2 h"
+   "quedan": "queda menos de 1 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "Plataforma de Gestión Online y Seguimiento Judicial - SLEP Santa Corina",
+   "linea": "L5",
+   "linea_nombre": "Soluciones Web y Desarrollo Customizado",
+   "score": 100,
+   "codigo": "1305544-98-COT26",
+   "monto": "$6.000.000",
+   "organismo": "SERVICIO LOCAL DE EDUCACIÓN PÚBLICA SANTA CORINA · Región Metropolitana de Santiago",
+   "fecha": "19-11-2026 17:48",
+   "cierre_iso": "2026-11-19 17:48",
+   "quedan": "quedan 1 h"
   },
   {
    "marca": "NO-GO",
@@ -94,7 +42,59 @@
    "organismo": "I MUNICIPALIDAD DE VALLENAR · Región de Atacama ",
    "fecha": "19-11-2026 18:00",
    "cierre_iso": "2026-11-19 18:00",
-   "quedan": "quedan 3 h"
+   "quedan": "quedan 1 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "ADQUISICIÓN DE LICENCIA O SERVICIO DE SOFTWARE PARA ANÁLISIS DE SECUENCIAS FENOLÓGICAS",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "1107281-257-COT26",
+   "monto": "$1.000.000",
+   "organismo": "INSTITUTO DE INVESTIGACIONES AGROPECUARIAS · Región de la Araucanía ",
+   "fecha": "20-11-2026 06:19",
+   "cierre_iso": "2026-11-20 06:19",
+   "quedan": "quedan 13 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "Adquisición de 1 Licencia Adobe Photoshop, de acuerdo a TDR adjunto",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "1733-167-COT26",
+   "monto": "$170.000",
+   "organismo": "INSTITUTO FORESTAL · Región Metropolitana de Santiago",
+   "fecha": "20-11-2026 09:00",
+   "cierre_iso": "2026-11-20 09:00",
+   "quedan": "quedan 16 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "COTIZACION LICENCIA ED. BASICA, ESC. RURAL ILIHUE, FINANCIADO CON FONDOS SUBVENCION",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "630424-789-COT26",
+   "monto": "$25.000",
+   "organismo": "I MUNICIPALIDAD DE LAGO RANCO · Región de Los Ríos",
+   "fecha": "20-11-2026 09:00",
+   "cierre_iso": "2026-11-20 09:00",
+   "quedan": "quedan 16 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "4 licencias Microsoft Windows Server Standard 2025 (16 Core) educacional, de acuerdo a TDR adjunto",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "1733-168-COT26",
+   "monto": "$2.800.000",
+   "organismo": "INSTITUTO FORESTAL · Región Metropolitana de Santiago",
+   "fecha": "20-11-2026 09:15",
+   "cierre_iso": "2026-11-20 09:15",
+   "quedan": "quedan 16 h"
   },
   {
    "marca": "NO-GO",
@@ -107,7 +107,7 @@
    "organismo": "UNIVERSIDAD DE LA SERENA · Región de Coquimbo ",
    "fecha": "20-11-2026 12:00",
    "cierre_iso": "2026-11-20 12:00",
-   "quedan": "quedan 21 h"
+   "quedan": "quedan 19 h"
   }
  ]
 }
