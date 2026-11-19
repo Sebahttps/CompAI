@@ -1,87 +1,48 @@
 {
  "_que_es": "RADAR EN VIVO de la portada. Lo escribe traer_radar.py desde la salida de RAI-CA; no se edita a mano.",
- "generado": "2026-11-17T10:41",
- "fecha": "17-11-2026 10:41",
+ "generado": "2026-11-18T16:30",
+ "fecha": "18-11-2026 16:30",
  "fuente": "RAI-CA · API de Mercado Público, Compra Ágil",
- "candidatas": 52,
+ "candidatas": 43,
  "filas": [
   {
    "marca": "GO",
-   "nombre": "Servicio de contratación de plataforma jurisprudencial - CORMUN",
+   "nombre": "RBD 22309 PRO RETENCIÓN PG02 Plataforma integral de gestión y cultura escolar Colegio Inglés Mabel Condemarín",
    "linea": "L5",
    "linea_nombre": "Soluciones Web y Desarrollo Customizado",
    "score": 100,
-   "codigo": "557639-3792-COT26",
-   "monto": "$1.600.000",
-   "organismo": "CORP MUNICIPAL DE SERVICIOS PUBLICOS TRASPASADOS DE RANCAGUA · Región del Libertador General Bernardo O´Higgins",
-   "fecha": "18-11-2026 07:54",
-   "cierre_iso": "2026-11-18 07:54",
-   "quedan": "quedan 8 h"
+   "codigo": "1126922-1080-COT26",
+   "monto": "$5.000.000",
+   "organismo": "SERVICIO LOCAL DE EDUCACION PUBLICA DE LLANQUIHUE · Región de los Lagos ",
+   "fecha": "19-11-2026 08:00",
+   "cierre_iso": "2026-11-19 08:00",
+   "quedan": "quedan 6 h"
   },
   {
    "marca": "GO",
-   "nombre": "FORMULARIOS DE LICENCIA DIGITAL PARA USO GABINETE TRÁNSITO. SEGÚN REQ TTO N°20",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
+   "nombre": "RBD 7872 PRO RETENCIÓN PG02 Plataforma educativa matemáticas y comprensión lectora socioemocional para Colegio Bicentenario Difusión Artistica Los Ulmos",
+   "linea": "L5",
+   "linea_nombre": "Soluciones Web y Desarrollo Customizado",
    "score": 100,
-   "codigo": "5615-840-COT26",
-   "monto": "$1.000.000",
-   "organismo": "I.Municipalidad de El Carmen · Región del Ñuble",
-   "fecha": "18-11-2026 09:30",
-   "cierre_iso": "2026-11-18 09:30",
-   "quedan": "quedan 9 h"
-  },
-  {
-   "marca": "GO",
-   "nombre": "ADQUISICIÓN DE LICENCIA ANUAL DE SOFTWARE NEURAL TRAINER ELITE PLAN, SC 5650",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 100,
-   "codigo": "2705-1831-COT26",
-   "monto": "$428.000",
-   "organismo": "UNIVERSIDAD DEL BIO BIO · Región del Ñuble",
-   "fecha": "18-11-2026 09:58",
-   "cierre_iso": "2026-11-18 09:58",
-   "quedan": "quedan 10 h"
-  },
-  {
-   "marca": "GO",
-   "nombre": "ADQUISICION DE LICENCIA ANUAL DE ADOBE CREATIVE CLOUD BIBLIOTECA DE APLICACIONES.",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 100,
-   "codigo": "1437-821-COT26",
-   "monto": "$1.500.000",
-   "organismo": "I MUNICIPALIDAD DE LLANQUIHUE · Región de los Lagos ",
-   "fecha": "18-11-2026 11:00",
-   "cierre_iso": "2026-11-18 11:00",
-   "quedan": "quedan 11 h"
+   "codigo": "1126922-1079-COT26",
+   "monto": "$1.900.000",
+   "organismo": "SERVICIO LOCAL DE EDUCACION PUBLICA DE LLANQUIHUE · Región de los Lagos ",
+   "fecha": "19-11-2026 08:00",
+   "cierre_iso": "2026-11-19 08:00",
+   "quedan": "quedan 6 h"
   },
   {
    "marca": "NO-GO",
-   "nombre": "ADQUISICION DE DISCO DURO PARA DIRECCION DE CONTROL",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
+   "nombre": "TABLET ANDROID IMPLEMENTACION Y APLICACION DE ENCUESTA DE ADOLECENTE FUERA DEL CENTRO DE SALUD",
+   "linea": "L5",
+   "linea_nombre": "Soluciones Web y Desarrollo Customizado",
    "score": 45,
-   "codigo": "2905-675-COT26",
-   "monto": "$150.000",
-   "organismo": "I MUNICIPALIDAD DE LANCO · Región de Los Ríos",
-   "fecha": "18-11-2026 11:00",
-   "cierre_iso": "2026-11-18 11:00",
-   "quedan": "quedan 11 h"
-  },
-  {
-   "marca": "NO-GO",
-   "nombre": "Compra de Tóner",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 45,
-   "codigo": "4884-35-COT26",
-   "monto": "$400.000",
-   "organismo": "Subsecretaria de las Culturas y las Artes Región del Libertador Gral. Bernardo O´higgins · Región del Libertador General Bernardo O´Higgins",
-   "fecha": "18-11-2026 13:00",
-   "cierre_iso": "2026-11-18 13:00",
-   "quedan": "quedan 13 h"
+   "codigo": "1660-480-COT26",
+   "monto": "$200.000",
+   "organismo": "SERVICIO SALUD COQUIMBO HOSP DE SALAMANC · Región de Coquimbo ",
+   "fecha": "19-11-2026 08:00",
+   "cierre_iso": "2026-11-19 08:00",
+   "quedan": "quedan 6 h"
   },
   {
    "marca": "GO",
@@ -94,7 +55,7 @@
    "organismo": "SERVICIO DE SALUD AYSEN CARLOS IBANEZ DEL CAMPO · Región Aysén del General Carlos Ibáñez del Campo",
    "fecha": "19-11-2026 09:28",
    "cierre_iso": "2026-11-19 09:28",
-   "quedan": "quedan 33 h"
+   "quedan": "quedan 7 h"
   },
   {
    "marca": "GO",
@@ -107,7 +68,46 @@
    "organismo": "COMISION PARA EL MERCADO FINANCIERO · Región Metropolitana de Santiago",
    "fecha": "19-11-2026 10:00",
    "cierre_iso": "2026-11-19 10:00",
-   "quedan": "quedan 34 h"
+   "quedan": "quedan 8 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "VCM,   Office  y Antivirus",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "1430553-105-COT26",
+   "monto": "$360.000",
+   "organismo": "DELEGACION PRESIDENCIAL PROVINCIAL DE OSORNO · Región de los Lagos ",
+   "fecha": "19-11-2026 10:00",
+   "cierre_iso": "2026-11-19 10:00",
+   "quedan": "quedan 8 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "ADQUISICIÓN  PLATAFORMA JURÍDICA CON ACCESO A DATOS E INFORMACION  LEGAL - SLEP SANTA CORINA",
+   "linea": "L5",
+   "linea_nombre": "Soluciones Web y Desarrollo Customizado",
+   "score": 100,
+   "codigo": "1305544-93-COT26",
+   "monto": "$2.000.000",
+   "organismo": "SERVICIO LOCAL DE EDUCACIÓN PÚBLICA SANTA CORINA · Región Metropolitana de Santiago",
+   "fecha": "19-11-2026 10:54",
+   "cierre_iso": "2026-11-19 10:54",
+   "quedan": "quedan 9 h"
+  },
+  {
+   "marca": "NO-GO",
+   "nombre": "Modulos de memoria RAM para servidor Proyecto FA9550-22-10292",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 45,
+   "codigo": "2859-1468-COT26",
+   "monto": "$2.500.000",
+   "organismo": "UNIVERSIDAD DE ATACAMA · Región de Atacama ",
+   "fecha": "19-11-2026 12:00",
+   "cierre_iso": "2026-11-19 12:00",
+   "quedan": "quedan 10 h"
   }
  ]
 }

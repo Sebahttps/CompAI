@@ -29,6 +29,7 @@
 .vp .hero{position:relative;min-height:calc(100vh - 76px);min-height:calc(100svh - 76px);display:flex;flex-direction:column;overflow:hidden;padding:0 18px 40px}
 .vp .arte{position:absolute;inset:0;background-size:cover;background-position:center}
 .vp .arte svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.vp .arte svg.esc-d{display:none}   /* la portada trae dos encuadres de la misma escena: alto (teléfono) y de escritorio */
 .vp .arte.kb1{animation:kb 14s ease-in-out infinite alternate}
 .vp .arte.kb2{animation:kb 6s ease-in-out infinite alternate}
 .vp .hero .scrim{position:absolute;inset:0;background:linear-gradient(0deg,var(--bg) 0%,var(--bg) 22%,transparent 62%)}
@@ -103,8 +104,24 @@
   .vp .hero{padding:0 36px 56px}
   .vp .arte svg{left:auto;width:60%}
   .vp .hero .scrim{background:linear-gradient(90deg,var(--bg) 0%,var(--bg) 38%,transparent 70%),linear-gradient(0deg,var(--bg) 0%,transparent 40%)}
+  /* 19-11 · escritorio: la figura en su propia columna a la derecha, entera y fuera del titular.
+     El SVG mide lo que su viewBox (400x560): no se recorta; el borde izquierdo se funde con la portada.
+     El zoom lento (kb) crece desde la figura y no desde el centro, para que no la saque por el borde. */
+  .vp .hero{container-type:inline-size}
+  .vp .arte.dib{transform-origin:84% 60%}
+  .vp .arte svg.esc-m{display:none}
+  .vp .arte svg.esc-d{display:block;left:auto;right:0;width:auto;height:100%;aspect-ratio:400/560;-webkit-mask-image:linear-gradient(90deg,transparent,#000 22%);mask-image:linear-gradient(90deg,transparent,#000 22%)}
+  .vp .arte.dib~.scrim{background:linear-gradient(90deg,var(--bg) 0%,var(--bg) 40%,transparent 56%)}
+  /* tarjetas: la foto toma la proporción del arte (8:3); si una tarjeta queda muy ancha, se corta abajo, nunca la cabeza */
+  .vp .svcc .ph.art{height:auto;aspect-ratio:8/3;max-height:300px}
   .vp section.s{padding-left:36px;padding-right:36px}
   .vp footer.vf{padding:0 36px 28px}
+}
+/* portada angosta de escritorio (tablet, ventana chica, la vista previa dentro de la ficha): el titular de 96 px ocupa casi todo el ancho,
+   así que la figura sube a la esquina de arriba, sobre el titular y no detrás; el borde de abajo también se funde. */
+@container (max-width:1250px){
+  .vp .arte svg.esc-d{top:0;bottom:auto;height:60%;-webkit-mask-image:linear-gradient(90deg,transparent,#000 22%),linear-gradient(0deg,transparent,#000 16%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent,#000 22%),linear-gradient(0deg,transparent,#000 16%);mask-composite:intersect}
+  .vp .arte.dib{transform-origin:84% 30%}
 }
 
 /* ===== el enlace publico (soul/s/): el sitio a pantalla completa, sin el marco de la vista previa ===== */

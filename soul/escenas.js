@@ -434,7 +434,7 @@
     var w = o.w, h = o.h, c = cajaPose(J, def), alto = def.alto || 0.86, suelo = def.suelo || 0.97, cx = def.cx || 0.5;
     if (def.encuadre === 'busto') { c.y0 = J.h[1] - 11; c.y1 = J.h[1] + 46; c.x0 = J.h[0] - 24; c.x1 = J.h[0] + 22; alto = 1.0; suelo = 1.0; }
     if (def.encuadre === 'medio') { c.y0 -= 5; c.y1 = J.p[1] + 14; alto = 0.98; suelo = 1.02; }
-    var fw = c.x1 - c.x0, fh = c.y1 - c.y0, k = Math.min(h * alto / fh, w * 0.9 / fw);
+    var fw = c.x1 - c.x0, fh = c.y1 - c.y0, k = Math.min(h * alto / fh, w * (o.anchoFig || 0.9) / fw);   // anchoFig: la portada de escritorio deja aire a los lados (el zoom lento no la corta)
     if (def.encuadre === 'medio') k = Math.min(h * alto / fh, w * 1.05 / fw);
     if (def.encuadre === 'busto') k = Math.min(h * alto / fh, w * 1.0 / fw);
     return { k: k, c: c, oy: h * suelo - c.y1 * k, cx: cx };
@@ -465,7 +465,7 @@
       props(def, J, M, P, R, el.oficio);
       ['L', 'R'].forEach(function (s) { mano(P, M, J['w' + s], J['e' + s]); });
     }
-    var B = { w: w, h: h, t: t, r: r, osc: osc, X: X, k: E.k, J: J, def: def, flip: flip, M: M,
+    var B = { suf: o.sufijo || '', w: w, h: h, t: t, r: r, osc: osc, X: X, k: E.k, J: J, def: def, flip: flip, M: M,
       cxp: cxp, top: X([0, E.c.y0])[1], pie: X([0, E.c.y1])[1] };
     var fn = FONDOS[def.fondo] || FONDOS.focos, bg = fn(B);
     // la figura en SVG (con contorno de cómic si la escena lo pide)
@@ -495,7 +495,7 @@
   function circ(x, y, rr, c, op, extra) { return '<circle cx="' + f(x) + '" cy="' + f(y) + '" r="' + f(rr) + '" fill="' + c + '"' + (op != null ? ' fill-opacity="' + op + '"' : '') + (extra || '') + '/>'; }
   function lin(x1, y1, x2, y2, c, sw, op, extra) { return '<line x1="' + f(x1) + '" y1="' + f(y1) + '" x2="' + f(x2) + '" y2="' + f(y2) + '" stroke="' + c + '" stroke-width="' + f(sw) + '"' + (op != null ? ' stroke-opacity="' + op + '"' : '') + (extra || '') + '/>'; }
   function grad(id, a, b, vertical) { return '<defs><linearGradient id="' + id + '" x1="0" y1="0" x2="' + (vertical ? 0 : 1) + '" y2="' + (vertical ? 1 : 0) + '"><stop offset="0" stop-color="' + a + '"/><stop offset="1" stop-color="' + b + '"/></linearGradient></defs>'; }
-  function uid(B) { return 'e' + Math.floor(B.r() * 1e6).toString(36); }
+  function uid(B) { return 'e' + Math.floor(B.r() * 1e6).toString(36) + (B.suf || ''); }   // con sufijo: dos SVG de la misma semilla en la página no comparten ids
   function estrella(x, y, rr, puntas, c, op, giro) { var pts = []; for (var i = 0; i < puntas * 2; i++) { var q = i / (puntas * 2) * Math.PI * 2 + (giro || 0), l = i % 2 ? rr * 0.42 : rr; pts.push([x + Math.cos(q) * l, y + Math.sin(q) * l]); } return pol(pts, c, op); }
   function multitud(B, y0, filas, col1, col2, evita) {
     var w = B.w, r = B.r, out = '';

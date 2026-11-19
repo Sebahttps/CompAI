@@ -1119,6 +1119,11 @@
         // ========================================================
         // REGLAS DE CONTROL DE INSTANCIAS Y EMISIÓN DE INFORME FINAL
         // ========================================================
+        // Escapa texto libre antes de meterlo en innerHTML (comentarios y detalles escritos por personas)
+        function escHtml(t) {
+            return String(t == null ? '' : t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+
         function getUnevaluatedInstance(p) {
             if (!p || !Array.isArray(p.instanciasCorregidas)) return null;
             return p.instanciasCorregidas.find(inst => inst.estrellas === null || inst.estrellas === undefined) || null;
@@ -2154,7 +2159,7 @@
                         evalWidgetHtml = `
                             <div class="flex flex-col gap-1">
                                 <div class="text-compai-amber text-sm tracking-wider">${starsStr} <span class="font-mono text-[10px] font-bold text-red-700 bg-red-100 px-2 py-0.5 rounded uppercase">${labelTipo}</span></div>
-                                <div class="text-[11px] text-slate-600 italic whitespace-pre-line">"${inst.comentarioCliente}"</div>
+                                <div class="text-[11px] text-slate-600 italic whitespace-pre-line">"${escHtml(inst.comentarioCliente)}"</div>
                             </div>
                         `;
                     } else {
@@ -2198,7 +2203,7 @@
                         </td>
                         <td class="py-3 px-4 align-top">
                             <div class="font-mono text-[10px] font-bold text-slate-500 uppercase mb-0.5">Detalle (${safeAuthorLabel}):</div>
-                            <p class="text-xs text-slate-700 leading-snug whitespace-pre-line">${inst.detalleCorreccion}</p>
+                            <p class="text-xs text-slate-700 leading-snug whitespace-pre-line">${escHtml(inst.detalleCorreccion)}</p>
                         </td>
                         <td class="py-3 px-4 text-center align-top font-mono text-xs font-bold text-slate-600">
                             #${inst.numero}
@@ -3588,7 +3593,7 @@
                                 <span class="font-bold text-compai-itBlue">${item.tipo}${starsStr}</span>
                                 <span>${item.fecha} · ${safeAuthor}</span>
                             </div>
-                            <p class="text-xs text-slate-700 whitespace-pre-wrap">${item.detalle}</p>
+                            <p class="text-xs text-slate-700 whitespace-pre-wrap">${escHtml(item.detalle)}</p>
                         </div>
                     `;
                 });
@@ -3701,7 +3706,7 @@
                         <span class="font-mono text-[10px] font-bold text-compai-itBlue uppercase">${index + 1}. ${h.tipo}</span>
                         <span class="font-mono text-[9px] text-slate-500">${h.fecha} · ${safeAuthor}</span>
                     </div>
-                    <pre class="font-mono text-[11px] text-slate-800 whitespace-pre-wrap leading-relaxed">${h.detalle}</pre>
+                    <pre class="font-mono text-[11px] text-slate-800 whitespace-pre-wrap leading-relaxed">${escHtml(h.detalle)}</pre>
                     ${capturesHtml}
                 `;
                 histList.appendChild(row);

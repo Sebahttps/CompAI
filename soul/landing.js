@@ -26,3 +26,13 @@
     }
   });
 })();
+/* Links de pago (config.js -> pagos). Solo con modo 'directo' y link https del plan el boton "Quiero" lleva al pago;
+   con el link vacio o modo 'despues' no cambia nada: sigue yendo a las preguntas. */
+(function () {
+  var P = (window.SOUL_CFG && window.SOUL_CFG.pagos) || {};
+  if (P.modo !== 'directo') return;
+  ['fresh', 'sun', 'vibe'].forEach(function (n, i) {
+    var u = P[n] && P[n].mensual, b = document.querySelector('.plan[data-plan="' + i + '"] .quiero');
+    if (b && u && /^https:\/\//i.test(u)) { b.href = u; b.target = '_blank'; b.rel = 'noopener'; }
+  });
+})();

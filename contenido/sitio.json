@@ -16,6 +16,8 @@
  "_formEndpoint": "URL del web app de Google Apps Script (apps-script/Code.gs). Mientras esté vacía, el formulario envía por mailto:hola@compai.cl.",
  "soulGoogleId": "473593989723-kv081o0c0a8fejp37caicbda0dhf8nqe.apps.googleusercontent.com",
  "_soulGoogleId": "ID de cliente OAuth (Google Cloud, tipo Aplicación web) para el retrato de SOUL. Es público. Vacío: el retrato no se muestra.",
+ "_soulPagos": "Links de pago de SOUL (proveedor por definir; ver informe del 19-11-2026). Vacio = el boton del plan sigue llevando a las preguntas. modo: 'despues' (el link se usa al publicar, el boton no cambia) o 'directo' (el boton del plan lleva al pago). Se pegan aqui URLs publicas de pago, nunca claves.",
+ "soulPagos": {"modo": "despues", "fresh": {"mensual": "", "anual": ""}, "sun": {"mensual": "", "anual": ""}, "vibe": {"mensual": "", "anual": ""}},
  "contacto": {
   "correo": "hola@compai.cl",
   "whatsapp": "",

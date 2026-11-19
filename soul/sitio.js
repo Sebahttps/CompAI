@@ -165,7 +165,8 @@
       ';--bgI:' + su.bgI + ';--bg2I:' + su.bg2I + ';--inkI:' + su.inkI + ';--mutI:' + su.mutI + ';--acI:' + su.acI + ';--onI:' + sobre(su.acI) + ';--lnI:' + rgba(su.inkI, .22);
     var s = '<div class="vp' + (d.mayus ? ' my' : '') + '" data-dir="' + d.id + '" style="' + vars + '">';
     // portada alta: nav + arte (foto propia si la hay; si no, arte SVG con la paleta) + titular
-    s += '<section class="hero sf-a" aria-label="Portada"><div class="arte' + anim + '"' + (MEM.photo ? ' style="' + fondo(MEM.photo) + '"' : '') + '>' + (MEM.photo ? '' : (W.SOUL_ARTE ? W.SOUL_ARTE.escena(opcionesArte(ST, D, M, { w: 400, h: 760, anim: ST.motion !== 0 })) : arteSVG(d))) + '</div><div class="scrim"></div>' +
+    s += '<section class="hero sf-a" aria-label="Portada"><div class="arte' + anim + (!MEM.photo && W.SOUL_ARTE ? ' dib' : '') + '"' + (MEM.photo ? ' style="' + fondo(MEM.photo) + '"' : '') + '>' + (MEM.photo ? '' : (W.SOUL_ARTE ? W.SOUL_ARTE.escena(opcionesArte(ST, D, M, { w: 400, h: 760, anim: ST.motion !== 0, clase: 'esc-m' })) +
+      W.SOUL_ARTE.escena(opcionesArte(ST, D, M, { w: 400, h: 560, anim: ST.motion !== 0, clase: 'esc-d', sufijo: 'd', par: 'xMidYMid slice', anchoFig: 0.74 })) : arteSVG(d))) + '</div><div class="scrim"></div>' +
       '<div class="nav"><span class="logo"><i aria-hidden="true">' + esc(iniciales()) + '</i><b>' + esc(nombre) + '</b></span><a class="cta" href="#vp-cotiza" data-vp>' + esc(cta) + '</a></div>' +
       '<div class="in-h"><p class="mn">' + esc(oficioNombre_()) + '</p><h2 class="tit">' + titHTML(tit || nombre) + '</h2>' +
       (ci ? '<p class="mn prueba">' + esc(ci.texto) + '</p>' : '') +
@@ -189,7 +190,7 @@
             if (!v.n.trim()) return '';
             c++;
             var propia = v.ph === 'up' && MEM.svcPh[k];
-            return '<div class="svcc">' + (propia ? '<div class="ph" style="' + fondo(esc(MEM.svcPh[k])) + '"></div>' : '<div class="ph art">' + (W.SOUL_ARTE ? W.SOUL_ARTE.escena(opcionesArte(ST, D, M, { w: 400, h: 280, ini: '', grano: false, sufijo: 't' + k, seed: opcionesArte(ST, D, M).seed + (k + 1) * 104729 })) : arteTarjeta()) + '<p class="mn">' + pad(c) + '</p></div>') +
+            return '<div class="svcc">' + (propia ? '<div class="ph" style="' + fondo(esc(MEM.svcPh[k])) + '"></div>' : '<div class="ph art">' + (W.SOUL_ARTE ? W.SOUL_ARTE.escena(opcionesArte(ST, D, M, { w: 400, h: 150, par: 'xMidYMin slice', ini: '', grano: false, sufijo: 't' + k, seed: opcionesArte(ST, D, M).seed + (k + 1) * 104729 })) : arteTarjeta()) + '<p class="mn">' + pad(c) + '</p></div>') +
               '<div class="bd"><b>' + esc(v.n.trim()) + '</b>' + (v.p.trim() ? '<span class="pr">desde ' + esc(v.p.trim()) + '</span>' : '') + (v.d.trim() ? '<p>' + esc(v.d.trim()) + '</p>' : '') + '</div></div>';
           }).join('') + '</div></section>';
       }

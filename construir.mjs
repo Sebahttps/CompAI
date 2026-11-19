@@ -379,9 +379,15 @@ writeFileSync(join(raiz, 'robots.txt'),
 /* ── soul/ · compai.cl/soul (26-10-2026): solo su config.js sale de acá ── */
 const SOUL_DIR = join(raiz, 'soul');
 if (existsSync(SOUL_DIR)) {
+  /* links de pago por plan (sitio.json -> soulPagos): solo viajan los que tienen URL https; vacio = comportamiento de siempre */
+  const soulPagos = { modo: (S.soulPagos && S.soulPagos.modo) === 'directo' ? 'directo' : 'despues' };
+  for (const pl of ['fresh', 'sun', 'vibe']) for (const md of ['mensual', 'anual']) {
+    const u = String((S.soulPagos && S.soulPagos[pl] && S.soulPagos[pl][md]) || '').trim();
+    if (/^https:\/\//i.test(u)) (soulPagos[pl] = soulPagos[pl] || {})[md] = u;
+  }
   const wa = String((S.creative && S.creative.whatsapp_pyme) || 'https://wa.me/56962469977').replace(/\D/g, '');
   writeFileSync(join(SOUL_DIR, 'config.js'),
-    `/* LO ESCRIBE construir.mjs desde contenido/sitio.json — NO SE EDITA A MANO. */\nwindow.SOUL_CFG = ${JSON.stringify({ endpoint: S.formEndpoint || '', whatsapp: wa, googleId: S.soulGoogleId || '' })};\n`, 'utf8');
+    `/* LO ESCRIBE construir.mjs desde contenido/sitio.json — NO SE EDITA A MANO. */\nwindow.SOUL_CFG = ${JSON.stringify({ endpoint: S.formEndpoint || '', whatsapp: wa, googleId: S.soulGoogleId || '', pagos: soulPagos })};\n`, 'utf8');
   console.log(`soul/config.js · endpoint ${S.formEndpoint ? 'configurado' : 'VACIO (las preguntas ofreceran WhatsApp)'}`);
 }
 

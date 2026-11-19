@@ -164,7 +164,8 @@
   /* La escena completa, en un solo SVG. */
   function escena(o) {
     var B = base(o), I = icono(o);
-    var s = abre(B.w, B.h, o.anim ? ' class="vpa"' : '', I && B.h > B.w ? 'xMidYMin slice' : null);   // escena alta: si sobra, se corta abajo, nunca la cabeza
+    var cl = ((o.anim ? 'vpa ' : '') + (o.clase || '')).trim();
+    var s = abre(B.w, B.h, cl ? ' class="' + cl + '"' : '', o.par || (I && B.h > B.w ? 'xMidYMin slice' : null));   // escena alta: si sobra, se corta abajo, nunca la cabeza
     if (I) s += I.fondo + '<g class="vpa-sol">' + I.sol + '</g>' + I.confeti + I.figura + hzG(I.horizonte);
     else s += capaFondo(o, B) + '<g class="vpa-sol">' + capaSol(o, B) + '</g>' + capaConfeti(o, B) + capaFigura(o, B) + capaHorizonte(o, B);
     if (o.grano !== false) s += capaGrano(o, B);
