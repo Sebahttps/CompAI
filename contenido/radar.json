@@ -3,47 +3,8 @@
  "generado": "2026-11-18T16:30",
  "fecha": "18-11-2026 16:30",
  "fuente": "RAI-CA · API de Mercado Público, Compra Ágil",
- "candidatas": 43,
+ "candidatas": 38,
  "filas": [
-  {
-   "marca": "GO",
-   "nombre": "RBD 22309 PRO RETENCIÓN PG02 Plataforma integral de gestión y cultura escolar Colegio Inglés Mabel Condemarín",
-   "linea": "L5",
-   "linea_nombre": "Soluciones Web y Desarrollo Customizado",
-   "score": 100,
-   "codigo": "1126922-1080-COT26",
-   "monto": "$5.000.000",
-   "organismo": "SERVICIO LOCAL DE EDUCACION PUBLICA DE LLANQUIHUE · Región de los Lagos ",
-   "fecha": "19-11-2026 08:00",
-   "cierre_iso": "2026-11-19 08:00",
-   "quedan": "quedan 6 h"
-  },
-  {
-   "marca": "GO",
-   "nombre": "RBD 7872 PRO RETENCIÓN PG02 Plataforma educativa matemáticas y comprensión lectora socioemocional para Colegio Bicentenario Difusión Artistica Los Ulmos",
-   "linea": "L5",
-   "linea_nombre": "Soluciones Web y Desarrollo Customizado",
-   "score": 100,
-   "codigo": "1126922-1079-COT26",
-   "monto": "$1.900.000",
-   "organismo": "SERVICIO LOCAL DE EDUCACION PUBLICA DE LLANQUIHUE · Región de los Lagos ",
-   "fecha": "19-11-2026 08:00",
-   "cierre_iso": "2026-11-19 08:00",
-   "quedan": "quedan 6 h"
-  },
-  {
-   "marca": "NO-GO",
-   "nombre": "TABLET ANDROID IMPLEMENTACION Y APLICACION DE ENCUESTA DE ADOLECENTE FUERA DEL CENTRO DE SALUD",
-   "linea": "L5",
-   "linea_nombre": "Soluciones Web y Desarrollo Customizado",
-   "score": 45,
-   "codigo": "1660-480-COT26",
-   "monto": "$200.000",
-   "organismo": "SERVICIO SALUD COQUIMBO HOSP DE SALAMANC · Región de Coquimbo ",
-   "fecha": "19-11-2026 08:00",
-   "cierre_iso": "2026-11-19 08:00",
-   "quedan": "quedan 6 h"
-  },
   {
    "marca": "GO",
    "nombre": "LICENCIAS DE SOFTWARE DE ASISTENCIA LEGAL CON IA",
@@ -55,7 +16,7 @@
    "organismo": "SERVICIO DE SALUD AYSEN CARLOS IBANEZ DEL CAMPO · Región Aysén del General Carlos Ibáñez del Campo",
    "fecha": "19-11-2026 09:28",
    "cierre_iso": "2026-11-19 09:28",
-   "quedan": "quedan 7 h"
+   "quedan": "queda menos de 1 h"
   },
   {
    "marca": "GO",
@@ -68,7 +29,7 @@
    "organismo": "COMISION PARA EL MERCADO FINANCIERO · Región Metropolitana de Santiago",
    "fecha": "19-11-2026 10:00",
    "cierre_iso": "2026-11-19 10:00",
-   "quedan": "quedan 8 h"
+   "quedan": "quedan 1 h"
   },
   {
    "marca": "GO",
@@ -81,7 +42,7 @@
    "organismo": "DELEGACION PRESIDENCIAL PROVINCIAL DE OSORNO · Región de los Lagos ",
    "fecha": "19-11-2026 10:00",
    "cierre_iso": "2026-11-19 10:00",
-   "quedan": "quedan 8 h"
+   "quedan": "quedan 1 h"
   },
   {
    "marca": "GO",
@@ -94,7 +55,33 @@
    "organismo": "SERVICIO LOCAL DE EDUCACIÓN PÚBLICA SANTA CORINA · Región Metropolitana de Santiago",
    "fecha": "19-11-2026 10:54",
    "cierre_iso": "2026-11-19 10:54",
-   "quedan": "quedan 9 h"
+   "quedan": "quedan 1 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "EDG, SC INT-2026-00068, PG01, 2211002, CAPACITACION POWER BI PARA FUNCIONARIOS SLEP VALDIVIA",
+   "linea": "L2",
+   "linea_nombre": "Arquitectura TI y Consultoría Especializada",
+   "score": 100,
+   "codigo": "1305560-68-COT26",
+   "monto": "$2.500.000",
+   "organismo": "SERVICIO LOCAL DE EDUCACIÓN PÚBLICA DE VALDIVIA · Región de Los Ríos",
+   "fecha": "19-11-2026 11:00",
+   "cierre_iso": "2026-11-19 11:00",
+   "quedan": "quedan 2 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "MTS ADQUISICIÓN DE 100 USOS DE PLATAFORMA DIGITAL DE EVALUACIÓN PSICOPEDAGÓGICA Y APOYO A LA INCLUSIÓN – ESCUELA BÁSICA NAHUELBUTA",
+   "linea": "L5",
+   "linea_nombre": "Soluciones Web y Desarrollo Customizado",
+   "score": 100,
+   "codigo": "2750-41-COT26",
+   "monto": "$2.000.000",
+   "organismo": "I MUNICIPALIDAD DE ANGOL · Región de la Araucanía ",
+   "fecha": "19-11-2026 12:00",
+   "cierre_iso": "2026-11-19 12:00",
+   "quedan": "quedan 3 h"
   },
   {
    "marca": "NO-GO",
@@ -107,7 +94,20 @@
    "organismo": "UNIVERSIDAD DE ATACAMA · Región de Atacama ",
    "fecha": "19-11-2026 12:00",
    "cierre_iso": "2026-11-19 12:00",
-   "quedan": "quedan 10 h"
+   "quedan": "quedan 3 h"
+  },
+  {
+   "marca": "NO-GO",
+   "nombre": "MATERIALES DE BODEGA Y DISCO DURO 2",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 60,
+   "codigo": "1057390-338-COT26",
+   "monto": "$2.500.000",
+   "organismo": "SERVICIO DE SALUD ARAUCANIA NORTE · Región de la Araucanía ",
+   "fecha": "19-11-2026 12:00",
+   "cierre_iso": "2026-11-19 12:00",
+   "quedan": "quedan 3 h"
   }
  ]
 }

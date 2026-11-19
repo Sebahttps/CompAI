@@ -1,40 +1,8 @@
 {
- "fecha": "2026-11-17",
+ "fecha": "2026-11-19",
  "fuente": "API de Mercado Público · licitaciones activas, todas las modalidades",
- "barridas": 4875,
+ "barridas": 5064,
  "filas": [
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
-   "id": "SERVICIO DE CALL CENTER TELEFÓNICO",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
-   "id": "SOLUCIÓN DE PREVENCIÓN DE INTRUSIONES (IPS) CON SUS …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
-   "id": "BARRA DE VIDEOCONFERENCIA INTELIGENTE CON IA, 180° FOV, 4K …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
-   "id": "CONTRATACIÓN DE LOS SERVICIOS TI, ADMINISTRACIÓN MICROSOFT …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
   {
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
@@ -80,6 +48,38 @@
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
    "id": "LICENCIA EDUCATIVA ATLAS.TI 1 PUESTO (SUSCRIPCIÓN ANUAL).",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "SERVICIO DE SERVIDOR VIRTUAL PRIVADO (VPS)",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "SERVICIO SAAS PARA LA EMISIÓN Y GESTIÓN DE LICENCIAS …",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "PENDRIVES 8 GB METAL MADERA CON IMPRESIÓN LOGO A COLOR PARA …",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "LICIENCIA DE SUSCRIPCION CHATGPT PLUS PARA 12 MESES",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   }
