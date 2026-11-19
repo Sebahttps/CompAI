@@ -126,9 +126,9 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;paddin
 #il-cuore .kick{margin:0 0 24px}
 .cuore-fig{margin:0;aspect-ratio:16/9;overflow:hidden;background:var(--panel)}
 .cuore-esp{height:120px}
-.cuore-txt{max-width:62ch;margin:0 auto;text-align:center}
+.cuore-txt{max-width:min(100%,900px);margin:0 auto;text-align:center}
 .cuore-txt h2{margin:0 0 28px;font-size:48px;line-height:1.02;font-weight:600;letter-spacing:-.02em}
-.cuore-txt p{margin:0 auto;font-size:17px;line-height:1.55;color:var(--gris);max-width:62ch}
+.cuore-txt p{margin:0 auto;font-size:17px;line-height:1.55;color:var(--gris);max-width:none}
 .cuore-acc{display:flex;gap:12px;margin-top:36px;flex-wrap:wrap;justify-content:center}
 
 /* ── / 03 L'Intelligence ─────────────────────────────────────────────── */

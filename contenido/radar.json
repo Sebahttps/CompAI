@@ -3,73 +3,8 @@
  "generado": "2026-11-19T10:40",
  "fecha": "19-11-2026 10:40",
  "fuente": "RAI-CA · API de Mercado Público, Compra Ágil",
- "candidatas": 97,
+ "candidatas": 72,
  "filas": [
-  {
-   "marca": "GO",
-   "nombre": "MTS ADQUISICIÓN DE 100 USOS DE PLATAFORMA DIGITAL DE EVALUACIÓN PSICOPEDAGÓGICA Y APOYO A LA INCLUSIÓN – ESCUELA BÁSICA NAHUELBUTA",
-   "linea": "L5",
-   "linea_nombre": "Soluciones Web y Desarrollo Customizado",
-   "score": 100,
-   "codigo": "2750-41-COT26",
-   "monto": "$2.000.000",
-   "organismo": "I MUNICIPALIDAD DE ANGOL · Región de la Araucanía ",
-   "fecha": "19-11-2026 12:00",
-   "cierre_iso": "2026-11-19 12:00",
-   "quedan": "queda menos de 1 h"
-  },
-  {
-   "marca": "GO",
-   "nombre": "ADQUISICIÓN DE LICENCIA PERPETUA  OFFICE HOGAR Y EMPRESA 2024 FONDOS EMTP 2026",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 100,
-   "codigo": "1126922-1086-COT26",
-   "monto": "$280.000",
-   "organismo": "SERVICIO LOCAL DE EDUCACION PUBLICA DE LLANQUIHUE · Región de los Lagos ",
-   "fecha": "19-11-2026 12:00",
-   "cierre_iso": "2026-11-19 12:00",
-   "quedan": "queda menos de 1 h"
-  },
-  {
-   "marca": "NO-GO",
-   "nombre": "Modulos de memoria RAM para servidor Proyecto FA9550-22-10292",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 45,
-   "codigo": "2859-1468-COT26",
-   "monto": "$2.500.000",
-   "organismo": "UNIVERSIDAD DE ATACAMA · Región de Atacama ",
-   "fecha": "19-11-2026 12:00",
-   "cierre_iso": "2026-11-19 12:00",
-   "quedan": "queda menos de 1 h"
-  },
-  {
-   "marca": "NO-GO",
-   "nombre": "OP26-1673 Servidor, UPS y NAS para sistema de gestion de pago de honorarios DAF (SIFIM 2026)",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 45,
-   "codigo": "3904-1070-COT26",
-   "monto": "$6.600.000",
-   "organismo": "I MUNICIPALIDAD DE BULNES · Región del Ñuble",
-   "fecha": "19-11-2026 12:15",
-   "cierre_iso": "2026-11-19 12:15",
-   "quedan": "quedan 1 h"
-  },
-  {
-   "marca": "GO",
-   "nombre": "HOSTING Y SOPORTE",
-   "linea": "L3",
-   "linea_nombre": "Cloud, Data & Operations",
-   "score": 100,
-   "codigo": "3791-1182-COT26",
-   "monto": "$357.000",
-   "organismo": "I MUNICIPALIDAD DE CISNES · Región Aysén del General Carlos Ibáñez del Campo",
-   "fecha": "19-11-2026 13:30",
-   "cierre_iso": "2026-11-19 13:30",
-   "quedan": "quedan 2 h"
-  },
   {
    "marca": "GO",
    "nombre": "Disco duro externo portátil (unidad de almacenamiento externa).",
@@ -81,7 +16,7 @@
    "organismo": "DELEGACIÓN PRESIDENCIAL PROVINCIAL DE CHACABUCO · Región Metropolitana de Santiago",
    "fecha": "19-11-2026 15:00",
    "cierre_iso": "2026-11-19 15:00",
-   "quedan": "quedan 3 h"
+   "quedan": "queda menos de 1 h"
   },
   {
    "marca": "GO",
@@ -94,7 +29,7 @@
    "organismo": "HOSPITAL PUERTO MONTT SERVICIO DE SALUD DEL RELONCAVI · Región de los Lagos ",
    "fecha": "19-11-2026 15:00",
    "cierre_iso": "2026-11-19 15:00",
-   "quedan": "quedan 3 h"
+   "quedan": "queda menos de 1 h"
   },
   {
    "marca": "GO",
@@ -107,7 +42,72 @@
    "organismo": "I.Municipalidad de El Carmen · Región del Ñuble",
    "fecha": "19-11-2026 15:40",
    "cierre_iso": "2026-11-19 15:40",
-   "quedan": "quedan 4 h"
+   "quedan": "quedan 1 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "(TTV) INSUMO EQUIVALENTE A PLATAFORMA DE ACCESO TRANSANAL (TAMIS)",
+   "linea": "L5",
+   "linea_nombre": "Soluciones Web y Desarrollo Customizado",
+   "score": 100,
+   "codigo": "608-7062-COT26",
+   "monto": "$1.500.000",
+   "organismo": "HOSPITAL DR GUSTAVO FRICKE DE VINA DEL MAR · Región de Valparaíso ",
+   "fecha": "19-11-2026 16:11",
+   "cierre_iso": "2026-11-19 16:11",
+   "quedan": "quedan 1 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "Renovación de licencia para “PRTG Network Monitor 500 sensores por 1 año",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "1607-120-COT26",
+   "monto": "$2.300.000",
+   "organismo": "SUPERINTENDENCIA DE SEGURIDAD SOCIAL · Región Metropolitana de Santiago",
+   "fecha": "19-11-2026 16:30",
+   "cierre_iso": "2026-11-19 16:30",
+   "quedan": "quedan 2 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "Renovación de licencia on-premise para “Tenable Nessus Professional Subscription” por 1 año.",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "1607-122-COT26",
+   "monto": "$5.000.000",
+   "organismo": "SUPERINTENDENCIA DE SEGURIDAD SOCIAL · Región Metropolitana de Santiago",
+   "fecha": "19-11-2026 17:00",
+   "cierre_iso": "2026-11-19 17:00",
+   "quedan": "quedan 2 h"
+  },
+  {
+   "marca": "NO-GO",
+   "nombre": "Adquisición computador y licencia Microsoft Office para Residencia Transitoria",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 45,
+   "codigo": "2322-814-COT26",
+   "monto": "$1.100.000",
+   "organismo": "I MUNICIPALIDAD DE VALLENAR · Región de Atacama ",
+   "fecha": "19-11-2026 18:00",
+   "cierre_iso": "2026-11-19 18:00",
+   "quedan": "quedan 3 h"
+  },
+  {
+   "marca": "NO-GO",
+   "nombre": "Kit para servidor de almacenamiento NAS para red I+D+i+e",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 45,
+   "codigo": "5416-894-COT26",
+   "monto": "$3.978.000",
+   "organismo": "UNIVERSIDAD DE LA SERENA · Región de Coquimbo ",
+   "fecha": "20-11-2026 12:00",
+   "cierre_iso": "2026-11-20 12:00",
+   "quedan": "quedan 21 h"
   }
  ]
 }
