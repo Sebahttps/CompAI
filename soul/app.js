@@ -456,6 +456,8 @@
       .then(function (j) {
         clearTimeout(reloj);
         if (j && j.ok && /^data:image\//.test(j.img || '')) { MEM.retrato = j.img; MEM.retHecho = est; render(false, '[data-a="retrato"]'); return; }
+        // el script en vivo aún no conoce «leyenda» (hasta correr DESPLEGAR-FORMULARIO-COMPAI): cae al facetado sin gastar cupo
+        if (j && j.error === 'estilo' && est === 'leyenda') { MEM.retEst = 'facetado'; btn.disabled = false; crearRetrato(btn); return; }
         var txt = ERR_RET[j && j.error] || 'No se pudo crear el retrato ahora. Prueba en un rato.';
         if (j && j.error === 'tope-persona' && j.tope) txt = 'Ya creaste tus ' + j.tope + ' retratos de hoy. Vuelve mañana.';
         if (j && j.error === 'cuenta') { MEM.gtoken = ''; render(false); msg = $('#ret-msg'); }
