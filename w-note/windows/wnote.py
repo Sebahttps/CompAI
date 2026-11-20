@@ -57,6 +57,8 @@ from PySide6.QtCore import (
 )
 from PySide6.QtGui import (
     QAction,
+    QFont,
+    QFontMetrics,
     QBrush,
     QColor,
     QDesktopServices,
@@ -70,6 +72,7 @@ from PySide6.QtGui import (
 from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtWidgets import (
     QApplication,
+    QGraphicsDropShadowEffect,
     QCheckBox,
     QComboBox,
     QDialog,
@@ -113,7 +116,7 @@ except ImportError:
     HAS_QR = False
 
 APP_NAME = "w-notes"
-APP_VERSION = "1.2.0"
+APP_VERSION = "1.2.1"
 APP_DIR = Path(__file__).resolve().parent
 WEB_DIR = APP_DIR.parent  # carpeta w-note/ con index.html (panel del celular)
 
@@ -1114,9 +1117,9 @@ def _plus_button(size: int, tooltip: str = "Crear nota rápida (Ctrl+Alt+N)") ->
     b.setCursor(Qt.CursorShape.PointingHandCursor)
     b.setToolTip(tooltip)
     b.setStyleSheet(
-        f"QPushButton {{ background: rgba(255,255,255,0.22); color: #ffffff; border: 1px solid rgba(255,255,255,0.45);"
+        f"QPushButton {{ background: rgba(20,20,20,0.38); color: #ffffff; border: 1px solid rgba(255,255,255,0.65);"
         f" border-radius: {size // 2}px; font-size: {size // 2 + 2}px; }}"
-        "QPushButton:hover { background: rgba(255,255,255,0.36); }")
+        "QPushButton:hover { background: rgba(20,20,20,0.55); }")
     return b
 
 
@@ -1435,43 +1438,69 @@ class DesktopWidgetWindow(QWidget):
         root.setContentsMargins(14, 12, 14, 12)
         root.setSpacing(4)
 
-        top_row = QHBoxLayout()
-        top_row.addStretch()
-        self.lbl_loc = QLabel()
-        self.lbl_loc.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-        self.lbl_loc.setStyleSheet("color: rgba(255,255,255,0.95); font-size: 11px; font-weight: 700;"
-                                   " letter-spacing: 1px;" + shadow)
-        top_row.addWidget(self.lbl_loc)
-        root.addLayout(top_row)
+        # Reloj como el de la intranet: bloque centrado (ubicación · hora · fecha), temperatura alineada
+        # al borde superior de las cifras y AM debajo. Fuentes con QFont (no con la hoja de estilo) para
+        # medir las cifras de verdad y calcular el desfase exacto.
+        def fuente(px: int, peso, familia: str = "Segoe UI") -> QFont:
+            f = QFont(familia)
+            f.setPixelSize(px)
+            f.setWeight(peso)
+            return f
+
+        def etiqueta(font: QFont, color: str, align=Qt.AlignmentFlag.AlignTop) -> QLabel:
+            lbl = QLabel()
+            lbl.setFont(font)
+            lbl.setStyleSheet(f"color: {color};" + shadow)
+            lbl.setAlignment(align)
+            lbl.setContentsMargins(0, 0, 0, 0)
+            return lbl
+
+        f_time = fuente(60, QFont.Weight.Normal)        # un poco más grueso que antes (era Light)
+        f_temp = fuente(22, QFont.Weight.Normal)
+        f_ampm = fuente(21, QFont.Weight.Normal)
+        reloj = QWidget()
+        reloj.setStyleSheet("background: transparent;")
+        rv = QVBoxLayout(reloj)
+        rv.setContentsMargins(0, 0, 0, 0)
+        rv.setSpacing(0)
+        self.lbl_loc = etiqueta(fuente(12, QFont.Weight.Bold), "#FFFFFF", Qt.AlignmentFlag.AlignHCenter)
+        self.lbl_loc.setStyleSheet("color: #FFFFFF; letter-spacing: 1px;" + shadow)
+        rv.addWidget(self.lbl_loc)
 
         clock_row = QHBoxLayout()
-        clock_row.setSpacing(4)
+        clock_row.setSpacing(6)
         clock_row.addStretch()
-        self.lbl_time = QLabel()
-        self.lbl_time.setStyleSheet("color: #ffffff; font-size: 52px; font-weight: 300;" + shadow)
-        self.lbl_time.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.lbl_time = etiqueta(f_time, "#FFFFFF")
         clock_row.addWidget(self.lbl_time, 0, Qt.AlignmentFlag.AlignTop)
         meta_col = QVBoxLayout()
         meta_col.setSpacing(0)
-        # el alto de línea deja aire sobre las cifras: se baja la temperatura a la altura del borde superior
-        fm = self.lbl_time.fontMetrics()
-        meta_col.setContentsMargins(0, max(0, fm.ascent() - fm.capHeight() - 2), 0, 0)
-        self.lbl_temp = QLabel("–°")
-        self.lbl_temp.setStyleSheet("color: #78C5E3; font-size: 17px; font-weight: 400;" + shadow)
-        self.lbl_ampm = QLabel()
-        self.lbl_ampm.setStyleSheet("color: rgba(255,255,255,0.9); font-size: 11px; font-weight: 700;" + shadow)
+        mt, ms = QFontMetrics(f_time), QFontMetrics(f_temp)
+        desfase = (mt.ascent() - mt.capHeight()) - (ms.ascent() - ms.capHeight())
+        meta_col.setContentsMargins(0, max(0, desfase), 0, 0)
+        self.lbl_temp = etiqueta(f_temp, "#A8D8F0")
+        self.lbl_temp.setText("–°")
+        self.lbl_ampm = etiqueta(f_ampm, "#FFFFFF")
         meta_col.addWidget(self.lbl_temp)
         meta_col.addWidget(self.lbl_ampm)
         meta_col.addStretch()
         clock_row.addLayout(meta_col)
         clock_row.setAlignment(meta_col, Qt.AlignmentFlag.AlignTop)
-        root.addLayout(clock_row)
+        clock_row.addStretch()
+        rv.addLayout(clock_row)
 
-        self.lbl_date = QLabel()
-        self.lbl_date.setAlignment(Qt.AlignmentFlag.AlignRight)
-        self.lbl_date.setStyleSheet("color: rgba(255,255,255,0.95); font-size: 13px; font-weight: 500;"
-                                    " margin-bottom: 6px;" + shadow)
-        root.addWidget(self.lbl_date)
+        self.lbl_date = etiqueta(fuente(14, QFont.Weight.DemiBold), "#FFFFFF", Qt.AlignmentFlag.AlignHCenter)
+        rv.addWidget(self.lbl_date)
+        # sombra para no perder los trazos con cualquier fondo de Windows (como el text-shadow de la intranet)
+        sombra = QGraphicsDropShadowEffect(reloj)
+        sombra.setBlurRadius(14)
+        sombra.setOffset(0, 2)
+        sombra.setColor(QColor(8, 9, 12, 235))
+        reloj.setGraphicsEffect(sombra)
+        fila = QHBoxLayout()
+        fila.addStretch()
+        fila.addWidget(reloj)
+        root.addLayout(fila)
+        root.addSpacing(8)
 
         gcal = QFrame()
         gcal.setObjectName("gcal")
