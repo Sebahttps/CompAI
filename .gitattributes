@@ -11,3 +11,8 @@
 # diferian 2.620 bytes y eran identicas.
 proyecto/**/*.json -text
 estado/index.html  -text
+
+# w-note: los scripts de Windows se guardan con CRLF (cmd.exe y PowerShell 5.1
+# los leen mal con LF). El .ps1 va ademas en UTF-8 con BOM, por las tildes.
+w-note/windows/*.bat text eol=crlf
+w-note/windows/*.ps1 text eol=crlf

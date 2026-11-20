@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>w-note · compAI</title>
+<meta name="description" content="w-note de compAI: tus notas de vidrio y tu agenda en el celular, sincronizadas con tu PC.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0F5C7A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="w-note">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="marca/wnote-logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="marca/wnote-32.png">
+<link rel="apple-touch-icon" href="marca/apple-touch-icon.png">
+<style>
+@font-face { font-family: "Space Grotesk"; src: url("../css/fuentes/spacegrotesk-var-latin.woff2") format("woff2"); font-weight: 300 700; font-display: swap; }
+:root {
+  --ink: #141414; --petrol: #0F5C7A; --cream: #F4F0E6; --sand: #D0C6B0; --yellow: #F0B400; --green: #37B35A;
+  --glass: rgba(255,255,255,.08); --line: rgba(255,255,255,.16);
+  --font: "Space Grotesk", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; min-height: 100%; }
+body {
+  font-family: var(--font); color: #fff; background: #11233a;
+  background-image: linear-gradient(160deg, #13223a 0%, #123a55 55%, #0F5C7A 100%); background-attachment: fixed;
+  padding-bottom: calc(96px + env(safe-area-inset-bottom));
+}
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; border: 0; background: none; }
+.hidden { display: none !important; }
+
+header {
+  position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 10px;
+  padding: calc(12px + env(safe-area-inset-top)) 16px 12px;
+  background: rgba(17,32,52,.82); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--line);
+}
+header .logo { width: 34px; height: 34px; flex: none; }
+header h1 { font-size: 18px; margin: 0; font-weight: 700; letter-spacing: -.01em; white-space: nowrap; }
+@media (max-width: 420px) { header h1 small { display: none; } }
+header h1 small { font-size: 11px; font-weight: 500; opacity: .6; margin-left: 4px; }
+header .grow { flex: 1; }
+.status { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; padding: 4px 10px; border-radius: 999px;
+  background: var(--glass); border: 1px solid var(--line); white-space: nowrap; }
+.status i { width: 7px; height: 7px; border-radius: 50%; background: var(--sand); }
+.status.ok i { background: var(--green); } .status.err i { background: #e5484d; } .status.busy i { background: var(--yellow); }
+.icon-btn { width: 34px; height: 34px; border-radius: 50%; background: var(--glass); border: 1px solid var(--line);
+  display: grid; place-items: center; font-size: 16px; }
+
+main { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; max-width: 640px; margin: 0 auto; }
+
+.agenda { border-radius: 20px; padding: 14px 16px; background: rgba(20,20,20,.38); border: 1px solid var(--line); }
+.agenda .sub { font-size: 10px; font-weight: 700; letter-spacing: .06em; color: var(--yellow); text-transform: uppercase; }
+.agenda .title { font-size: 15px; font-weight: 600; margin-top: 3px; }
+.agenda .row { display: flex; align-items: center; gap: 10px; }
+.agenda .row > div { flex: 1; min-width: 0; }
+.agenda a { flex: none; text-decoration: none; color: var(--ink); background: var(--cream); font-weight: 700; font-size: 13px;
+  padding: 8px 14px; border-radius: 999px; }
+.agenda .more { font-size: 12px; opacity: .7; margin-top: 8px; display: grid; gap: 3px; }
+
+.chips { display: flex; gap: 8px; overflow-x: auto; padding: 2px 0 4px; scrollbar-width: none; }
+.chips::-webkit-scrollbar { display: none; }
+.chip { flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px;
+  background: var(--glass); border: 1px solid var(--line); font-size: 12px; font-weight: 600; }
+.chip.on { background: var(--cream); color: var(--ink); }
+.chip i { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(255,255,255,.6); }
+
+.card { position: relative; border-radius: 20px; padding: 14px 16px 12px; border: 1px solid rgba(255,255,255,.3);
+  box-shadow: 0 10px 26px rgba(0,0,0,.35); user-select: text; -webkit-user-select: text; }
+.card .top { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 10.5px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .04em; opacity: .9; margin-bottom: 6px; }
+.card .txt { font-size: 15px; line-height: 1.45; font-weight: 500; white-space: pre-wrap; word-break: break-word; }
+.card .actions { display: flex; gap: 8px; margin-top: 10px; }
+.card .actions button { font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 999px; background: rgba(0,0,0,.2);
+  border: 1px solid rgba(255,255,255,.3); }
+.card.dark-text .actions button { border-color: rgba(0,0,0,.18); background: rgba(0,0,0,.08); }
+.card .actions .danger.armed { background: #B2261E; color: #fff; }
+.empty { text-align: center; padding: 34px 18px; opacity: .8; font-size: 14px; line-height: 1.55; }
+.empty img { width: 72px; display: block; margin: 0 auto 14px; }
+
+.composer { position: fixed; inset-inline: 0; bottom: 0; z-index: 30; padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+  background: rgba(17,32,52,.92); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-top: 1px solid var(--line); }
+.composer .inner { max-width: 640px; margin: 0 auto; display: flex; gap: 8px; align-items: flex-end; }
+.composer textarea { flex: 1; resize: none; max-height: 130px; min-height: 42px; background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.22); border-radius: 21px; padding: 10px 14px; font-size: 16px; outline: none; color: #fff; }
+.composer textarea::placeholder { color: rgba(255,255,255,.5); }
+.dot-btn { width: 42px; height: 42px; flex: none; border-radius: 50%; border: 2px solid rgba(255,255,255,.75); }
+.send { width: 42px; height: 42px; flex: none; border-radius: 50%; background: var(--cream); color: var(--ink); font-size: 22px; font-weight: 600; }
+.palette { max-width: 640px; margin: 0 auto 8px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.palette button { display: grid; justify-items: center; gap: 4px; font-size: 10px; opacity: .9; min-width: 0; }
+.palette button span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.palette button i { width: 30px; height: 30px; border-radius: 50%; border: 2px solid rgba(255,255,255,.5); }
+.palette button.on i { border: 3px solid #fff; transform: scale(1.08); }
+.theme-hint { max-width: 640px; margin: 0 auto 6px; font-size: 11px; color: var(--yellow); font-weight: 600; padding-left: 6px; }
+
+dialog { border: 0; border-radius: 22px; padding: 0; width: min(92vw, 420px); background: var(--cream); color: var(--ink); }
+dialog::backdrop { background: rgba(0,0,0,.55); backdrop-filter: blur(4px); }
+dialog form { padding: 18px; display: grid; gap: 10px; }
+dialog h2 { margin: 0; font-size: 17px; }
+dialog label { font-size: 12px; font-weight: 700; }
+dialog input { width: 100%; padding: 10px 12px; border-radius: 12px; border: 1px solid #cfc8b8; background: #fff; color: var(--ink); font-size: 14px; }
+dialog p { margin: 0; font-size: 12px; line-height: 1.5; color: #444; }
+dialog .row { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+dialog .row button { padding: 9px 14px; border-radius: 12px; font-weight: 700; font-size: 13px; background: #e7e0d1; color: var(--ink); }
+dialog .row .primary { background: var(--petrol); color: #fff; }
+#testOut { font-size: 12px; font-weight: 600; min-height: 1em; }
+
+.toast { position: fixed; left: 50%; bottom: calc(110px + env(safe-area-inset-bottom)); transform: translate(-50%, 20px); opacity: 0;
+  background: var(--ink); color: #fff; padding: 9px 16px; border-radius: 999px; font-size: 13px; transition: .25s; z-index: 50; pointer-events: none; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+</style>
+</head>
+<body>
+<header>
+  <img class="logo" src="marca/wnote-logo.svg" alt="">
+  <h1>w-note<small>de compA\</small></h1>
+  <span class="grow"></span>
+  <span id="status" class="status"><i></i><span>…</span></span>
+  <button class="icon-btn" id="btnSync" aria-label="Sincronizar">↻</button>
+  <button class="icon-btn" id="btnSettings" aria-label="Configuración">⚙</button>
+</header>
+
+<main>
+  <section id="agenda" class="agenda hidden"></section>
+  <nav id="chips" class="chips" aria-label="Filtrar por tema"></nav>
+  <section id="feed"></section>
+</main>
+
+<div class="composer">
+  <div id="palette" class="palette hidden"></div>
+  <div id="themeHint" class="theme-hint"></div>
+  <form id="composer" class="inner" autocomplete="off">
+    <button type="button" id="dotBtn" class="dot-btn" aria-label="Elegir tema"></button>
+    <textarea id="noteInput" rows="1" placeholder="Nueva nota rápida…" enterkeyhint="send"></textarea>
+    <button type="submit" class="send" aria-label="Guardar nota">+</button>
+  </form>
+</div>
+
+<dialog id="settings">
+  <form method="dialog" id="settingsForm">
+    <h2>Conectar con tu PC</h2>
+    <p>Lo más rápido: en el PC abre w-note → <b>📱 Vincular celular</b> y escanea el QR. O pega aquí los datos de la nube.</p>
+    <label for="cfgUrl">URL de la nube (Apps Script /exec)</label>
+    <input id="cfgUrl" type="url" inputmode="url" placeholder="https://script.google.com/macros/s/…/exec">
+    <label for="cfgToken">Token</label>
+    <input id="cfgToken" type="password" placeholder="El que entregó «configurar»">
+    <div id="testOut"></div>
+    <div class="row">
+      <button type="button" id="btnForget">Desconectar</button>
+      <button type="button" id="btnTest">Probar</button>
+      <button value="ok" class="primary" id="btnSave">Guardar</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toast" class="toast"></div>
+
+<script>
+"use strict";
+/* ── Paleta oficial (igual que wnote.py) ───────────────────────────────── */
+const THEMES = [
+  { key: "gerencia", label: "Gerencia", hex: "#682FA8", light: true, kw: ["gerencia","directorio","estrategia","kpi","meta","metas"] },
+  { key: "comercial", label: "Comercial", hex: "#0F5C7A", light: true, kw: ["comercial","venta","cliente","propuesta","cotizacion","banco","licitacion"] },
+  { key: "finanzas", label: "Finanzas", hex: "#2E7D4F", light: true, kw: ["finanzas","presupuesto","factura","pago","costo","monto","usd","clp"] },
+  { key: "ti", label: "TI", hex: "#162943", light: true, kw: ["ti","servidor","api","sistema","codigo","cloud","repo","deploy"] },
+  { key: "ciberseguridad", label: "Ciberseguridad", hex: "#0000CD", light: true, kw: ["seguridad","ciberseguridad","firewall","clave","acceso","vpn"] },
+  { key: "administracion", label: "Administración", hex: "#ECE8DF", light: false, kw: ["administracion","rrhh","oficina","compra","proveedor"] },
+  { key: "juridico", label: "Jurídico", hex: "#B2261E", light: true, kw: ["juridico","contrato","legal","firma","nda"] },
+  { key: "artes", label: "Artes", hex: "#D2287E", light: true, kw: ["artes","diseno","marca","video","pieza","logo"] },
+  { key: "operaciones", label: "Operaciones", hex: "#F0B400", light: false, kw: ["operaciones","entrega","logistica","soporte","plazo","despacho"] },
+  { key: "sebastian", label: "Sebastián", hex: "#141414", light: true, kw: ["personal","recordatorio","llamar","seba","sebastian","pendiente"] },
+];
+const DEFAULT_THEME = "comercial";
+const theme = k => THEMES.find(t => t.key === k) || THEMES[1];
+const plain = s => s.toLowerCase().normalize("NFKD").replace(/[̀-ͯ]/g, "");
+function detectTheme(text) {
+  const words = plain(text).match(/[a-z0-9ñ]+/g) || [];
+  for (const t of THEMES) for (const kw of t.kw)
+    if (words.some(w => w === kw || (kw.length > 3 && w.startsWith(kw)))) return t.key;
+  return DEFAULT_THEME;
+}
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+/* ── Conexión: nube (4G/5G) o Wi-Fi local ─────────────────────────────── */
+const LS = { cfg: "wnote.cfg", notes: "wnote.notes", agenda: "wnote.agenda" };
+const load = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } };
+const save = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
+
+function resolveConfig() {
+  // 1) Enlace del QR: …/w-note/#u=<url>&k=<token>. Se deja en la URL a propósito: en iPhone la app
+  //    agregada a inicio no comparte almacenamiento con Safari y así nace ya configurada.
+  const h = new URLSearchParams(location.hash.slice(1));
+  if (h.get("u") && h.get("k")) {
+    const cfg = { mode: "cloud", url: h.get("u"), k: h.get("k") };
+    save(LS.cfg, cfg);
+    return cfg;
+  }
+  // 2) Servido por el PC en la red Wi-Fi: http://IP:8765/?k=…
+  const q = new URLSearchParams(location.search);
+  if (q.get("k") && location.protocol === "http:") {
+    return { mode: "local", url: location.origin + "/api/notes", k: q.get("k") };
+  }
+  return load(LS.cfg, null);
+}
+let cfg = resolveConfig();
+
+/* ── Notas y fusión (igual que Codigo.gs y wnote.py) ──────────────────── */
+let notes = load(LS.notes, []);
+let agenda = load(LS.agenda, []);
+let filter = "all";
+let selectedTheme = DEFAULT_THEME, manualTheme = false;
+
+function normalize(x) {
+  if (!x || x.id === undefined || x.id === null || x.id === "") return null;
+  const created = Number(x.created_at) || Date.now();
+  return { id: String(x.id), theme_key: String(x.theme_key || DEFAULT_THEME), text: String(x.text || ""),
+           created_at: created, updated_at: Number(x.updated_at) || created, deleted: !!x.deleted, source: String(x.source || "") };
+}
+function merge(local, incoming) {
+  const map = new Map();
+  for (const raw of [...local, ...incoming]) {
+    const n = normalize(raw); if (!n) continue;
+    const c = map.get(n.id);
+    if (!c || n.updated_at > c.updated_at || (n.updated_at === c.updated_at && n.deleted && !c.deleted)) map.set(n.id, n);
+  }
+  const limit = Date.now() - 30 * 864e5;
+  return [...map.values()].filter(n => !(n.deleted && n.updated_at < limit)).sort((a, b) => b.created_at - a.created_at);
+}
+const newId = () => Date.now().toString(16) + "-" + Math.random().toString(16).slice(2, 8);
+
+/* ── Red ───────────────────────────────────────────────────────────────── */
+function apiUrl(extra = {}) {
+  const u = new URL(cfg.url);
+  u.searchParams.set("k", cfg.k);
+  for (const [a, b] of Object.entries(extra)) u.searchParams.set(a, b);
+  return u.toString();
+}
+async function call(extra, body) {
+  const opts = body ? { method: "POST", body: JSON.stringify(body), headers: { "Content-Type": "text/plain;charset=utf-8" } } : {};
+  const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), 20000);
+  try {
+    const res = await fetch(apiUrl(extra), { ...opts, signal: ctrl.signal, redirect: "follow", cache: "no-store" });
+    const out = await res.json().catch(() => { throw new Error("respuesta no válida"); });
+    if (!out.ok) throw new Error(out.error === "token" ? "token incorrecto" : (out.error || "error"));
+    return out;
+  } finally { clearTimeout(t); }
+}
+
+let syncing = false, pending = false;
+async function sync() {
+  if (!cfg) { setStatus("", "Sin conectar"); return; }
+  if (syncing) { pending = true; return; }
+  syncing = true; setStatus("busy", "Sincronizando");
+  try {
+    const out = await call({}, { k: cfg.k, notes });
+    notes = merge(notes, out.notes || []);
+    save(LS.notes, notes);
+    setStatus("ok", (cfg.mode === "local" ? "Wi-Fi" : "Nube") + " · " + new Date().toLocaleTimeString("es-CL", { hour: "2-digit", minute: "2-digit", hour12: false }));
+    render();
+  } catch (e) {
+    setStatus("err", navigator.onLine ? "Sin conexión" : "Sin señal");
+    console.warn("[w-note]", e);
+  } finally {
+    syncing = false;
+    if (pending) { pending = false; sync(); }
+  }
+}
+async function loadAgenda() {
+  if (!cfg) return;
+  try { const out = await call({ action: "agenda" }); agenda = out.events || []; save(LS.agenda, agenda); renderAgenda(); } catch {}
+}
+
+/* ── Interfaz ──────────────────────────────────────────────────────────── */
+const $ = id => document.getElementById(id);
+function setStatus(kind, text) { const s = $("status"); s.className = "status " + kind; s.lastChild.textContent = text; }
+function toast(msg) { const t = $("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 1600); }
+const hhmm = ms => new Date(ms).toLocaleTimeString("es-CL", { hour: "2-digit", minute: "2-digit", hour12: false });
+function when(ms) {
+  const d = new Date(ms), today = new Date();
+  const sameDay = d.toDateString() === today.toDateString();
+  return sameDay ? hhmm(ms) : d.toLocaleDateString("es-CL", { day: "2-digit", month: "short" }) + " " + hhmm(ms);
+}
+function countdown(ev) {
+  const now = Date.now();
+  if (ev.start <= now && now < ev.end) return "En curso";
+  const m = Math.round((ev.start - now) / 60000);
+  if (m < 1) return "Ahora";
+  if (m < 60) return `En ${m} min`;
+  return (new Date(ev.start).toDateString() === new Date().toDateString() ? "" : "Mañana ") + hhmm(ev.start) + " hrs";
+}
+
+function renderAgenda() {
+  const box = $("agenda");
+  const evs = (agenda || []).filter(e => e.end > Date.now());
+  if (!cfg || !evs.length) { box.classList.add("hidden"); return; }
+  const [ev, ...rest] = evs;
+  box.innerHTML = `<div class="row"><div>
+      <div class="sub">Google Calendar · ${esc(countdown(ev))}</div>
+      <div class="title">${esc(hhmm(ev.start))} · ${esc(ev.title)}</div></div>
+      ${ev.link ? `<a href="${esc(ev.link)}" target="_blank" rel="noopener">Unirse</a>` : ""}</div>
+    ${rest.length ? `<div class="more">${rest.slice(0, 3).map(e => `<span>${esc(hhmm(e.start))} · ${esc(e.title)}</span>`).join("")}</div>` : ""}`;
+  box.classList.remove("hidden");
+}
+
+function renderChips(visible) {
+  const counts = {};
+  visible.forEach(n => counts[n.theme_key] = (counts[n.theme_key] || 0) + 1);
+  const used = THEMES.filter(t => counts[t.key]);
+  if (filter !== "all" && !counts[filter]) filter = "all";
+  $("chips").innerHTML = (used.length > 1 ? [`<button class="chip ${filter === "all" ? "on" : ""}" data-f="all">Todas · ${visible.length}</button>`] : [])
+    .concat(used.length > 1 ? used.map(t => `<button class="chip ${filter === t.key ? "on" : ""}" data-f="${t.key}"><i style="background:${t.hex}"></i>${esc(t.label)} · ${counts[t.key]}</button>`) : [])
+    .join("");
+}
+
+function render() {
+  const visible = notes.filter(n => !n.deleted);
+  renderChips(visible);
+  const list = filter === "all" ? visible : visible.filter(n => n.theme_key === filter);
+  const feed = $("feed");
+  if (!cfg) {
+    feed.innerHTML = `<div class="empty"><img src="marca/wnote-logo.svg" alt=""><b>Conecta w-note con tu PC</b><br>
+      En el PC: w-note → <b>📱 Vincular celular</b> → escanea el QR con la cámara.<br>
+      <button class="chip on" style="margin-top:14px" data-open-settings>Conectar a mano</button></div>`;
+    return;
+  }
+  if (!list.length) { feed.innerHTML = `<div class="empty">No hay notas todavía.<br>Escribe abajo y toca <b>+</b>.</div>`; return; }
+  feed.innerHTML = list.map(n => {
+    const t = theme(n.theme_key);
+    return `<article class="card ${t.light ? "" : "dark-text"}" style="background:${t.hex};color:${t.light ? "#fff" : "#141414"};margin-bottom:12px">
+      <div class="top"><span>${esc(t.label)}</span><span>${esc(when(n.created_at))}${n.source ? " · " + esc(n.source) : ""}</span></div>
+      <div class="txt">${esc(n.text)}</div>
+      <div class="actions"><button data-copy="${esc(n.id)}">Copiar</button><button class="danger" data-del="${esc(n.id)}">Archivar</button></div>
+    </article>`;
+  }).join("");
+}
+
+/* ── Composer ──────────────────────────────────────────────────────────── */
+function paintTheme() {
+  const t = theme(selectedTheme);
+  $("dotBtn").style.background = t.hex;
+  $("themeHint").textContent = $("noteInput").value.trim() ? `Tema ${manualTheme ? "elegido" : "detectado"}: ${t.label}` : "";
+  $("palette").innerHTML = THEMES.map(x => `<button type="button" class="${x.key === selectedTheme ? "on" : ""}" data-theme="${x.key}"><i style="background:${x.hex}"></i><span>${esc(x.label)}</span></button>`).join("");
+}
+function grow() { const ta = $("noteInput"); ta.style.height = "auto"; ta.style.height = Math.min(ta.scrollHeight, 130) + "px"; }
+
+$("noteInput").addEventListener("input", () => { if (!manualTheme) selectedTheme = detectTheme($("noteInput").value); paintTheme(); grow(); });
+$("noteInput").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey && !e.isComposing && matchMedia("(pointer:fine)").matches) { e.preventDefault(); $("composer").requestSubmit(); } });
+$("dotBtn").addEventListener("click", () => $("palette").classList.toggle("hidden"));
+$("palette").addEventListener("click", e => {
+  const b = e.target.closest("[data-theme]"); if (!b) return;
+  selectedTheme = b.dataset.theme; manualTheme = true; $("palette").classList.add("hidden"); paintTheme();
+});
+$("composer").addEventListener("submit", e => {
+  e.preventDefault();
+  const text = $("noteInput").value.trim(); if (!text) return;
+  if (!cfg) { $("settings").showModal(); return; }
+  const now = Date.now();
+  notes = merge(notes, [{ id: newId(), theme_key: selectedTheme, text, created_at: now, updated_at: now, deleted: false, source: "iphone" }]);
+  save(LS.notes, notes);
+  $("noteInput").value = ""; manualTheme = false; selectedTheme = DEFAULT_THEME; paintTheme(); grow();
+  filter = "all"; render(); sync();
+});
+
+/* ── Acciones de tarjetas y chips ──────────────────────────────────────── */
+document.addEventListener("click", async e => {
+  const chip = e.target.closest("[data-f]");
+  if (chip) { filter = chip.dataset.f; render(); return; }
+  if (e.target.closest("[data-open-settings]")) { openSettings(); return; }
+  const cp = e.target.closest("[data-copy]");
+  if (cp) {
+    const n = notes.find(x => x.id === cp.dataset.copy);
+    try { await navigator.clipboard.writeText(n.text); toast("Copiado ✓"); }
+    catch { const r = document.createRange(); r.selectNodeContents(cp.closest(".card").querySelector(".txt")); getSelection().removeAllRanges(); getSelection().addRange(r); toast("Texto seleccionado: toca Copiar"); }
+    return;
+  }
+  const del = e.target.closest("[data-del]");
+  if (del) {
+    if (!del.classList.contains("armed")) { del.classList.add("armed"); del.textContent = "¿Archivar?"; setTimeout(() => { del.classList.remove("armed"); del.textContent = "Archivar"; }, 2500); return; }
+    notes = notes.map(n => n.id === del.dataset.del ? { ...n, deleted: true, updated_at: Date.now() } : n);
+    save(LS.notes, notes); render(); sync(); toast("Nota archivada");
+  }
+});
+
+/* ── Configuración ─────────────────────────────────────────────────────── */
+function openSettings() {
+  $("cfgUrl").value = cfg && cfg.mode === "cloud" ? cfg.url : "";
+  $("cfgToken").value = cfg && cfg.mode === "cloud" ? cfg.k : "";
+  $("testOut").textContent = cfg && cfg.mode === "local" ? "Conectado por Wi-Fi local a tu PC." : "";
+  $("settings").showModal();
+}
+function readForm() {
+  let url = $("cfgUrl").value.trim(), k = $("cfgToken").value.trim();
+  // Acepta también el enlace completo del QR pegado en el campo URL
+  const i = url.indexOf("#");
+  if (i > -1) { const h = new URLSearchParams(url.slice(i + 1)); if (h.get("u")) { url = h.get("u"); k = h.get("k") || k; } }
+  return url && k ? { mode: "cloud", url, k } : null;
+}
+$("btnSettings").addEventListener("click", openSettings);
+$("btnSync").addEventListener("click", () => { sync(); loadAgenda(); });
+$("btnTest").addEventListener("click", async () => {
+  const c = readForm(); if (!c) { $("testOut").textContent = "Falta la URL o el token."; return; }
+  const prev = cfg; cfg = c; $("testOut").textContent = "Probando…";
+  try { await call({ action: "ping" }); $("testOut").textContent = "✓ Conexión correcta"; }
+  catch (err) { $("testOut").textContent = "✕ " + err.message; }
+  cfg = prev;
+});
+$("btnForget").addEventListener("click", () => {
+  localStorage.removeItem(LS.cfg); cfg = null; history.replaceState(null, "", location.pathname);
+  $("settings").close(); setStatus("", "Sin conectar"); render(); renderAgenda();
+});
+$("settingsForm").addEventListener("submit", () => {
+  const c = readForm(); if (!c) return;
+  cfg = c; save(LS.cfg, cfg);
+  history.replaceState(null, "", location.pathname + "#u=" + encodeURIComponent(c.url) + "&k=" + encodeURIComponent(c.k));
+  render(); sync(); loadAgenda();
+});
+
+/* ── Ciclo de vida ─────────────────────────────────────────────────────── */
+paintTheme(); render(); renderAgenda();
+setStatus(cfg ? "busy" : "", cfg ? "Conectando" : "Sin conectar");
+sync(); loadAgenda();
+setInterval(() => { if (document.visibilityState === "visible") sync(); }, 15000);
+setInterval(() => { if (document.visibilityState === "visible") { loadAgenda(); renderAgenda(); } }, 120000);
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") { sync(); loadAgenda(); } });
+addEventListener("online", sync);
+if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
+</script>
+</body>
+</html>
