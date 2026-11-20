@@ -3,7 +3,7 @@
 # Qué hace:
 #   1. Busca Python 3.10+ (si no está, lo instala con winget).
 #   2. Copia w-note a %LOCALAPPDATA%\w-note\app y crea un entorno aislado (venv).
-#   3. Instala PySide6, Pillow, PyAudioWPatch y qrcode.
+#   3. Instala PySide6, Pillow, PyAudioWPatch, qrcode y faster-whisper (+ modelo de transcripción).
 #   4. Crea accesos directos: Escritorio, Menú Inicio e Inicio de Windows (arranca solo).
 #   5. Abre w-note.
 # Tus datos viven aparte, en Documentos\w-note (notas, actas, config): desinstalar no los toca.
@@ -86,6 +86,10 @@ $VPyw = Join-Path $Venv "Scripts\pythonw.exe"
 & $VPy -m pip install --upgrade pip --quiet --disable-pip-version-check
 & $VPy -m pip install -r (Join-Path $AppDir "windows\requirements.txt") --quiet --disable-pip-version-check
 if ($LASTEXITCODE -ne 0) { Write-Host "Falló la instalación de dependencias. Revisa tu conexión y vuelve a intentar." -ForegroundColor Red; exit 1 }
+
+Paso "Preparando la transcripción sin internet (modelo «base», ~150 MB, solo la primera vez)"
+& $VPy -c "from faster_whisper import WhisperModel; WhisperModel('base', device='cpu', compute_type='int8'); print('modelo listo')"
+if ($LASTEXITCODE -ne 0) { Write-Host "No se pudo descargar el modelo ahora; se descargará al primer uso." -ForegroundColor Yellow }
 
 # 4. Accesos directos ----------------------------------------------------------------------
 Paso "Creando accesos directos"

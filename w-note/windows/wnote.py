@@ -45,6 +45,7 @@ from pathlib import Path
 
 from PySide6.QtCore import (
     QByteArray,
+    QEvent,
     QObject,
     QPoint,
     QRectF,
@@ -116,7 +117,7 @@ except ImportError:
     HAS_QR = False
 
 APP_NAME = "w-notes"
-APP_VERSION = "1.2.1"
+APP_VERSION = "1.4.0"
 APP_DIR = Path(__file__).resolve().parent
 WEB_DIR = APP_DIR.parent  # carpeta w-note/ con index.html (panel del celular)
 
@@ -135,7 +136,7 @@ LOGO_SVG = b"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 <rect x="242" y="134" width="190" height="236" rx="26" fill="#37B35A" transform="rotate(8 432 134)"/>
 <path d="M152 104H312L392 184V377A31 31 0 0 1 361 408H152A31 31 0 0 1 121 377V135A31 31 0 0 1 152 104Z" fill="#F4F0E6"/>
 <path d="M312 104V153A31 31 0 0 0 343 184H392Z" fill="#D0C6B0"/>
-<path d="M159 248 209 360 256 280 302 360 353 248" fill="none" stroke="#0F5C7A" stroke-width="21" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M159 248 209 360 256 280 302 360 353 248" fill="none" stroke="#0F5C7A" stroke-width="27" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>"""
 
 LOGO_SMALL_SVG = b"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -377,6 +378,8 @@ class StorageManager:
             "pwa_url": "https://compai.cl/w-note/",
             "record_mic": True,
             "acta_redacta": "Sebastián Tapia Mena · compAI",
+            "transcribe": True,
+            "whisper_model": "base",
             "hotkeys_enabled": True,
         }
         loaded_keys: set = set()
@@ -443,6 +446,13 @@ class StorageManager:
             self.notes.insert(0, note)
         self._after_local_change()
         return dict(note)
+
+    def update_note(self, note_id: str, text: str, theme_key: str):
+        with self.lock:
+            for n in self.notes:
+                if n["id"] == note_id:
+                    n["text"], n["theme_key"], n["updated_at"] = text.strip()[:5000], theme_key, now_ms()
+        self._after_local_change()
 
     def delete_note(self, note_id: str):
         with self.lock:
@@ -876,92 +886,109 @@ class _WavStream:
 
 
 class MeetingRecorderEngine:
+    """Coordina la grabación. El audio corre en un proceso aparte (grabador.py): si el controlador
+    de audio falla, w-notes no se cierra."""
+
     def __init__(self, storage: StorageManager):
         self.storage = storage
         self.is_recording = False
         self.start_time = 0.0
         self.org, self.topic, self.platform, self.link = "Organizacion", "Reunion", "Videollamada", ""
+        self.spontaneous = False
         self.base_name = ""
         self.screenshots: list = []
         self.live_notes: list = []
         self.audio_files: list = []
         self.audio_errors: list = []
-        self._threads: list = []
+        self.sources: list = []
+        self._proc = None
+        self._stop = None
+        self._avisos = None
+        self.job = None
 
-    def start(self, org: str, topic: str, platform: str, link: str = ""):
-        self.org = org.strip() or "Organizacion"
-        self.topic = topic.strip() or "Reunion"
+    def start(self, org: str, topic: str, platform: str, link: str = "", spontaneous: bool = False):
+        import multiprocessing as mp
+        self.spontaneous = spontaneous
+        self.org = org.strip() or ("Espontanea" if spontaneous else "Organizacion")
+        self.topic = topic.strip() or ("Desarrollo_de_proyecto" if spontaneous else "Reunion")
         self.platform = platform.strip() or "Videollamada"
         self.link = link
         date_str = datetime.now().strftime("%Y-%m-%d")
         self.base_name = self.storage.unique_base(self.storage.build_standard_name(date_str, self.org, self.topic))
-        self.screenshots, self.live_notes, self.audio_files, self.audio_errors = [], [], [], []
+        self.screenshots, self.live_notes, self.audio_files, self.audio_errors, self.sources = [], [], [], [], []
         self.start_time = time.time()
         self.is_recording = True
-        self._threads = []
-        if HAS_WASAPI:
-            self._spawn(self._record_loopback)
-            if self.storage.config.get("record_mic", True):
-                self._spawn(self._record_mic)
-        else:
+        if not HAS_WASAPI:
             self.audio_errors.append("instala pyaudiowpatch para grabar audio (pip install pyaudiowpatch)")
-
-    def _spawn(self, fn):
-        t = threading.Thread(target=fn, daemon=True)
-        self._threads.append(t)
-        t.start()
-
-    def _loop(self, p, device: dict, suffix: str, pad_silence: bool):
-        channels = max(1, min(2, int(device["maxInputChannels"])))
-        rate = int(device["defaultSampleRate"])
-        path = self.storage.actas_dir / f"{self.base_name}{suffix}.wav"
-        stream = p.open(format=pyaudio.paInt16, channels=channels, rate=rate, input=True,
-                        frames_per_buffer=1024, input_device_index=device["index"])
-        wav = _WavStream(path, channels, rate)
+            return
         try:
-            while self.is_recording:
-                avail = stream.get_read_available()
-                if avail <= 0:
-                    time.sleep(0.01)
-                    continue
-                data = stream.read(min(avail, 4096), exception_on_overflow=False)
-                if pad_silence:
-                    wav.pad_to(time.time() - self.start_time - (len(data) // wav.frame_bytes) / rate)
-                wav.write(data)
-            if pad_silence:
-                wav.pad_to(time.time() - self.start_time)
-        finally:
-            stream.stop_stream()
-            stream.close()
-            wav.close()
-        if wav.frames_written:
-            self.audio_files.append(path.name)
-        else:
-            path.unlink(missing_ok=True)
-
-    def _record_loopback(self):
-        try:
-            with pyaudio.PyAudio() as p:
-                try:
-                    dev = p.get_default_wasapi_loopback()
-                except Exception:
-                    wasapi = p.get_host_api_info_by_type(pyaudio.paWASAPI)
-                    dev = p.get_device_info_by_index(wasapi["defaultOutputDevice"])
-                    if not dev.get("isLoopbackDevice"):
-                        for lb in p.get_loopback_device_info_generator():
-                            if dev["name"] in lb["name"]:
-                                dev = lb
-                                break
-                self._loop(p, dev, "", pad_silence=True)
+            import grabador
+            ctx = mp.get_context("spawn")
+            self._stop, self._avisos = ctx.Event(), ctx.Queue()
+            self._proc = ctx.Process(target=grabador.grabar, daemon=True, args=(
+                str(self.storage.actas_dir), self.base_name, bool(self.storage.config.get("record_mic", True)),
+                self._stop, self._avisos, self._cola_texto()))
+            self._proc.start()
         except Exception as e:
-            self.audio_errors.append(f"audio del sistema: {e}")
+            self._proc = None
+            self.audio_errors.append(f"no se pudo iniciar el audio: {e}")
 
-    def _record_mic(self):
+    def _cola_texto(self):
+        self.job = None
+        if not self.storage.config.get("transcribe", True) or not whisper_disponible():
+            return None
         try:
-            with pyaudio.PyAudio() as p:
-                self._loop(p, p.get_default_input_device_info(), "_microfono", pad_silence=False)
+            self.job = TranscriptionJob(self.storage.config.get("whisper_model", "base"))
+            return self.job.entrada
         except Exception as e:
-            self.audio_errors.append(f"micrófono: {e}")
+            self.audio_errors.append(f"transcripción no disponible: {e}")
+            return None
+
+    def _rename_if_needed(self, org, topic):
+        """Si durante la reunión escribiste el proyecto o el tema, el acta y sus archivos toman ese nombre."""
+        org = (org or "").strip() or self.org
+        topic = (topic or "").strip() or self.topic
+        if (org, topic) == (self.org, self.topic):
+            return
+        old = self.base_name
+        new = self.storage.unique_base(self.storage.build_standard_name(old[:10], org, topic))
+        try:
+            for f in list(self.storage.actas_dir.glob(f"{old}*.wav")):
+                f.rename(f.with_name(new + f.name[len(old):]))
+            for shot in self.screenshots:
+                src = self.storage.captures_dir / shot["filename"]
+                dst = src.with_name(new + shot["filename"][len(old):])
+                if src.exists():
+                    src.rename(dst)
+                shot["filename"] = dst.name
+            self.audio_files = [new + a[len(old):] if a.startswith(old) else a for a in self.audio_files]
+            self.org, self.topic, self.base_name = org, topic, new
+        except Exception as e:
+            self.audio_errors.append(f"no se pudo renombrar: {e}")
+
+    def poll(self):
+        """Lee avisos del proceso de audio (llamar desde la interfaz). Devuelve un error nuevo o ''."""
+        if not self._avisos:
+            return ""
+        nuevo = ""
+        try:
+            while True:
+                msg = self._avisos.get_nowait()
+                if msg[0] == "inicio":
+                    self.sources = msg[1]
+                    self.audio_errors.extend(msg[2])
+                    nuevo = "; ".join(msg[2])
+                elif msg[0] == "fin":
+                    self.audio_files, errs = msg[1], msg[2]
+                    self.audio_errors.extend(e for e in errs if e not in self.audio_errors)
+        except Exception:
+            pass
+        if self.is_recording and self._proc is not None and not self._proc.is_alive() and self._proc.exitcode not in (0, None):
+            code = self._proc.exitcode
+            self._proc = None
+            nuevo = f"el audio se detuvo (código {code}); w-notes sigue grabando prints y notas"
+            self.audio_errors.append(nuevo)
+        return nuevo
 
     def elapsed_str(self) -> str:
         if not self.is_recording:
@@ -993,14 +1020,26 @@ class MeetingRecorderEngine:
         if text.strip():
             self.live_notes.append({"timestamp": self.elapsed_str(), "text": text.strip()})
 
-    def stop_and_archive(self) -> Path:
+    def stop_and_archive(self, org: str | None = None, topic: str | None = None) -> Path:
         """Cierra la grabación y escribe el acta con el formato estándar compAI (ver README → Formato de actas)."""
         duration = self.elapsed_str()
         end = datetime.now()
         start = datetime.fromtimestamp(self.start_time)
         self.is_recording = False
-        for t in self._threads:
-            t.join(timeout=5)
+        if self._stop is not None:
+            self._stop.set()
+        # si el proceso de audio cayó, avisa al transcriptor que no llegará más audio
+        if getattr(self, "job", None) is not None and (self._proc is None or not self._proc.is_alive()):
+            self.job.finish_audio()
+        if self._proc is not None:
+            self._proc.join(timeout=15)
+            if self._proc.is_alive():
+                self._proc.terminate()
+        self.poll()
+        if not self.audio_files:  # si el proceso cayó, rescata lo que alcanzó a escribir
+            self.audio_files = [p.name for p in self.storage.actas_dir.glob(f"{self.base_name}*.wav") if p.stat().st_size > 44]
+        self._proc = self._stop = None
+        self._rename_if_needed(org, topic)
         md_path = self.storage.actas_dir / f"{self.base_name}.md"
         iso = start.strftime("%Y-%m-%d")
         n_dia = len([p for p in self.storage.actas_dir.glob("*.md") if iso in p.name]) + 1
@@ -1028,6 +1067,7 @@ class MeetingRecorderEngine:
 | Campo | Detalle |
 |---|---|
 | Código | {codigo} |
+| Tipo | {"Reunión espontánea (sin agenda) · desarrollo de proyecto" if self.spontaneous else "Reunión agendada"} |
 | Fecha | {iso} ({fecha_larga}) |
 | Horario | {start.strftime('%H:%M')} – {end.strftime('%H:%M')} ({mins} min · grabación {duration}) |
 | Organización | {esc(self.org)} |
@@ -1066,8 +1106,120 @@ _(completar en una línea: para qué fue la reunión)_
 Acta generada por w-notes {APP_VERSION} · compAI · {end.strftime('%Y-%m-%d %H:%M')}
 """
         md_path.write_text(document, encoding="utf-8")
+        job = getattr(self, "job", None)
+        if job is not None:
+            job.poll()
+            escribir_transcripcion(md_path, job.segs, final=job.done, errores=job.errores)
+            if not job.done:
+                job.md_path = md_path  # la termina el temporizador de la ventana principal
+        elif not whisper_disponible() and self.storage.config.get("transcribe", True):
+            escribir_transcripcion(md_path, [], final=True,
+                                   errores=["transcripción no instalada: vuelve a ejecutar instalar.bat"])
         return md_path
 
+
+
+# =============================================================================
+# 7B. TRANSCRIPCIÓN (faster-whisper en proceso aparte, sin internet)
+# =============================================================================
+FUENTES = {"microfono": "🎙 Sala", "sistema": "🔊 Llamada"}
+MARCA_INI, MARCA_FIN = "<!-- w-notes:transcripcion -->", "<!-- /w-notes:transcripcion -->"
+
+
+def whisper_disponible() -> bool:
+    import importlib.util
+    return importlib.util.find_spec("faster_whisper") is not None
+
+
+def mmss(seg: float) -> str:
+    seg = int(seg)
+    h, r = divmod(seg, 3600)
+    return f"{h}:{r // 60:02d}:{r % 60:02d}" if h else f"{r // 60:02d}:{r % 60:02d}"
+
+
+class TranscriptionJob:
+    """Una transcripción en curso. Si se le asigna `md_path`, al terminar escribe la sección 7 del acta."""
+
+    def __init__(self, modelo: str):
+        import multiprocessing as mp
+        import transcriptor
+        ctx = mp.get_context("spawn")
+        self.entrada, self.salida = ctx.Queue(), ctx.Queue()
+        self.proc = ctx.Process(target=transcriptor.transcribir, args=(modelo, self.entrada, self.salida), daemon=True)
+        self.proc.start()
+        self.segs: list = []
+        self.estado = "cargando modelo…"
+        self.errores: list = []
+        self.done = False
+        self.md_path: Path | None = None
+
+    def poll(self) -> list:
+        nuevos = []
+        try:
+            while True:
+                msg = self.salida.get_nowait()
+                if msg[0] == "seg":
+                    seg = {"fuente": msg[1], "ini": msg[2], "fin": msg[3], "texto": msg[4]}
+                    self.segs.append(seg)
+                    nuevos.append(seg)
+                    self.estado = "en vivo"
+                elif msg[0] == "listo":
+                    self.estado = "escuchando"
+                elif msg[0] == "avance":
+                    self.estado = f"procesando ({msg[1]} trozos pendientes)" if msg[1] else "al día"
+                elif msg[0] == "error":
+                    self.errores.append(msg[1])
+                    self.estado = "con error"
+                elif msg[0] == "fin":
+                    self.done = True
+                    self.estado = "lista"
+        except Exception:
+            pass
+        if not self.done and not self.proc.is_alive():
+            self.done = True
+            if self.proc.exitcode not in (0, None):
+                self.errores.append(f"la transcripción se detuvo (código {self.proc.exitcode})")
+        if self.done and self.md_path:
+            escribir_transcripcion(self.md_path, self.segs, final=True, errores=self.errores)
+            self.md_path = None
+        return nuevos
+
+    def finish_audio(self):
+        try:
+            self.entrada.put(("fin_audio",))
+        except Exception:
+            pass
+
+
+def bloque_transcripcion(segs: list, final: bool, errores: list | None = None) -> str:
+    if segs:
+        filas = "\n".join(f"| {mmss(x['ini'])} | {FUENTES.get(x['fuente'], x['fuente'])} | "
+                          f"{x['texto'].replace('|', '/')} |" for x in sorted(segs, key=lambda x: x["ini"]))
+        cuerpo = "| Min | Fuente | Texto |\n|---|---|---|\n" + filas
+    else:
+        cuerpo = "_(sin voz detectada)_" if final else ""
+    if not final:
+        cuerpo += "\n\n_(transcribiendo… esta sección se completa sola al terminar)_"
+    if errores:
+        cuerpo += "\n\n> ⚠ " + "; ".join(errores)
+    return f"{MARCA_INI}\n{cuerpo.strip()}\n{MARCA_FIN}"
+
+
+def escribir_transcripcion(md_path: Path, segs: list, final: bool, errores: list | None = None):
+    """Reemplaza solo el bloque marcado (respeta lo que hayas editado en el resto del acta)."""
+    try:
+        txt = md_path.read_text(encoding="utf-8")
+        bloque = bloque_transcripcion(segs, final, errores)
+        if MARCA_INI in txt and MARCA_FIN in txt:
+            a, b = txt.index(MARCA_INI), txt.index(MARCA_FIN) + len(MARCA_FIN)
+            txt = txt[:a] + bloque + txt[b:]
+        else:
+            corte = txt.rfind("\n---\nActa generada")
+            sec = f"\n## 7. Transcripción\n{bloque}\n"
+            txt = txt[:corte] + sec + txt[corte:] if corte > 0 else txt + sec
+        md_path.write_text(txt, encoding="utf-8")
+    except Exception as e:
+        print(f"[w-notes] no se pudo escribir la transcripción: {e}")
 
 # =============================================================================
 # 8. BOTONES: CÁPSULA DE VIDRIO Y LOGO
@@ -1137,6 +1289,9 @@ class FloatingGlassNotePopup(QWidget):
                             | Qt.WindowType.Tool)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setFixedWidth(340)
+        self.mode = ""          # "ver" | "crear" | "editar"
+        self.editing_id = None
+        self._original = ""
         self.root_layout = QVBoxLayout(self)
         self.root_layout.setContentsMargins(16, 14, 16, 14)
         self.root_layout.setSpacing(10)
@@ -1147,6 +1302,24 @@ class FloatingGlassNotePopup(QWidget):
         painter.setBrush(QBrush(self._bg_color))
         painter.setPen(QPen(QColor(255, 255, 255, 135), 1.3))
         painter.drawRoundedRect(QRectF(1, 1, self.width() - 2, self.height() - 2), 18.0, 18.0)
+
+    def changeEvent(self, event):
+        if event.type() == QEvent.Type.ActivationChange and self.isVisible() and not self.isActiveWindow():
+            QTimer.singleShot(0, self._clicked_outside)
+        super().changeEvent(event)
+
+    def _clicked_outside(self):
+        if not self.isVisible() or self.isActiveWindow():
+            return
+        if self.mode == "ver":
+            self.hide()
+        elif self.mode == "editar":
+            if hasattr(self, "editor") and self.editor.toPlainText().strip() and \
+                    (self.editor.toPlainText().strip() != self._original or self.manual_override):
+                self._save_note()
+            self.hide()
+        elif self.mode == "crear" and hasattr(self, "editor") and not self.editor.toPlainText().strip():
+            self.hide()  # con texto escrito se queda abierta para no perderlo
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_Escape:
@@ -1162,6 +1335,7 @@ class FloatingGlassNotePopup(QWidget):
         while layout.count():
             item = layout.takeAt(0)
             if item.widget():
+                item.widget().hide()  # que no se vea mientras Qt la borra
                 item.widget().deleteLater()
             elif item.layout():
                 self._clear_layout(item.layout())
@@ -1203,29 +1377,40 @@ class FloatingGlassNotePopup(QWidget):
         btn_copy.setStyleSheet(f"color: {fg}; background: rgba(0,0,0,0.22); border: 1px solid rgba(255,255,255,0.35);"
                                " border-radius: 10px; padding: 5px 10px; font-size: 11px; font-weight: 600;")
         btn_copy.clicked.connect(lambda: (QApplication.clipboard().setText(note["text"]), btn_copy.setText("✓ Copiado")))
+        btn_edit = QPushButton("✎ Editar")
+        btn_edit.setCursor(Qt.CursorShape.PointingHandCursor)
+        btn_edit.setStyleSheet(f"color: {fg}; background: rgba(0,0,0,0.22); border: 1px solid rgba(255,255,255,0.35);"
+                               " border-radius: 10px; padding: 5px 10px; font-size: 11px; font-weight: 600;")
+        btn_edit.clicked.connect(lambda: self.show_quick_creator(self.pos(), edit_note=note))
         btn_del = QPushButton("Archivar")
         btn_del.setCursor(Qt.CursorShape.PointingHandCursor)
         btn_del.setStyleSheet(f"color: {fg}; background: rgba(0,0,0,0.14); border-radius: 10px; padding: 5px 10px;"
                               " font-size: 11px;")
         btn_del.clicked.connect(lambda: self._archive_note(note["id"]))
         bottom.addWidget(btn_copy)
+        bottom.addWidget(btn_edit)
         bottom.addStretch()
         bottom.addWidget(btn_del)
         self.root_layout.addLayout(bottom)
 
+        self.mode = "ver"
         self.adjustSize()
         self._move_safely(anchor_pos)
         self.show()
         self.raise_()
+        self.activateWindow()
 
-    def show_quick_creator(self, anchor_pos: QPoint, prefill: str = ""):
+    def show_quick_creator(self, anchor_pos: QPoint, prefill: str = "", edit_note: dict | None = None):
         self._clear_layout()
+        self.mode = "editar" if edit_note else "crear"
+        self.editing_id = edit_note["id"] if edit_note else None
+        self._original = edit_note["text"] if edit_note else ""
         self.manual_override = False
         self.selected_theme_key = DEFAULT_THEME
         self._bg_color = QColor(20, 20, 20, 235)
 
         header = QHBoxLayout()
-        title = QLabel("+ Nota rápida")
+        title = QLabel("✎ Editar nota" if edit_note else "+ Nota rápida")
         title.setStyleSheet("color: #ffffff; font-weight: 700; font-size: 12px;")
         header.addWidget(title)
         header.addStretch()
@@ -1258,7 +1443,7 @@ class FloatingGlassNotePopup(QWidget):
         self.editor.textChanged.connect(self._on_text_changed)
         self.root_layout.addWidget(self.editor)
 
-        btn_save = QPushButton("Guardar y sincronizar con el celular")
+        btn_save = QPushButton("Guardar cambios" if edit_note else "Guardar y sincronizar con el celular")
         btn_save.setCursor(Qt.CursorShape.PointingHandCursor)
         btn_save.setStyleSheet(f"background: {CREAM}; color: {INK}; font-weight: 700; font-size: 12px;"
                                " border-radius: 11px; padding: 7px 12px;")
@@ -1266,6 +1451,17 @@ class FloatingGlassNotePopup(QWidget):
         self.root_layout.addWidget(btn_save)
 
         self._select_theme(DEFAULT_THEME, False)
+        if edit_note:
+            self.editor.setPlainText(edit_note["text"])
+            self._select_theme(edit_note["theme_key"], False)
+            self.manual_override = False
+            self.selected_theme_key = edit_note["theme_key"]
+            self._keep_theme = True  # al editar no cambia el color solo
+            cur = self.editor.textCursor()
+            cur.movePosition(cur.MoveOperation.End)
+            self.editor.setTextCursor(cur)
+        else:
+            self._keep_theme = False
         if prefill:
             self.editor.setPlainText(prefill)
         self.adjustSize()
@@ -1286,12 +1482,21 @@ class FloatingGlassNotePopup(QWidget):
             dot.setStyleSheet(f"background-color: {get_theme(k)['hex']}; border-radius: 12px; border: {border};")
 
     def _on_text_changed(self):
-        if not self.manual_override:
+        if not self.manual_override and not getattr(self, "_keep_theme", False):
             self._select_theme(detect_theme_from_text(self.editor.toPlainText()), False)
 
     def _save_note(self):
         text = self.editor.toPlainText().strip()
         if not text:
+            return
+        if self.mode == "editar" and self.editing_id:
+            self.storage.update_note(self.editing_id, text, self.selected_theme_key)
+            note = next((n for n in self.storage.visible_notes() if n["id"] == self.editing_id), None)
+            self.mode = ""
+            if note and self.isActiveWindow():
+                self.show_registered_note(note, self.pos())
+            else:
+                self.hide()
             return
         note = self.storage.add_note(self.selected_theme_key, text)
         self.show_registered_note(note, self.pos())
@@ -1311,18 +1516,33 @@ class FloatingGlassNotePopup(QWidget):
 # 10. CÁPSULA LATERAL FLOTANTE (SIEMPRE VISIBLE)
 # =============================================================================
 class FloatingSideCapsuleWindow(QWidget):
+    """Barra lateral: se arrastra desde cualquier parte libre y, al pasar el cursor, muestra ✕ para cerrarla."""
     open_main_requested = Signal()
+    close_requested = Signal()
 
     def __init__(self, storage: StorageManager, popup: FloatingGlassNotePopup):
         super().__init__()
         self.storage = storage
         self.popup = popup
+        self._drag = None
+        self._press = None
         self._apply_window_flags()
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+        self.setCursor(Qt.CursorShape.SizeAllCursor)
+        self.setToolTip("Arrastra para mover · ✕ para cerrar")
         self.layout_box = QVBoxLayout(self)
-        self.layout_box.setContentsMargins(7, 10, 7, 10)
+        self.layout_box.setContentsMargins(7, 24, 7, 10)  # franja superior para el ✕ y para agarrar
         self.layout_box.setSpacing(8)
         self.layout_box.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        self.btn_close = QPushButton("✕", self)
+        self.btn_close.setFixedSize(20, 20)
+        self.btn_close.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.btn_close.setToolTip("Cerrar la barra (vuelve desde la bandeja: Mostrar barra)")
+        self.btn_close.setStyleSheet("QPushButton { background: rgba(20,20,20,0.75); color: #fff; border: 1px solid"
+                                     " rgba(255,255,255,0.6); border-radius: 10px; font-size: 10px; font-weight: 700; }"
+                                     " QPushButton:hover { background: #9E2A1C; }")
+        self.btn_close.clicked.connect(self.close_requested.emit)
+        self.btn_close.hide()
         self.rebuild_capsules()
 
     def _apply_window_flags(self):
@@ -1338,6 +1558,47 @@ class FloatingSideCapsuleWindow(QWidget):
         painter.setBrush(QBrush(QColor(20, 20, 20, 120)))
         painter.setPen(QPen(QColor(255, 255, 255, 115), 1.2))
         painter.drawRoundedRect(rect, rect.width() / 2.0, rect.width() / 2.0)
+        # agarradera: tres puntos en la franja superior
+        painter.setPen(Qt.PenStyle.NoPen)
+        painter.setBrush(QColor(255, 255, 255, 150))
+        cx = self.width() / 2.0
+        for dx in (-6, 0, 6):
+            painter.drawEllipse(QRectF(cx + dx - 1.5, 10, 3, 3))
+
+    # ---- ✕ al pasar el cursor -------------------------------------------------------------
+    def enterEvent(self, event):
+        self.btn_close.move((self.width() - self.btn_close.width()) // 2, 2)
+        self.btn_close.show()
+        self.btn_close.raise_()
+        super().enterEvent(event)
+
+    def leaveEvent(self, event):
+        self.btn_close.hide()
+        super().leaveEvent(event)
+
+    # ---- mover a mano ---------------------------------------------------------------------
+    def mousePressEvent(self, event):
+        if event.button() == Qt.MouseButton.LeftButton:
+            self._press = event.globalPosition().toPoint()
+            self._drag = self._press - self.frameGeometry().topLeft()
+
+    def mouseMoveEvent(self, event):
+        if self._drag is not None and event.buttons() & Qt.MouseButton.LeftButton:
+            self.move(event.globalPosition().toPoint() - self._drag)
+
+    def mouseReleaseEvent(self, event):
+        if self._drag is None:
+            return
+        self._drag = None
+        if (event.globalPosition().toPoint() - self._press).manhattanLength() >= 5:
+            self.storage.config["capsule_x"], self.storage.config["capsule_y"] = self.x(), self.y()
+            self.storage.save_config()
+
+    def mouseDoubleClickEvent(self, event):
+        """Doble clic en la franja: vuelve a su lugar (izquierda o derecha, según ⚙)."""
+        self.storage.config["capsule_x"] = self.storage.config["capsule_y"] = None
+        self.storage.save_config()
+        self.reposition()
 
     @Slot()
     def rebuild_capsules(self):
@@ -1360,6 +1621,12 @@ class FloatingSideCapsuleWindow(QWidget):
 
     def reposition(self):
         screen = QApplication.primaryScreen().availableGeometry()
+        cx, cy = self.storage.config.get("capsule_x"), self.storage.config.get("capsule_y")
+        if cx is not None and cy is not None:  # posición elegida a mano (dentro de la pantalla)
+            x = max(screen.left(), min(screen.right() - self.width(), int(cx)))
+            y = max(screen.top(), min(screen.bottom() - self.height(), int(cy)))
+            self.move(x, y)
+            return
         left = self.storage.config.get("capsule_position", "left") == "left"
         x = screen.left() + 12 if left else screen.right() - self.width() - 12
         y = max(screen.top() + 40, screen.top() + (screen.height() - self.height()) // 2)
@@ -1373,7 +1640,8 @@ class FloatingSideCapsuleWindow(QWidget):
             self.show()
 
     def _popup_anchor(self) -> QPoint:
-        if self.storage.config.get("capsule_position", "left") == "left":
+        screen = QApplication.primaryScreen().availableGeometry()
+        if self.x() + self.width() / 2 < screen.center().x():
             return QPoint(self.x() + self.width() + 12, self.y())
         return QPoint(self.x() - 352, self.y())
 
@@ -1993,6 +2261,22 @@ class SettingsDialog(QDialog):
         row.addWidget(self.combo_naming)
         row.addStretch()
         v.addLayout(row)
+        self.chk_trans = QCheckBox("Transcribir en vivo (sin internet, en este PC)")
+        self.chk_trans.setChecked(cfg.get("transcribe", True))
+        self.chk_trans.stateChanged.connect(lambda: self._set("transcribe", self.chk_trans.isChecked()))
+        v.addWidget(self.chk_trans)
+        row = QHBoxLayout()
+        row.addWidget(_label("PRECISIÓN", "rotulo"))
+        self.combo_model = QComboBox()
+        self.combo_model.addItem("Rápida (base)", "base")
+        self.combo_model.addItem("Más precisa, más lenta (small)", "small")
+        self.combo_model.setCurrentIndex(max(0, self.combo_model.findData(cfg.get("whisper_model", "base"))))
+        self.combo_model.currentIndexChanged.connect(lambda: self._set("whisper_model", self.combo_model.currentData()))
+        row.addWidget(self.combo_model)
+        row.addStretch()
+        v.addLayout(row)
+        if not whisper_disponible():
+            v.addWidget(_label("Transcripción no instalada: vuelve a ejecutar instalar.bat.", "hint"))
         row = QHBoxLayout()
         row.addWidget(_label("REDACTA", "rotulo"))
         self.inp_redacta = QLineEdit(cfg.get("acta_redacta", ""))
@@ -2025,6 +2309,8 @@ class SettingsDialog(QDialog):
 
     def _save_capsule(self):
         cfg = self.storage.config
+        if cfg.get("capsule_position") != self.combo_pos.currentData():
+            cfg["capsule_x"] = cfg["capsule_y"] = None
         cfg["capsule_position"] = self.combo_pos.currentData()
         cfg["capsule_always_on_top"] = self.chk_top.isChecked()
         cfg["auto_dock_on_other_app"] = self.chk_auto.isChecked()
@@ -2255,6 +2541,16 @@ class MainWNoteWindow(QMainWindow):
         self.inp_live.setEnabled(False)
         self.inp_live.returnPressed.connect(self._add_live_note)
         rv.addWidget(self.inp_live)
+        self.lbl_trans = _label("", "rotulo")
+        self.txt_trans = QTextEdit()
+        self.txt_trans.setReadOnly(True)
+        self.txt_trans.setFixedHeight(130)
+        self.txt_trans.setPlaceholderText("La transcripción aparece aquí cada ~15 s mientras grabas.")
+        rv.addWidget(self.lbl_trans)
+        rv.addWidget(self.txt_trans)
+        self.lbl_trans.hide()
+        self.txt_trans.hide()
+        self.jobs: list = []  # transcripciones que siguen después de cerrar la grabación
         main.addWidget(rec)
 
         # Actas
@@ -2264,6 +2560,9 @@ class MainWNoteWindow(QMainWindow):
         top = QHBoxLayout()
         top.addWidget(_label("Actas de reunión", "sec"))
         top.addStretch()
+        self.btn_transcribir = _btn("Transcribir", "secondary", self._transcribe_selected,
+                                    "Transcribe el audio de la acta seleccionada (sin internet)")
+        top.addWidget(self.btn_transcribir)
         top.addWidget(_btn("📁 Abrir carpeta", "secondary",
                            lambda: QDesktopServices.openUrl(QUrl.fromLocalFile(str(self.storage.actas_dir)))))
         lv.addLayout(top)
@@ -2352,6 +2651,7 @@ class MainWNoteWindow(QMainWindow):
         if idx >= 0:
             self.combo_platform.setCurrentIndex(idx)
         self._pending_link = link
+        self._pending_spontaneous = not org and not topic
         if not self.recorder.is_recording:
             self._toggle_recording()
         self.showNormal()
@@ -2360,14 +2660,30 @@ class MainWNoteWindow(QMainWindow):
 
     def _toggle_recording(self):
         if not self.recorder.is_recording:
-            self.recorder.start(self.inp_org.text() or "Organizacion", self.inp_topic.text() or "Reunion",
-                                self.combo_platform.currentText(), getattr(self, "_pending_link", ""))
-            self._pending_link = ""
+            espontanea = getattr(self, "_pending_spontaneous", False) or not (self.inp_org.text() or self.inp_topic.text())
+            self.recorder.start(self.inp_org.text(), self.inp_topic.text(), self.combo_platform.currentText(),
+                                getattr(self, "_pending_link", ""), spontaneous=espontanea)
+            self._pending_link, self._pending_spontaneous = "", False
+            self.txt_trans.clear()
+            self.txt_trans.show()
+            self.lbl_trans.show()
+            self.lbl_trans.setText("TRANSCRIPCIÓN · " + ("CARGANDO MODELO…" if self.recorder.job else
+                                   ("DESACTIVADA EN ⚙" if not self.storage.config.get("transcribe", True)
+                                    else "NO INSTALADA (VUELVE A EJECUTAR INSTALAR.BAT)")))
+            if espontanea:
+                self.inp_org.setPlaceholderText("Proyecto o cliente (puedes escribirlo mientras grabas)")
+                self.inp_topic.setPlaceholderText("Tema de la reunión")
+                self.inp_org.setFocus()
             self._style_record_button(True)
             self.btn_screenshot.setEnabled(True)
             self.inp_live.setEnabled(True)
         else:
-            md_path = self.recorder.stop_and_archive()
+            md_path = self.recorder.stop_and_archive(self.inp_org.text(), self.inp_topic.text())
+            if self.recorder.job is not None and not self.recorder.job.done:
+                self.jobs.append(self.recorder.job)
+                self.lbl_trans.setText("TRANSCRIPCIÓN · TERMINANDO EN SEGUNDO PLANO (EL ACTA SE COMPLETA SOLA)")
+            self.inp_org.setPlaceholderText("Organización (ej. Banco_Andes)")
+            self.inp_topic.setPlaceholderText("Tema (ej. Cierre_Q4)")
             self._style_record_button(False)
             self.btn_screenshot.setEnabled(False)
             self.inp_live.setEnabled(False)
@@ -2391,8 +2707,52 @@ class MainWNoteWindow(QMainWindow):
             self.recorder.add_live_note(self.inp_live.text())
             self.inp_live.clear()
 
+    def _show_segs(self, segs: list):
+        for x in segs:
+            self.txt_trans.append(f"[{mmss(x['ini'])}] {FUENTES.get(x['fuente'], x['fuente'])}: {x['texto']}")
+
+    def _transcribe_selected(self):
+        rec = self._selected()
+        if not rec:
+            return
+        if not whisper_disponible():
+            QMessageBox.information(self, "Transcripción", "Falta instalar la transcripción: vuelve a ejecutar instalar.bat.")
+            return
+        base = Path(rec["path"]).stem
+        wavs = sorted(self.storage.actas_dir.glob(f"{base}*.wav"))
+        if not wavs:
+            QMessageBox.information(self, "Transcripción", "Esta acta no tiene audio guardado.")
+            return
+        job = TranscriptionJob(self.storage.config.get("whisper_model", "base"))
+        for w in wavs:
+            job.entrada.put(("archivo", str(w), "microfono" if w.stem.endswith("_microfono") else "sistema"))
+        job.finish_audio()
+        job.md_path = Path(rec["path"])
+        escribir_transcripcion(job.md_path, [], final=False)
+        self.jobs.append(job)
+        self.txt_trans.clear()
+        self.txt_trans.show()
+        self.lbl_trans.show()
+        self.lbl_trans.setText(f"TRANSCRIBIENDO {base.upper()}…")
+        self.refresh_actas_table()
+
     def _update_recording_ui(self):
+        job = self.recorder.job if self.recorder.is_recording else None
+        if job is not None:
+            self._show_segs(job.poll())
+            self.lbl_trans.setText(f"TRANSCRIPCIÓN · {job.estado.upper()}")
+        for j in list(self.jobs):
+            self._show_segs(j.poll())
+            if j.done:
+                self.jobs.remove(j)
+                self.lbl_trans.setText("TRANSCRIPCIÓN · LISTA EN EL ACTA" + (" (CON AVISOS)" if j.errores else ""))
+                self.refresh_actas_table()
+            else:
+                self.lbl_trans.setText(f"TRANSCRIPCIÓN · {j.estado.upper()}")
         if self.recorder.is_recording:
+            err = self.recorder.poll()
+            if err:
+                QMessageBox.warning(self, "Audio", f"Aviso de audio: {err}")
             n = len(self.recorder.screenshots)
             self.lbl_rec_status.setText(f"● REC {self.recorder.elapsed_str()}" + (f" · {n} PRINT{'S' if n != 1 else ''}" if n else ""))
 
@@ -2460,6 +2820,8 @@ class WNoteController(QObject):
         self.bus.weather_changed.connect(self.desktop_widget.refresh_weather)
         self.bus.local_mutation.connect(self._schedule_sync, Qt.ConnectionType.QueuedConnection)
         self.side_capsule.open_main_requested.connect(self.open_main_window)
+        self.capsule_closed = False
+        self.side_capsule.close_requested.connect(self._close_capsule)
         self.desktop_widget.open_main_requested.connect(self.open_main_window)
         self.desktop_widget.record_meeting_requested.connect(self.main_window.start_external_recording)
         self.main_window.settings_updated.connect(self._apply_settings)
@@ -2502,6 +2864,7 @@ class WNoteController(QObject):
         for text, fn in (("Abrir w-notes", self.open_main_window), ("+ Nota rápida  (Ctrl+Alt+N)", self.quick_note),
                          ("● Grabar / detener  (Ctrl+Alt+R)", self.toggle_record),
                          ("Mostrar widget", self.desktop_widget.show),
+                         ("Mostrar barra lateral", self._show_capsule),
                          ("📱 Vincular celular", self.main_window.link_phone)):
             act = QAction(text, menu)
             act.triggered.connect(fn)
@@ -2543,6 +2906,17 @@ class WNoteController(QObject):
             self.tray.showMessage("w-notes", f"Print clave {len(self.recorder.screenshots)} guardado",
                                   QSystemTrayIcon.MessageIcon.Information, 1500)
 
+    def _close_capsule(self):
+        self.capsule_closed = True
+        self.side_capsule.hide()
+        self.tray.showMessage("w-notes", "Barra cerrada. Vuelve con clic derecho en el ícono → Mostrar barra lateral.",
+                              QSystemTrayIcon.MessageIcon.Information, 2500)
+
+    def _show_capsule(self):
+        self.capsule_closed = False
+        self.side_capsule.reposition()
+        self.side_capsule.show()
+
     def quick_note(self):
         pos = QCursor_pos()
         self.popup.show_quick_creator(QPoint(pos.x() + 12, pos.y() + 12))
@@ -2570,12 +2944,12 @@ class WNoteController(QObject):
 
     def _apply_settings(self):
         self.side_capsule.refresh_settings()
-        if self.storage.config.get("capsule_always_on_top", True):
+        if self.storage.config.get("capsule_always_on_top", True) and not self.capsule_closed:
             self.side_capsule.show()
 
     def _on_quit(self):
         if self.recorder.is_recording:
-            self.recorder.stop_and_archive()
+            self.recorder.stop_and_archive(self.main_window.inp_org.text(), self.main_window.inp_topic.text())
         if self._hotkeys_ok:
             try:
                 hwnd = int(self.main_window.winId())
@@ -2617,7 +2991,7 @@ class WNoteController(QObject):
             else:
                 if self.desktop_widget.isVisible():
                     self.desktop_widget.hide()
-                if not self.side_capsule.isVisible():
+                if not self.side_capsule.isVisible() and not self.capsule_closed:
                     self.side_capsule.show()
         except Exception:
             pass
@@ -2639,7 +3013,25 @@ def _single_instance() -> bool:
         return True
 
 
+def _log_setup():
+    """pythonw no muestra errores: quedan en Documentos/w-note/wnote.log (y las caídas nativas también)."""
+    try:
+        import faulthandler
+        import traceback
+        log = open(Path.home() / "Documents" / "w-note" / "wnote.log", "a", encoding="utf-8", buffering=1)
+        log.write(f"\n--- inicio {datetime.now():%Y-%m-%d %H:%M:%S} · w-notes {APP_VERSION}\n")
+        faulthandler.enable(log)
+        if sys.stderr is None:
+            sys.stderr = log
+        if sys.stdout is None:
+            sys.stdout = log
+        sys.excepthook = lambda t, v, tb: log.write("".join(traceback.format_exception(t, v, tb)))
+    except Exception:
+        pass
+
+
 def main():
+    _log_setup()
     if sys.platform == "win32":
         try:
             ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("compAI.wnote")
