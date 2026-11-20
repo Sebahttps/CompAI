@@ -94,10 +94,19 @@ def grabar(carpeta: str, base: str, con_mic: bool, detener, avisos, cola_texto=N
             errores.append(f"audio del sistema: {e}")
         mic = None
         if con_mic:
+            # Preferir el micrófono por WASAPI (formato nativo del equipo, sin el remuestreo antiguo de MME)
             try:
-                mic = p.get_default_input_device_info()
-            except Exception as e:
-                errores.append(f"micrófono: {e}")
+                wasapi = p.get_host_api_info_by_type(pyaudio.paWASAPI)
+                idx = wasapi.get("defaultInputDevice", -1)
+                if idx is not None and idx >= 0:
+                    mic = p.get_device_info_by_index(idx)
+            except Exception:
+                mic = None
+            if mic is None:
+                try:
+                    mic = p.get_default_input_device_info()
+                except Exception as e:
+                    errores.append(f"micrófono: {e}")
         for nombre, dev, sufijo, rellenar in (("sistema", lb, "", True), ("microfono", mic, "_microfono", False)):
             if not dev:
                 continue
@@ -107,8 +116,17 @@ def grabar(carpeta: str, base: str, con_mic: bool, detener, avisos, cola_texto=N
                 st = p.open(format=pyaudio.paInt16, channels=ch, rate=rate, input=True,
                             frames_per_buffer=1024, input_device_index=dev["index"])
             except Exception as e:
-                errores.append(f"{nombre}: {e}")
-                continue
+                if nombre != "microfono":
+                    errores.append(f"{nombre}: {e}")
+                    continue
+                try:  # respaldo: micrófono por el sistema clásico (MME)
+                    dev = p.get_default_input_device_info()
+                    ch, rate = max(1, min(2, int(dev["maxInputChannels"]))), int(dev["defaultSampleRate"])
+                    st = p.open(format=pyaudio.paInt16, channels=ch, rate=rate, input=True,
+                                frames_per_buffer=1024, input_device_index=dev["index"])
+                except Exception as e2:
+                    errores.append(f"micrófono: {e} / {e2}")
+                    continue
             wav = _Wav(carpeta_p / f"{base}{sufijo}.wav", ch, rate)
             trozos = _Trozos(nombre, ch, rate, cola_texto) if cola_texto is not None else None
             fuentes.append([nombre, st, wav, trozos, rellenar])

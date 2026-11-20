@@ -59,7 +59,7 @@ def _a_16k(raw: bytes, ch: int, rate: int, sampwidth: int = 2):  # compatibilida
 
 
 # ---- filtro de alucinaciones ---------------------------------------------------------------
-FRASES_FANTASMA = {"y", "...", "mejor", "gracias", "gracias.", "subtítulos realizados por la comunidad de amara.org",
+FRASES_FANTASMA = {"y", "...", "mejor", "gracias", "gracias.", "muchas gracias", "muchas gracias.", "subtítulos realizados por la comunidad de amara.org",
                    "¡gracias por ver!", "suscríbete", "música"}
 
 
@@ -95,7 +95,7 @@ def transcribir(modelo: str, entrada, salida, saltar=None):
         final = fase == "final"
         segs, _ = m.transcribe(
             x, language="es", beam_size=5 if final else 2, vad_filter=True, vad_parameters=VAD,
-            condition_on_previous_text=final, initial_prompt=(contexto.get(fuente) or None) if not final else None,
+            condition_on_previous_text=False, initial_prompt=(contexto.get(fuente) or None) if not final else None,
             no_speech_threshold=0.6, compression_ratio_threshold=2.4, log_prob_threshold=-1.0, temperature=[0.0, 0.2, 0.4])
         previo = ""
         for s in segs:
