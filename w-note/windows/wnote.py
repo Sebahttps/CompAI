@@ -48,6 +48,7 @@ from PySide6.QtCore import (
     QObject,
     QPoint,
     QRectF,
+    QSize,
     Qt,
     QTimer,
     QUrl,
@@ -152,10 +153,10 @@ def _renderer(small: bool) -> QSvgRenderer:
 
 
 def paint_wnote_logo(painter: QPainter, rect: QRectF):
-    """Dibuja el isotipo oficial (versión chica bajo 40 px, como pide el manual)."""
+    """Dibuja el isotipo oficial. Mismo dibujo en todos los tamaños (manda el del encabezado)."""
     painter.save()
     painter.setRenderHint(QPainter.RenderHint.Antialiasing)
-    _renderer(rect.width() < 40).render(painter, rect)
+    _renderer(False).render(painter, rect)
     painter.restore()
 
 
@@ -168,10 +169,39 @@ def logo_pixmap(size: int) -> QPixmap:
     return pix
 
 
+CAMERA_SVG = b"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF"
+stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4
+a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg>"""
+
+
+def svg_icon(data: bytes, size: int = 18) -> QIcon:
+    pix = QPixmap(size * 2, size * 2)
+    pix.fill(Qt.GlobalColor.transparent)
+    p = QPainter(pix)
+    QSvgRenderer(QByteArray(data)).render(p, QRectF(0, 0, size * 2, size * 2))
+    p.end()
+    return QIcon(pix)
+
+
+def compai_logo_pixmap(height: int) -> QPixmap | None:
+    path = APP_DIR.parent / "marca" / "compai-logotipo-dia.svg"
+    if not path.exists():
+        return None
+    r = QSvgRenderer(str(path))
+    r.setViewBox(QRectF(2, 20, 294, 54))  # recorte al dibujo (el SVG trae margen de respiro)
+    vb = r.viewBoxF()
+    w = int(height * vb.width() / vb.height())
+    pix = QPixmap(w * 2, height * 2)
+    pix.fill(Qt.GlobalColor.transparent)
+    p = QPainter(pix)
+    p.setRenderHint(QPainter.RenderHint.Antialiasing)
+    r.render(p, QRectF(0, 0, w * 2, height * 2))
+    p.end()
+    pix.setDevicePixelRatio(2)
+    return pix
+
+
 def logo_icon() -> QIcon:
-    ico = APP_DIR.parent / "marca" / "wnote.ico"
-    if ico.exists():
-        return QIcon(str(ico))
     icon = QIcon()
     for s in (16, 24, 32, 48, 64, 128, 256):
         icon.addPixmap(logo_pixmap(s))
@@ -1362,10 +1392,6 @@ class DesktopWidgetWindow(QWidget):
         root.setSpacing(4)
 
         top_row = QHBoxLayout()
-        btn_logo = LogoButton(30)
-        btn_logo.setToolTip("Abrir w-notes")
-        btn_logo.clicked.connect(self.open_main_requested.emit)
-        top_row.addWidget(btn_logo)
         top_row.addStretch()
         self.lbl_loc = QLabel()
         self.lbl_loc.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
@@ -1375,11 +1401,17 @@ class DesktopWidgetWindow(QWidget):
         root.addLayout(top_row)
 
         clock_row = QHBoxLayout()
+        clock_row.setSpacing(4)
         clock_row.addStretch()
         self.lbl_time = QLabel()
         self.lbl_time.setStyleSheet("color: #ffffff; font-size: 52px; font-weight: 300;" + shadow)
-        clock_row.addWidget(self.lbl_time)
+        self.lbl_time.setAlignment(Qt.AlignmentFlag.AlignTop)
+        clock_row.addWidget(self.lbl_time, 0, Qt.AlignmentFlag.AlignTop)
         meta_col = QVBoxLayout()
+        meta_col.setSpacing(0)
+        # el alto de línea deja aire sobre las cifras: se baja la temperatura a la altura del borde superior
+        fm = self.lbl_time.fontMetrics()
+        meta_col.setContentsMargins(0, max(0, fm.ascent() - fm.capHeight() - 2), 0, 0)
         self.lbl_temp = QLabel("–°")
         self.lbl_temp.setStyleSheet("color: #78C5E3; font-size: 17px; font-weight: 400;" + shadow)
         self.lbl_ampm = QLabel()
@@ -1388,6 +1420,7 @@ class DesktopWidgetWindow(QWidget):
         meta_col.addWidget(self.lbl_ampm)
         meta_col.addStretch()
         clock_row.addLayout(meta_col)
+        clock_row.setAlignment(meta_col, Qt.AlignmentFlag.AlignTop)
         root.addLayout(clock_row)
 
         self.lbl_date = QLabel()
@@ -1460,6 +1493,10 @@ class DesktopWidgetWindow(QWidget):
         btn_quick = _plus_button(30)
         btn_quick.clicked.connect(lambda: self.popup.show_quick_creator(self._below()))
         self.capsules_row.addWidget(btn_quick)
+        btn_logo = LogoButton(32)
+        btn_logo.setToolTip("Abrir w-notes")
+        btn_logo.clicked.connect(self.open_main_requested.emit)
+        self.capsules_row.addWidget(btn_logo)
         self.adjustSize()
 
     def _below(self) -> QPoint:
@@ -1617,6 +1654,8 @@ V_CREMA, V_SOLIDO = "#F5F0E4", "#FFFFFF"
 V_INK, V_INK2, V_INK3 = "#13202E", "#34424F", "#44515F"
 V_ACC, V_ACC_H, V_ACC_T = "#A85E28", "#B86A32", "#7A4A12"
 V_OK, V_BAD = "#0F5C7A", "#9E2A1C"
+V_VERDE, V_VERDE_H = "#37B35A", "#2FA04F"   # verde del logo w-notes
+V_GRIS, V_GRIS_H = "#5E6670", "#4C535C"
 V_LINE, V_LINE2 = "rgba(8,30,56,0.14)", "rgba(8,30,56,0.30)"
 F_DISP = "'Space Grotesk','Segoe UI Variable Display','Segoe UI',sans-serif"
 F_MONO = "Consolas,'Cascadia Mono','Segoe UI Mono',monospace"
@@ -1628,6 +1667,7 @@ QLabel, QCheckBox {{ background: transparent; }}
 QFrame#card {{ background: rgba(255,255,255,0.72); border: 1px solid {V_LINE}; border-radius: 10px; }}
 QFrame#hdr {{ background: rgba(255,255,255,0.80); border: 1px solid {V_LINE}; border-radius: 12px; }}
 QLabel#title {{ font-family: {F_DISP}; font-size: 22px; font-weight: 600; color: {V_INK}; }}
+QLabel#hero {{ font-family: 'Segoe UI Variable Display','Segoe UI',sans-serif; font-size: 40px; font-weight: 400; color: {V_INK}; }}
 QLabel#eyebrow, QLabel#rotulo {{ font-family: {F_MONO}; font-size: 11px; letter-spacing: 1.2px; color: {V_INK3}; }}
 QLabel#sec {{ font-family: {F_DISP}; font-size: 12px; font-weight: 600; letter-spacing: 1px; color: {V_ACC_T}; }}
 QLabel#chip {{ font-family: {F_MONO}; font-size: 11px; color: {V_OK}; background: rgba(15,92,122,0.12);
@@ -1643,6 +1683,11 @@ QPushButton#secondary:hover {{ border-color: {V_ACC}; }}
 QPushButton#icon {{ background: rgba(255,255,255,0.72); color: {V_INK}; border: 1px solid {V_LINE2}; border-radius: 6px;
   padding: 4px; font-size: 16px; min-width: 32px; min-height: 30px; }}
 QPushButton#icon:hover {{ border-color: {V_ACC}; }}
+QPushButton#nueva {{ background: {V_VERDE}; color: #FFFFFF; border: 1px solid {V_VERDE}; }}
+QPushButton#nueva:hover {{ background: {V_VERDE_H}; border-color: {V_VERDE_H}; }}
+QPushButton#print {{ background: {V_GRIS}; color: #FFFFFF; border: 1px solid {V_GRIS}; }}
+QPushButton#print:hover {{ background: {V_GRIS_H}; }}
+QPushButton#print:disabled {{ background: #A9AEB4; color: #FFFFFF; border: 1px solid #A9AEB4; }}
 QPushButton#rec {{ background: {V_BAD}; color: #FFFFFF; border: 1px solid {V_BAD}; }}
 QPushButton#recon {{ background: {V_OK}; color: #FFFFFF; border: 1px solid {V_OK}; }}
 QPushButton:disabled {{ background: #E9E4D8; color: #9A9A94; border: 1px solid {V_LINE}; }}
@@ -2041,24 +2086,40 @@ class MainWNoteWindow(QMainWindow):
         # Encabezado
         header = QFrame()
         header.setObjectName("hdr")
-        h = QHBoxLayout(header)
-        h.setContentsMargins(16, 12, 16, 12)
+        hv = QVBoxLayout(header)
+        hv.setContentsMargins(20, 14, 20, 16)
+        hv.setSpacing(6)
+        marcas = QHBoxLayout()
+        compai = QLabel()
+        pix = compai_logo_pixmap(28)
+        if pix:
+            compai.setPixmap(pix)
+        else:
+            compai.setText("compAI")
+            compai.setObjectName("title")
+        compai.setToolTip("compAI")
+        marcas.addWidget(compai, 0, Qt.AlignmentFlag.AlignVCenter)
+        marcas.addStretch()
+        wlogo = QLabel()
+        wlogo.setPixmap(logo_pixmap(48))
+        wlogo.setToolTip("w-notes")
+        marcas.addWidget(wlogo)
+        hv.addLayout(marcas)
+        h = QHBoxLayout()
         h.setSpacing(10)
-        logo = QLabel()
-        logo.setPixmap(logo_pixmap(44))
-        h.addWidget(logo)
         col = QVBoxLayout()
         col.setSpacing(0)
-        col.addWidget(_label("COMPAI · NOTAS Y ACTAS", "eyebrow"))
-        col.addWidget(_label("w-notes", "title"))
+        col.addWidget(_label("w-notes", "hero"))
+        col.addWidget(_label("de compA\\", "eyebrow"))
         h.addLayout(col, 1)
         self.lbl_status = _label("", "chip")
-        h.addWidget(self.lbl_status)
-        h.addWidget(_btn("📱", "icon", self.link_phone, "Vincular celular (QR)"))
-        h.addWidget(_btn("⚙", "icon", self.open_settings, "Configuración"))
-        h.addWidget(_btn("+ Nota rápida", "primary",
+        h.addWidget(self.lbl_status, 0, Qt.AlignmentFlag.AlignBottom)
+        h.addWidget(_btn("📱", "icon", self.link_phone, "Vincular celular (QR)"), 0, Qt.AlignmentFlag.AlignBottom)
+        h.addWidget(_btn("⚙", "icon", self.open_settings, "Configuración"), 0, Qt.AlignmentFlag.AlignBottom)
+        h.addWidget(_btn("+ Nueva nota", "nueva",
                          lambda: self.popup.show_quick_creator(QPoint(self.x() + 80, self.y() + 110)),
-                         "Ctrl+Alt+N desde cualquier app"))
+                         "Ctrl+Alt+N desde cualquier app"), 0, Qt.AlignmentFlag.AlignBottom)
+        hv.addLayout(h)
         main.addWidget(header)
 
         # Notas de vidrio
@@ -2098,7 +2159,9 @@ class MainWNoteWindow(QMainWindow):
         self.combo_platform = QComboBox()
         self.combo_platform.addItems(["Google Meet", "MS Teams", "Zoom", "Otra Videollamada"])
         self.btn_record_toggle = _btn("● Grabar", "rec", self._toggle_recording, "Ctrl+Alt+R")
-        self.btn_screenshot = _btn("📷 Print clave (0)", "secondary", self._take_screenshot, "Ctrl+Alt+P")
+        self.btn_screenshot = _btn("Print", "print", self._take_screenshot, "Print de pantalla clave (Ctrl+Alt+P)")
+        self.btn_screenshot.setIcon(svg_icon(CAMERA_SVG))
+        self.btn_screenshot.setIconSize(QSize(18, 18))
         self.btn_screenshot.setEnabled(False)
         r.addWidget(self.inp_org, 2)
         r.addWidget(self.inp_topic, 2)
@@ -2221,7 +2284,6 @@ class MainWNoteWindow(QMainWindow):
             self._pending_link = ""
             self._style_record_button(True)
             self.btn_screenshot.setEnabled(True)
-            self.btn_screenshot.setText("📷 Print clave (0)")
             self.inp_live.setEnabled(True)
         else:
             md_path = self.recorder.stop_and_archive()
@@ -2241,7 +2303,7 @@ class MainWNoteWindow(QMainWindow):
     def _take_screenshot(self):
         if self.recorder.is_recording:
             self.recorder.capture_key_screenshot()
-            self.btn_screenshot.setText(f"📷 Print clave ({len(self.recorder.screenshots)})")
+            self._update_recording_ui()
 
     def _add_live_note(self):
         if self.recorder.is_recording and self.inp_live.text().strip():
@@ -2250,7 +2312,8 @@ class MainWNoteWindow(QMainWindow):
 
     def _update_recording_ui(self):
         if self.recorder.is_recording:
-            self.lbl_rec_status.setText(f"● REC {self.recorder.elapsed_str()}")
+            n = len(self.recorder.screenshots)
+            self.lbl_rec_status.setText(f"● REC {self.recorder.elapsed_str()}" + (f" · {n} PRINT{'S' if n != 1 else ''}" if n else ""))
 
     def refresh_actas_table(self):
         self._records = self.storage.list_actas()
