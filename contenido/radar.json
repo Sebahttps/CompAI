@@ -3,73 +3,8 @@
  "generado": "2026-11-20T08:37",
  "fecha": "20-11-2026 08:37",
  "fuente": "RAI-CA · API de Mercado Público, Compra Ágil",
- "candidatas": 106,
+ "candidatas": 89,
  "filas": [
-  {
-   "marca": "GO",
-   "nombre": "(CCOQ) ADQ. E INSTALACIÓN DE BATERÍAS PARA UPS DEL SERVIDOR INFORMÁTICO (684/2026).",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 100,
-   "codigo": "1455288-220-COT26",
-   "monto": "$634.032",
-   "organismo": "DIVISIÓN DE BIENESTAR SOCIAL · Región Metropolitana de Santiago",
-   "fecha": "20-11-2026 11:00",
-   "cierre_iso": "2026-11-20 11:00",
-   "quedan": "queda menos de 1 h"
-  },
-  {
-   "marca": "GO",
-   "nombre": "GA DISCO DURO 240GB SSD",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 100,
-   "codigo": "5196-807-COT26",
-   "monto": "$80.000",
-   "organismo": "IIª Brigada Aérea · Región Metropolitana de Santiago",
-   "fecha": "20-11-2026 11:00",
-   "cierre_iso": "2026-11-20 11:00",
-   "quedan": "queda menos de 1 h"
-  },
-  {
-   "marca": "NO-GO",
-   "nombre": "Adquisicion de 2 notebook línea corporativa 14 pulgadas Core i713700H o superior",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 45,
-   "codigo": "5586-3225-COT26",
-   "monto": "$2.200.000",
-   "organismo": "UNIVERSIDAD DE LA FRONTERA · Región de la Araucanía ",
-   "fecha": "20-11-2026 11:30",
-   "cierre_iso": "2026-11-20 11:30",
-   "quedan": "queda menos de 1 h"
-  },
-  {
-   "marca": "NO-GO",
-   "nombre": "Kit para servidor de almacenamiento NAS para red I+D+i+e",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 45,
-   "codigo": "5416-894-COT26",
-   "monto": "$3.978.000",
-   "organismo": "UNIVERSIDAD DE LA SERENA · Región de Coquimbo ",
-   "fecha": "20-11-2026 12:00",
-   "cierre_iso": "2026-11-20 12:00",
-   "quedan": "quedan 1 h"
-  },
-  {
-   "marca": "GO",
-   "nombre": "NM. RBD 6755, SC. 4959, PROYECTO TP, ADQ  PROGRAMA DE CORTE, LICENCIA PERPETUA, LICEO INDUSTRIAL, 2907001.",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 100,
-   "codigo": "1432083-1696-COT26",
-   "monto": "$830.000",
-   "organismo": "Servicio local de educación pública de Valdivia · Región de Los Ríos",
-   "fecha": "20-11-2026 12:30",
-   "cierre_iso": "2026-11-20 12:30",
-   "quedan": "quedan 1 h"
-  },
   {
    "marca": "GO",
    "nombre": "Licencias para uso de inteligencia artificial - GAF Tecnología de la Información",
@@ -81,7 +16,7 @@
    "organismo": "CORPORACION CENTRO CULTURAL GABRIELA MISTRAL · Región Metropolitana de Santiago",
    "fecha": "20-11-2026 13:00",
    "cierre_iso": "2026-11-20 13:00",
-   "quedan": "quedan 2 h"
+   "quedan": "queda menos de 1 h"
   },
   {
    "marca": "GO",
@@ -94,7 +29,33 @@
    "organismo": "I MUNICIPALIDAD DE QUIRIHUE · Región del Ñuble",
    "fecha": "20-11-2026 13:00",
    "cierre_iso": "2026-11-20 13:00",
-   "quedan": "quedan 2 h"
+   "quedan": "queda menos de 1 h"
+  },
+  {
+   "marca": "NO-GO",
+   "nombre": "Notebook Escuela Rural Chumelden",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 45,
+   "codigo": "4939-368-COT26",
+   "monto": "$1.820.000",
+   "organismo": "I MUNICIPALIDAD DE CHAITEN · Región de los Lagos ",
+   "fecha": "20-11-2026 13:00",
+   "cierre_iso": "2026-11-20 13:00",
+   "quedan": "queda menos de 1 h"
+  },
+  {
+   "marca": "NO-GO",
+   "nombre": "OSO - BOLSOS TIPO PORTA NOTEBOOK",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 45,
+   "codigo": "1161-352-COT26",
+   "monto": "$120.000",
+   "organismo": "SERVICIO AGRICOLA Y GANADERO · Región de los Lagos ",
+   "fecha": "20-11-2026 13:00",
+   "cierre_iso": "2026-11-20 13:00",
+   "quedan": "queda menos de 1 h"
   },
   {
    "marca": "GO",
@@ -107,7 +68,46 @@
    "organismo": "COMISION CHILENA DE ENERGIA NUCLEAR · Región Metropolitana de Santiago",
    "fecha": "20-11-2026 14:10",
    "cierre_iso": "2026-11-20 14:10",
-   "quedan": "quedan 3 h"
+   "quedan": "quedan 1 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "Servicio especializado de acompañamiento preventivo y transferencia de conocimiento sobre plataforma SAS",
+   "linea": "L5",
+   "linea_nombre": "Soluciones Web y Desarrollo Customizado",
+   "score": 100,
+   "codigo": "1005498-93-COT26",
+   "monto": "",
+   "organismo": "COMISION PARA EL MERCADO FINANCIERO · Región Metropolitana de Santiago",
+   "fecha": "20-11-2026 15:00",
+   "cierre_iso": "2026-11-20 15:00",
+   "quedan": "quedan 2 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "SOL 715 / SECPLA / NOTEBOOK / MARIA ALIAGA",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "2432-966-COT26",
+   "monto": "$3.200.000",
+   "organismo": "I MUNICIPALIDAD ESTACION CENTRAL · Región Metropolitana de Santiago",
+   "fecha": "20-11-2026 15:00",
+   "cierre_iso": "2026-11-20 15:00",
+   "quedan": "quedan 2 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "COMPRA DE NOTEBOOK",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "2780-147-COT26",
+   "monto": "$990.000",
+   "organismo": "I MUNICIPALIDAD DE LA LIGUA · Región de Valparaíso ",
+   "fecha": "20-11-2026 15:00",
+   "cierre_iso": "2026-11-20 15:00",
+   "quedan": "quedan 2 h"
   }
  ]
 }
