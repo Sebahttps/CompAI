@@ -1,3 +1,5 @@
 .tmp.driveupload/
 
 contenido/_*.md
+
+__pycache__/
