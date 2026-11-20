@@ -398,7 +398,7 @@
   }
   /* Retrato con estilo (16-11-2026): SU foto, la misma cara, en el estilo que elija. Lo hace Gemini desde el
      Apps Script del formulario; la foto no se guarda. TEXTOS PROPUESTOS: esperan el visto de Sebastián. */
-  var ESTILOS_RET = [['facetado', 'Póster facetado'], ['bn', 'Blanco y negro'], ['retro', 'Retro'], ['revista', 'Portada de revista'], ['anime', 'Dibujo japonés']];
+  var ESTILOS_RET = [['leyenda', 'Escena legendaria'], ['facetado', 'Póster facetado'], ['bn', 'Blanco y negro'], ['retro', 'Retro'], ['revista', 'Portada de revista'], ['anime', 'Dibujo japonés']];
   var ERR_RET = { tope: 'Por hoy ya se crearon todos los retratos. Vuelve mañana.', foto: 'Esa foto no sirve. Prueba con otra.',
     'tope-persona': 'Ya creaste tus 3 retratos de hoy. Vuelve mañana.', cuenta: 'Vuelve a entrar con tu cuenta de Google.' };
   /* Cada persona entra con su cuenta de Google antes de crear (Sebastián, 16-11-2026): así el tope de 3 al día es
@@ -431,7 +431,7 @@
     var h = '<div class="ret" role="group" aria-labelledby="l-ret"><h2 id="l-ret">Tu retrato con estilo</h2>';
     if (!MEM.photo) return h + '<p class="hint" style="margin:0">Sube una foto tuya y te devolvemos la misma cara, en el estilo que elijas.</p>' +
       '<button type="button" class="btn-s" data-a="photoup">Subir mi foto</button></div>';
-    var est = MEM.retEst || 'facetado';
+    var est = MEM.retEst || 'leyenda';
     h += '<div class="ret-chips">' + ESTILOS_RET.map(function (e) { return '<button type="button" class="chip' + (e[0] === est ? ' on' : '') + '" aria-pressed="' + (e[0] === est) + '" data-a="estilo" data-i="' + e[0] + '">' + e[1] + '</button>'; }).join('') + '</div>';
     if (MEM.retrato) h += '<div class="ret-res"><img src="' + esc(MEM.retrato) + '" alt="Tu retrato, estilo ' + esc((ESTILOS_RET.filter(function (e) { return e[0] === MEM.retHecho; })[0] || ['', ''])[1]) + '"></div>' +
       '<div class="kit-b"><button type="button" class="btn-s" data-a="retuse">Usar en mi portada</button><button type="button" class="btn-s" data-a="retdl">Descargar</button></div>';
@@ -439,14 +439,19 @@
     else h += '<p class="hint" style="margin:0">Para crear tu retrato, entra con tu cuenta de Google.</p><div id="g-btn" class="ret-g"></div>';
     return h + '<p class="hint" style="margin:0">Tu foto se usa solo para crear el retrato y no se guarda.</p><span id="ret-msg" role="status" class="hint"></span></div>';
   }
+  /* La misma escena que escenas.js pinta para su oficio (Vitruvio, la gran ola, Atlas…), para que Gemini la pinte con su cara. */
+  function escenaClave() {
+    var E = window.SOUL_ESCENAS, i = ST.oficio == null ? D.MOTIFS.length - 1 : ST.oficio;
+    try { return E ? E.elegir({ oficioN: i, version: ST.arte || 0 }).clave : ''; } catch (e) { return ''; }
+  }
   function crearRetrato(btn) {
-    var msg = $('#ret-msg'), est = MEM.retEst || 'facetado';
+    var msg = $('#ret-msg'), est = MEM.retEst || 'leyenda';
     if (!MEM.photo || !CFG.endpoint) return;
     if (!conCuenta()) { MEM.gtoken = ''; render(false); return; }
     btn.disabled = true; if (msg) msg.textContent = ' Creando tu retrato… tarda unos 20 segundos.';
     var ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null, reloj = ctrl ? setTimeout(function () { ctrl.abort(); }, 90000) : 0;
     fetch(CFG.endpoint, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, signal: ctrl ? ctrl.signal : undefined,
-      body: JSON.stringify({ tipo: 'retrato', estilo: est, foto: MEM.photo, oficio: oficioNombre(), colores: S.pal(ST, D) || [], idToken: MEM.gtoken }) })
+      body: JSON.stringify({ tipo: 'retrato', estilo: est, escena: escenaClave(), foto: MEM.photo, oficio: oficioNombre(), colores: S.pal(ST, D) || [], idToken: MEM.gtoken }) })
       .then(function (r) { return r.json(); })
       .then(function (j) {
         clearTimeout(reloj);

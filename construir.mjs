@@ -290,6 +290,7 @@ const cabeza = (titulo, descripcion, url, extra = '') => `<meta charset="utf-8">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
 <link rel="preload" as="font" type="font/woff2" href="css/fuentes/spacegrotesk-var-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="css/fuentes/plexmono-400-latin.woff2" crossorigin>
 ${extra}<link rel="stylesheet" href="css/claro.css">`;
@@ -346,6 +347,7 @@ const c404 = `<!doctype html>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
 <link rel="stylesheet" href="/css/claro.css">
 </head>
 <body>
