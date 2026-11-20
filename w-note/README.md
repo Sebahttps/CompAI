@@ -101,6 +101,12 @@ Cada grabación genera `AAAA-MM-DD_Organizacion_Tema.md` con esta estructura fij
 
 «Redacta» se cambia en ⚙ → Grabación y actas.
 
+**Reuniones espontáneas:** ● sin evento en el calendario = «Reunión espontánea · desarrollo de proyecto». Escribe proyecto y tema mientras grabas: el acta y sus archivos toman esos nombres al cerrar.
+
+**Transcripción en vivo (sin internet):** faster-whisper en este PC, en un proceso aparte. Trozos de 15 s; 🎙 Sala = micrófono, 🔊 Llamada = audio del sistema. Modelo «small» por defecto (medido: 4,6x más rápido que el tiempo real en un Ryzen 3 5400U; «base» 12x). Lo que falte al cerrar se completa solo en la sección 7 del acta. Para actas antiguas con audio: botón **Transcribir**.
+
+**Aislamiento:** audio y transcripción corren en procesos aparte (`grabador.py`, `transcriptor.py`): si fallan, w-notes no se cierra. Errores en `Documentos/w-note/wnote.log`.
+
 ### Archivos
 
 `Documentos/w-note/Actas_Reuniones/AAAA-MM-DD_Organizacion_Tema.md` (+ `.wav` del sistema, `_microfono.wav` y `Capturas_Clave/`).
