@@ -113,7 +113,7 @@ except ImportError:
     HAS_QR = False
 
 APP_NAME = "w-notes"
-APP_VERSION = "1.1.0"
+APP_VERSION = "1.2.0"
 APP_DIR = Path(__file__).resolve().parent
 WEB_DIR = APP_DIR.parent  # carpeta w-note/ con index.html (panel del celular)
 
@@ -184,11 +184,10 @@ def svg_icon(data: bytes, size: int = 18) -> QIcon:
 
 
 def compai_logo_pixmap(height: int) -> QPixmap | None:
-    path = APP_DIR.parent / "marca" / "compai-logotipo-dia.svg"
+    path = APP_DIR.parent / "marca" / "compai-logo-dia.svg"  # versión modernizada (A\ arcoíris)
     if not path.exists():
         return None
     r = QSvgRenderer(str(path))
-    r.setViewBox(QRectF(2, 20, 294, 54))  # recorte al dibujo (el SVG trae margen de respiro)
     vb = r.viewBoxF()
     w = int(height * vb.width() / vb.height())
     pix = QPixmap(w * 2, height * 2)
@@ -374,6 +373,7 @@ class StorageManager:
             "cloud_sync_enabled": True,
             "pwa_url": "https://compai.cl/w-note/",
             "record_mic": True,
+            "acta_redacta": "Sebastián Tapia Mena · compAI",
             "hotkeys_enabled": True,
         }
         loaded_keys: set = set()
@@ -467,7 +467,8 @@ class StorageManager:
     def build_standard_name(self, date_str: str, org: str, topic: str) -> str:
         clean_org = re.sub(r"[^A-Za-z0-9ÁÉÍÓÚáéíóúÑñ_-]", "_", org.strip()).strip("_") or "Organizacion"
         clean_topic = re.sub(r"[^A-Za-z0-9ÁÉÍÓÚáéíóúÑñ_-]", "_", topic.strip()).strip("_") or "Reunion"
-        clean_org, clean_topic = clean_org[:40], clean_topic[:60]
+        clean_org = re.sub(r"_+", "_", clean_org)[:40].strip("_") or "Organizacion"
+        clean_topic = re.sub(r"_+", "_", clean_topic)[:60].strip("_") or "Reunion"
         fmt = self.config.get("naming_format", "DATE_ORG_TOPIC")
         if fmt == "ORG_DATE_TOPIC":
             return f"{clean_org}_{date_str}_{clean_topic}"
@@ -492,6 +493,7 @@ class StorageManager:
                 continue
             meta = {"filename": md_file.name, "path": str(md_file), "date": "", "organization": "",
                     "topic": "", "platform": "Videollamada", "screenshots_count": 0, "content": content}
+            tabla = {"Fecha": "date", "Organización": "organization", "Tema": "topic", "Plataforma": "platform"}
             for line in content.splitlines():
                 for prefix, key in (("- **Fecha:**", "date"), ("- **Organización:**", "organization"),
                                     ("- **Tema:**", "topic"), ("- **Sistema:**", "platform")):
@@ -500,6 +502,16 @@ class StorageManager:
                 if line.startswith("- **Capturas clave:**"):
                     val = line.split(":**", 1)[1].strip()
                     meta["screenshots_count"] = int(val) if val.isdigit() else 0
+                m = re.match(r"^\|\s*([^|]+?)\s*\|\s*(.*?)\s*\|$", line)
+                if m and m.group(1) in tabla:
+                    val = m.group(2)
+                    if m.group(1) == "Fecha":
+                        val = val.split(" ")[0]
+                    if m.group(1) == "Plataforma":
+                        val = val.split(" · ")[0]
+                    meta[tabla[m.group(1)]] = val
+            if "# ACTA DE REUNIÓN" in content:
+                meta["screenshots_count"] = content.count("](Capturas_Clave/")
             records.append(meta)
         return records
 
@@ -979,44 +991,76 @@ class MeetingRecorderEngine:
             self.live_notes.append({"timestamp": self.elapsed_str(), "text": text.strip()})
 
     def stop_and_archive(self) -> Path:
+        """Cierra la grabación y escribe el acta con el formato estándar compAI (ver README → Formato de actas)."""
         duration = self.elapsed_str()
+        end = datetime.now()
+        start = datetime.fromtimestamp(self.start_time)
         self.is_recording = False
         for t in self._threads:
             t.join(timeout=5)
-        date_str = datetime.now().strftime("%Y-%m-%d")
         md_path = self.storage.actas_dir / f"{self.base_name}.md"
+        iso = start.strftime("%Y-%m-%d")
+        n_dia = len([p for p in self.storage.actas_dir.glob("*.md") if iso in p.name]) + 1
+        codigo = f"ACTA-{start.strftime('%Y%m%d')}-{n_dia:02d}"
+        fecha_larga = f"{DAYS[start.weekday()]} {start.day} de {MONTHS[start.month - 1]} de {start.year}"
+        mins = max(1, round((end - start).total_seconds() / 60))
+        plataforma = self.platform + (f" · [enlace]({self.link})" if self.link else "")
+        redacta = self.storage.config.get("acta_redacta", "").strip() or "_(completar)_"
+        esc = lambda t: str(t).replace("|", "\\|").replace("\n", " ")
 
-        audio_md = ", ".join(f"`{a}`" for a in self.audio_files) or "No capturado"
-        if self.audio_errors:
-            audio_md += " — " + "; ".join(self.audio_errors)
-        notes_md = ("\n".join(f"- `[{n['timestamp']}]` {n['text']}" for n in self.live_notes)
-                    or "- (sin notas en vivo)")
-        shots_md = ("\n\n".join(
-            f"**[{s['timestamp']}]** `{s['filename']}`\n\n![{s['timestamp']}](Capturas_Clave/{s['filename']})"
-            for s in self.screenshots) or "- Sin capturas de pantalla.")
-        link_md = f"\n- **Enlace:** {self.link}" if self.link else ""
+        desarrollo = ("| Min | Nota |\n|---|---|\n" + "\n".join(
+            f"| {n['timestamp']} | {esc(n['text'])} |" for n in self.live_notes)) if self.live_notes \
+            else "_(sin notas en vivo: completar con lo tratado)_"
+        momentos = "\n\n".join(
+            f"**{s['timestamp']}** — `{s['filename']}`\n\n![Captura {s['timestamp']}](Capturas_Clave/{s['filename']})"
+            for s in self.screenshots) or "_(sin capturas)_"
+        audio_sis = next((a for a in self.audio_files if not a.endswith("_microfono.wav")), None)
+        audio_mic = next((a for a in self.audio_files if a.endswith("_microfono.wav")), None)
+        problemas = ("\n\n> ⚠ Audio: " + "; ".join(self.audio_errors)) if self.audio_errors else ""
 
-        document = f"""# Acta de Reunión — {self.base_name}
+        document = f"""# ACTA DE REUNIÓN
 
-- **Fecha:** {date_str}
-- **Organización:** {self.org}
-- **Tema:** {self.topic}
-- **Sistema:** {self.platform}{link_md}
-- **Duración:** {duration}
-- **Audio:** {audio_md}
-- **Capturas clave:** {len(self.screenshots)}
+**{self.topic}** · {self.org}
 
-## 1. Notas y puntos clave en vivo
-{notes_md}
+| Campo | Detalle |
+|---|---|
+| Código | {codigo} |
+| Fecha | {iso} ({fecha_larga}) |
+| Horario | {start.strftime('%H:%M')} – {end.strftime('%H:%M')} ({mins} min · grabación {duration}) |
+| Organización | {esc(self.org)} |
+| Tema | {esc(self.topic)} |
+| Plataforma | {plataforma} |
+| Participantes | _(completar)_ |
+| Redacta | {redacta} |
 
-## 2. Momentos importantes (prints de pantalla)
-{shots_md}
+## 1. Objetivo
+_(completar en una línea: para qué fue la reunión)_
 
-## 3. Acuerdos y próximos pasos
-- [ ]
+## 2. Desarrollo
+{desarrollo}
+
+## 3. Momentos clave
+{momentos}
+
+## 4. Acuerdos
+| # | Acuerdo | Responsable | Plazo |
+|---|---|---|---|
+| 1 |  |  |  |
+| 2 |  |  |  |
+| 3 |  |  |  |
+
+## 5. Próximos pasos
+- [ ] 
+
+## 6. Respaldos
+| Archivo | Detalle |
+|---|---|
+| Audio del sistema | {f"`{audio_sis}`" if audio_sis else "no capturado"} |
+| Micrófono | {f"`{audio_mic}`" if audio_mic else "no capturado"} |
+| Capturas | {len(self.screenshots)} en `Capturas_Clave/` |{problemas}
 
 ---
-Generado por w-notes {APP_VERSION} · compAI
+Acta generada por w-notes {APP_VERSION} · compAI · {end.strftime('%Y-%m-%d %H:%M')}
 """
         md_path.write_text(document, encoding="utf-8")
         return md_path
@@ -1655,7 +1699,8 @@ V_INK, V_INK2, V_INK3 = "#13202E", "#34424F", "#44515F"
 V_ACC, V_ACC_H, V_ACC_T = "#A85E28", "#B86A32", "#7A4A12"
 V_OK, V_BAD = "#0F5C7A", "#9E2A1C"
 V_VERDE, V_VERDE_H = "#37B35A", "#2FA04F"   # verde del logo w-notes
-V_GRIS, V_GRIS_H = "#5E6670", "#4C535C"
+V_GRIS, V_GRIS_H = "#1C1C1C", "#2E2E2E"     # Print: casi negro
+V_PETROLEO, V_AMARILLO = "#0A3A4D", "#F0B400"  # títulos de sección: petróleo oscuro + amarillo del logo
 V_LINE, V_LINE2 = "rgba(8,30,56,0.14)", "rgba(8,30,56,0.30)"
 F_DISP = "'Space Grotesk','Segoe UI Variable Display','Segoe UI',sans-serif"
 F_MONO = "Consolas,'Cascadia Mono','Segoe UI Mono',monospace"
@@ -1664,12 +1709,15 @@ QSS = f"""
 QWidget#central {{ background: {V_CREMA}; }}
 QWidget {{ color: {V_INK}; font-family: 'Segoe UI', sans-serif; font-size: 13px; }}
 QLabel, QCheckBox {{ background: transparent; }}
-QFrame#card {{ background: rgba(255,255,255,0.72); border: 1px solid {V_LINE}; border-radius: 10px; }}
-QFrame#hdr {{ background: rgba(255,255,255,0.80); border: 1px solid {V_LINE}; border-radius: 12px; }}
+QFrame#card {{ background: rgba(255,255,255,0.72); border: 1px solid {V_LINE}; border-radius: 0px; }}
+QFrame#hdr {{ background: #FFFFFF; border: 1px solid {V_LINE}; border-radius: 0px; }}
+QLabel#marca {{ font-family: {F_DISP}; font-size: 40px; font-weight: 700; color: #141414; }}
+QLabel#marcasub {{ font-family: {F_DISP}; font-size: 15px; font-weight: 600; color: {V_OK}; }}
 QLabel#title {{ font-family: {F_DISP}; font-size: 22px; font-weight: 600; color: {V_INK}; }}
 QLabel#hero {{ font-family: 'Segoe UI Variable Display','Segoe UI',sans-serif; font-size: 40px; font-weight: 400; color: {V_INK}; }}
 QLabel#eyebrow, QLabel#rotulo {{ font-family: {F_MONO}; font-size: 11px; letter-spacing: 1.2px; color: {V_INK3}; }}
-QLabel#sec {{ font-family: {F_DISP}; font-size: 12px; font-weight: 600; letter-spacing: 1px; color: {V_ACC_T}; }}
+QLabel#sec {{ font-family: {F_DISP}; font-size: 15px; font-weight: 700; color: {V_PETROLEO}; border: none;
+  border-left: 4px solid {V_AMARILLO}; padding: 1px 0 1px 9px; }}
 QLabel#chip {{ font-family: {F_MONO}; font-size: 11px; color: {V_OK}; background: rgba(15,92,122,0.12);
   border: 1px solid {V_OK}; border-radius: 6px; padding: 3px 8px; }}
 QLabel#chipwarn {{ font-family: {F_MONO}; font-size: 11px; color: {V_ACC_T}; background: #FFF0D2;
@@ -1687,7 +1735,7 @@ QPushButton#nueva {{ background: {V_VERDE}; color: #FFFFFF; border: 1px solid {V
 QPushButton#nueva:hover {{ background: {V_VERDE_H}; border-color: {V_VERDE_H}; }}
 QPushButton#print {{ background: {V_GRIS}; color: #FFFFFF; border: 1px solid {V_GRIS}; }}
 QPushButton#print:hover {{ background: {V_GRIS_H}; }}
-QPushButton#print:disabled {{ background: #A9AEB4; color: #FFFFFF; border: 1px solid #A9AEB4; }}
+QPushButton#print:disabled {{ background: #8C8C8C; color: #FFFFFF; border: 1px solid #8C8C8C; }}
 QPushButton#rec {{ background: {V_BAD}; color: #FFFFFF; border: 1px solid {V_BAD}; }}
 QPushButton#recon {{ background: {V_OK}; color: #FFFFFF; border: 1px solid {V_OK}; }}
 QPushButton:disabled {{ background: #E9E4D8; color: #9A9A94; border: 1px solid {V_LINE}; }}
@@ -1700,6 +1748,7 @@ QLineEdit:focus, QComboBox:focus, QTextEdit:focus {{ border: 1px solid {V_OK}; }
 QLineEdit:disabled {{ background: #EFEBE2; color: #8a8a86; }}
 QTableWidget {{ background: transparent; border: none; gridline-color: {V_LINE}; alternate-background-color: rgba(255,255,255,0.45); }}
 QTableWidget::item:selected {{ background: rgba(15,92,122,0.14); color: {V_INK}; }}
+QTableWidget {{ selection-background-color: rgba(15,92,122,0.16); selection-color: {V_INK}; }}
 QHeaderView::section {{ background: transparent; border: none; border-bottom: 1px solid {V_LINE2}; padding: 6px 4px;
   font-family: {F_MONO}; font-size: 11px; letter-spacing: 1px; color: {V_INK3}; }}
 QScrollArea {{ background: transparent; border: none; }}
@@ -1807,7 +1856,7 @@ class SettingsDialog(QDialog):
 
         # Cápsula
         c, v = _card()
-        v.addWidget(_label("CÁPSULA LATERAL", "sec"))
+        v.addWidget(_label("Cápsula lateral", "sec"))
         row = QHBoxLayout()
         row.addWidget(_label("POSICIÓN", "rotulo"))
         self.combo_pos = QComboBox()
@@ -1831,7 +1880,7 @@ class SettingsDialog(QDialog):
 
         # Ubicación
         c, v = _card()
-        v.addWidget(_label("UBICACIÓN Y CLIMA", "sec"))
+        v.addWidget(_label("Ubicación y clima", "sec"))
         row = QHBoxLayout()
         self.combo_loc = QComboBox()
         self.combo_loc.addItem("Automática (como la intranet)", "auto")
@@ -1863,7 +1912,7 @@ class SettingsDialog(QDialog):
 
         # Nube
         c, v = _card()
-        v.addWidget(_label("NUBE · IPHONE POR 4G/5G", "sec"))
+        v.addWidget(_label("Nube · iPhone por 4G/5G", "sec"))
         self.chk_cloud = QCheckBox("Sincronizar con la nube (Apps Script en tu cuenta compai.cl)")
         self.chk_cloud.setChecked(cfg.get("cloud_sync_enabled", True))
         v.addWidget(self.chk_cloud)
@@ -1891,7 +1940,7 @@ class SettingsDialog(QDialog):
 
         # Wi-Fi local
         c, v = _card()
-        v.addWidget(_label("WI-FI LOCAL (SIN INTERNET)", "sec"))
+        v.addWidget(_label("Wi-Fi local (sin internet)", "sec"))
         srv = self.win.mobile_server
         v.addWidget(_label(f"http://{srv.local_ip}:{srv.port}  ·  {'activo' if srv.running else 'apagado'}", "rotulo"))
         v.addWidget(_label("Mismo panel del celular cuando está en tu red. El QR está en «Vincular celular».", "hint"))
@@ -1899,7 +1948,7 @@ class SettingsDialog(QDialog):
 
         # Grabación
         c, v = _card()
-        v.addWidget(_label("GRABACIÓN Y ACTAS", "sec"))
+        v.addWidget(_label("Grabación y actas", "sec"))
         self.chk_mic = QCheckBox("Grabar también el micrófono (archivo aparte)")
         self.chk_mic.setChecked(cfg.get("record_mic", True))
         self.chk_mic.stateChanged.connect(lambda: self._set("record_mic", self.chk_mic.isChecked()))
@@ -1915,6 +1964,12 @@ class SettingsDialog(QDialog):
         row.addWidget(self.combo_naming)
         row.addStretch()
         v.addLayout(row)
+        row = QHBoxLayout()
+        row.addWidget(_label("REDACTA", "rotulo"))
+        self.inp_redacta = QLineEdit(cfg.get("acta_redacta", ""))
+        self.inp_redacta.editingFinished.connect(lambda: self._set("acta_redacta", self.inp_redacta.text().strip()))
+        row.addWidget(self.inp_redacta, 1)
+        v.addLayout(row)
         folder = _btn(f"📁 {self.storage.actas_dir}", "link",
                       lambda: QDesktopServices.openUrl(QUrl.fromLocalFile(str(self.storage.actas_dir))))
         v.addWidget(folder)
@@ -1922,7 +1977,7 @@ class SettingsDialog(QDialog):
 
         # Atajos
         c, v = _card()
-        v.addWidget(_label("ATAJOS GLOBALES", "sec"))
+        v.addWidget(_label("Atajos globales", "sec"))
         v.addWidget(_label("Ctrl+Alt+N  nota rápida   ·   Ctrl+Alt+R  grabar / detener   ·   Ctrl+Alt+P  print clave",
                            "rotulo"))
         lay.addWidget(c)
@@ -2084,33 +2139,31 @@ class MainWNoteWindow(QMainWindow):
         main.setSpacing(14)
 
         # Encabezado
-        header = QFrame()
-        header.setObjectName("hdr")
-        hv = QVBoxLayout(header)
-        hv.setContentsMargins(20, 14, 20, 16)
-        hv.setSpacing(6)
-        marcas = QHBoxLayout()
         compai = QLabel()
-        pix = compai_logo_pixmap(28)
+        pix = compai_logo_pixmap(34)
         if pix:
             compai.setPixmap(pix)
         else:
-            compai.setText("compAI")
-            compai.setObjectName("title")
+            compai.setText("compA\\")
+            compai.setObjectName("marca")
         compai.setToolTip("compAI")
-        marcas.addWidget(compai, 0, Qt.AlignmentFlag.AlignVCenter)
-        marcas.addStretch()
+        main.addWidget(compai, 0, Qt.AlignmentFlag.AlignLeft)
+
+        header = QFrame()
+        header.setObjectName("hdr")
+        h = QHBoxLayout(header)
+        h.setContentsMargins(20, 16, 20, 16)
+        h.setSpacing(16)
         wlogo = QLabel()
-        wlogo.setPixmap(logo_pixmap(48))
+        wlogo.setPixmap(logo_pixmap(76))
         wlogo.setToolTip("w-notes")
-        marcas.addWidget(wlogo)
-        hv.addLayout(marcas)
-        h = QHBoxLayout()
-        h.setSpacing(10)
+        h.addWidget(wlogo)
         col = QVBoxLayout()
         col.setSpacing(0)
-        col.addWidget(_label("w-notes", "hero"))
-        col.addWidget(_label("de compA\\", "eyebrow"))
+        col.addStretch()
+        col.addWidget(_label("w-notes", "marca"))
+        col.addWidget(_label("de compA\\", "marcasub"))
+        col.addStretch()
         h.addLayout(col, 1)
         self.lbl_status = _label("", "chip")
         h.addWidget(self.lbl_status, 0, Qt.AlignmentFlag.AlignBottom)
@@ -2119,13 +2172,12 @@ class MainWNoteWindow(QMainWindow):
         h.addWidget(_btn("+ Nueva nota", "nueva",
                          lambda: self.popup.show_quick_creator(QPoint(self.x() + 80, self.y() + 110)),
                          "Ctrl+Alt+N desde cualquier app"), 0, Qt.AlignmentFlag.AlignBottom)
-        hv.addLayout(h)
         main.addWidget(header)
 
         # Notas de vidrio
         notes_box, nb = _card()
         top = QHBoxLayout()
-        self.lbl_notes_title = _label("NOTAS DE VIDRIO", "sec")
+        self.lbl_notes_title = _label("Notas de vidrio", "sec")
         top.addWidget(self.lbl_notes_title)
         top.addStretch()
         top.addWidget(_label("SINCRONIZADAS CON EL CELULAR", "rotulo"))
@@ -2146,7 +2198,7 @@ class MainWNoteWindow(QMainWindow):
         # Grabación
         rec, rv = _card()
         top = QHBoxLayout()
-        top.addWidget(_label("GRABAR REUNIÓN", "sec"))
+        top.addWidget(_label("Grabar reunión", "sec"))
         top.addStretch()
         self.lbl_rec_status = _label("LISTO", "rotulo")
         top.addWidget(self.lbl_rec_status)
@@ -2166,8 +2218,8 @@ class MainWNoteWindow(QMainWindow):
         r.addWidget(self.inp_org, 2)
         r.addWidget(self.inp_topic, 2)
         r.addWidget(self.combo_platform, 1)
-        r.addWidget(self.btn_record_toggle)
         r.addWidget(self.btn_screenshot)
+        r.addWidget(self.btn_record_toggle)
         rv.addLayout(r)
         self.inp_live = QLineEdit()
         self.inp_live.setPlaceholderText("Nota en vivo con marca de tiempo… (Enter)")
@@ -2181,7 +2233,7 @@ class MainWNoteWindow(QMainWindow):
         splitter.setChildrenCollapsible(False)
         left, lv = _card()
         top = QHBoxLayout()
-        top.addWidget(_label("ACTAS DE REUNIÓN", "sec"))
+        top.addWidget(_label("Actas de reunión", "sec"))
         top.addStretch()
         top.addWidget(_btn("📁 Abrir carpeta", "secondary",
                            lambda: QDesktopServices.openUrl(QUrl.fromLocalFile(str(self.storage.actas_dir)))))
@@ -2203,7 +2255,7 @@ class MainWNoteWindow(QMainWindow):
 
         right, rp = _card()
         ph = QHBoxLayout()
-        ph.addWidget(_label("ACTA PARA EL EQUIPO", "sec"))
+        ph.addWidget(_label("Acta para el equipo", "sec"))
         ph.addStretch()
         ph.addWidget(_btn("Copiar", "secondary", lambda: QApplication.clipboard().setText(self.preview_text.toPlainText())))
         ph.addWidget(_btn("Abrir", "secondary", self._open_selected_acta))
@@ -2249,7 +2301,7 @@ class MainWNoteWindow(QMainWindow):
             if item.widget():
                 item.widget().deleteLater()
         notes = self.storage.visible_notes()
-        self.lbl_notes_title.setText(f"NOTAS DE VIDRIO · {len(notes)}")
+        self.lbl_notes_title.setText(f"Notas de vidrio · {len(notes)}")
         if not notes:
             self.notes_row.addWidget(_label("Aún no hay notas. Usa «+ Nota rápida» o Ctrl+Alt+N desde cualquier app.", "hint"))
         for note in notes[:40]:
@@ -2335,7 +2387,8 @@ class MainWNoteWindow(QMainWindow):
     def _on_row_selected(self):
         rec = self._selected()
         if rec:
-            self.preview_text.setMarkdown(rec["content"])
+            sin_imagenes = re.sub(r"!\[[^\]]*\]\([^)]*\)", "", rec["content"])
+            self.preview_text.setMarkdown(sin_imagenes)
 
     def _open_selected_acta(self, *_):
         rec = self._selected()

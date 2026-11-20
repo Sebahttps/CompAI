@@ -84,7 +84,24 @@ compai.cl es GitHub Pages: sirve archivos, no recibe datos. Por eso la nube vive
 - Cada nota tiene `id`, `updated_at` y `deleted`. PC, nube y celular fusionan igual: **gana el cambio más reciente**; archivar deja una «lápida» 30 días para que el borrado llegue a todos. Nadie pisa la lista de otro.
 - El PC sincroniza 1,5 s después de cada cambio y cada 20 s; el celular cada 15 s con la app abierta. Sin señal, el celular guarda local y sube al volver.
 
-## 4. Actas
+## 4. Actas — formato estándar compAI
+
+Cada grabación genera `AAAA-MM-DD_Organizacion_Tema.md` con esta estructura fija:
+
+| Bloque | Contenido | Lo llena |
+|---|---|---|
+| Encabezado | Título «ACTA DE REUNIÓN», tema y organización | w-notes |
+| Ficha | Código `ACTA-AAAAMMDD-NN`, fecha, horario y duración, organización, tema, plataforma + enlace, participantes, redacta | w-notes (participantes: tú) |
+| 1. Objetivo | Una línea: para qué fue la reunión | tú |
+| 2. Desarrollo | Tabla minuto · nota (las notas en vivo) | w-notes |
+| 3. Momentos clave | Cada Print con su minuto e imagen | w-notes |
+| 4. Acuerdos | Tabla # · acuerdo · responsable · plazo | tú |
+| 5. Próximos pasos | Lista de casillas | tú |
+| 6. Respaldos | Audio del sistema, micrófono y capturas | w-notes |
+
+«Redacta» se cambia en ⚙ → Grabación y actas.
+
+### Archivos
 
 `Documentos/w-note/Actas_Reuniones/AAAA-MM-DD_Organizacion_Tema.md` (+ `.wav` del sistema, `_microfono.wav` y `Capturas_Clave/`).
 Al grabar desde el widget, organización, tema, plataforma y link salen del evento de Calendar
