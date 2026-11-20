@@ -379,7 +379,7 @@ class StorageManager:
             "record_mic": True,
             "acta_redacta": "Sebastián Tapia Mena · compAI",
             "transcribe": True,
-            "whisper_model": "base",
+            "whisper_model": "small",          # medido en el PC de Seba: 4,6x tiempo real
             "hotkeys_enabled": True,
         }
         loaded_keys: set = set()
@@ -938,7 +938,7 @@ class MeetingRecorderEngine:
         if not self.storage.config.get("transcribe", True) or not whisper_disponible():
             return None
         try:
-            self.job = TranscriptionJob(self.storage.config.get("whisper_model", "base"))
+            self.job = TranscriptionJob(self.storage.config.get("whisper_model", "small"))
             return self.job.entrada
         except Exception as e:
             self.audio_errors.append(f"transcripción no disponible: {e}")
@@ -2270,7 +2270,7 @@ class SettingsDialog(QDialog):
         self.combo_model = QComboBox()
         self.combo_model.addItem("Rápida (base)", "base")
         self.combo_model.addItem("Más precisa, más lenta (small)", "small")
-        self.combo_model.setCurrentIndex(max(0, self.combo_model.findData(cfg.get("whisper_model", "base"))))
+        self.combo_model.setCurrentIndex(max(0, self.combo_model.findData(cfg.get("whisper_model", "small"))))
         self.combo_model.currentIndexChanged.connect(lambda: self._set("whisper_model", self.combo_model.currentData()))
         row.addWidget(self.combo_model)
         row.addStretch()
@@ -2723,7 +2723,7 @@ class MainWNoteWindow(QMainWindow):
         if not wavs:
             QMessageBox.information(self, "Transcripción", "Esta acta no tiene audio guardado.")
             return
-        job = TranscriptionJob(self.storage.config.get("whisper_model", "base"))
+        job = TranscriptionJob(self.storage.config.get("whisper_model", "small"))
         for w in wavs:
             job.entrada.put(("archivo", str(w), "microfono" if w.stem.endswith("_microfono") else "sistema"))
         job.finish_audio()

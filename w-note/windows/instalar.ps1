@@ -87,8 +87,8 @@ $VPyw = Join-Path $Venv "Scripts\pythonw.exe"
 & $VPy -m pip install -r (Join-Path $AppDir "windows\requirements.txt") --quiet --disable-pip-version-check
 if ($LASTEXITCODE -ne 0) { Write-Host "Falló la instalación de dependencias. Revisa tu conexión y vuelve a intentar." -ForegroundColor Red; exit 1 }
 
-Paso "Preparando la transcripción sin internet (modelo «base», ~150 MB, solo la primera vez)"
-& $VPy -c "from faster_whisper import WhisperModel; WhisperModel('base', device='cpu', compute_type='int8'); print('modelo listo')"
+Paso "Preparando la transcripción sin internet (modelos «small» ~480 MB y «base» ~150 MB, solo la primera vez)"
+& $VPy -c "from faster_whisper import WhisperModel; [WhisperModel(m, device='cpu', compute_type='int8') for m in ('small','base')]; print('modelos listos')"
 if ($LASTEXITCODE -ne 0) { Write-Host "No se pudo descargar el modelo ahora; se descargará al primer uso." -ForegroundColor Yellow }
 
 # 4. Accesos directos ----------------------------------------------------------------------
