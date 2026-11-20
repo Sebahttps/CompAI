@@ -60,8 +60,8 @@ Queda en la bandeja junto al reloj. Clic derecho → **Salir**.
 
 compai.cl es GitHub Pages: sirve archivos, no recibe datos. Por eso la nube vive en tu Google.
 
-1. Crea una hoja nueva: <https://sheets.new> → nómbrala «w-note».
-2. **Extensiones → Apps Script**. Borra lo que haya y pega `nube/Codigo.gs`.
+1. Abre <https://script.google.com/create> (proyecto nuevo de Apps Script).
+2. Borra lo que haya y pega `nube/Codigo.gs`. La hoja «w-note · notas» se crea sola en tu Drive.
 3. ⚙ **Configuración del proyecto** → activa «Mostrar el archivo de manifiesto appsscript.json» →
    vuelve al editor, abre `appsscript.json` y pega el de `nube/appsscript.json`
    (activa Google Calendar API para traer el link de Meet).

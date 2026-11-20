@@ -7,7 +7,8 @@
  * (wnote.py) y el iPhone (compai.cl/w-note) por 4G/5G o Wi-Fi.
  *
  * Instalación (3 min) — ver w-note/README.md, sección "Nube":
- *   1. Crea una Hoja de cálculo → Extensiones → Apps Script → pega este archivo.
+ *   1. Abre https://script.google.com/create (o una Hoja → Extensiones → Apps Script) y pega este archivo.
+ *      Si el script no nace desde una hoja, crea solo la hoja «w-note · notas» en tu Drive.
  *   2. Ejecuta la función `configurar` una vez (autoriza) y copia el token del registro.
  *   3. Implementar → Nueva implementación → Aplicación web
  *        Ejecutar como: Yo · Quién tiene acceso: Cualquier usuario → copia la URL /exec.
@@ -90,9 +91,14 @@ function autorizado_(k) {
 function libro_() {
   var activo = SpreadsheetApp.getActiveSpreadsheet();
   if (activo) return activo;
-  var id = PropertiesService.getScriptProperties().getProperty('SHEET_ID');
-  if (!id) throw new Error('Script sin hoja: crea el script desde la hoja o define SHEET_ID.');
-  return SpreadsheetApp.openById(id);
+  // Script independiente (creado en script.google.com): usa o crea su propia hoja «w-note · notas».
+  var props = PropertiesService.getScriptProperties();
+  var id = props.getProperty('SHEET_ID');
+  if (id) return SpreadsheetApp.openById(id);
+  var nuevo = SpreadsheetApp.create('w-note · notas');
+  props.setProperty('SHEET_ID', nuevo.getId());
+  Logger.log('Hoja creada: ' + nuevo.getUrl());
+  return nuevo;
 }
 
 function hoja_() {
