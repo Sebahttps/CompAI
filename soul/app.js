@@ -398,7 +398,9 @@
   }
   /* Retrato con estilo (16-11-2026): SU foto, la misma cara, en el estilo que elija. Lo hace Gemini desde el
      Apps Script del formulario; la foto no se guarda. TEXTOS PROPUESTOS: esperan el visto de Sebastián. */
-  var ESTILOS_RET = [['leyenda', 'Escena legendaria'], ['facetado', 'Póster facetado'], ['bn', 'Blanco y negro'], ['retro', 'Retro'], ['revista', 'Portada de revista'], ['anime', 'Dibujo japonés']];
+  var ESTILOS_RET = [['fresh', 'fresh · tu oficio a la luz del día'], ['sun', 'sun · tu oficio como héroe'], ['vibe', 'vibe · escena legendaria']];
+  /* si el script en vivo todavía no conoce los estilos por plan, cae a uno de los de antes (sin gastar cupo) */
+  var RET_ANTES = { fresh: 'revista', sun: 'retro', vibe: 'facetado' };
   var ERR_RET = { tope: 'Por hoy ya se crearon todos los retratos. Vuelve mañana.', foto: 'Esa foto no sirve. Prueba con otra.',
     'tope-persona': 'Ya creaste tus 3 retratos de hoy. Vuelve mañana.', cuenta: 'Vuelve a entrar con tu cuenta de Google.' };
   /* Cada persona entra con su cuenta de Google antes de crear (Sebastián, 16-11-2026): así el tope de 3 al día es
@@ -431,7 +433,7 @@
     var h = '<div class="ret" role="group" aria-labelledby="l-ret"><h2 id="l-ret">Tu retrato con estilo</h2>';
     if (!MEM.photo) return h + '<p class="hint" style="margin:0">Sube una foto tuya y te devolvemos la misma cara, en el estilo que elijas.</p>' +
       '<button type="button" class="btn-s" data-a="photoup">Subir mi foto</button></div>';
-    var est = MEM.retEst || 'leyenda';
+    var est = MEM.retEst || 'vibe';
     h += '<div class="ret-chips">' + ESTILOS_RET.map(function (e) { return '<button type="button" class="chip' + (e[0] === est ? ' on' : '') + '" aria-pressed="' + (e[0] === est) + '" data-a="estilo" data-i="' + e[0] + '">' + e[1] + '</button>'; }).join('') + '</div>';
     if (MEM.retrato) h += '<div class="ret-res"><img src="' + esc(MEM.retrato) + '" alt="Tu retrato, estilo ' + esc((ESTILOS_RET.filter(function (e) { return e[0] === MEM.retHecho; })[0] || ['', ''])[1]) + '"></div>' +
       '<div class="kit-b"><button type="button" class="btn-s" data-a="retuse">Usar en mi portada</button><button type="button" class="btn-s" data-a="retdl">Descargar</button></div>';
@@ -445,7 +447,7 @@
     try { return E ? E.elegir({ oficioN: i, version: ST.arte || 0 }).clave : ''; } catch (e) { return ''; }
   }
   function crearRetrato(btn) {
-    var msg = $('#ret-msg'), est = MEM.retEst || 'leyenda';
+    var msg = $('#ret-msg'), est = MEM.retEst || 'vibe';
     if (!MEM.photo || !CFG.endpoint) return;
     if (!conCuenta()) { MEM.gtoken = ''; render(false); return; }
     btn.disabled = true; if (msg) msg.textContent = ' Creando tu retrato… tarda unos 20 segundos.';
@@ -456,8 +458,8 @@
       .then(function (j) {
         clearTimeout(reloj);
         if (j && j.ok && /^data:image\//.test(j.img || '')) { MEM.retrato = j.img; MEM.retHecho = est; render(false, '[data-a="retrato"]'); return; }
-        // el script en vivo aún no conoce «leyenda» (hasta correr DESPLEGAR-FORMULARIO-COMPAI): cae al facetado sin gastar cupo
-        if (j && j.error === 'estilo' && est === 'leyenda') { MEM.retEst = 'facetado'; btn.disabled = false; crearRetrato(btn); return; }
+        // el script en vivo aún no conoce fresh/sun/vibe (hasta correr DESPLEGAR-FORMULARIO-COMPAI): cae al de antes sin gastar cupo
+        if (j && j.error === 'estilo' && RET_ANTES[est]) { MEM.retEst = RET_ANTES[est]; btn.disabled = false; crearRetrato(btn); MEM.retEst = est; return; }
         var txt = ERR_RET[j && j.error] || 'No se pudo crear el retrato ahora. Prueba en un rato.';
         if (j && j.error === 'tope-persona' && j.tope) txt = 'Ya creaste tus ' + j.tope + ' retratos de hoy. Vuelve mañana.';
         if (j && j.error === 'cuenta') { MEM.gtoken = ''; render(false); msg = $('#ret-msg'); }
