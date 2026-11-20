@@ -93,6 +93,7 @@ from PySide6.QtWidgets import (
     QTableWidget,
     QTableWidgetItem,
     QTextEdit,
+    QToolButton,
     QVBoxLayout,
     QWidget,
 )
@@ -117,7 +118,7 @@ except ImportError:
     HAS_QR = False
 
 APP_NAME = "w-notes"
-APP_VERSION = "1.4.0"
+APP_VERSION = "1.5.0"
 APP_DIR = Path(__file__).resolve().parent
 WEB_DIR = APP_DIR.parent  # carpeta w-note/ con index.html (panel del celular)
 
@@ -1016,6 +1017,9 @@ class MeetingRecorderEngine:
             self.screenshots.append({"timestamp": ts, "filename": img_name})
         return ts
 
+    def add_annotated(self, meta: dict, ts: str):
+        self.screenshots.append({"timestamp": ts, "filename": Path(meta["png"]).name, "pins": meta.get("pins", [])})
+
     def add_live_note(self, text: str):
         if text.strip():
             self.live_notes.append({"timestamp": self.elapsed_str(), "text": text.strip()})
@@ -1028,9 +1032,6 @@ class MeetingRecorderEngine:
         self.is_recording = False
         if self._stop is not None:
             self._stop.set()
-        # si el proceso de audio cayó, avisa al transcriptor que no llegará más audio
-        if getattr(self, "job", None) is not None and (self._proc is None or not self._proc.is_alive()):
-            self.job.finish_audio()
         if self._proc is not None:
             self._proc.join(timeout=15)
             if self._proc.is_alive():
@@ -1053,9 +1054,13 @@ class MeetingRecorderEngine:
         desarrollo = ("| Min | Nota |\n|---|---|\n" + "\n".join(
             f"| {n['timestamp']} | {esc(n['text'])} |" for n in self.live_notes)) if self.live_notes \
             else "_(sin notas en vivo: completar con lo tratado)_"
-        momentos = "\n\n".join(
-            f"**{s['timestamp']}** — `{s['filename']}`\n\n![Captura {s['timestamp']}](Capturas_Clave/{s['filename']})"
-            for s in self.screenshots) or "_(sin capturas)_"
+        def _momento(s):
+            txt = f"**{s['timestamp']}** — `{s['filename']}`\n\n![Captura {s['timestamp']}](Capturas_Clave/{s['filename']})"
+            if s.get("pins"):
+                txt += "\n\n| Pin | Observación |\n|---|---|\n" + "\n".join(
+                    f"| {p['n']} | {esc(p.get('texto') or '_(sin texto)_')} |" for p in s["pins"])
+            return txt
+        momentos = "\n\n".join(_momento(s) for s in self.screenshots) or "_(sin capturas)_"
         audio_sis = next((a for a in self.audio_files if not a.endswith("_microfono.wav")), None)
         audio_mic = next((a for a in self.audio_files if a.endswith("_microfono.wav")), None)
         problemas = ("\n\n> ⚠ Audio: " + "; ".join(self.audio_errors)) if self.audio_errors else ""
@@ -1109,9 +1114,11 @@ Acta generada por w-notes {APP_VERSION} · compAI · {end.strftime('%Y-%m-%d %H:
         job = getattr(self, "job", None)
         if job is not None:
             job.poll()
-            escribir_transcripcion(md_path, job.segs, final=job.done, errores=job.errores)
-            if not job.done:
-                job.md_path = md_path  # la termina el temporizador de la ventana principal
+            archivos = [(str(self.storage.actas_dir / a), "microfono" if a.endswith("_microfono.wav") else "sistema")
+                        for a in self.audio_files]
+            job.finish(archivos)
+            escribir_transcripcion(md_path, job.segs, final=False, errores=job.errores)
+            job.md_path = md_path  # la versión final la escribe el temporizador de la ventana principal
         elif not whisper_disponible() and self.storage.config.get("transcribe", True):
             escribir_transcripcion(md_path, [], final=True,
                                    errores=["transcripción no instalada: vuelve a ejecutar instalar.bat"])
@@ -1144,10 +1151,12 @@ class TranscriptionJob:
         import multiprocessing as mp
         import transcriptor
         ctx = mp.get_context("spawn")
-        self.entrada, self.salida = ctx.Queue(), ctx.Queue()
-        self.proc = ctx.Process(target=transcriptor.transcribir, args=(modelo, self.entrada, self.salida), daemon=True)
+        self.entrada, self.salida, self.saltar = ctx.Queue(), ctx.Queue(), ctx.Event()
+        self.proc = ctx.Process(target=transcriptor.transcribir, daemon=True,
+                                args=(modelo, self.entrada, self.salida, self.saltar))
         self.proc.start()
         self.segs: list = []
+        self.fase = "vivo"
         self.estado = "cargando modelo…"
         self.errores: list = []
         self.done = False
@@ -1159,14 +1168,20 @@ class TranscriptionJob:
             while True:
                 msg = self.salida.get_nowait()
                 if msg[0] == "seg":
-                    seg = {"fuente": msg[1], "ini": msg[2], "fin": msg[3], "texto": msg[4]}
+                    seg = {"fuente": msg[1], "ini": msg[2], "fin": msg[3], "texto": msg[4],
+                           "fase": msg[5] if len(msg) > 5 else "vivo"}
                     self.segs.append(seg)
                     nuevos.append(seg)
-                    self.estado = "en vivo"
+                    if seg["fase"] == "vivo":
+                        self.estado = "en vivo"
+                elif msg[0] == "final_ini":
+                    self.segs = []  # la versión final reemplaza la vista previa
+                    self.fase = "final"
+                    self.estado = "versión final…"
                 elif msg[0] == "listo":
                     self.estado = "escuchando"
                 elif msg[0] == "avance":
-                    self.estado = f"procesando ({msg[1]} trozos pendientes)" if msg[1] else "al día"
+                    self.estado = str(msg[1])
                 elif msg[0] == "error":
                     self.errores.append(msg[1])
                     self.estado = "con error"
@@ -1184,9 +1199,13 @@ class TranscriptionJob:
             self.md_path = None
         return nuevos
 
-    def finish_audio(self):
+    def finish(self, archivos: list):
+        """Termina la vista previa y transcribe los WAV completos (versión final para el acta)."""
         try:
-            self.entrada.put(("fin_audio",))
+            self.saltar.set()
+            if archivos:
+                self.entrada.put(("final", archivos))
+            self.entrada.put(("cerrar",))
         except Exception:
             pass
 
@@ -1199,7 +1218,7 @@ def bloque_transcripcion(segs: list, final: bool, errores: list | None = None) -
     else:
         cuerpo = "_(sin voz detectada)_" if final else ""
     if not final:
-        cuerpo += "\n\n_(transcribiendo… esta sección se completa sola al terminar)_"
+        cuerpo += "\n\n_(vista previa en vivo · la versión final, más precisa, reemplaza esta sección sola al terminar)_"
     if errores:
         cuerpo += "\n\n> ⚠ " + "; ".join(errores)
     return f"{MARCA_INI}\n{cuerpo.strip()}\n{MARCA_FIN}"
@@ -1220,6 +1239,255 @@ def escribir_transcripcion(md_path: Path, segs: list, final: bool, errores: list
         md_path.write_text(txt, encoding="utf-8")
     except Exception as e:
         print(f"[w-notes] no se pudo escribir la transcripción: {e}")
+
+
+# =============================================================================
+# 7C. PRINT CON ANOTACIONES (como IT OK!: pines correlativos sobre la captura)
+# =============================================================================
+PIN_ROJO, PIN_BORRADOR, PIN_EDITANDO, AMBAR = "#DC2626", "#D97706", "#162B4E", "#D97706"
+
+
+def pintar_pin(p: QPainter, centro: QPoint, n: int, color: str, r: int = 15):
+    p.save()
+    p.setRenderHint(QPainter.RenderHint.Antialiasing)
+    p.setPen(Qt.PenStyle.NoPen)
+    p.setBrush(QColor(0, 0, 0, 90))
+    p.drawEllipse(QRectF(centro.x() - r + 1, centro.y() - r + 3, 2 * r, 2 * r))  # sombra
+    p.setBrush(QColor(color))
+    p.setPen(QPen(QColor("#FFFFFF"), 2.5))
+    p.drawEllipse(QRectF(centro.x() - r, centro.y() - r, 2 * r, 2 * r))
+    f = QFont("Consolas")
+    f.setPixelSize(13)
+    f.setBold(True)
+    p.setFont(f)
+    p.setPen(QColor("#FFFFFF"))
+    p.drawText(QRectF(centro.x() - r, centro.y() - r, 2 * r, 2 * r), Qt.AlignmentFlag.AlignCenter, str(n))
+    p.restore()
+
+
+class PrintAnotador(QWidget):
+    """Pantalla completa con la captura: clic = pin #n con su observación. Cancelar / Anotar."""
+    terminado = Signal(dict)  # {"png": ruta, "pins": [...], "proyecto": str}
+
+    def __init__(self, storage: StorageManager, proyecto: str = "", destino: Path | None = None,
+                 nombre_base: str = ""):
+        super().__init__()
+        self.storage = storage
+        self.destino = destino or (storage.base_dir / "Prints")
+        self.destino.mkdir(parents=True, exist_ok=True)
+        self.nombre_base = nombre_base
+        self.pins: list = []        # {"n", "x", "y", "texto"}  (coordenadas en píxeles de la captura)
+        self.deshechos: list = []
+        self.borrador = None        # QPoint del pin en edición
+        screen = QGuiApplication.screenAt(QCursor_pos()) or QGuiApplication.primaryScreen()
+        self.captura = screen.grabWindow(0)
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Tool)
+        self.setGeometry(screen.geometry())
+        self.setCursor(Qt.CursorShape.CrossCursor)
+        self.escala = self.captura.width() / max(1, self.width())
+
+        barra = QFrame(self)
+        barra.setObjectName("barra")
+        barra.setStyleSheet("QFrame#barra { background: rgba(20,20,20,0.92); border: 1px solid rgba(255,255,255,0.3);"
+                            " border-radius: 10px; } QLabel { color: #fff; background: transparent; }"
+                            " QPushButton { color: #fff; border-radius: 7px; padding: 6px 12px; font-weight: 700; }"
+                            " QLineEdit { background: #fff; color: #13202E; border-radius: 6px; padding: 4px 8px; }")
+        h = QHBoxLayout(barra)
+        h.setContentsMargins(12, 8, 12, 8)
+        self.lbl = QLabel()
+        self.lbl.setStyleSheet("font-family: Consolas; font-size: 12px; font-weight: 700; color: #F0B400;")
+        h.addWidget(self.lbl)
+        h.addSpacing(10)
+        h.addWidget(QLabel("Proyecto:"))
+        self.inp_proyecto = QLineEdit(proyecto or storage.config.get("ultimo_proyecto", ""))
+        self.inp_proyecto.setPlaceholderText("Proyecto o cliente")
+        self.inp_proyecto.setFixedWidth(200)
+        h.addWidget(self.inp_proyecto)
+        self.btn_undo = QPushButton("↶ Deshacer")
+        self.btn_undo.setStyleSheet("background: rgba(255,255,255,0.14);")
+        self.btn_undo.clicked.connect(self._deshacer)
+        h.addWidget(self.btn_undo)
+        b_cancel = QPushButton("Cancelar")
+        b_cancel.setStyleSheet("background: rgba(255,255,255,0.14);")
+        b_cancel.clicked.connect(self.close)
+        h.addWidget(b_cancel)
+        b_ok = QPushButton("Anotar")
+        b_ok.setStyleSheet("background: #00A650;")
+        b_ok.clicked.connect(self._anotar)
+        h.addWidget(b_ok)
+        barra.adjustSize()
+        barra.move((self.width() - barra.width()) // 2, 16)
+        self.barra = barra
+
+        self.editor = QFrame(self)
+        self.editor.setObjectName("ed")
+        self.editor.setStyleSheet("QFrame#ed { background: #FFFBEB; border: 2px solid #D97706; border-radius: 12px; }"
+                                  " QLabel { color: #13202E; background: transparent; font-weight: 700; }"
+                                  " QTextEdit { background: #fff; color: #13202E; border: 1px solid #E5C68A; border-radius: 8px; }"
+                                  " QPushButton { border-radius: 7px; padding: 5px 10px; font-weight: 700; }")
+        ev = QVBoxLayout(self.editor)
+        ev.setContentsMargins(12, 10, 12, 10)
+        self.ed_titulo = QLabel()
+        ev.addWidget(self.ed_titulo)
+        self.ed_texto = QTextEdit()
+        self.ed_texto.setAcceptRichText(False)
+        self.ed_texto.setPlaceholderText("Escribe la observación o corrección para este punto… (Enter registra)")
+        self.ed_texto.setFixedSize(300, 80)
+        self.ed_texto.installEventFilter(self)
+        ev.addWidget(self.ed_texto)
+        eh = QHBoxLayout()
+        b_q = QPushButton("Quitar")
+        b_q.setStyleSheet("background: #EFE7D6; color: #13202E;")
+        b_q.clicked.connect(self._descartar_borrador)
+        b_r = QPushButton("Registrar anotación")
+        b_r.setStyleSheet("background: #D97706; color: #fff;")
+        b_r.clicked.connect(self._registrar)
+        eh.addWidget(b_q)
+        eh.addStretch()
+        eh.addWidget(b_r)
+        ev.addLayout(eh)
+        self.editor.hide()
+        self._actualizar()
+
+    # ---- dibujo ---------------------------------------------------------------------------
+    def paintEvent(self, event):
+        p = QPainter(self)
+        p.drawPixmap(self.rect(), self.captura)
+        p.setPen(QPen(QColor(AMBAR), 6))
+        p.setBrush(Qt.BrushStyle.NoBrush)
+        p.drawRect(self.rect().adjusted(3, 3, -3, -3))
+        for pin in self.pins:
+            pintar_pin(p, QPoint(int(pin["x"] / self.escala), int(pin["y"] / self.escala)), pin["n"], PIN_ROJO)
+        if self.borrador is not None:
+            pintar_pin(p, self.borrador, len(self.pins) + 1, PIN_BORRADOR)
+
+    def _actualizar(self):
+        n = len(self.pins)
+        self.lbl.setText(f"PRINT · clic para fijar el pin #{n + 1}" + (f" · {n} anotado{'s' if n != 1 else ''}" if n else ""))
+        self.btn_undo.setEnabled(bool(self.pins))
+        self.barra.adjustSize()
+        self.barra.move((self.width() - self.barra.width()) // 2, 16)
+        self.update()
+
+    # ---- pines ----------------------------------------------------------------------------
+    def mousePressEvent(self, event):
+        if event.button() != Qt.MouseButton.LeftButton:
+            return
+        pos = event.position().toPoint()
+        if self.barra.geometry().contains(pos) or (self.editor.isVisible() and self.editor.geometry().contains(pos)):
+            return
+        self.borrador = pos
+        self.ed_titulo.setText(f"Pin #{len(self.pins) + 1} · nueva anotación")
+        self.ed_texto.clear()
+        self.editor.adjustSize()
+        x = min(pos.x() + 24, self.width() - self.editor.width() - 12)
+        y = min(pos.y() + 12, self.height() - self.editor.height() - 12)
+        self.editor.move(max(12, x), max(70, y))
+        self.editor.show()
+        self.editor.raise_()
+        self.ed_texto.setFocus()
+        self.update()
+
+    def eventFilter(self, obj, event):
+        if obj is self.ed_texto and event.type() == QEvent.Type.KeyPress:
+            if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter) and not event.modifiers() & Qt.KeyboardModifier.ShiftModifier:
+                self._registrar()
+                return True
+        return super().eventFilter(obj, event)
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_Escape:
+            if self.editor.isVisible():
+                self._descartar_borrador()
+            else:
+                self.close()
+        elif event.key() == Qt.Key.Key_Z and event.modifiers() & Qt.KeyboardModifier.ControlModifier:
+            self._deshacer()
+
+    def _registrar(self):
+        if self.borrador is None:
+            return
+        self.pins.append({"n": len(self.pins) + 1, "x": int(self.borrador.x() * self.escala),
+                          "y": int(self.borrador.y() * self.escala), "texto": self.ed_texto.toPlainText().strip()})
+        self.deshechos.clear()
+        self._descartar_borrador()
+
+    def _descartar_borrador(self):
+        self.borrador = None
+        self.editor.hide()
+        self._actualizar()
+
+    def _deshacer(self):
+        if self.pins:
+            self.deshechos.append(self.pins.pop())
+            self._actualizar()
+
+    # ---- guardar ---------------------------------------------------------------------------
+    def _anotar(self):
+        if self.borrador is not None and self.ed_texto.toPlainText().strip():
+            self._registrar()
+        proyecto = self.inp_proyecto.text().strip()
+        if proyecto:
+            self.storage.config["ultimo_proyecto"] = proyecto
+            self.storage.save_config()
+        img = self.captura.copy()
+        p = QPainter(img)
+        for pin in self.pins:
+            pintar_pin(p, QPoint(pin["x"], pin["y"]), pin["n"], PIN_ROJO, r=int(15 * self.escala))
+        p.end()
+        ahora = datetime.now()
+        base = self.nombre_base or f"{ahora:%Y-%m-%d_%H%M%S}_{re.sub(r'[^A-Za-z0-9ÁÉÍÓÚáéíóúÑñ_-]+', '_', proyecto)[:40] or 'Print'}"
+        png = self.destino / f"{base}.png"
+        img.save(str(png), "PNG")
+        meta = {"png": str(png), "proyecto": proyecto, "fecha": ahora.strftime("%Y-%m-%d %H:%M"), "pins": self.pins}
+        try:
+            png.with_suffix(".json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+        except Exception:
+            pass
+        self.terminado.emit(meta)
+        self.close()
+
+
+def listar_prints(storage: StorageManager) -> list:
+    """Prints anotados (Prints/ y capturas de actas) con sus pines, más nuevos primero."""
+    out = []
+    for carpeta in (storage.base_dir / "Prints", storage.captures_dir):
+        if not carpeta.exists():
+            continue
+        for png in carpeta.glob("*.png"):
+            meta = {"png": str(png), "proyecto": "", "fecha": datetime.fromtimestamp(png.stat().st_mtime).strftime("%Y-%m-%d %H:%M"),
+                    "pins": []}
+            js = png.with_suffix(".json")
+            if js.exists():
+                try:
+                    meta.update(json.loads(js.read_text(encoding="utf-8")))
+                except Exception:
+                    pass
+            meta["_mtime"] = png.stat().st_mtime
+            out.append(meta)
+    return sorted(out, key=lambda m: m["_mtime"], reverse=True)
+
+
+def informe_proyecto(storage: StorageManager, proyecto: str) -> Path:
+    """Agrupa en un informe .md todos los prints de un proyecto con sus anotaciones."""
+    prints = [m for m in listar_prints(storage) if (m.get("proyecto") or "").strip().lower() == proyecto.strip().lower()]
+    prints.sort(key=lambda m: m["_mtime"])
+    ahora = datetime.now()
+    carpeta = storage.base_dir / "Informes"
+    carpeta.mkdir(parents=True, exist_ok=True)
+    nombre = re.sub(r"[^A-Za-z0-9ÁÉÍÓÚáéíóúÑñ_-]+", "_", proyecto)[:50] or "Proyecto"
+    md = carpeta / f"{ahora:%Y-%m-%d}_Informe_{nombre}.md"
+    partes = [f"# INFORME DE PRINTS · {proyecto}\n", f"Generado por w-notes {APP_VERSION} · {ahora:%Y-%m-%d %H:%M} · "
+              f"{len(prints)} print{'s' if len(prints) != 1 else ''} · "
+              f"{sum(len(m.get('pins', [])) for m in prints)} anotaciones\n"]
+    for i, m in enumerate(prints, 1):
+        rel = os.path.relpath(m["png"], carpeta).replace("\\", "/")
+        partes.append(f"\n## {i}. {m.get('fecha', '')}\n\n![Print {i}]({rel})\n")
+        if m.get("pins"):
+            partes.append("| Pin | Observación |\n|---|---|\n" + "\n".join(
+                f"| {p['n']} | {(p.get('texto') or '_(sin texto)_').replace('|', '/')} |" for p in m["pins"]) + "\n")
+    md.write_text("".join(partes), encoding="utf-8")
+    return md
 
 # =============================================================================
 # 8. BOTONES: CÁPSULA DE VIDRIO Y LOGO
@@ -1519,6 +1787,8 @@ class FloatingSideCapsuleWindow(QWidget):
     """Barra lateral: se arrastra desde cualquier parte libre y, al pasar el cursor, muestra ✕ para cerrarla."""
     open_main_requested = Signal()
     close_requested = Signal()
+    record_requested = Signal()
+    print_requested = Signal()
 
     def __init__(self, storage: StorageManager, popup: FloatingGlassNotePopup):
         super().__init__()
@@ -1612,12 +1882,39 @@ class FloatingSideCapsuleWindow(QWidget):
         btn_plus = _plus_button(32)
         btn_plus.clicked.connect(self._open_creator)
         self.layout_box.addWidget(btn_plus, 0, Qt.AlignmentFlag.AlignHCenter)
+        self.btn_rec = QPushButton("●")
+        self.btn_rec.setFixedSize(32, 32)
+        self.btn_rec.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.btn_rec.clicked.connect(self.record_requested.emit)
+        self.layout_box.addWidget(self.btn_rec, 0, Qt.AlignmentFlag.AlignHCenter)
+        btn_print = QPushButton()
+        btn_print.setIcon(svg_icon(CAMERA_SVG, 16))
+        btn_print.setIconSize(QSize(16, 16))
+        btn_print.setFixedSize(32, 32)
+        btn_print.setToolTip("Print con anotaciones (Ctrl+Alt+P)")
+        btn_print.setCursor(Qt.CursorShape.PointingHandCursor)
+        btn_print.setStyleSheet("QPushButton { background: #1C1C1C; border: 1px solid rgba(255,255,255,0.65);"
+                                " border-radius: 16px; } QPushButton:hover { background: #2E2E2E; }")
+        btn_print.clicked.connect(self.print_requested.emit)
+        self.layout_box.addWidget(btn_print, 0, Qt.AlignmentFlag.AlignHCenter)
+        self.set_recording(getattr(self, "_recording", False))
         for note in self.storage.visible_notes()[:8]:
             cap = GlassNoteCapsuleButton(note, size=32)
             cap.clicked.connect(lambda _=False, n=note: self.popup.show_registered_note(n, self._popup_anchor()))
             self.layout_box.addWidget(cap, 0, Qt.AlignmentFlag.AlignHCenter)
         self.adjustSize()
         self.reposition()
+
+    def set_recording(self, on: bool):
+        self._recording = on
+        if not hasattr(self, "btn_rec"):
+            return
+        self.btn_rec.setToolTip("Detener y archivar (Ctrl+Alt+R)" if on else "Grabar reunión (Ctrl+Alt+R)")
+        self.btn_rec.setText("■" if on else "●")
+        fondo = "#9E2A1C" if on else "rgba(20,20,20,0.38)"
+        self.btn_rec.setStyleSheet(f"QPushButton {{ background: {fondo}; color: {'#fff' if on else '#E5484D'};"
+                                   " border: 1px solid rgba(255,255,255,0.65); border-radius: 16px; font-size: 13px; }"
+                                   " QPushButton:hover { background: #B8352A; color: #fff; }")
 
     def reposition(self):
         screen = QApplication.primaryScreen().availableGeometry()
@@ -1995,7 +2292,7 @@ V_CREMA, V_SOLIDO = "#F5F0E4", "#FFFFFF"
 V_INK, V_INK2, V_INK3 = "#13202E", "#34424F", "#44515F"
 V_ACC, V_ACC_H, V_ACC_T = "#A85E28", "#B86A32", "#7A4A12"
 V_OK, V_BAD = "#0F5C7A", "#9E2A1C"
-V_VERDE, V_VERDE_H = "#37B35A", "#2FA04F"   # verde del logo w-notes
+V_VERDE, V_VERDE_H = "#00A650", "#008C44"   # verde elegido por Seba (20-11-2026)
 V_GRIS, V_GRIS_H = "#1C1C1C", "#2E2E2E"     # Print: casi negro
 V_PETROLEO, V_AMARILLO = "#0A3A4D", "#F0B400"  # títulos de sección: petróleo oscuro + amarillo del logo
 V_LINE, V_LINE2 = "rgba(8,30,56,0.14)", "rgba(8,30,56,0.30)"
@@ -2463,6 +2760,7 @@ class MainWNoteWindow(QMainWindow):
             compai.setObjectName("marca")
         compai.setToolTip("compAI")
         main.addWidget(compai, 0, Qt.AlignmentFlag.AlignLeft)
+        main.addSpacing(24)  # dos espacios bajo el logo compAI
 
         header = QFrame()
         header.setObjectName("hdr")
@@ -2484,7 +2782,7 @@ class MainWNoteWindow(QMainWindow):
         h.addWidget(self.lbl_status, 0, Qt.AlignmentFlag.AlignBottom)
         h.addWidget(_btn("📱", "icon", self.link_phone, "Vincular celular (QR)"), 0, Qt.AlignmentFlag.AlignBottom)
         h.addWidget(_btn("⚙", "icon", self.open_settings, "Configuración"), 0, Qt.AlignmentFlag.AlignBottom)
-        h.addWidget(_btn("+ Nueva nota", "nueva",
+        h.addWidget(_btn("+ Nota", "nueva",
                          lambda: self.popup.show_quick_creator(QPoint(self.x() + 80, self.y() + 110)),
                          "Ctrl+Alt+N desde cualquier app"), 0, Qt.AlignmentFlag.AlignBottom)
         main.addWidget(header)
@@ -2492,7 +2790,7 @@ class MainWNoteWindow(QMainWindow):
         # Notas de vidrio
         notes_box, nb = _card()
         top = QHBoxLayout()
-        self.lbl_notes_title = _label("Notas de vidrio", "sec")
+        self.lbl_notes_title = _label("Notas", "sec")
         top.addWidget(self.lbl_notes_title)
         top.addStretch()
         top.addWidget(_label("SINCRONIZADAS CON EL CELULAR", "rotulo"))
@@ -2526,10 +2824,9 @@ class MainWNoteWindow(QMainWindow):
         self.combo_platform = QComboBox()
         self.combo_platform.addItems(["Google Meet", "MS Teams", "Zoom", "Otra Videollamada"])
         self.btn_record_toggle = _btn("● Grabar", "rec", self._toggle_recording, "Ctrl+Alt+R")
-        self.btn_screenshot = _btn("Print", "print", self._take_screenshot, "Print de pantalla clave (Ctrl+Alt+P)")
+        self.btn_screenshot = _btn("Print", "print", lambda: self.print_handler(), "Print con anotaciones (Ctrl+Alt+P)")
         self.btn_screenshot.setIcon(svg_icon(CAMERA_SVG))
         self.btn_screenshot.setIconSize(QSize(18, 18))
-        self.btn_screenshot.setEnabled(False)
         r.addWidget(self.inp_org, 2)
         r.addWidget(self.inp_topic, 2)
         r.addWidget(self.combo_platform, 1)
@@ -2552,6 +2849,38 @@ class MainWNoteWindow(QMainWindow):
         self.txt_trans.hide()
         self.jobs: list = []  # transcripciones que siguen después de cerrar la grabación
         main.addWidget(rec)
+
+        # Print (anotaciones con pines, como IT OK!)
+        pr, pv = _card()
+        top = QHBoxLayout()
+        top.addWidget(_label("Print", "sec"))
+        top.addStretch()
+        top.addWidget(_label("PROYECTO", "rotulo"))
+        self.combo_proy = QComboBox()
+        self.combo_proy.setMinimumWidth(180)
+        self.combo_proy.currentIndexChanged.connect(self._fill_prints)
+        top.addWidget(self.combo_proy)
+        top.addWidget(_btn("Informe del proyecto", "secondary", self._informe,
+                           "Agrupa los prints del proyecto con sus anotaciones en un informe"))
+        b = _btn("Print", "print", lambda: self.print_handler(), "Captura la pantalla y anota con pines (Ctrl+Alt+P)")
+        b.setIcon(svg_icon(CAMERA_SVG))
+        b.setIconSize(QSize(18, 18))
+        top.addWidget(b)
+        pv.addLayout(top)
+        ps = QScrollArea()
+        ps.setWidgetResizable(True)
+        ps.setFrameShape(QFrame.Shape.NoFrame)
+        ps.setFixedHeight(150)
+        ps.setStyleSheet("QScrollArea, QScrollArea > QWidget > QWidget { background: transparent; }")
+        hold = QWidget()
+        self.prints_row = QHBoxLayout(hold)
+        self.prints_row.setContentsMargins(0, 0, 0, 0)
+        self.prints_row.setSpacing(10)
+        ps.setWidget(hold)
+        pv.addWidget(ps)
+        main.addWidget(pr)
+        self.print_handler = lambda: None  # lo asigna el controlador
+        QTimer.singleShot(0, self.refresh_prints)
 
         # Actas
         splitter = QSplitter(Qt.Orientation.Horizontal)
@@ -2629,7 +2958,7 @@ class MainWNoteWindow(QMainWindow):
             if item.widget():
                 item.widget().deleteLater()
         notes = self.storage.visible_notes()
-        self.lbl_notes_title.setText(f"Notas de vidrio · {len(notes)}")
+        self.lbl_notes_title.setText(f"Notas · {len(notes)}")
         if not notes:
             self.notes_row.addWidget(_label("Aún no hay notas. Usa «+ Nota rápida» o Ctrl+Alt+N desde cualquier app.", "hint"))
         for note in notes[:40]:
@@ -2665,6 +2994,7 @@ class MainWNoteWindow(QMainWindow):
                                 getattr(self, "_pending_link", ""), spontaneous=espontanea)
             self._pending_link, self._pending_spontaneous = "", False
             self.txt_trans.clear()
+            self._final_shown = False
             self.txt_trans.show()
             self.lbl_trans.show()
             self.lbl_trans.setText("TRANSCRIPCIÓN · " + ("CARGANDO MODELO…" if self.recorder.job else
@@ -2675,7 +3005,6 @@ class MainWNoteWindow(QMainWindow):
                 self.inp_topic.setPlaceholderText("Tema de la reunión")
                 self.inp_org.setFocus()
             self._style_record_button(True)
-            self.btn_screenshot.setEnabled(True)
             self.inp_live.setEnabled(True)
         else:
             md_path = self.recorder.stop_and_archive(self.inp_org.text(), self.inp_topic.text())
@@ -2685,7 +3014,6 @@ class MainWNoteWindow(QMainWindow):
             self.inp_org.setPlaceholderText("Organización (ej. Banco_Andes)")
             self.inp_topic.setPlaceholderText("Tema (ej. Cierre_Q4)")
             self._style_record_button(False)
-            self.btn_screenshot.setEnabled(False)
             self.inp_live.setEnabled(False)
             self.lbl_rec_status.setText("ARCHIVADO")
             self.refresh_actas_table()
@@ -2698,17 +3026,69 @@ class MainWNoteWindow(QMainWindow):
         return self.recorder.is_recording
 
     def _take_screenshot(self):
-        if self.recorder.is_recording:
-            self.recorder.capture_key_screenshot()
-            self._update_recording_ui()
+        self.print_handler()
 
     def _add_live_note(self):
         if self.recorder.is_recording and self.inp_live.text().strip():
             self.recorder.add_live_note(self.inp_live.text())
             self.inp_live.clear()
 
+    # ---- prints ---------------------------------------------------------------------------
+    def refresh_prints(self):
+        self._prints = listar_prints(self.storage)
+        actual = self.combo_proy.currentData()
+        self.combo_proy.blockSignals(True)
+        self.combo_proy.clear()
+        self.combo_proy.addItem("Todos", "")
+        for proy in sorted({(m.get("proyecto") or "").strip() for m in self._prints} - {""}, key=str.lower):
+            self.combo_proy.addItem(proy, proy)
+        i = self.combo_proy.findData(actual) if actual else 0
+        self.combo_proy.setCurrentIndex(max(0, i))
+        self.combo_proy.blockSignals(False)
+        self._fill_prints()
+
+    def _fill_prints(self):
+        while self.prints_row.count():
+            item = self.prints_row.takeAt(0)
+            if item.widget():
+                item.widget().deleteLater()
+        proy = self.combo_proy.currentData() or ""
+        lista = [m for m in getattr(self, "_prints", []) if not proy or (m.get("proyecto") or "").strip() == proy]
+        if not lista:
+            self.prints_row.addWidget(_label("Sin prints todavía. Usa «Print» (Ctrl+Alt+P) para capturar y anotar con pines.", "hint"))
+        for m in lista[:30]:
+            card = QToolButton()
+            card.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
+            card.setFixedSize(190, 136)
+            card.setCursor(Qt.CursorShape.PointingHandCursor)
+            pix = QPixmap(m["png"])
+            if not pix.isNull():
+                card.setIcon(QIcon(pix.scaled(180, 100, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)))
+                card.setIconSize(QSize(180, 100))
+            n = len(m.get("pins", []))
+            card.setText(f"{m.get('proyecto') or 'Sin proyecto'} · {n} pin{'es' if n != 1 else ''}")
+            card.setToolTip(m.get("fecha", "") + "\n" + "\n".join(f"{p['n']}. {p.get('texto', '')}" for p in m.get("pins", [])))
+            card.setStyleSheet(f"QToolButton {{ background: #fff; border: 1px solid {V_LINE}; border-radius: 0px;"
+                               " font-size: 11px; color: #13202E; padding: 4px; }"
+                               f" QToolButton:hover {{ border-color: {V_ACC}; }}")
+            card.clicked.connect(lambda _=False, ruta=m["png"]: QDesktopServices.openUrl(QUrl.fromLocalFile(ruta)))
+            self.prints_row.addWidget(card)
+        self.prints_row.addStretch()
+
+    def _informe(self):
+        proy = self.combo_proy.currentData()
+        if not proy:
+            QMessageBox.information(self, "Informe", "Elige un proyecto en la lista para agrupar sus prints.")
+            return
+        md = informe_proyecto(self.storage, proy)
+        QDesktopServices.openUrl(QUrl.fromLocalFile(str(md)))
+
     def _show_segs(self, segs: list):
         for x in segs:
+            if x.get("fase") == "final" and not getattr(self, "_final_shown", False):
+                self._final_shown = True
+                self.txt_trans.clear()
+                self.txt_trans.append("— VERSIÓN FINAL —")
             self.txt_trans.append(f"[{mmss(x['ini'])}] {FUENTES.get(x['fuente'], x['fuente'])}: {x['texto']}")
 
     def _transcribe_selected(self):
@@ -2724,9 +3104,7 @@ class MainWNoteWindow(QMainWindow):
             QMessageBox.information(self, "Transcripción", "Esta acta no tiene audio guardado.")
             return
         job = TranscriptionJob(self.storage.config.get("whisper_model", "small"))
-        for w in wavs:
-            job.entrada.put(("archivo", str(w), "microfono" if w.stem.endswith("_microfono") else "sistema"))
-        job.finish_audio()
+        job.finish([(str(w), "microfono" if w.stem.endswith("_microfono") else "sistema") for w in wavs])
         job.md_path = Path(rec["path"])
         escribir_transcripcion(job.md_path, [], final=False)
         self.jobs.append(job)
@@ -2822,6 +3200,12 @@ class WNoteController(QObject):
         self.side_capsule.open_main_requested.connect(self.open_main_window)
         self.capsule_closed = False
         self.side_capsule.close_requested.connect(self._close_capsule)
+        self.side_capsule.record_requested.connect(self.toggle_record)
+        self.side_capsule.print_requested.connect(self.take_print)
+        self.main_window.print_handler = self.take_print
+        self._rec_state = QTimer(self)
+        self._rec_state.timeout.connect(lambda: self.side_capsule.set_recording(self.recorder.is_recording))
+        self._rec_state.start(700)
         self.desktop_widget.open_main_requested.connect(self.open_main_window)
         self.desktop_widget.record_meeting_requested.connect(self.main_window.start_external_recording)
         self.main_window.settings_updated.connect(self._apply_settings)
@@ -2901,10 +3285,40 @@ class WNoteController(QObject):
             self.quick_note()
         elif hid == HOTKEY_REC:
             self.toggle_record()
-        elif hid == HOTKEY_PRINT and self.recorder.is_recording:
-            self.main_window._take_screenshot()
-            self.tray.showMessage("w-notes", f"Print clave {len(self.recorder.screenshots)} guardado",
-                                  QSystemTrayIcon.MessageIcon.Information, 1500)
+        elif hid == HOTKEY_PRINT:
+            self.take_print()
+
+    def take_print(self):
+        """Oculta w-notes un instante, captura la pantalla y abre el anotador con pines."""
+        try:
+            if getattr(self, "_anotador", None) is not None and self._anotador.isVisible():
+                return
+        except RuntimeError:  # ya fue destruido
+            self._anotador = None
+        visibles = [w for w in (self.main_window, self.side_capsule, self.popup, self.desktop_widget) if w.isVisible()]
+        for w in visibles:
+            w.hide()
+
+        def abrir():
+            rec = self.recorder
+            if rec.is_recording:
+                ts = rec.elapsed_str()
+                an = PrintAnotador(self.storage, proyecto=self.main_window.inp_org.text() or rec.org,
+                                   destino=self.storage.captures_dir,
+                                   nombre_base=f"{rec.base_name}_{ts.replace(':', '-')}")
+                an.terminado.connect(lambda meta, ts=ts: rec.add_annotated(meta, ts))
+            else:
+                an = PrintAnotador(self.storage)
+            an.terminado.connect(lambda _m: self.main_window.refresh_prints())
+            an.destroyed.connect(lambda *_: None)
+            self._anotador = an
+            an.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
+            an.destroyed.connect(lambda *_: [w.show() for w in visibles])
+            an.show()
+            an.raise_()
+            an.activateWindow()
+
+        QTimer.singleShot(250, abrir)
 
     def _close_capsule(self):
         self.capsule_closed = True

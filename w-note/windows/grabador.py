@@ -16,7 +16,7 @@ import time
 import wave
 from pathlib import Path
 
-TROZO_SEG = 15  # segundos por trozo enviado a transcribir
+TROZO_SEG = 30  # segundos por trozo en vivo (la ventana nativa de Whisper)
 
 
 class _Wav:
@@ -66,13 +66,8 @@ class _Trozos:
     def flush(self):
         if not self.buf:
             return
-        np = self.np
-        x = np.frombuffer(b"".join(self.buf), dtype=np.int16).astype(np.float32) / 32768.0
-        if self.ch > 1:
-            x = x.reshape(-1, self.ch).mean(axis=1)
-        if self.rate != 16000 and len(x):
-            n16 = int(len(x) * 16000 / self.rate)
-            x = np.interp(np.linspace(0, len(x) - 1, n16), np.arange(len(x)), x).astype(np.float32)
+        import transcriptor  # mismo remuestreo con filtro anti-aliasing que la pasada final
+        x = transcriptor.a_16k(transcriptor.pcm_a_mono(b"".join(self.buf), self.ch), self.rate)
         try:
             self.cola.put(("trozo", self.fuente, round(self.inicio, 2), x.tobytes()))
         except Exception:
@@ -164,9 +159,4 @@ def grabar(carpeta: str, base: str, con_mic: bool, detener, avisos, cola_texto=N
             p.terminate()
         except Exception:
             pass
-        if cola_texto is not None:
-            try:
-                cola_texto.put(("fin_audio",))
-            except Exception:
-                pass
         avisos.put(("fin", archivos, errores))
