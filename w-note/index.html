@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>w-note · compAI</title>
-<meta name="description" content="w-note de compAI: tus notas de vidrio y tu agenda en el celular, sincronizadas con tu PC.">
+<title>w-notes · compAI</title>
+<meta name="description" content="w-notes de compAI: tus notas de vidrio y tu agenda en el celular, sincronizadas con tu PC.">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#0F5C7A">
+<meta name="theme-color" content="#F5F0E4">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="w-note">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="w-notes">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/svg+xml" href="marca/wnote-logo.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="marca/wnote-32.png">
@@ -19,14 +19,15 @@
 @font-face { font-family: "Space Grotesk"; src: url("../css/fuentes/spacegrotesk-var-latin.woff2") format("woff2"); font-weight: 300 700; font-display: swap; }
 :root {
   --ink: #141414; --petrol: #0F5C7A; --cream: #F4F0E6; --sand: #D0C6B0; --yellow: #F0B400; --green: #37B35A;
-  --glass: rgba(255,255,255,.08); --line: rgba(255,255,255,.16);
+  --crema: #F5F0E4; --v-ink: #13202E; --v-ink2: #34424F; --v-ink3: #44515F; --acc: #A85E28; --acc-t: #7A4A12;
+  --glass: rgba(255,255,255,.72); --line: rgba(8,30,56,.14); --line2: rgba(8,30,56,.30);
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --font: "Space Grotesk", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
 }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; min-height: 100%; }
 body {
-  font-family: var(--font); color: #fff; background: #11233a;
-  background-image: linear-gradient(160deg, #13223a 0%, #123a55 55%, #0F5C7A 100%); background-attachment: fixed;
+  font-family: var(--font); color: var(--v-ink); background: var(--crema);
   padding-bottom: calc(96px + env(safe-area-inset-bottom));
 }
 button, input, textarea { font: inherit; color: inherit; }
@@ -36,7 +37,7 @@ button { cursor: pointer; border: 0; background: none; }
 header {
   position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 10px;
   padding: calc(12px + env(safe-area-inset-top)) 16px 12px;
-  background: rgba(17,32,52,.82); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  background: rgba(255,255,255,.80); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
   border-bottom: 1px solid var(--line);
 }
 header .logo { width: 34px; height: 34px; flex: none; }
@@ -53,12 +54,12 @@ header .grow { flex: 1; }
 
 main { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; max-width: 640px; margin: 0 auto; }
 
-.agenda { border-radius: 20px; padding: 14px 16px; background: rgba(20,20,20,.38); border: 1px solid var(--line); }
-.agenda .sub { font-size: 10px; font-weight: 700; letter-spacing: .06em; color: var(--yellow); text-transform: uppercase; }
+.agenda { border-radius: 12px; padding: 14px 16px; background: var(--glass); border: 1px solid var(--line); box-shadow: 0 12px 32px rgba(0,20,60,.10); }
+.agenda .sub { font: 600 11px/1.3 var(--mono); letter-spacing: .1em; color: var(--acc-t); text-transform: uppercase; }
 .agenda .title { font-size: 15px; font-weight: 600; margin-top: 3px; }
 .agenda .row { display: flex; align-items: center; gap: 10px; }
 .agenda .row > div { flex: 1; min-width: 0; }
-.agenda a { flex: none; text-decoration: none; color: var(--ink); background: var(--cream); font-weight: 700; font-size: 13px;
+.agenda a { flex: none; text-decoration: none; color: #fff; background: var(--acc); font-weight: 700; font-size: 13px;
   padding: 8px 14px; border-radius: 999px; }
 .agenda .more { font-size: 12px; opacity: .7; margin-top: 8px; display: grid; gap: 3px; }
 
@@ -66,13 +67,14 @@ main { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; max
 .chips::-webkit-scrollbar { display: none; }
 .chip { flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px;
   background: var(--glass); border: 1px solid var(--line); font-size: 12px; font-weight: 600; }
-.chip.on { background: var(--cream); color: var(--ink); }
-.chip i { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(255,255,255,.6); }
+.chip { color: var(--v-ink); border-color: var(--line2); border-radius: 8px; }
+.chip.on { background: var(--v-ink); color: #fff; border-color: var(--v-ink); }
+.chip i { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(8,30,56,.25); }
 
-.card { position: relative; border-radius: 20px; padding: 14px 16px 12px; border: 1px solid rgba(255,255,255,.3);
-  box-shadow: 0 10px 26px rgba(0,0,0,.35); user-select: text; -webkit-user-select: text; }
-.card .top { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 10.5px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: .04em; opacity: .9; margin-bottom: 6px; }
+.card { position: relative; border-radius: 12px; padding: 14px 16px 12px; border: 1px solid rgba(8,30,56,.10);
+  box-shadow: 0 10px 24px rgba(0,20,60,.14); user-select: text; -webkit-user-select: text; }
+.card .top { display: flex; justify-content: space-between; align-items: center; gap: 8px; font: 500 10.5px/1.3 var(--mono);
+  text-transform: uppercase; letter-spacing: .08em; opacity: .9; margin-bottom: 6px; }
 .card .txt { font-size: 15px; line-height: 1.45; font-weight: 500; white-space: pre-wrap; word-break: break-word; }
 .card .actions { display: flex; gap: 8px; margin-top: 10px; }
 .card .actions button { font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 999px; background: rgba(0,0,0,.2);
@@ -83,21 +85,22 @@ main { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; max
 .empty img { width: 72px; display: block; margin: 0 auto 14px; }
 
 .composer { position: fixed; inset-inline: 0; bottom: 0; z-index: 30; padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
-  background: rgba(17,32,52,.92); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-top: 1px solid var(--line); }
+  background: rgba(255,255,255,.88); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-top: 1px solid var(--line); }
 .composer .inner { max-width: 640px; margin: 0 auto; display: flex; gap: 8px; align-items: flex-end; }
-.composer textarea { flex: 1; resize: none; max-height: 130px; min-height: 42px; background: rgba(255,255,255,.1);
-  border: 1px solid rgba(255,255,255,.22); border-radius: 21px; padding: 10px 14px; font-size: 16px; outline: none; color: #fff; }
-.composer textarea::placeholder { color: rgba(255,255,255,.5); }
-.dot-btn { width: 42px; height: 42px; flex: none; border-radius: 50%; border: 2px solid rgba(255,255,255,.75); }
-.send { width: 42px; height: 42px; flex: none; border-radius: 50%; background: var(--cream); color: var(--ink); font-size: 22px; font-weight: 600; }
+.composer textarea { flex: 1; resize: none; max-height: 130px; min-height: 42px; background: #fff;
+  border: 1px solid var(--line2); border-radius: 21px; padding: 10px 14px; font-size: 16px; outline: none; color: var(--v-ink); }
+.composer textarea:focus { border-color: #0F5C7A; }
+.composer textarea::placeholder { color: #8a8f96; }
+.dot-btn { width: 42px; height: 42px; flex: none; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px var(--line2); }
+.send { width: 42px; height: 42px; flex: none; border-radius: 50%; background: var(--acc); color: #fff; font-size: 22px; font-weight: 600; }
 .palette { max-width: 640px; margin: 0 auto 8px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
 .palette button { display: grid; justify-items: center; gap: 4px; font-size: 10px; opacity: .9; min-width: 0; }
 .palette button span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.palette button i { width: 30px; height: 30px; border-radius: 50%; border: 2px solid rgba(255,255,255,.5); }
-.palette button.on i { border: 3px solid #fff; transform: scale(1.08); }
-.theme-hint { max-width: 640px; margin: 0 auto 6px; font-size: 11px; color: var(--yellow); font-weight: 600; padding-left: 6px; }
+.palette button i { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px var(--line2); }
+.palette button.on i { box-shadow: 0 0 0 3px var(--v-ink); transform: scale(1.08); }
+.theme-hint { max-width: 640px; margin: 0 auto 6px; font: 600 11px/1.3 var(--mono); letter-spacing: .06em; color: var(--acc-t); padding-left: 6px; }
 
-dialog { border: 0; border-radius: 22px; padding: 0; width: min(92vw, 420px); background: var(--cream); color: var(--ink); }
+dialog { border: 0; border-radius: 14px; padding: 0; width: min(92vw, 420px); background: var(--crema); color: var(--v-ink); }
 dialog::backdrop { background: rgba(0,0,0,.55); backdrop-filter: blur(4px); }
 dialog form { padding: 18px; display: grid; gap: 10px; }
 dialog h2 { margin: 0; font-size: 17px; }
@@ -106,7 +109,7 @@ dialog input { width: 100%; padding: 10px 12px; border-radius: 12px; border: 1px
 dialog p { margin: 0; font-size: 12px; line-height: 1.5; color: #444; }
 dialog .row { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
 dialog .row button { padding: 9px 14px; border-radius: 12px; font-weight: 700; font-size: 13px; background: #e7e0d1; color: var(--ink); }
-dialog .row .primary { background: var(--petrol); color: #fff; }
+dialog .row .primary { background: var(--acc); color: #fff; }
 #testOut { font-size: 12px; font-weight: 600; min-height: 1em; }
 
 .toast { position: fixed; left: 50%; bottom: calc(110px + env(safe-area-inset-bottom)); transform: translate(-50%, 20px); opacity: 0;
@@ -117,7 +120,7 @@ dialog .row .primary { background: var(--petrol); color: #fff; }
 <body>
 <header>
   <img class="logo" src="marca/wnote-logo.svg" alt="">
-  <h1>w-note<small>de compA\</small></h1>
+  <h1>w-notes<small>de compA\</small></h1>
   <span class="grow"></span>
   <span id="status" class="status"><i></i><span>…</span></span>
   <button class="icon-btn" id="btnSync" aria-label="Sincronizar">↻</button>
@@ -263,7 +266,7 @@ async function sync() {
     render();
   } catch (e) {
     setStatus("err", navigator.onLine ? "Sin conexión" : "Sin señal");
-    console.warn("[w-note]", e);
+    console.warn("[w-notes]", e);
   } finally {
     syncing = false;
     if (pending) { pending = false; sync(); }
@@ -322,8 +325,8 @@ function render() {
   const list = filter === "all" ? visible : visible.filter(n => n.theme_key === filter);
   const feed = $("feed");
   if (!cfg) {
-    feed.innerHTML = `<div class="empty"><img src="marca/wnote-logo.svg" alt=""><b>Conecta w-note con tu PC</b><br>
-      En el PC: w-note → <b>📱 Vincular celular</b> → escanea el QR con la cámara.<br>
+    feed.innerHTML = `<div class="empty"><img src="marca/wnote-logo.svg" alt=""><b>Conecta w-notes con tu PC</b><br>
+      En el PC: w-notes → <b>📱 Vincular celular</b> → escanea el QR con la cámara.<br>
       <button class="chip on" style="margin-top:14px" data-open-settings>Conectar a mano</button></div>`;
     return;
   }

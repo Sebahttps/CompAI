@@ -1,4 +1,4 @@
-﻿# w-note de compAI — instalador para Windows 10/11
+﻿# w-notes de compAI — instalador para Windows 10/11
 # Uso: doble clic en instalar.bat  (o: powershell -ExecutionPolicy Bypass -File instalar.ps1 [-Desinstalar] [-SinInicio])
 # Qué hace:
 #   1. Busca Python 3.10+ (si no está, lo instala con winget).
@@ -16,9 +16,13 @@ $AppDir    = Join-Path $Raiz "app"
 $Venv      = Join-Path $Raiz "venv"
 $Origen    = Split-Path -Parent $PSScriptRoot          # carpeta w-note/
 $Escritorio = [Environment]::GetFolderPath("Desktop")
-$MenuInicio = Join-Path ([Environment]::GetFolderPath("Programs")) "w-note.lnk"
-$Inicio     = Join-Path ([Environment]::GetFolderPath("Startup")) "w-note.lnk"
-$Atajos     = @((Join-Path $Escritorio "w-note.lnk"), $MenuInicio, $Inicio)
+$MenuInicio = Join-Path ([Environment]::GetFolderPath("Programs")) "w-notes.lnk"
+$Inicio     = Join-Path ([Environment]::GetFolderPath("Startup")) "w-notes.lnk"
+$Atajos     = @((Join-Path $Escritorio "w-notes.lnk"), $MenuInicio, $Inicio)
+# Accesos de la versión 1.0 (se llamaba w-note): se reemplazan
+$AtajosViejos = @((Join-Path $Escritorio "w-note.lnk"),
+  (Join-Path ([Environment]::GetFolderPath("Programs")) "w-note.lnk"),
+  (Join-Path ([Environment]::GetFolderPath("Startup")) "w-note.lnk"))
 
 function Paso($t) { Write-Host ""; Write-Host "▸ $t" -ForegroundColor Cyan }
 
@@ -28,14 +32,14 @@ Get-CimInstance Win32_Process -Filter "Name='pythonw.exe' OR Name='python.exe'" 
   ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
 
 if ($Desinstalar) {
-  Paso "Quitando w-note"
-  $Atajos | ForEach-Object { Remove-Item $_ -Force -ErrorAction SilentlyContinue }
+  Paso "Quitando w-notes"
+  ($Atajos + $AtajosViejos) | ForEach-Object { Remove-Item $_ -Force -ErrorAction SilentlyContinue }
   Remove-Item $Raiz -Recurse -Force -ErrorAction SilentlyContinue
   Write-Host "Listo. Tus notas y actas siguen en Documentos\w-note." -ForegroundColor Green
   exit 0
 }
 
-Write-Host "w-note de compAI — instalación" -ForegroundColor White
+Write-Host "w-notes de compAI — instalación" -ForegroundColor White
 
 # 1. Python ---------------------------------------------------------------------------
 Paso "Buscando Python 3.10 o superior"
@@ -85,10 +89,11 @@ if ($LASTEXITCODE -ne 0) { Write-Host "Falló la instalación de dependencias. R
 
 # 4. Accesos directos ----------------------------------------------------------------------
 Paso "Creando accesos directos"
+$AtajosViejos | ForEach-Object { Remove-Item $_ -Force -ErrorAction SilentlyContinue }
 $Shell  = New-Object -ComObject WScript.Shell
 $Script = Join-Path $AppDir "windows\wnote.py"
 $Icono  = Join-Path $AppDir "marca\wnote.ico"
-$destinos = @((Join-Path $Escritorio "w-note.lnk"), $MenuInicio)
+$destinos = @((Join-Path $Escritorio "w-notes.lnk"), $MenuInicio)
 if (-not $SinInicio) { $destinos += $Inicio }
 foreach ($lnk in $destinos) {
   $s = $Shell.CreateShortcut($lnk)
@@ -96,16 +101,16 @@ foreach ($lnk in $destinos) {
   $s.Arguments = "`"$Script`""
   $s.WorkingDirectory = Join-Path $AppDir "windows"
   $s.IconLocation = $Icono
-  $s.Description = "w-note de compAI"
+  $s.Description = "w-notes de compAI"
   $s.Save()
 }
 if ($SinInicio) { Remove-Item $Inicio -Force -ErrorAction SilentlyContinue }
 
 # 5. Abrir ---------------------------------------------------------------------------------
-Paso "Abriendo w-note"
+Paso "Abriendo w-notes"
 Start-Process -FilePath $VPyw -ArgumentList "`"$Script`"" -WorkingDirectory (Join-Path $AppDir "windows")
 Write-Host ""
-Write-Host "✓ w-note instalado." -ForegroundColor Green
+Write-Host "✓ w-notes instalado." -ForegroundColor Green
 Write-Host "  · Queda en la bandeja junto al reloj (clic derecho → Salir)."
 Write-Host "  · Arranca solo con Windows. Atajos: Ctrl+Alt+N nota · Ctrl+Alt+R grabar · Ctrl+Alt+P print."
 Write-Host "  · Si Windows pregunta por el Firewall, elige 'Redes privadas' (es para ver tus notas en el celular por Wi-Fi)."

@@ -1,4 +1,4 @@
-# w-note de compA\
+# w-notes de compA\
 
 Notas de vidrio, widget de escritorio, grabador de reuniones y panel para el celular.
 PC (Windows 10/11) ⇄ nube propia (Google Apps Script + Hoja) ⇄ iPhone por 4G/5G o Wi-Fi.
@@ -48,7 +48,9 @@ flowchart LR
    (Escritorio, Menú Inicio, Inicio de Windows) y abre w-note.
 3. Si Windows pregunta por el Firewall → **Redes privadas** (es el panel Wi-Fi del celular).
 
-Queda en la bandeja junto al reloj. Clic derecho → **Salir**.
+Queda en la bandeja junto al reloj. Clic derecho → **Salir**. Clic en el widget (o en su logo) abre la app; la configuración está en ⚙.
+
+Ubicación y clima: automáticos como la intranet (ubicación del equipo → por red → Santiago). Se puede fijar en ⚙ → Ubicación.
 
 | Atajo global | Acción |
 |---|---|

@@ -1,5 +1,5 @@
 """
-w-note de compAI — Widget de escritorio, cápsula flotante, notas de vidrio,
+w-notes de compAI — Widget de escritorio, cápsula flotante, notas de vidrio,
 grabador de reuniones y sincronización con iPhone para Windows 10/11.
 
 Qué hace
@@ -111,8 +111,8 @@ try:
 except ImportError:
     HAS_QR = False
 
-APP_NAME = "w-note"
-APP_VERSION = "1.0.0"
+APP_NAME = "w-notes"
+APP_VERSION = "1.1.0"
 APP_DIR = Path(__file__).resolve().parent
 WEB_DIR = APP_DIR.parent  # carpeta w-note/ con index.html (panel del celular)
 
@@ -332,9 +332,10 @@ class StorageManager:
             "naming_format": "DATE_ORG_TOPIC",
             "widget_x": None,
             "widget_y": 60,
-            "location_label": "Viña del Mar",
-            "location_lat": -33.0245,
-            "location_lon": -71.5518,
+            "location_mode": "auto",          # "auto" (como la intranet) | "fija"
+            "location_label": "Santiago",
+            "location_lat": -33.4489,
+            "location_lon": -70.6693,
             "mobile_server_enabled": True,
             "mobile_port": 8765,
             "lan_token": "",
@@ -345,14 +346,19 @@ class StorageManager:
             "record_mic": True,
             "hotkeys_enabled": True,
         }
+        loaded_keys: set = set()
         if self.config_file.exists():
             try:
-                cfg.update(json.loads(self.config_file.read_text(encoding="utf-8")))
+                loaded = json.loads(self.config_file.read_text(encoding="utf-8"))
+                loaded_keys = set(loaded)
+                cfg.update(loaded)
             except Exception:
                 pass
         # La versión anterior traía un endpoint de ejemplo que no existe (compai.cl es estático).
         if cfg.get("cloud_sync_url", "").rstrip("/") == "https://compai.cl/api/wnote":
             cfg["cloud_sync_url"] = ""
+        if "location_mode" not in loaded_keys:
+            cfg["location_mode"] = "auto"  # instalaciones anteriores: pasan a ubicación automática
         if not cfg.get("lan_token"):
             cfg["lan_token"] = secrets.token_urlsafe(9)
         self.config = cfg
@@ -491,7 +497,7 @@ class CloudSyncClient:
     def _request(self, url: str, payload: dict | None = None) -> dict:
         data = None if payload is None else json.dumps(payload, ensure_ascii=False).encode("utf-8")
         req = urllib.request.Request(url, data=data, method="POST" if data else "GET", headers={
-            "Content-Type": "text/plain; charset=utf-8", "User-Agent": f"w-note-windows/{APP_VERSION}"})
+            "Content-Type": "text/plain; charset=utf-8", "User-Agent": f"w-notes-windows/{APP_VERSION}"})
         # Apps Script responde 302 → googleusercontent; urllib lo sigue con GET (lo correcto).
         with urllib.request.urlopen(req, timeout=15) as resp:
             body = resp.read().decode("utf-8", "replace")
@@ -577,6 +583,102 @@ class WeatherClient:
 
         threading.Thread(target=worker, daemon=True).start()
 
+
+
+class LocationClient:
+    """Ubicación actual, igual que la intranet: posición del equipo → si no hay, por IP → si no, Santiago.
+    El nombre de la ciudad sale de BigDataCloud y, de respaldo, Nominatim. Nunca se inventa un nombre."""
+
+    SANTIAGO = (-33.4489, -70.6693, "Santiago")
+    PS_SCRIPT = (
+        "Add-Type -AssemblyName System.Device;"
+        "$w=New-Object System.Device.Location.GeoCoordinateWatcher('High');"
+        "if($w.TryStart($true,[TimeSpan]::FromSeconds(8))){"
+        "$i=0;while($w.Position.Location.IsUnknown -and $i -lt 40){Start-Sleep -Milliseconds 200;$i++};"
+        "$c=$w.Position.Location;if(-not $c.IsUnknown){"
+        "Write-Output ($c.Latitude.ToString([Globalization.CultureInfo]::InvariantCulture)+','"
+        "+$c.Longitude.ToString([Globalization.CultureInfo]::InvariantCulture))}}")
+
+    def __init__(self, storage: StorageManager, bus: Bus, on_done=None):
+        self.storage, self.bus, self.on_done = storage, bus, on_done
+        self.source = ""
+
+    @staticmethod
+    def _get_json(url: str, timeout: int = 8):
+        req = urllib.request.Request(url, headers={"User-Agent": f"w-notes/{APP_VERSION} (compai.cl)",
+                                                   "Accept-Language": "es"})
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+
+    def _windows_position(self):
+        if sys.platform != "win32":
+            return None
+        try:
+            import subprocess
+            out = subprocess.run(["powershell", "-NoProfile", "-NonInteractive", "-Command", self.PS_SCRIPT],
+                                 capture_output=True, text=True, timeout=15,
+                                 creationflags=0x08000000).stdout.strip()  # sin ventana
+            lat, lon = (float(x) for x in out.split(","))
+            return lat, lon
+        except Exception:
+            return None
+
+    def _ip_position(self):
+        for url, keys in (("https://ipapi.co/json/", ("latitude", "longitude", "city")),
+                          ("https://ipwho.is/?lang=es", ("latitude", "longitude", "city"))):
+            try:
+                j = self._get_json(url)
+                lat, lon = float(j[keys[0]]), float(j[keys[1]])
+                return lat, lon, j.get(keys[2]) or None
+            except Exception:
+                continue
+        return None
+
+    def _city(self, lat: float, lon: float):
+        try:
+            j = self._get_json("https://api.bigdatacloud.net/data/reverse-geocode-client?"
+                               + urllib.parse.urlencode({"latitude": lat, "longitude": lon, "localityLanguage": "es"}))
+            if j.get("city") or j.get("locality"):
+                return j.get("city") or j.get("locality")
+        except Exception:
+            pass
+        try:
+            j = self._get_json("https://nominatim.openstreetmap.org/reverse?"
+                               + urllib.parse.urlencode({"format": "jsonv2", "lat": lat, "lon": lon,
+                                                         "accept-language": "es"}))
+            a = j.get("address", {})
+            return a.get("city") or a.get("town") or a.get("village") or a.get("municipality") or a.get("county")
+        except Exception:
+            return None
+
+    def refresh_async(self):
+        if self.storage.config.get("location_mode", "auto") != "auto":
+            if self.on_done:
+                self.on_done()
+            return
+
+        def worker():
+            cfg = self.storage.config
+            pos, city, src = self._windows_position(), None, "equipo"
+            if not pos:
+                ip = self._ip_position()
+                if ip:
+                    pos, city, src = (ip[0], ip[1]), ip[2], "red"
+            if not pos:
+                pos, city, src = self.SANTIAGO[:2], self.SANTIAGO[2], "respaldo"
+            name = self._city(*pos) or city
+            if not name:  # sin nombre confiable: conserva el último si está cerca (±5 km)
+                near = abs(cfg.get("location_lat", 0) - pos[0]) < 0.05 and abs(cfg.get("location_lon", 0) - pos[1]) < 0.05
+                name = cfg.get("location_label") if near else ""
+            cfg["location_lat"], cfg["location_lon"] = round(pos[0], 4), round(pos[1], 4)
+            cfg["location_label"] = name or ""
+            self.source = src
+            self.storage.save_config()
+            self.bus.weather_changed.emit()
+            if self.on_done:
+                self.on_done()
+
+        threading.Thread(target=worker, daemon=True).start()
 
 # =============================================================================
 # 6. SERVIDOR WI-FI LOCAL — mismo panel del celular, sin internet
@@ -884,7 +986,7 @@ class MeetingRecorderEngine:
 - [ ]
 
 ---
-Generado por w-note {APP_VERSION} · compAI
+Generado por w-notes {APP_VERSION} · compAI
 """
         md_path.write_text(document, encoding="utf-8")
         return md_path
@@ -924,7 +1026,7 @@ class LogoButton(QPushButton):
         super().__init__(parent)
         self.setFixedSize(size, size)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.setToolTip("Abrir w-note")
+        self.setToolTip("Abrir w-notes")
         self.setStyleSheet("border: none; background: transparent;")
 
     def paintEvent(self, event):
@@ -1225,13 +1327,17 @@ def countdown_label(start_ms: int, end_ms: int) -> str:
 
 class DesktopWidgetWindow(QWidget):
     record_meeting_requested = Signal(str, str, str, str)  # org, tema, plataforma, link
+    open_main_requested = Signal()
 
     def __init__(self, storage: StorageManager, popup: FloatingGlassNotePopup, cloud: CloudSyncClient):
         super().__init__()
         self.storage, self.popup, self.cloud = storage, popup, cloud
         self._drag_offset = None
+        self._press_pos = None
         self.event_idx = 0
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.Tool)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.setToolTip("Clic: abrir w-notes · Arrastrar: mover")
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setFixedWidth(360)
         self._build_ui()
@@ -1255,11 +1361,18 @@ class DesktopWidgetWindow(QWidget):
         root.setContentsMargins(14, 12, 14, 12)
         root.setSpacing(4)
 
+        top_row = QHBoxLayout()
+        btn_logo = LogoButton(30)
+        btn_logo.setToolTip("Abrir w-notes")
+        btn_logo.clicked.connect(self.open_main_requested.emit)
+        top_row.addWidget(btn_logo)
+        top_row.addStretch()
         self.lbl_loc = QLabel()
-        self.lbl_loc.setAlignment(Qt.AlignmentFlag.AlignRight)
+        self.lbl_loc.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
         self.lbl_loc.setStyleSheet("color: rgba(255,255,255,0.95); font-size: 11px; font-weight: 700;"
                                    " letter-spacing: 1px;" + shadow)
-        root.addWidget(self.lbl_loc)
+        top_row.addWidget(self.lbl_loc)
+        root.addLayout(top_row)
 
         clock_row = QHBoxLayout()
         clock_row.addStretch()
@@ -1268,7 +1381,7 @@ class DesktopWidgetWindow(QWidget):
         clock_row.addWidget(self.lbl_time)
         meta_col = QVBoxLayout()
         self.lbl_temp = QLabel("–°")
-        self.lbl_temp.setStyleSheet("color: #ffffff; font-size: 15px; font-weight: 600;" + shadow)
+        self.lbl_temp.setStyleSheet("color: #78C5E3; font-size: 17px; font-weight: 400;" + shadow)
         self.lbl_ampm = QLabel()
         self.lbl_ampm.setStyleSheet("color: rgba(255,255,255,0.9); font-size: 11px; font-weight: 700;" + shadow)
         meta_col.addWidget(self.lbl_temp)
@@ -1383,7 +1496,7 @@ class DesktopWidgetWindow(QWidget):
 
     def _tick(self):
         now = datetime.now()
-        self.lbl_time.setText(f"{now.hour % 12 or 12}:{now.minute:02d}")
+        self.lbl_time.setText(f"{now.hour % 12 or 12:02d}:{now.minute:02d}")
         self.lbl_ampm.setText("PM" if now.hour >= 12 else "AM")
         self.lbl_date.setText(f"{DAYS[now.weekday()]}, {now.day} de {MONTHS[now.month - 1]}")
         if now.second == 0:
@@ -1408,18 +1521,24 @@ class DesktopWidgetWindow(QWidget):
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
-            self._drag_offset = event.globalPosition().toPoint() - self.frameGeometry().topLeft()
+            self._press_pos = event.globalPosition().toPoint()
+            self._drag_offset = self._press_pos - self.frameGeometry().topLeft()
 
     def mouseMoveEvent(self, event):
         if self._drag_offset is not None and event.buttons() & Qt.MouseButton.LeftButton:
             self.move(event.globalPosition().toPoint() - self._drag_offset)
 
     def mouseReleaseEvent(self, event):
-        if self._drag_offset is not None:
-            self._drag_offset = None
-            self.storage.config["widget_x"] = self.x()
-            self.storage.config["widget_y"] = self.y()
-            self.storage.save_config()
+        if self._drag_offset is None:
+            return
+        moved = (event.globalPosition().toPoint() - self._press_pos).manhattanLength()
+        self._drag_offset = None
+        if moved < 5:  # clic sin arrastrar → abre la app
+            self.open_main_requested.emit()
+            return
+        self.storage.config["widget_x"] = self.x()
+        self.storage.config["widget_y"] = self.y()
+        self.storage.save_config()
 
 
 # =============================================================================
@@ -1447,8 +1566,8 @@ def qr_pixmap(text: str, size: int = 220) -> QPixmap | None:
 class LinkPhoneDialog(QDialog):
     def __init__(self, parent, storage: StorageManager, server: MobileSyncServer, cloud: CloudSyncClient):
         super().__init__(parent)
-        self.setWindowTitle("Vincular celular — w-note")
-        self.setStyleSheet(f"background: {CREAM}; color: {INK};")
+        self.setWindowTitle("Vincular celular — w-notes")
+        self.setStyleSheet(QSS + f"QDialog {{ background: {V_CREMA}; }}")
         lay = QHBoxLayout(self)
         cfg = storage.config
         if cloud.configured():
@@ -1483,7 +1602,7 @@ class LinkPhoneDialog(QDialog):
         h.setStyleSheet("font-size: 11px; color: #555;")
         v.addWidget(h)
         btn = QPushButton("Copiar enlace")
-        btn.setStyleSheet(f"background: {PETROL}; color: #fff; padding: 6px 12px; border-radius: 8px; font-weight: 600;")
+        btn.setObjectName("primary")
         btn.clicked.connect(lambda: (QApplication.clipboard().setText(url), btn.setText("✓ Copiado")))
         v.addWidget(btn)
         box.setFixedWidth(270)
@@ -1491,11 +1610,92 @@ class LinkPhoneDialog(QDialog):
 
 
 # =============================================================================
-# 13. VENTANA PRINCIPAL (CONFIGURACIÓN, NOTAS, GRABADOR Y ARCHIVADOR)
+# 13. VENTANA PRINCIPAL — diseño de la intranet compAI, modo día (fondo crema)
 # =============================================================================
-BTN = "font-weight: 700; padding: 7px 14px; border-radius: 9px;"
-FIELD = "padding: 6px 10px; border: 1px solid #cfc8b8; border-radius: 8px; background: #ffffff;"
-CARD = "QFrame#card { background: #ffffff; border: 1px solid #e2dccd; border-radius: 14px; }"
+# Tokens del «Manual de botones, fuentes y colores» de la intranet (estado/index.html, 11-11-2026)
+V_CREMA, V_SOLIDO = "#F5F0E4", "#FFFFFF"
+V_INK, V_INK2, V_INK3 = "#13202E", "#34424F", "#44515F"
+V_ACC, V_ACC_H, V_ACC_T = "#A85E28", "#B86A32", "#7A4A12"
+V_OK, V_BAD = "#0F5C7A", "#9E2A1C"
+V_LINE, V_LINE2 = "rgba(8,30,56,0.14)", "rgba(8,30,56,0.30)"
+F_DISP = "'Space Grotesk','Segoe UI Variable Display','Segoe UI',sans-serif"
+F_MONO = "Consolas,'Cascadia Mono','Segoe UI Mono',monospace"
+
+QSS = f"""
+QWidget#central {{ background: {V_CREMA}; }}
+QWidget {{ color: {V_INK}; font-family: 'Segoe UI', sans-serif; font-size: 13px; }}
+QLabel, QCheckBox {{ background: transparent; }}
+QFrame#card {{ background: rgba(255,255,255,0.72); border: 1px solid {V_LINE}; border-radius: 10px; }}
+QFrame#hdr {{ background: rgba(255,255,255,0.80); border: 1px solid {V_LINE}; border-radius: 12px; }}
+QLabel#title {{ font-family: {F_DISP}; font-size: 22px; font-weight: 600; color: {V_INK}; }}
+QLabel#eyebrow, QLabel#rotulo {{ font-family: {F_MONO}; font-size: 11px; letter-spacing: 1.2px; color: {V_INK3}; }}
+QLabel#sec {{ font-family: {F_DISP}; font-size: 12px; font-weight: 600; letter-spacing: 1px; color: {V_ACC_T}; }}
+QLabel#chip {{ font-family: {F_MONO}; font-size: 11px; color: {V_OK}; background: rgba(15,92,122,0.12);
+  border: 1px solid {V_OK}; border-radius: 6px; padding: 3px 8px; }}
+QLabel#chipwarn {{ font-family: {F_MONO}; font-size: 11px; color: {V_ACC_T}; background: #FFF0D2;
+  border: 1px solid #C57B45; border-radius: 6px; padding: 3px 8px; }}
+QLabel#hint {{ color: {V_INK2}; font-size: 12px; }}
+QPushButton {{ font-family: {F_DISP}; font-weight: 600; border-radius: 8px; padding: 7px 14px; }}
+QPushButton#primary {{ background: {V_ACC}; color: #FFFFFF; border: 1px solid {V_ACC}; }}
+QPushButton#primary:hover {{ background: {V_ACC_H}; border-color: {V_ACC_H}; }}
+QPushButton#secondary {{ background: rgba(255,255,255,0.72); color: {V_INK}; border: 1px solid {V_LINE2}; border-radius: 6px; }}
+QPushButton#secondary:hover {{ border-color: {V_ACC}; }}
+QPushButton#icon {{ background: rgba(255,255,255,0.72); color: {V_INK}; border: 1px solid {V_LINE2}; border-radius: 6px;
+  padding: 4px; font-size: 16px; min-width: 32px; min-height: 30px; }}
+QPushButton#icon:hover {{ border-color: {V_ACC}; }}
+QPushButton#rec {{ background: {V_BAD}; color: #FFFFFF; border: 1px solid {V_BAD}; }}
+QPushButton#recon {{ background: {V_OK}; color: #FFFFFF; border: 1px solid {V_OK}; }}
+QPushButton:disabled {{ background: #E9E4D8; color: #9A9A94; border: 1px solid {V_LINE}; }}
+QPushButton#link {{ background: transparent; border: none; color: {V_INK2}; font-family: {F_MONO};
+  font-weight: 400; font-size: 11px; text-align: left; padding: 2px; }}
+QPushButton#link:hover {{ color: {V_ACC_T}; }}
+QLineEdit, QComboBox, QTextEdit {{ background: {V_SOLIDO}; color: {V_INK}; border: 1px solid {V_LINE2};
+  border-radius: 6px; padding: 6px 9px; selection-background-color: {V_OK}; }}
+QLineEdit:focus, QComboBox:focus, QTextEdit:focus {{ border: 1px solid {V_OK}; }}
+QLineEdit:disabled {{ background: #EFEBE2; color: #8a8a86; }}
+QTableWidget {{ background: transparent; border: none; gridline-color: {V_LINE}; alternate-background-color: rgba(255,255,255,0.45); }}
+QTableWidget::item:selected {{ background: rgba(15,92,122,0.14); color: {V_INK}; }}
+QHeaderView::section {{ background: transparent; border: none; border-bottom: 1px solid {V_LINE2}; padding: 6px 4px;
+  font-family: {F_MONO}; font-size: 11px; letter-spacing: 1px; color: {V_INK3}; }}
+QScrollArea {{ background: transparent; border: none; }}
+QSplitter::handle {{ background: transparent; width: 10px; }}
+QHeaderView {{ background: transparent; border: none; }}
+QTableCornerButton::section {{ background: transparent; border: none; }}
+QScrollBar:vertical {{ background: transparent; width: 10px; margin: 2px; }}
+QScrollBar:horizontal {{ background: transparent; height: 10px; margin: 2px; }}
+QScrollBar::handle:vertical {{ background: rgba(8,30,56,0.25); border-radius: 3px; min-height: 30px; }}
+QScrollBar::handle:horizontal {{ background: rgba(8,30,56,0.25); border-radius: 3px; min-width: 30px; }}
+QScrollBar::handle:hover {{ background: rgba(8,30,56,0.40); }}
+QScrollBar::add-line, QScrollBar::sub-line {{ width: 0; height: 0; }}
+QScrollBar::add-page, QScrollBar::sub-page {{ background: transparent; }}
+QCheckBox::indicator {{ width: 16px; height: 16px; }}
+"""
+
+
+def _label(text: str, name: str) -> QLabel:
+    lbl = QLabel(text)
+    lbl.setObjectName(name)
+    return lbl
+
+
+def _btn(text: str, name: str, slot=None, tip: str = "") -> QPushButton:
+    b = QPushButton(text)
+    b.setObjectName(name)
+    b.setCursor(Qt.CursorShape.PointingHandCursor)
+    if tip:
+        b.setToolTip(tip)
+    if slot:
+        b.clicked.connect(slot)
+    return b
+
+
+def _card() -> tuple[QFrame, QVBoxLayout]:
+    f = QFrame()
+    f.setObjectName("card")
+    v = QVBoxLayout(f)
+    v.setContentsMargins(16, 12, 16, 14)
+    v.setSpacing(8)
+    return f, v
 
 
 class NoteCard(QFrame):
@@ -1505,13 +1705,13 @@ class NoteCard(QFrame):
         fg = "#ffffff" if th["text_light"] else INK
         self.setObjectName("note")
         self.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.setStyleSheet(f"QFrame#note {{ background: {th['hex']}; border-radius: 14px; }}"
+        self.setStyleSheet(f"QFrame#note {{ background: {th['hex']}; border-radius: 10px; border: 1px solid rgba(8,30,56,0.10); }}"
                            f" QLabel {{ color: {fg}; background: transparent; }}")
-        self.setFixedHeight(104)
+        self.setFixedSize(220, 104)
         v = QVBoxLayout(self)
         v.setContentsMargins(12, 10, 12, 10)
         top = QLabel(f"{th['label'].upper()} · {note_time_label(note)}")
-        top.setStyleSheet("font-size: 10px; font-weight: 700;")
+        top.setStyleSheet(f"font-family: {F_MONO}; font-size: 10px; letter-spacing: 1px;")
         txt = QLabel(note["text"] if len(note["text"]) < 150 else note["text"][:147] + "…")
         txt.setTextFormat(Qt.TextFormat.PlainText)
         txt.setWordWrap(True)
@@ -1524,26 +1724,283 @@ class NoteCard(QFrame):
         self._on_open(self._note, event.globalPosition().toPoint())
 
 
+class SettingsDialog(QDialog):
+    """Toda la configuración de w-notes en un solo lugar (ícono ⚙)."""
+
+    def __init__(self, win: "MainWNoteWindow"):
+        super().__init__(win)
+        self.win, self.storage, self.cloud = win, win.storage, win.cloud_sync
+        self.setWindowTitle("Configuración — w-notes")
+        self.setWindowIcon(logo_icon())
+        self.setStyleSheet(QSS + f"QDialog {{ background: {V_CREMA}; }}")
+        self.resize(680, 640)
+        cfg = self.storage.config
+
+        outer = QVBoxLayout(self)
+        outer.setContentsMargins(0, 0, 0, 0)
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        body = QWidget()
+        body.setObjectName("central")
+        lay = QVBoxLayout(body)
+        lay.setContentsMargins(18, 16, 18, 16)
+        lay.setSpacing(12)
+        scroll.setWidget(body)
+        outer.addWidget(scroll)
+
+        head = QHBoxLayout()
+        logo = QLabel()
+        logo.setPixmap(logo_pixmap(36))
+        head.addWidget(logo)
+        col = QVBoxLayout()
+        col.setSpacing(0)
+        col.addWidget(_label("W-NOTES · CONFIGURACIÓN", "eyebrow"))
+        col.addWidget(_label("Ajustes", "title"))
+        head.addLayout(col, 1)
+        lay.addLayout(head)
+
+        # Cápsula
+        c, v = _card()
+        v.addWidget(_label("CÁPSULA LATERAL", "sec"))
+        row = QHBoxLayout()
+        row.addWidget(_label("POSICIÓN", "rotulo"))
+        self.combo_pos = QComboBox()
+        self.combo_pos.addItem("Izquierda", "left")
+        self.combo_pos.addItem("Derecha", "right")
+        self.combo_pos.setCurrentIndex(0 if cfg.get("capsule_position", "left") == "left" else 1)
+        row.addWidget(self.combo_pos)
+        row.addStretch()
+        v.addLayout(row)
+        self.chk_top = QCheckBox("Siempre visible sobre otras apps")
+        self.chk_top.setChecked(cfg.get("capsule_always_on_top", True))
+        self.chk_auto = QCheckBox("Replegar el widget a la cápsula al abrir otra app")
+        self.chk_auto.setChecked(cfg.get("auto_dock_on_other_app", True))
+        v.addWidget(self.chk_top)
+        v.addWidget(self.chk_auto)
+        for w in (self.combo_pos,):
+            w.currentIndexChanged.connect(self._save_capsule)
+        for w in (self.chk_top, self.chk_auto):
+            w.stateChanged.connect(self._save_capsule)
+        lay.addWidget(c)
+
+        # Ubicación
+        c, v = _card()
+        v.addWidget(_label("UBICACIÓN Y CLIMA", "sec"))
+        row = QHBoxLayout()
+        self.combo_loc = QComboBox()
+        self.combo_loc.addItem("Automática (como la intranet)", "auto")
+        self.combo_loc.addItem("Fija", "fija")
+        self.combo_loc.setCurrentIndex(0 if cfg.get("location_mode", "auto") == "auto" else 1)
+        row.addWidget(self.combo_loc, 1)
+        self.btn_loc = _btn("Actualizar ahora", "secondary", self._refresh_location)
+        row.addWidget(self.btn_loc)
+        v.addLayout(row)
+        row = QHBoxLayout()
+        self.inp_city = QLineEdit(cfg.get("location_label", ""))
+        self.inp_city.setPlaceholderText("Ciudad")
+        self.inp_lat = QLineEdit(str(cfg.get("location_lat", "")))
+        self.inp_lon = QLineEdit(str(cfg.get("location_lon", "")))
+        self.inp_lat.setPlaceholderText("Latitud")
+        self.inp_lon.setPlaceholderText("Longitud")
+        row.addWidget(self.inp_city, 2)
+        row.addWidget(self.inp_lat, 1)
+        row.addWidget(self.inp_lon, 1)
+        v.addLayout(row)
+        self.lbl_loc = _label("", "hint")
+        v.addWidget(self.lbl_loc)
+        self.combo_loc.currentIndexChanged.connect(self._loc_mode_changed)
+        for w in (self.inp_city, self.inp_lat, self.inp_lon):
+            w.editingFinished.connect(self._save_fixed_location)
+        self.win.bus.weather_changed.connect(self._show_location)
+        self._loc_mode_changed(save=False)
+        lay.addWidget(c)
+
+        # Nube
+        c, v = _card()
+        v.addWidget(_label("NUBE · IPHONE POR 4G/5G", "sec"))
+        self.chk_cloud = QCheckBox("Sincronizar con la nube (Apps Script en tu cuenta compai.cl)")
+        self.chk_cloud.setChecked(cfg.get("cloud_sync_enabled", True))
+        v.addWidget(self.chk_cloud)
+        v.addWidget(_label("URL /EXEC", "rotulo"))
+        self.inp_url = QLineEdit(cfg.get("cloud_sync_url", ""))
+        self.inp_url.setPlaceholderText("https://script.google.com/macros/s/…/exec")
+        v.addWidget(self.inp_url)
+        v.addWidget(_label("TOKEN", "rotulo"))
+        self.inp_token = QLineEdit(cfg.get("cloud_api_key", ""))
+        self.inp_token.setEchoMode(QLineEdit.EchoMode.Password)
+        v.addWidget(self.inp_token)
+        row = QHBoxLayout()
+        row.addWidget(_btn("Probar", "secondary", self._test))
+        row.addWidget(_btn("↻ Sincronizar", "secondary", self.win.sync_now))
+        row.addWidget(_btn("📱 Vincular celular", "secondary", self.win.link_phone))
+        row.addStretch()
+        v.addLayout(row)
+        self.lbl_cloud = _label(self.cloud.last_status, "hint")
+        v.addWidget(self.lbl_cloud)
+        self.win.bus.sync_status.connect(self.lbl_cloud.setText)
+        self.chk_cloud.stateChanged.connect(self._save_cloud)
+        self.inp_url.editingFinished.connect(self._save_cloud)
+        self.inp_token.editingFinished.connect(self._save_cloud)
+        lay.addWidget(c)
+
+        # Wi-Fi local
+        c, v = _card()
+        v.addWidget(_label("WI-FI LOCAL (SIN INTERNET)", "sec"))
+        srv = self.win.mobile_server
+        v.addWidget(_label(f"http://{srv.local_ip}:{srv.port}  ·  {'activo' if srv.running else 'apagado'}", "rotulo"))
+        v.addWidget(_label("Mismo panel del celular cuando está en tu red. El QR está en «Vincular celular».", "hint"))
+        lay.addWidget(c)
+
+        # Grabación
+        c, v = _card()
+        v.addWidget(_label("GRABACIÓN Y ACTAS", "sec"))
+        self.chk_mic = QCheckBox("Grabar también el micrófono (archivo aparte)")
+        self.chk_mic.setChecked(cfg.get("record_mic", True))
+        self.chk_mic.stateChanged.connect(lambda: self._set("record_mic", self.chk_mic.isChecked()))
+        v.addWidget(self.chk_mic)
+        row = QHBoxLayout()
+        row.addWidget(_label("NOMENCLATURA", "rotulo"))
+        self.combo_naming = QComboBox()
+        for label, key in (("AAAA-MM-DD_Org_Tema", "DATE_ORG_TOPIC"), ("Org_AAAA-MM-DD_Tema", "ORG_DATE_TOPIC"),
+                           ("AAAA-MM-DD_Tema_Org", "DATE_TOPIC_ORG")):
+            self.combo_naming.addItem(label, key)
+        self.combo_naming.setCurrentIndex(max(0, self.combo_naming.findData(cfg.get("naming_format"))))
+        self.combo_naming.currentIndexChanged.connect(lambda: self._set("naming_format", self.combo_naming.currentData()))
+        row.addWidget(self.combo_naming)
+        row.addStretch()
+        v.addLayout(row)
+        folder = _btn(f"📁 {self.storage.actas_dir}", "link",
+                      lambda: QDesktopServices.openUrl(QUrl.fromLocalFile(str(self.storage.actas_dir))))
+        v.addWidget(folder)
+        lay.addWidget(c)
+
+        # Atajos
+        c, v = _card()
+        v.addWidget(_label("ATAJOS GLOBALES", "sec"))
+        v.addWidget(_label("Ctrl+Alt+N  nota rápida   ·   Ctrl+Alt+R  grabar / detener   ·   Ctrl+Alt+P  print clave",
+                           "rotulo"))
+        lay.addWidget(c)
+        lay.addStretch()
+
+        foot = QHBoxLayout()
+        foot.setContentsMargins(18, 8, 18, 14)
+        foot.addWidget(_label(f"w-notes {APP_VERSION} · compAI", "rotulo"))
+        foot.addStretch()
+        foot.addWidget(_btn("Listo", "primary", self.accept))
+        outer.addLayout(foot)
+
+    def _set(self, key, value):
+        self.storage.config[key] = value
+        self.storage.save_config()
+
+    def _save_capsule(self):
+        cfg = self.storage.config
+        cfg["capsule_position"] = self.combo_pos.currentData()
+        cfg["capsule_always_on_top"] = self.chk_top.isChecked()
+        cfg["auto_dock_on_other_app"] = self.chk_auto.isChecked()
+        self.storage.save_config()
+        self.win.settings_updated.emit()
+
+    def _save_cloud(self):
+        cfg = self.storage.config
+        cfg["cloud_sync_enabled"] = self.chk_cloud.isChecked()
+        cfg["cloud_sync_url"] = self.inp_url.text().strip()
+        cfg["cloud_api_key"] = self.inp_token.text().strip()
+        self.storage.save_config()
+        self.win.refresh_status()
+
+    def _test(self):
+        self._save_cloud()
+        if not self.cloud.configured():
+            self.lbl_cloud.setText("Falta URL o token")
+            return
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+        try:
+            self.lbl_cloud.setText(self.cloud.test_connection())
+        finally:
+            QApplication.restoreOverrideCursor()
+        self.win.sync_now()
+
+    def _loc_mode_changed(self, *_, save: bool = True):
+        auto = self.combo_loc.currentData() == "auto"
+        for w in (self.inp_city, self.inp_lat, self.inp_lon):
+            w.setEnabled(not auto)
+        self.btn_loc.setVisible(auto)
+        if save:
+            self._set("location_mode", self.combo_loc.currentData())
+            if auto:
+                self._refresh_location()
+            else:
+                self._save_fixed_location()
+        self._show_location()
+
+    def _save_fixed_location(self):
+        if self.combo_loc.currentData() != "fija":
+            return
+        cfg = self.storage.config
+        try:
+            cfg["location_lat"] = float(self.inp_lat.text().replace(",", "."))
+            cfg["location_lon"] = float(self.inp_lon.text().replace(",", "."))
+        except ValueError:
+            self.lbl_loc.setText("Latitud y longitud deben ser números (ej. -33.4489, -70.6693)")
+            return
+        cfg["location_label"] = self.inp_city.text().strip()
+        self.storage.save_config()
+        self.win.weather.fetch_async()
+        self._show_location()
+
+    def _refresh_location(self):
+        self.lbl_loc.setText("Buscando ubicación…")
+        self.win.location.refresh_async()
+
+    @Slot()
+    def _show_location(self):
+        cfg = self.storage.config
+        src = {"equipo": "ubicación del equipo", "red": "ubicación por red (IP)",
+               "respaldo": "respaldo fijo: no se pudo ubicar"}.get(self.win.location.source, "")
+        self.inp_city.setText(cfg.get("location_label", ""))
+        self.inp_lat.setText(str(cfg.get("location_lat", "")))
+        self.inp_lon.setText(str(cfg.get("location_lon", "")))
+        w = self.storage.weather
+        temp = f" · {w['temp']}°" if "temp" in w else ""
+        self.lbl_loc.setText(f"{cfg.get('location_label') or 'Sin nombre'}{temp}" + (f" · {src}" if src else ""))
+
+
 class MainWNoteWindow(QMainWindow):
     settings_updated = Signal()
     hotkey_pressed = Signal(int)
 
-    def __init__(self, storage, recorder, mobile_server, cloud_sync, popup, bus: Bus):
+    def __init__(self, storage, recorder, mobile_server, cloud_sync, popup, bus: Bus, location=None, weather=None):
         super().__init__()
         self.storage, self.recorder = storage, recorder
         self.mobile_server, self.cloud_sync, self.popup, self.bus = mobile_server, cloud_sync, popup, bus
-        self.setWindowTitle("w-note — Notas, grabador y archivador de actas")
+        self.location, self.weather = location, weather
+        self._fitted = False
+        self.setWindowTitle("w-notes — notas, grabador y actas")
         self.setWindowIcon(logo_icon())
-        self.resize(1160, 780)
+        self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowMinMaxButtonsHint
+                            | Qt.WindowType.WindowCloseButtonHint | Qt.WindowType.WindowTitleHint
+                            | Qt.WindowType.WindowSystemMenuHint)
+        self.setMinimumSize(720, 460)
         self._build_ui()
         self.refresh_notes()
         self.refresh_actas_table()
-        self.bus.sync_status.connect(self.lbl_cloud_status.setText)
+        self.bus.sync_status.connect(lambda _t: self.refresh_status())
         self.rec_timer = QTimer(self)
         self.rec_timer.timeout.connect(self._update_recording_ui)
         self.rec_timer.start(1000)
 
-    # ---- atajos globales (WM_HOTKEY) ----------------------------------------------
+    # ---- ventana: cabe en pantallas chicas, se puede maximizar y minimizar ---------------
+    def showEvent(self, event):
+        if not self._fitted:
+            self._fitted = True
+            avail = (self.screen() or QGuiApplication.primaryScreen()).availableGeometry()
+            w, h = min(1180, avail.width() - 40), min(800, avail.height() - 40)
+            self.resize(w, h)
+            self.move(avail.left() + (avail.width() - w) // 2, avail.top() + (avail.height() - h) // 2)
+        super().showEvent(event)
+
     def nativeEvent(self, event_type, message):
         if sys.platform == "win32" and bytes(event_type) == b"windows_generic_MSG":
             try:
@@ -1557,233 +2014,170 @@ class MainWNoteWindow(QMainWindow):
         return False, 0
 
     def closeEvent(self, event):
-        # La X solo oculta (w-note sigue en la bandeja). En Qt 6, app.quit() también envía
-        # closeEvent y si se ignora cancela la salida: por eso se distingue con spontaneous().
+        # La X oculta (sigue en la bandeja). app.quit() también manda closeEvent y si se ignora
+        # cancela la salida (Qt 6): por eso se distingue con spontaneous().
         if event.spontaneous():
             event.ignore()
             self.hide()
         else:
             event.accept()
 
-    # ---- interfaz ---------------------------------------------------------------------
+    # ---- interfaz -------------------------------------------------------------------------
     def _build_ui(self):
-        central = QWidget()
-        central.setObjectName("central")
-        central.setStyleSheet(f"QWidget#central {{ background-color: {CREAM}; }} QWidget {{ color: {INK}; }}"
-                              " QLabel, QCheckBox { background: transparent; }")
-        self.setCentralWidget(central)
-        main = QVBoxLayout(central)
-        main.setContentsMargins(16, 14, 16, 14)
-        main.setSpacing(12)
-
-        # 1. Encabezado + cápsula
-        header = QFrame()
-        header.setObjectName("hdr")
-        header.setStyleSheet(f"QFrame#hdr {{ background: {INK}; border-radius: 16px; }}"
-                             " QLabel, QCheckBox { color: #ffffff; background: transparent; }")
-        h = QHBoxLayout(header)
-        h.setContentsMargins(16, 12, 16, 12)
-        logo = QLabel()
-        logo.setPixmap(logo_pixmap(44))
-        h.addWidget(logo)
-        title_col = QVBoxLayout()
-        brand = QLabel("w-note <span style='color:#9fb8c2;font-size:12px;font-weight:500'>de compA\\</span>")
-        brand.setStyleSheet("font-size: 19px; font-weight: 700;")
-        self.lbl_lan = QLabel()
-        self.lbl_lan.setStyleSheet("font-size: 11px; color: #9be3b0; font-weight: 600;")
-        title_col.addWidget(brand)
-        title_col.addWidget(self.lbl_lan)
-        h.addLayout(title_col, 1)
-
-        h.addWidget(QLabel("Cápsula:"))
-        self.combo_pos = QComboBox()
-        self.combo_pos.addItem("Izquierda", "left")
-        self.combo_pos.addItem("Derecha", "right")
-        self.combo_pos.setCurrentIndex(0 if self.storage.config.get("capsule_position", "left") == "left" else 1)
-        self.combo_pos.setStyleSheet("background: #2a2a2a; color: #fff; padding: 5px 10px; border-radius: 8px;")
-        self.combo_pos.currentIndexChanged.connect(self._on_cfg_changed)
-        h.addWidget(self.combo_pos)
-        self.chk_top = QCheckBox("Siempre visible")
-        self.chk_top.setChecked(self.storage.config.get("capsule_always_on_top", True))
-        self.chk_top.stateChanged.connect(self._on_cfg_changed)
-        h.addWidget(self.chk_top)
-        self.chk_auto_dock = QCheckBox("Replegar al abrir otra app")
-        self.chk_auto_dock.setChecked(self.storage.config.get("auto_dock_on_other_app", True))
-        self.chk_auto_dock.stateChanged.connect(self._on_cfg_changed)
-        h.addWidget(self.chk_auto_dock)
-        btn_phone = QPushButton("📱 Vincular celular")
-        btn_phone.setCursor(Qt.CursorShape.PointingHandCursor)
-        btn_phone.setStyleSheet(f"background: #2a2a2a; color: #fff; {BTN}")
-        btn_phone.clicked.connect(self._link_phone)
-        h.addWidget(btn_phone)
-        btn_new = QPushButton("+ Nota rápida")
-        btn_new.setCursor(Qt.CursorShape.PointingHandCursor)
-        btn_new.setStyleSheet(f"background: {PETROL}; color: #fff; {BTN}")
-        btn_new.clicked.connect(lambda: self.popup.show_quick_creator(QPoint(self.x() + 80, self.y() + 110)))
-        h.addWidget(btn_new)
-        main.addWidget(header)
-
-        # 1B. Nube
-        cloud = QFrame()
-        cloud.setObjectName("card")
-        cloud.setStyleSheet(CARD)
-        c = QHBoxLayout(cloud)
-        c.setContentsMargins(14, 8, 14, 8)
-        self.chk_cloud = QCheckBox("Nube iPhone (4G/5G)")
-        self.chk_cloud.setChecked(self.storage.config.get("cloud_sync_enabled", True))
-        self.chk_cloud.setStyleSheet("font-weight: 600; font-size: 12px;")
-        self.chk_cloud.stateChanged.connect(self._on_cloud_cfg_changed)
-        self.inp_cloud_url = QLineEdit(self.storage.config.get("cloud_sync_url", ""))
-        self.inp_cloud_url.setPlaceholderText("URL /exec de tu Apps Script (README → Nube)")
-        self.inp_cloud_url.setStyleSheet(FIELD + "font-size: 11px;")
-        self.inp_cloud_url.editingFinished.connect(self._on_cloud_cfg_changed)
-        self.inp_cloud_token = QLineEdit(self.storage.config.get("cloud_api_key", ""))
-        self.inp_cloud_token.setEchoMode(QLineEdit.EchoMode.Password)
-        self.inp_cloud_token.setPlaceholderText("Token (función configurar)")
-        self.inp_cloud_token.setStyleSheet(FIELD + "font-size: 11px;")
-        self.inp_cloud_token.editingFinished.connect(self._on_cloud_cfg_changed)
-        btn_test = QPushButton("Probar")
-        btn_test.setStyleSheet(f"background: #e9e3d6; color: {INK}; {BTN} font-size: 11px;")
-        btn_test.clicked.connect(self._test_cloud)
-        btn_sync = QPushButton("↻ Sincronizar")
-        btn_sync.setStyleSheet(f"background: {PETROL}; color: #fff; {BTN} font-size: 11px;")
-        btn_sync.clicked.connect(self._sync_cloud_now)
-        self.lbl_cloud_status = QLabel(self.cloud_sync.last_status)
-        self.lbl_cloud_status.setStyleSheet("font-size: 11px; color: #555;")
-        for w, s in ((self.chk_cloud, 0), (self.inp_cloud_url, 3), (self.inp_cloud_token, 2), (btn_test, 0),
-                     (btn_sync, 0), (self.lbl_cloud_status, 0)):
-            c.addWidget(w, s)
-        main.addWidget(cloud)
-
-        # 1C. Notas de vidrio
-        notes_box = QFrame()
-        notes_box.setObjectName("card")
-        notes_box.setStyleSheet(CARD)
-        nb = QVBoxLayout(notes_box)
-        nb.setContentsMargins(12, 10, 12, 10)
-        self.lbl_notes_title = QLabel()
-        self.lbl_notes_title.setStyleSheet("font-weight: 700; font-size: 13px;")
-        nb.addWidget(self.lbl_notes_title)
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
         scroll.setFrameShape(QFrame.Shape.NoFrame)
-        scroll.setFixedHeight(124)
-        scroll.setStyleSheet("background: transparent;")
+        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        central = QWidget()
+        central.setObjectName("central")
+        central.setStyleSheet(QSS)
+        scroll.setWidget(central)
+        scroll.setStyleSheet(f"QScrollArea {{ background: {V_CREMA}; border: none; }}")
+        self.setCentralWidget(scroll)
+        main = QVBoxLayout(central)
+        main.setContentsMargins(18, 16, 18, 16)
+        main.setSpacing(14)
+
+        # Encabezado
+        header = QFrame()
+        header.setObjectName("hdr")
+        h = QHBoxLayout(header)
+        h.setContentsMargins(16, 12, 16, 12)
+        h.setSpacing(10)
+        logo = QLabel()
+        logo.setPixmap(logo_pixmap(44))
+        h.addWidget(logo)
+        col = QVBoxLayout()
+        col.setSpacing(0)
+        col.addWidget(_label("COMPAI · NOTAS Y ACTAS", "eyebrow"))
+        col.addWidget(_label("w-notes", "title"))
+        h.addLayout(col, 1)
+        self.lbl_status = _label("", "chip")
+        h.addWidget(self.lbl_status)
+        h.addWidget(_btn("📱", "icon", self.link_phone, "Vincular celular (QR)"))
+        h.addWidget(_btn("⚙", "icon", self.open_settings, "Configuración"))
+        h.addWidget(_btn("+ Nota rápida", "primary",
+                         lambda: self.popup.show_quick_creator(QPoint(self.x() + 80, self.y() + 110)),
+                         "Ctrl+Alt+N desde cualquier app"))
+        main.addWidget(header)
+
+        # Notas de vidrio
+        notes_box, nb = _card()
+        top = QHBoxLayout()
+        self.lbl_notes_title = _label("NOTAS DE VIDRIO", "sec")
+        top.addWidget(self.lbl_notes_title)
+        top.addStretch()
+        top.addWidget(_label("SINCRONIZADAS CON EL CELULAR", "rotulo"))
+        nb.addLayout(top)
+        notes_scroll = QScrollArea()
+        notes_scroll.setWidgetResizable(True)
+        notes_scroll.setFrameShape(QFrame.Shape.NoFrame)
+        notes_scroll.setFixedHeight(126)
+        notes_scroll.setStyleSheet("QScrollArea, QScrollArea > QWidget > QWidget { background: transparent; }")
         holder = QWidget()
         self.notes_row = QHBoxLayout(holder)
         self.notes_row.setContentsMargins(0, 0, 0, 0)
         self.notes_row.setSpacing(10)
-        scroll.setWidget(holder)
-        nb.addWidget(scroll)
+        notes_scroll.setWidget(holder)
+        nb.addWidget(notes_scroll)
         main.addWidget(notes_box)
 
-        # 2. Grabación
-        rec = QFrame()
-        rec.setObjectName("card")
-        rec.setStyleSheet(CARD)
-        rv = QVBoxLayout(rec)
-        rv.setContentsMargins(14, 10, 14, 10)
+        # Grabación
+        rec, rv = _card()
+        top = QHBoxLayout()
+        top.addWidget(_label("GRABAR REUNIÓN", "sec"))
+        top.addStretch()
+        self.lbl_rec_status = _label("LISTO", "rotulo")
+        top.addWidget(self.lbl_rec_status)
+        rv.addLayout(top)
         r = QHBoxLayout()
         self.inp_org = QLineEdit()
         self.inp_org.setPlaceholderText("Organización (ej. Banco_Andes)")
-        self.inp_org.setStyleSheet(FIELD)
         self.inp_topic = QLineEdit()
         self.inp_topic.setPlaceholderText("Tema (ej. Cierre_Q4)")
-        self.inp_topic.setStyleSheet(FIELD)
         self.combo_platform = QComboBox()
         self.combo_platform.addItems(["Google Meet", "MS Teams", "Zoom", "Otra Videollamada"])
-        self.combo_platform.setStyleSheet(FIELD)
-        self.btn_record_toggle = QPushButton("● Grabar reunión")
-        self.btn_record_toggle.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.btn_record_toggle.clicked.connect(self._toggle_recording)
-        self.btn_screenshot = QPushButton("📷 Print clave (0)")
+        self.btn_record_toggle = _btn("● Grabar", "rec", self._toggle_recording, "Ctrl+Alt+R")
+        self.btn_screenshot = _btn("📷 Print clave (0)", "secondary", self._take_screenshot, "Ctrl+Alt+P")
         self.btn_screenshot.setEnabled(False)
-        self.btn_screenshot.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.btn_screenshot.setStyleSheet(f"background: #F0B400; color: {INK}; {BTN}")
-        self.btn_screenshot.clicked.connect(self._take_screenshot)
-        self.lbl_rec_status = QLabel("Listo")
-        self.lbl_rec_status.setStyleSheet("font-family: Consolas, monospace; font-weight: 700; color: #555;")
-        for w, s in ((self.inp_org, 2), (self.inp_topic, 2), (self.combo_platform, 1), (self.btn_record_toggle, 0),
-                     (self.btn_screenshot, 0), (self.lbl_rec_status, 0)):
-            r.addWidget(w, s)
+        r.addWidget(self.inp_org, 2)
+        r.addWidget(self.inp_topic, 2)
+        r.addWidget(self.combo_platform, 1)
+        r.addWidget(self.btn_record_toggle)
+        r.addWidget(self.btn_screenshot)
         rv.addLayout(r)
         self.inp_live = QLineEdit()
         self.inp_live.setPlaceholderText("Nota en vivo con marca de tiempo… (Enter)")
-        self.inp_live.setStyleSheet(FIELD)
         self.inp_live.setEnabled(False)
         self.inp_live.returnPressed.connect(self._add_live_note)
         rv.addWidget(self.inp_live)
         main.addWidget(rec)
-        self._style_record_button(False)
 
-        # 3. Archivador + vista previa
+        # Actas
         splitter = QSplitter(Qt.Orientation.Horizontal)
-        left = QFrame()
-        left.setObjectName("card")
-        left.setStyleSheet(CARD)
-        lv = QVBoxLayout(left)
-        lv.setContentsMargins(12, 10, 12, 12)
+        splitter.setChildrenCollapsible(False)
+        left, lv = _card()
         top = QHBoxLayout()
-        btn_folder = QPushButton(f"📁 {self.storage.actas_dir}")
-        btn_folder.setStyleSheet("font-family: Consolas, monospace; font-size: 11px; color: #555; border: none;"
-                                 " background: transparent; text-align: left;")
-        btn_folder.setCursor(Qt.CursorShape.PointingHandCursor)
-        btn_folder.clicked.connect(lambda: QDesktopServices.openUrl(QUrl.fromLocalFile(str(self.storage.actas_dir))))
-        self.combo_naming = QComboBox()
-        for label, key in (("AAAA-MM-DD_Org_Tema", "DATE_ORG_TOPIC"), ("Org_AAAA-MM-DD_Tema", "ORG_DATE_TOPIC"),
-                           ("AAAA-MM-DD_Tema_Org", "DATE_TOPIC_ORG")):
-            self.combo_naming.addItem(label, key)
-        self.combo_naming.setCurrentIndex(max(0, self.combo_naming.findData(self.storage.config.get("naming_format"))))
-        self.combo_naming.currentIndexChanged.connect(self._on_naming_changed)
-        top.addWidget(btn_folder, 1)
-        top.addWidget(QLabel("Nomenclatura:"))
-        top.addWidget(self.combo_naming)
+        top.addWidget(_label("ACTAS DE REUNIÓN", "sec"))
+        top.addStretch()
+        top.addWidget(_btn("📁 Abrir carpeta", "secondary",
+                           lambda: QDesktopServices.openUrl(QUrl.fromLocalFile(str(self.storage.actas_dir)))))
         lv.addLayout(top)
         self.table = QTableWidget(0, 5)
-        self.table.setHorizontalHeaderLabels(["Nombre estándar", "Fecha", "Organización", "Sistema", "Prints"])
+        self.table.setHorizontalHeaderLabels(["NOMBRE ESTÁNDAR", "FECHA", "ORGANIZACIÓN", "SISTEMA", "PRINTS"])
         self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        for col in range(1, 5):
+            self.table.horizontalHeader().setSectionResizeMode(col, QHeaderView.ResizeMode.ResizeToContents)
         self.table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
+        self.table.setAlternatingRowColors(True)
         self.table.verticalHeader().setVisible(False)
-        self.table.setStyleSheet("QTableWidget { border: none; background: #fff; } QHeaderView::section {"
-                                 f" background: {CREAM}; border: none; padding: 5px; font-weight: 700; }}")
+        self.table.setShowGrid(False)
+        self.table.setMinimumHeight(220)
         self.table.itemSelectionChanged.connect(self._on_row_selected)
         self.table.doubleClicked.connect(self._open_selected_acta)
         lv.addWidget(self.table)
 
-        right = QFrame()
-        right.setObjectName("card")
-        right.setStyleSheet(CARD)
-        rp = QVBoxLayout(right)
-        rp.setContentsMargins(12, 10, 12, 12)
+        right, rp = _card()
         ph = QHBoxLayout()
-        ph.addWidget(QLabel("<b>Acta para el equipo</b>"))
+        ph.addWidget(_label("ACTA PARA EL EQUIPO", "sec"))
         ph.addStretch()
-        btn_copy = QPushButton("Copiar")
-        btn_copy.setStyleSheet(f"background: {INK}; color: #fff; padding: 5px 10px; border-radius: 8px; font-size: 11px;")
-        btn_copy.clicked.connect(lambda: QApplication.clipboard().setText(self.preview_text.toPlainText()))
-        btn_open = QPushButton("Abrir")
-        btn_open.setStyleSheet(f"background: {PETROL}; color: #fff; padding: 5px 10px; border-radius: 8px; font-size: 11px;")
-        btn_open.clicked.connect(self._open_selected_acta)
-        ph.addWidget(btn_copy)
-        ph.addWidget(btn_open)
+        ph.addWidget(_btn("Copiar", "secondary", lambda: QApplication.clipboard().setText(self.preview_text.toPlainText())))
+        ph.addWidget(_btn("Abrir", "secondary", self._open_selected_acta))
         rp.addLayout(ph)
         self.preview_text = QTextEdit()
         self.preview_text.setReadOnly(True)
-        self.preview_text.setStyleSheet("border: 1px solid #ece6d8; border-radius: 10px; padding: 8px; font-size: 12px;"
-                                        " background: #fff;")
+        self.preview_text.setMinimumHeight(220)
         rp.addWidget(self.preview_text)
         splitter.addWidget(left)
         splitter.addWidget(right)
-        splitter.setSizes([660, 460])
+        splitter.setSizes([640, 460])
         main.addWidget(splitter, 1)
+        self.refresh_status()
+
+    # ---- estado y acciones ---------------------------------------------------------------------
+    def refresh_status(self):
+        st = self.cloud_sync.last_status if self.cloud_sync.configured() else "Nube sin configurar"
+        ok = st.startswith("Nube OK")
+        self.lbl_status.setObjectName("chip" if ok else "chipwarn")
+        self.lbl_status.setText(("● " if ok else "○ ") + st.upper())
+        self.lbl_status.style().unpolish(self.lbl_status)
+        self.lbl_status.style().polish(self.lbl_status)
 
     def set_lan_label(self):
-        if self.mobile_server.running:
-            self.lbl_lan.setText(f"📶 Wi-Fi local: http://{self.mobile_server.local_ip}:{self.mobile_server.port}"
-                                 "  ·  Atajos: Ctrl+Alt+N nota · Ctrl+Alt+R grabar · Ctrl+Alt+P print")
-        else:
-            self.lbl_lan.setText("Atajos: Ctrl+Alt+N nota · Ctrl+Alt+R grabar · Ctrl+Alt+P print")
+        self.refresh_status()
+
+    def open_settings(self):
+        SettingsDialog(self).exec()
+
+    def sync_now(self):
+        self.cloud_sync.sync_async()
+        self.cloud_sync.fetch_agenda_async()
+
+    def link_phone(self):
+        LinkPhoneDialog(self, self.storage, self.mobile_server, self.cloud_sync).exec()
+
+    _link_phone = link_phone  # compatibilidad con la bandeja
 
     @Slot()
     def refresh_notes(self):
@@ -1792,64 +2186,19 @@ class MainWNoteWindow(QMainWindow):
             if item.widget():
                 item.widget().deleteLater()
         notes = self.storage.visible_notes()
-        self.lbl_notes_title.setText(f"Notas de vidrio ({len(notes)}) — sincronizadas con el celular")
+        self.lbl_notes_title.setText(f"NOTAS DE VIDRIO · {len(notes)}")
         if not notes:
-            empty = QLabel("Aún no hay notas. Usa «+ Nota rápida» o Ctrl+Alt+N desde cualquier app.")
-            empty.setStyleSheet("color: #777; font-size: 12px;")
-            self.notes_row.addWidget(empty)
+            self.notes_row.addWidget(_label("Aún no hay notas. Usa «+ Nota rápida» o Ctrl+Alt+N desde cualquier app.", "hint"))
         for note in notes[:40]:
-            card = NoteCard(note, lambda n, pos: self.popup.show_registered_note(n, pos))
-            card.setFixedWidth(220)
-            self.notes_row.addWidget(card)
+            self.notes_row.addWidget(NoteCard(note, lambda n, pos: self.popup.show_registered_note(n, pos)))
         self.notes_row.addStretch()
 
     def _style_record_button(self, recording: bool):
-        if recording:
-            self.btn_record_toggle.setText("■ Finalizar y archivar")
-            self.btn_record_toggle.setStyleSheet(f"background: #2E7D4F; color: #fff; {BTN}")
-        else:
-            self.btn_record_toggle.setText("● Grabar reunión")
-            self.btn_record_toggle.setStyleSheet(f"background: #B2261E; color: #fff; {BTN}")
+        self.btn_record_toggle.setText("■ Finalizar y archivar" if recording else "● Grabar")
+        self.btn_record_toggle.setObjectName("recon" if recording else "rec")
+        self.btn_record_toggle.style().unpolish(self.btn_record_toggle)
+        self.btn_record_toggle.style().polish(self.btn_record_toggle)
 
-    def _on_cfg_changed(self):
-        self.storage.config["capsule_position"] = self.combo_pos.currentData()
-        self.storage.config["capsule_always_on_top"] = self.chk_top.isChecked()
-        self.storage.config["auto_dock_on_other_app"] = self.chk_auto_dock.isChecked()
-        self.storage.save_config()
-        self.settings_updated.emit()
-
-    def _on_cloud_cfg_changed(self):
-        self.storage.config["cloud_sync_enabled"] = self.chk_cloud.isChecked()
-        self.storage.config["cloud_sync_url"] = self.inp_cloud_url.text().strip()
-        self.storage.config["cloud_api_key"] = self.inp_cloud_token.text().strip()
-        self.storage.save_config()
-
-    def _test_cloud(self):
-        self._on_cloud_cfg_changed()
-        if not self.cloud_sync.configured():
-            self.lbl_cloud_status.setText("Falta URL o token")
-            return
-        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
-        try:
-            self.lbl_cloud_status.setText(self.cloud_sync.test_connection())
-        finally:
-            QApplication.restoreOverrideCursor()
-        self._sync_cloud_now()
-
-    def _sync_cloud_now(self):
-        self._on_cloud_cfg_changed()
-        self.cloud_sync.sync_async()
-        self.cloud_sync.fetch_agenda_async()
-
-    def _link_phone(self):
-        self._on_cloud_cfg_changed()
-        LinkPhoneDialog(self, self.storage, self.mobile_server, self.cloud_sync).exec()
-
-    def _on_naming_changed(self):
-        self.storage.config["naming_format"] = self.combo_naming.currentData()
-        self.storage.save_config()
-
-    # ---- grabación ------------------------------------------------------------------
     def start_external_recording(self, org: str, topic: str, platform: str, link: str = ""):
         if org:
             self.inp_org.setText(org)
@@ -1879,7 +2228,7 @@ class MainWNoteWindow(QMainWindow):
             self._style_record_button(False)
             self.btn_screenshot.setEnabled(False)
             self.inp_live.setEnabled(False)
-            self.lbl_rec_status.setText("Archivado")
+            self.lbl_rec_status.setText("ARCHIVADO")
             self.refresh_actas_table()
             msg = f"Acta guardada en:\n{md_path}"
             if self.recorder.audio_errors:
@@ -1901,9 +2250,8 @@ class MainWNoteWindow(QMainWindow):
 
     def _update_recording_ui(self):
         if self.recorder.is_recording:
-            self.lbl_rec_status.setText(f"REC {self.recorder.elapsed_str()}")
+            self.lbl_rec_status.setText(f"● REC {self.recorder.elapsed_str()}")
 
-    # ---- archivador -------------------------------------------------------------------
     def refresh_actas_table(self):
         self._records = self.storage.list_actas()
         self.table.setRowCount(len(self._records))
@@ -1946,6 +2294,7 @@ class WNoteController(QObject):
         self.storage = StorageManager(self.bus)
         self.cloud_sync = CloudSyncClient(self.storage, self.bus)
         self.weather = WeatherClient(self.storage, self.bus)
+        self.location = LocationClient(self.storage, self.bus, on_done=self.weather.fetch_async)
 
         self.mobile_server = MobileSyncServer(self.storage)
         if self.storage.config.get("mobile_server_enabled", True):
@@ -1956,7 +2305,7 @@ class WNoteController(QObject):
         self.desktop_widget = DesktopWidgetWindow(self.storage, self.popup, self.cloud_sync)
         self.side_capsule = FloatingSideCapsuleWindow(self.storage, self.popup)
         self.main_window = MainWNoteWindow(self.storage, self.recorder, self.mobile_server, self.cloud_sync,
-                                           self.popup, self.bus)
+                                           self.popup, self.bus, self.location, self.weather)
 
         # Señales
         for slot in (self.desktop_widget.rebuild_capsules, self.side_capsule.rebuild_capsules,
@@ -1966,6 +2315,7 @@ class WNoteController(QObject):
         self.bus.weather_changed.connect(self.desktop_widget.refresh_weather)
         self.bus.local_mutation.connect(self._schedule_sync, Qt.ConnectionType.QueuedConnection)
         self.side_capsule.open_main_requested.connect(self.open_main_window)
+        self.desktop_widget.open_main_requested.connect(self.open_main_window)
         self.desktop_widget.record_meeting_requested.connect(self.main_window.start_external_recording)
         self.main_window.settings_updated.connect(self._apply_settings)
         self.main_window.hotkey_pressed.connect(self._on_hotkey)
@@ -1976,14 +2326,15 @@ class WNoteController(QObject):
         self._sync_debounce.timeout.connect(self.cloud_sync.sync_async)
         self._timers = []
         for ms, fn in ((20_000, self.cloud_sync.sync_async), (300_000, self.cloud_sync.fetch_agenda_async),
-                       (900_000, self.weather.fetch_async)):
+                       (900_000, self.weather.fetch_async), (1_800_000, self.location.refresh_async)):
             t = QTimer(self)
             t.timeout.connect(fn)
             t.start(ms)
             self._timers.append(t)
         self.cloud_sync.sync_async()
         self.cloud_sync.fetch_agenda_async()
-        self.weather.fetch_async()
+        self.weather.fetch_async()            # clima con la última ubicación conocida…
+        self.location.refresh_async()         # …y luego con la ubicación actual
         QTimer.singleShot(1500, self.main_window.set_lan_label)
 
         self._build_tray()
@@ -2001,17 +2352,17 @@ class WNoteController(QObject):
     # ---- bandeja --------------------------------------------------------------------
     def _build_tray(self):
         self.tray = QSystemTrayIcon(logo_icon(), self)
-        self.tray.setToolTip("w-note")
+        self.tray.setToolTip("w-notes")
         menu = QMenu()
-        for text, fn in (("Abrir w-note", self.open_main_window), ("+ Nota rápida  (Ctrl+Alt+N)", self.quick_note),
+        for text, fn in (("Abrir w-notes", self.open_main_window), ("+ Nota rápida  (Ctrl+Alt+N)", self.quick_note),
                          ("● Grabar / detener  (Ctrl+Alt+R)", self.toggle_record),
                          ("Mostrar widget", self.desktop_widget.show),
-                         ("📱 Vincular celular", self.main_window._link_phone)):
+                         ("📱 Vincular celular", self.main_window.link_phone)):
             act = QAction(text, menu)
             act.triggered.connect(fn)
             menu.addAction(act)
         menu.addSeparator()
-        quit_act = QAction("Salir de w-note", menu)
+        quit_act = QAction("Salir de w-notes", menu)
         quit_act.triggered.connect(self.app.quit)
         menu.addAction(quit_act)
         self._tray_menu = menu
@@ -2044,7 +2395,7 @@ class WNoteController(QObject):
             self.toggle_record()
         elif hid == HOTKEY_PRINT and self.recorder.is_recording:
             self.main_window._take_screenshot()
-            self.tray.showMessage("w-note", f"Print clave {len(self.recorder.screenshots)} guardado",
+            self.tray.showMessage("w-notes", f"Print clave {len(self.recorder.screenshots)} guardado",
                                   QSystemTrayIcon.MessageIcon.Information, 1500)
 
     def quick_note(self):
@@ -2058,9 +2409,15 @@ class WNoteController(QObject):
             self.desktop_widget._trigger_record()
 
     def open_main_window(self):
-        self.main_window.showNormal()
-        self.main_window.raise_()
-        self.main_window.activateWindow()
+        w = self.main_window
+        if w.isMinimized():
+            w.setWindowState(w.windowState() & ~Qt.WindowState.WindowMinimized)
+        if w.isMaximized():
+            w.showMaximized()
+        else:
+            w.showNormal()
+        w.raise_()
+        w.activateWindow()
 
     @Slot()
     def _schedule_sync(self):
@@ -2148,7 +2505,7 @@ def main():
     app.setQuitOnLastWindowClosed(False)
     app.setWindowIcon(logo_icon())
     if not _single_instance():
-        QMessageBox.information(None, "w-note", "w-note ya está abierto: búscalo en la bandeja junto al reloj.")
+        QMessageBox.information(None, "w-notes", "w-notes ya está abierto: búscalo en la bandeja junto al reloj.")
         return
     controller = WNoteController(app)  # noqa: F841 (debe vivir mientras corre la app)
     sys.exit(app.exec())
