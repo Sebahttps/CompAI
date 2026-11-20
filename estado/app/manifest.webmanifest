@@ -1,0 +1,15 @@
+{
+  "id": "/estado/",
+  "name": "Intranet compAI",
+  "short_name": "Intranet",
+  "lang": "es-CL",
+  "start_url": "/estado/",
+  "scope": "/estado/",
+  "display": "standalone",
+  "background_color": "#0F5C7A",
+  "theme_color": "#0F5C7A",
+  "icons": [
+    { "src": "/estado/app/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/estado/app/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
