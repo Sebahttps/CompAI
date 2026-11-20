@@ -3,21 +3,8 @@
  "generado": "2026-11-20T08:37",
  "fecha": "20-11-2026 08:37",
  "fuente": "RAI-CA · API de Mercado Público, Compra Ágil",
- "candidatas": 120,
+ "candidatas": 118,
  "filas": [
-  {
-   "marca": "GO",
-   "nombre": "4 licencias Microsoft Windows Server Standard 2025 (16 Core) educacional, de acuerdo a TDR adjunto",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 100,
-   "codigo": "1733-168-COT26",
-   "monto": "$2.800.000",
-   "organismo": "INSTITUTO FORESTAL · Región Metropolitana de Santiago",
-   "fecha": "20-11-2026 09:15",
-   "cierre_iso": "2026-11-20 09:15",
-   "quedan": "queda menos de 1 h"
-  },
   {
    "marca": "GO",
    "nombre": "Licencia Software de Acceso y Asistencia Remota",
@@ -68,7 +55,7 @@
    "organismo": "I MUNICIPALIDAD DE ILLAPEL · Región de Coquimbo ",
    "fecha": "20-11-2026 10:30",
    "cierre_iso": "2026-11-20 10:30",
-   "quedan": "quedan 1 h"
+   "quedan": "queda menos de 1 h"
   },
   {
    "marca": "GO",
@@ -107,6 +94,19 @@
    "organismo": "Servicio local de educación pública de Valdivia · Región de Los Ríos",
    "fecha": "20-11-2026 12:30",
    "cierre_iso": "2026-11-20 12:30",
+   "quedan": "quedan 2 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "Licencias para uso de inteligencia artificial - GAF Tecnología de la Información",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "1457282-165-COT26",
+   "monto": "$2.450.000",
+   "organismo": "CORPORACION CENTRO CULTURAL GABRIELA MISTRAL · Región Metropolitana de Santiago",
+   "fecha": "20-11-2026 13:00",
+   "cierre_iso": "2026-11-20 13:00",
    "quedan": "quedan 3 h"
   }
  ]
