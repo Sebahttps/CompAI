@@ -3,60 +3,8 @@
  "generado": "2026-11-20T08:37",
  "fecha": "20-11-2026 08:37",
  "fuente": "RAI-CA · API de Mercado Público, Compra Ágil",
- "candidatas": 118,
+ "candidatas": 106,
  "filas": [
-  {
-   "marca": "GO",
-   "nombre": "Licencia Software de Acceso y Asistencia Remota",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 100,
-   "codigo": "4190-294-COT26",
-   "monto": "$4.300.000",
-   "organismo": "I MUNICIPALIDAD DE CALDERA · Región de Atacama ",
-   "fecha": "20-11-2026 10:00",
-   "cierre_iso": "2026-11-20 10:00",
-   "quedan": "queda menos de 1 h"
-  },
-  {
-   "marca": "NO-GO",
-   "nombre": "ADQUISICIÓN NOTEBOOK",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 45,
-   "codigo": "4086-553-COT26",
-   "monto": "$1.450.000",
-   "organismo": "I MUNICIPALIDAD DE MAULLIN · Región de los Lagos ",
-   "fecha": "20-11-2026 10:00",
-   "cierre_iso": "2026-11-20 10:00",
-   "quedan": "queda menos de 1 h"
-  },
-  {
-   "marca": "NO-GO",
-   "nombre": "Candado notebook slot nano con llave de 1,8 ut lk 080k",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 45,
-   "codigo": "1271-33-COT26",
-   "monto": "$299.000",
-   "organismo": "MINISTERIO DE OBRAS PUBLICAS DIREC CION GRAL DE OO PP DCYF · Región de Los Ríos",
-   "fecha": "20-11-2026 10:00",
-   "cierre_iso": "2026-11-20 10:00",
-   "quedan": "queda menos de 1 h"
-  },
-  {
-   "marca": "GO",
-   "nombre": "Capacitación para Docentes en INTELIGENCIA ARTIFICIAL PARA LA ENSEÑANZA Y APRENDIZAJE",
-   "linea": "L2",
-   "linea_nombre": "Arquitectura TI y Consultoría Especializada",
-   "score": 100,
-   "codigo": "3511-58-COT26",
-   "monto": "$4.000.000",
-   "organismo": "I MUNICIPALIDAD DE ILLAPEL · Región de Coquimbo ",
-   "fecha": "20-11-2026 10:30",
-   "cierre_iso": "2026-11-20 10:30",
-   "quedan": "queda menos de 1 h"
-  },
   {
    "marca": "GO",
    "nombre": "(CCOQ) ADQ. E INSTALACIÓN DE BATERÍAS PARA UPS DEL SERVIDOR INFORMÁTICO (684/2026).",
@@ -68,7 +16,7 @@
    "organismo": "DIVISIÓN DE BIENESTAR SOCIAL · Región Metropolitana de Santiago",
    "fecha": "20-11-2026 11:00",
    "cierre_iso": "2026-11-20 11:00",
-   "quedan": "quedan 1 h"
+   "quedan": "queda menos de 1 h"
   },
   {
    "marca": "GO",
@@ -81,6 +29,32 @@
    "organismo": "IIª Brigada Aérea · Región Metropolitana de Santiago",
    "fecha": "20-11-2026 11:00",
    "cierre_iso": "2026-11-20 11:00",
+   "quedan": "queda menos de 1 h"
+  },
+  {
+   "marca": "NO-GO",
+   "nombre": "Adquisicion de 2 notebook línea corporativa 14 pulgadas Core i713700H o superior",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 45,
+   "codigo": "5586-3225-COT26",
+   "monto": "$2.200.000",
+   "organismo": "UNIVERSIDAD DE LA FRONTERA · Región de la Araucanía ",
+   "fecha": "20-11-2026 11:30",
+   "cierre_iso": "2026-11-20 11:30",
+   "quedan": "queda menos de 1 h"
+  },
+  {
+   "marca": "NO-GO",
+   "nombre": "Kit para servidor de almacenamiento NAS para red I+D+i+e",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 45,
+   "codigo": "5416-894-COT26",
+   "monto": "$3.978.000",
+   "organismo": "UNIVERSIDAD DE LA SERENA · Región de Coquimbo ",
+   "fecha": "20-11-2026 12:00",
+   "cierre_iso": "2026-11-20 12:00",
    "quedan": "quedan 1 h"
   },
   {
@@ -94,7 +68,7 @@
    "organismo": "Servicio local de educación pública de Valdivia · Región de Los Ríos",
    "fecha": "20-11-2026 12:30",
    "cierre_iso": "2026-11-20 12:30",
-   "quedan": "quedan 2 h"
+   "quedan": "quedan 1 h"
   },
   {
    "marca": "GO",
@@ -107,6 +81,32 @@
    "organismo": "CORPORACION CENTRO CULTURAL GABRIELA MISTRAL · Región Metropolitana de Santiago",
    "fecha": "20-11-2026 13:00",
    "cierre_iso": "2026-11-20 13:00",
+   "quedan": "quedan 2 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "LICENCIA FILM LIBRARY",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "4174-142-COT26",
+   "monto": "$396.905",
+   "organismo": "I MUNICIPALIDAD DE QUIRIHUE · Región del Ñuble",
+   "fecha": "20-11-2026 13:00",
+   "cierre_iso": "2026-11-20 13:00",
+   "quedan": "quedan 2 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "Licencia de plataforma para evaluación en línea con supervisión a distancia",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "872-637-COT26",
+   "monto": "$1.500.000",
+   "organismo": "COMISION CHILENA DE ENERGIA NUCLEAR · Región Metropolitana de Santiago",
+   "fecha": "20-11-2026 14:10",
+   "cierre_iso": "2026-11-20 14:10",
    "quedan": "quedan 3 h"
   }
  ]
