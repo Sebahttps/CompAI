@@ -102,8 +102,11 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;paddin
 #offenbar .hvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
 #offenbar .hvelo{position:absolute;inset:0;background:linear-gradient(180deg,rgba(26,29,27,.35) 0%,rgba(26,29,27,0) 40%,rgba(245,240,228,0) 75%,#F5F0E4 100%)}
 .hero-nav{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:28px 10% 28px 20%;gap:16px}
-.hero-nav .logo{display:inline-flex}
-.hero-nav .logo img{height:40px;width:auto}
+/* compA\ — mismo tamaño y punto que el logo de la intranet (21-11-2026) */
+:root{--logo-h:clamp(52px,6.4vw,84px);--logo-x:max(calc((100vw - 1366px) / 2 + clamp(16px,3vw,40px)),clamp(16px,3vw,40px))}
+.hero-nav .logo{position:absolute;top:2px;left:var(--logo-x,24px);z-index:45;display:block;line-height:0}
+.hero-nav .logo img{height:var(--logo-h);width:auto;display:block}
+.hero-nav{justify-content:flex-end} /* el logo salió del flujo: la cápsula se queda a la derecha */
 .hero-grid{position:relative;z-index:2;flex:1 1 auto;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:start;grid-template-rows:auto 1fr;padding:40px 0 64px}
 .hero-l{font-family:var(--mono);grid-row:1;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85);align-self:start;line-height:1.5}
 .hero-l1{grid-column:2/3;margin:130px 0 0 -5px;padding:0 0 0 6px;text-align:left}
@@ -347,7 +350,8 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;paddin
  .ibar-dock{display:none!important}
  #offenbar{aspect-ratio:auto;height:auto;min-height:720px}
  .hero-nav{padding:18px 24px;flex-wrap:wrap;gap:12px}
- .hero-nav .logo img{height:30px}
+ .hero-nav .logo img{height:var(--logo-h)}
+ .hero-nav{padding-top:calc(var(--logo-h) + 10px)} /* en móvil la cápsula baja bajo el logo */
  .ibar a,.ibar .sin{width:30px;height:30px}.ibar svg{width:16px;height:16px}
  .hero-grid{display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px 24px 48px}
  .hero-l,.hero-w{align-self:center;justify-self:center;max-width:100%}
