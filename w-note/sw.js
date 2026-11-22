@@ -1,5 +1,5 @@
 /* w-note · service worker: deja abrir la app sin señal. Nunca guarda la API (las notas viven en localStorage). */
-const CACHE = "wnote-v1";
+const CACHE = "wnote-v3";
 const SHELL = ["./", "index.html", "manifest.webmanifest", "marca/wnote-logo.svg", "marca/wnote-192.png",
   "marca/apple-touch-icon.png", "../css/fuentes/spacegrotesk-var-latin.woff2"];
 

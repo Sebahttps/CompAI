@@ -137,14 +137,14 @@ LOGO_SVG = b"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 <rect x="242" y="134" width="190" height="236" rx="26" fill="#37B35A" transform="rotate(8 432 134)"/>
 <path d="M152 104H312L392 184V377A31 31 0 0 1 361 408H152A31 31 0 0 1 121 377V135A31 31 0 0 1 152 104Z" fill="#F4F0E6"/>
 <path d="M312 104V153A31 31 0 0 0 343 184H392Z" fill="#D0C6B0"/>
-<path d="M159 248 209 360 256 280 302 360 353 248" fill="none" stroke="#0F5C7A" stroke-width="27" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M144.2 248L198.7 370L218.8 370L255.9 306.9L292.2 370L312.3 370L367.8 248L338.2 248L300.6 330.5L265.8 270L246.2 270L210.6 330.6L173.8 248Z" fill="#0F5C7A"/>
 </svg>"""
 
 LOGO_SMALL_SVG = b"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 <rect width="512" height="512" rx="112" fill="#0F5C7A"/>
 <path d="M138 80H318L414 176V392A40 40 0 0 1 374 432H138A40 40 0 0 1 98 392V120A40 40 0 0 1 138 80Z" fill="#F4F0E6"/>
 <path d="M318 80V136A40 40 0 0 0 358 176H414Z" fill="#D0C6B0"/>
-<path d="M152 236 206 362 256 280 306 362 360 236" fill="none" stroke="#0F5C7A" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M130.2 236L189.4 374L222.1 374L256 318.4L289.9 374L322.6 374L381.8 236L338.2 236L302.9 318.5L272.1 268L239.9 268L209.1 318.5L173.8 236Z" fill="#0F5C7A"/>
 </svg>"""
 
 _renderers: dict = {}
