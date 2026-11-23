@@ -21,6 +21,7 @@ body{background:#1F3A4D}
 .wrap{max-width:1280px;margin:0 auto;padding:0 32px}
 .h2{margin:0;font:800 clamp(34px,4.2vw,48px)/1.02 var(--display);letter-spacing:-.025em}
 .ofi-0{background-image:url(img/oficio-00.webp)}.ofi-1{background-image:url(img/oficio-01.webp)}.ofi-2{background-image:url(img/oficio-02.webp)}.ofi-3{background-image:url(img/oficio-03.webp)}.ofi-4{background-image:url(img/oficio-04.webp)}.ofi-6{background-image:url(img/oficio-06.webp)}.ofi-12{background-image:url(img/oficio-12.webp)}.ofi-13{background-image:url(img/oficio-13.webp)}.ofi-14{background-image:url(img/oficio-14.webp)}.ofi-18{background-image:url(img/oficio-18.webp)}
+.q-jardinero{background-image:url(img/quien-jardinero.webp)}.q-panadera{background-image:url(img/quien-panadera.webp)}.q-soldador{background-image:url(img/quien-soldador.webp)}.q-peluquero{background-image:url(img/quien-peluquero.webp)}.q-ceramista{background-image:url(img/quien-ceramista.webp)}.q-animador{background-image:url(img/quien-animador.webp)}
 .ej-img{background:url(ejemplo/img/primer-plano-bn.webp) 50% 15%/cover}
 
 /* el isotipo hecho paisaje */
@@ -154,7 +155,16 @@ body{background:#1F3A4D}
   .comienzo{padding:88px 0 200px}
   .capa{padding-top:72px}
 }
+.paso .lista{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;font-size:17px;line-height:1.4;color:#33546A}
+.paso .lista li{display:flex;gap:10px;align-items:center}
+.paso .lista li:before{content:"";flex:none;width:10px;height:10px;border-radius:50%;background:#FFD966;box-shadow:0 0 0 3px #FFE9A3}
+/* aparicion al scroll: solo se esconde si <html> lleva .js (script del head); landing.js pone .en. Sin JS todo se ve. */
+@keyframes rvIn{from{opacity:0;transform:translateY(24px)}}
+.js .rv:not(.en){opacity:0;transform:translateY(24px)}
+.js .rv.en{animation:rvIn .7s cubic-bezier(.2,.7,.2,1) var(--d,0ms) backwards}
+@media (prefers-reduced-motion:reduce){.js .rv:not(.en){opacity:1;transform:none}.js .rv.en{animation:none}}
 </style>
+<script>document.documentElement.className+=" js"</script>
 </head>
 <body>
 <a class="salto" href="#planes-y-precios">Ir a los precios</a>
@@ -190,7 +200,6 @@ body{background:#1F3A4D}
   </div>
   <svg class="iso" viewBox="0 0 100 100" aria-hidden="true">
     <circle class="a-halo" cx="74" cy="24" r="22" fill="#FFE9A3" opacity=".7"/>
-    <circle class="a-halo" cx="74" cy="24" r="15" fill="none" stroke="#F4A574" stroke-width=".25" opacity=".6"/>
     <path class="a-sky" d="M8 50 A31 31 0 0 1 70 50 Z" fill="#5BA8D6"/>
     <path class="a-fire" d="M30 50 A31 31 0 0 0 92 50 Z" fill="#F4A574"/>
     <circle class="a-sun" cx="74" cy="24" r="9" fill="#FFD966"/>
@@ -207,12 +216,12 @@ body{background:#1F3A4D}
       <p>Jardineros, maestros, peluqueras, cocineras, soldadores, animadores. Gente que hace bien su pega y merece una vitrina a la altura.</p>
     </div>
     <div class="fotos6">
-      <div class="ofi ofi-1" style="border-radius:120px 120px 22px 22px" role="img" aria-label="Jardinero podando un cerco"></div>
-      <div class="ofi ofi-4" style="border-radius:22px" role="img" aria-label="Cocinera amasando"></div>
-      <div class="ofi ofi-13" style="border-radius:22px 22px 120px 120px" role="img" aria-label="Soldador trabajando una reja"></div>
-      <div class="ofi ofi-3" style="border-radius:120px 120px 22px 22px" role="img" aria-label="Peluquero de barrio cortando el pelo"></div>
-      <div class="ofi ofi-12" style="border-radius:22px" role="img" aria-label="Ceramista en el torno"></div>
-      <div class="ofi ofi-0" style="border-radius:22px 22px 120px 120px" role="img" aria-label="Animador cantando en un matrimonio"></div>
+      <div class="ofi q-jardinero" style="border-radius:120px 120px 22px 22px" role="img" aria-label="Jardinero podando un arbusto"></div>
+      <div class="ofi q-panadera" style="border-radius:22px" role="img" aria-label="Panadera amasando"></div>
+      <div class="ofi q-soldador" style="border-radius:22px 22px 120px 120px" role="img" aria-label="Soldador trabajando una reja"></div>
+      <div class="ofi q-peluquero" style="border-radius:120px 120px 22px 22px" role="img" aria-label="Peluquero de barrio cortando el pelo"></div>
+      <div class="ofi q-ceramista" style="border-radius:22px" role="img" aria-label="Ceramista en el torno"></div>
+      <div class="ofi q-animador" style="border-radius:22px 22px 120px 120px" role="img" aria-label="Animador hablando en un matrimonio"></div>
     </div>
   </div>
 </section>
@@ -226,18 +235,18 @@ body{background:#1F3A4D}
     <div class="pasos3">
       <div class="paso">
         <svg width="56" height="56" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#BFE3F5"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#FFD3B4"/><text x="50" y="60" text-anchor="middle" font-family="'Bricolage Grotesque',system-ui,sans-serif" font-weight="800" font-size="30" fill="#1F3A4D">1</text></svg>
-        <h3>Nos cuentas quién eres</h3>
-        <p>De 16 a 25 preguntas desde el celular, entre 5 y 12 minutos según tu plan. Seis son sobre ti: cómo llegaste a tu oficio, qué haces distinto y qué no harías nunca.</p>
+        <h3>Cuéntanos quién eres</h3>
+        <p>De 16 a 25 preguntas, desde el computador o tu celular, según el plan que escojas. Queremos saber qué haces para ser fresh, cómo sigues brillando cuando se oculta el sun y qué cosas no van con tu vibe.</p>
       </div>
       <div class="paso">
         <svg width="56" height="56" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#BFE3F5"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#FFD3B4"/><text x="50" y="60" text-anchor="middle" font-family="'Bricolage Grotesque',system-ui,sans-serif" font-weight="800" font-size="30" fill="#1F3A4D">2</text></svg>
-        <h3>Tu sitio, a la vista</h3>
-        <p>Terminas las preguntas y lo ves armado: tu portada, tus servicios con precio y tu historia. Lo afinamos contigo por WhatsApp.</p>
+        <h3>¡Tu sitio a la vista!</h3>
+        <ul class="lista"><li>Tu portada</li><li>Tus servicios</li><li>Tu historia</li></ul>
       </div>
       <div class="paso">
         <svg width="56" height="56" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 A31 31 0 0 1 70 50 Z" fill="#BFE3F5"/><path d="M30 50 A31 31 0 0 0 92 50 Z" fill="#FFD3B4"/><circle cx="74" cy="24" r="9" fill="#FFD966"/><text x="50" y="60" text-anchor="middle" font-family="'Bricolage Grotesque',system-ui,sans-serif" font-weight="800" font-size="30" fill="#1F3A4D">3</text></svg>
-        <h3>Te llegan los clientes</h3>
-        <p>El cliente llena el formulario y te llega la solicitud a tu correo: qué necesita, cuándo y cómo ubicarlo. Tú solo respondes.</p>
+        <h3>El panel vibe</h3>
+        <p>La estadística de tu negocio, en simple. Conecta tu calendario, la página de reservas o el formulario de pedidos, directo a tu correo.</p>
       </div>
     </div>
   </div>
@@ -273,10 +282,10 @@ body{background:#1F3A4D}
   <div class="float" aria-hidden="true" style="position:absolute;right:-140px;bottom:-200px;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(244,165,116,.45) 0%,rgba(244,165,116,0) 70%)"></div>
   <div class="wrap">
     <div class="ej">
-      <div class="ej-img" role="img" aria-label="Portada del sitio de Miguel Chaurán: él, en blanco y negro, con el micrófono"></div>
+      <div class="ej-img" role="img" aria-label="Portada del sitio de Miguel: él, en blanco y negro, con el micrófono"></div>
       <div class="ej-tx">
         <span class="k" style="color:#FFE9A3">Caso piloto</span>
-        <h2 id="t-ej">MIG7MIC<br>Miguel Chaurán: maestro de ceremonias, animación y canto.</h2>
+        <h2 id="t-ej">MIG7MIC<br>Miguel: maestro de ceremonias, animación y canto.</h2>
         <p>Su página dice lo que él hace en una mirada: «La voz del momento». Seis servicios con precio y un formulario que le deja cada solicitud escrita.</p>
         <a href="ejemplo/" class="btn" style="align-self:flex-start;min-height:52px;background:#FFD3B4;color:#1F3A4D;font-size:16px">Ver su sitio →</a>
         <p class="nota">Es un ejemplo: nada de lo que escribas ahí se envía.</p>

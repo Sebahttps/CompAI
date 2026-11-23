@@ -70,7 +70,9 @@
   function sinYo(s) { return sinPunto(s).replace(/^yo\s+/i, ''); }
 
   /* ───────── las frases del alma ───────── */
-  function marcaNombre(ST) { return limpio(ST.apodo) || limpio(ST.name) || 'Tu nombre'; }
+  /* El nombre que se muestra: el de la marca si la persona lo dio; si no, el de siempre (apodo o nombre).
+     El apodo es el trato, no la marca: solo deja de ser la marca por defecto cuando hay marcaNombre. */
+  function marcaNombre(ST) { return limpio(ST.marcaNombre) || limpio(ST.apodo) || limpio(ST.name) || 'Tu nombre'; }
   function titular(ST) { var u = cap(sinYo(ST.unico)); return u ? u + '.' : ''; }
   function nunca(ST) {
     var n = sinPunto(ST.nunca); if (!n) return '';

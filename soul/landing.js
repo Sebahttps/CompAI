@@ -36,3 +36,27 @@
     if (b && u && /^https:\/\//i.test(u)) { b.href = u; b.target = '_blank'; b.rel = 'noopener'; }
   });
 })();
+/* Aparicion al scroll (23-11-2026): fade + 24 px, escalonado 80 ms entre los que entran juntos.
+   Las clases .rv las pone este script; el CSS solo las esconde si <html> lleva .js.
+   Sin IntersectionObserver o con movimiento reducido: todo visible de inmediato.
+   Red de seguridad: a los 6 s se muestra todo (capturas completas, pestañas en segundo plano). */
+(function () {
+  var rv = Array.prototype.slice.call(document.querySelectorAll(
+    '.intro, .fotos6 .ofi, #como .k, #como .h2, .paso, #planes-y-precios .k, #planes-y-precios .h2, .plan, #trae .k, #trae .h2'));
+  if (!rv.length) return;
+  var quieto = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  function todos() { rv.forEach(function (e) { e.classList.add('en'); }); }
+  rv.forEach(function (e) { e.classList.add('rv'); });
+  if (quieto || !('IntersectionObserver' in window)) { todos(); return; }
+  var io = new IntersectionObserver(function (es) {
+    var i = 0;
+    es.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.style.setProperty('--d', Math.min(i++, 6) * 80 + 'ms');
+      e.target.classList.add('en');
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.2 });
+  rv.forEach(function (e) { io.observe(e); });
+  setTimeout(function () { io.disconnect(); todos(); }, 6000);
+})();

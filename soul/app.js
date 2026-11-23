@@ -79,6 +79,7 @@
   var DOMINIO = 'Partes en compai.cl/tu-negocio; tu propio .cl llega desde el segundo mes, o de inmediato si pagas el año.';
   function svcsLlenos() { return S.svcsLlenos(ST); }
 
+  function NOM() { return D.NOMBRES[ST.oficio == null ? D.NOMBRES.length - 1 : ST.oficio]; }
   function EJ() { return D.EJEMPLOS[ST.oficio == null ? D.EJEMPLOS.length - 1 : ST.oficio]; }
   function dirActual() { return S.dirActual(ST, D, M); }
   function cifraTxt() { var c = M.cifra(ST, D); return c ? c.texto : ''; }
@@ -91,7 +92,7 @@
     return fila('<span class="t"><strong>' + esc(label) + '</strong>' + (desc ? '<span>' + (quoted ? '«' + esc(desc) + '»' : esc(desc)) + '</span>' : '') + '</span>', on, a, i);
   }
   function campoTexto(label, k, val, ph, extra) {
-    return '<label class="campo"><span class="mono m-sub">' + esc(label) + '</span><input class="in" type="' + ((extra && extra.type) || 'text') + '" data-k="' + k + '" value="' + esc(val) + '" placeholder="' + esc(ph || '') + '"' + ((extra && extra.attrs) || '') + '></label>';
+    return '<label class="campo"><span class="mono m-sub">' + esc(label) + '</span><input class="in" type="' + ((extra && extra.type) || 'text') + '" data-k="' + k + '" value="' + esc(val) + '" placeholder="' + esc(ph || '') + '"' + ((extra && extra.attrs) || '') + '>' + ((extra && extra.hint) ? '<span class="hint" style="font-size:13px">' + esc(extra.hint) + '</span>' : '') + '</label>';
   }
   function kick(txt, cls) { return '<p class="mono ' + (cls || 'kick') + '" style="margin:0">' + esc(txt) + '</p>'; }
 
@@ -130,6 +131,7 @@
     var r = [
       { k: 'Nombre', v: ST.name.trim() },
       { k: 'Cómo le dicen', v: ST.apodo.trim() || '—' },
+      { k: 'Nombre del negocio', v: ST.marcaNombre.trim() || '— (lo proponemos nosotros)' },
       { k: 'Oficio', v: oficioNombre() },
       { k: 'Cómo llegó', v: ST.origen.trim() || '—' },
       { k: 'Lo que otros no hacen', v: ST.unico.trim() || '—' },
@@ -183,7 +185,8 @@
     } else if (cur === 1) {
       h += '<h1 class="q" tabindex="-1" id="foco">¿Quién eres y a qué te dedicas?</h1>' +
         campoTexto('Tu nombre', 'name', ST.name, 'Nombre y apellido', { attrs: ' autocomplete="name" maxlength="80"' }) +
-        campoTexto('¿Cómo te dicen? (opcional)', 'apodo', ST.apodo, 'Ej: Mig. Es el nombre de tu marca', { attrs: ' maxlength="30" autocapitalize="words"' }) +
+        campoTexto('¿Cómo te dicen? (opcional)', 'apodo', ST.apodo, 'Ej: ' + NOM().a, { attrs: ' maxlength="30" autocapitalize="words"' }) +
+        campoTexto('¿Tu negocio ya tiene nombre? (opcional)', 'marcaNombre', ST.marcaNombre, 'Ej: ' + NOM().m, { attrs: ' maxlength="40" autocapitalize="words"', hint: 'Si lo dejas vacío, te proponemos uno.' }) +
         '<div role="group" aria-labelledby="l-ofi" class="col"><span class="mono m-sub" id="l-ofi">Tu oficio</span><div class="chips">' +
         D.OFICIOS.map(function (o, k) { return chip(o.label, ST.oficio === k, 'oficio', k); }).join('') + '</div></div>';
       if (esOtro()) h += '<input class="in" type="text" data-k="oficioOtro" value="' + esc(ST.oficioOtro) + '" maxlength="60" placeholder="Ej: herrero, ceramista, guía de montaña" aria-label="Tu oficio, con tus palabras">';

@@ -31,7 +31,7 @@ async function flujo(browser, plan, vw, persona, vh = vw < 700 ? 844 : 900, pagi
   const sig = () => p.click('#btn-next');
   const etiqueta = () => p.textContent('#etiqueta');
   await sig();                                           // bienvenida → 1
-  await p.fill('[data-k="name"]', persona.name); if (persona.apodo) await p.fill('[data-k="apodo"]', persona.apodo);
+  await p.fill('[data-k="name"]', persona.name); if (persona.apodo) await p.fill('[data-k="apodo"]', persona.apodo); if (persona.marca) await p.fill('[data-k="marcaNombre"]', persona.marca);
   await p.click(`[data-a="oficio"][data-i="${persona.oficio}"]`);
   const total = Number((await etiqueta()).split('/')[1]);   // «01 / NN»
   await sig();
@@ -216,6 +216,39 @@ console.log('vecino:', salida.map(([n, r]) => `${n} → «${r.h2}» (${r.dir}, $
   for (const k of ['unico', 'nunca', 'momento', 'cierre']) {
     const m = src.match(new RegExp('<(?:input|textarea)[^>]*data-k="' + k + '"[^>]*maxlength="(\\d+)"'));
     ok(m && Number(m[1]) >= 160, `alma «${k}»: maxlength ${m ? m[1] : 'ausente'} (< 160)`);
+  }
+}
+// «Cómo te dicen» y «¿Tu negocio ya tiene nombre?» son dos preguntas (Sebastián, 23-11): el apodo es el trato, la marca es la marca
+{
+  const SAL = process.env.SALIDA_MARCA || SALIDA;
+  const logo = (p) => p.evaluate(() => document.querySelector('.vp .logo b').textContent);
+  const filas = (env) => Object.fromEntries(env.resumen.map((r) => [r.k, r.v]));
+  // paso 1: dos campos distintos, con su rótulo, su pista y sin decir que el apodo es la marca
+  {
+    const ctx = await b.newContext({ viewport: { width: 390, height: 844 } }); const p = await ctx.newPage();
+    await p.goto(BASE + '?plan=1'); await sigPaso(p);
+    const t = await p.evaluate(() => document.querySelector('.campo:has([data-k="apodo"])').innerText + '||' + document.querySelector('.campo:has([data-k="marcaNombre"])').innerText + '||' + document.querySelector('[data-k="apodo"]').placeholder + '||' + document.querySelector('[data-k="marcaNombre"]').placeholder);
+    ok(/cómo te dicen/i.test(t.split('||')[0]) && !/marca/i.test(t.split('||')[0]) && !/marca/i.test(t.split('||')[2]), `paso 1: el apodo habla de marca → ${t}`);
+    ok(/¿Tu negocio ya tiene nombre\? \(opcional\)/i.test(t.split('||')[1]) && /Si lo dejas vacío, te proponemos uno/.test(t.split('||')[1]), `paso 1: falta el campo de marca o su pista → ${t}`);
+    await p.screenshot({ path: `${SAL}/paso1-390.png`, fullPage: true });
+    const sc = await p.evaluate(() => document.documentElement.scrollWidth); ok(sc <= 390, `paso 1: desborde horizontal ${sc}`);
+    await ctx.close();
+  }
+  // (a) apodo sin marca → igual que hoy: el logo es el apodo
+  { const f = await flujo(b, 1, 390, P1); ok((await logo(f.p)) === 'Charly', 'caso a: sin marca el logo debía ser el apodo'); const e = filas(f.envio()); ok(/^— \(lo proponemos/.test(e['Nombre del negocio']) && e['Cómo le dicen'] === 'Charly', 'caso a: resumen'); await f.ctx.close(); }
+  // (b) marca sin apodo → el logo muestra la marca
+  { const f = await flujo(b, 1, 390, { ...P2, marca: 'Taller El Pistón' }); ok((await logo(f.p)) === 'Taller El Pistón', 'caso b: el logo debía ser la marca'); const e = filas(f.envio()); ok(e['Nombre del negocio'] === 'Taller El Pistón' && e['Cómo le dicen'] === '—', 'caso b: resumen'); ok(f.envio().resumen.some((r) => /Marca · concepto/.test(r.k) && r.v.startsWith('Taller El Pistón')), 'caso b: el concepto no parte con la marca');
+    await f.p.locator('.vp').screenshot({ path: `${SAL}/borrador-b-marca-sin-apodo-390.png` }); await f.ctx.close(); }
+  // (c) los dos → la marca manda y el apodo no se pierde en el resumen
+  { const f = await flujo(b, 1, 390, { ...P1, marca: 'Taller El Pistón' }); ok((await logo(f.p)) === 'Taller El Pistón', 'caso c: manda la marca'); const e = filas(f.envio()); ok(e['Cómo le dicen'] === 'Charly' && e['Nombre del negocio'] === 'Taller El Pistón', 'caso c: el apodo se perdió del resumen');
+    const env = f.envio(); const v = await f.ctx.newPage(); await v.goto(BASE + '#borrador=' + env.borrador); await v.waitForSelector('.vp');
+    ok((await logo(v)) === 'Taller El Pistón', 'caso c: el enlace #borrador perdió la marca'); await f.ctx.close(); }
+  // enlace viejo, sin el campo nuevo: sigue funcionando y el logo es el apodo
+  {
+    const viejo = Buffer.from(JSON.stringify({ name: 'Carlos Rojas', apodo: 'Charly', oficio: 14, plan: 1 })).toString('base64url');
+    const ctx = await b.newContext({ viewport: { width: 390, height: 844 } }); const p = await ctx.newPage(); const err = []; p.on('pageerror', (e) => err.push(e.message));
+    await p.goto(BASE + '#borrador=' + viejo); await p.waitForSelector('.vp');
+    ok((await logo(p)) === 'Charly' && !err.length, `enlace viejo roto: ${err.join(';')}`); await ctx.close();
   }
 }
 await b.close();

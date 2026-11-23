@@ -15,6 +15,18 @@ const SVC_PH = ['Ej: Animación de matrimonio', 'Ej: Ceremonia simbólica', 'Ej:
 /* Ejemplos de muestra por oficio (mismo orden que OFICIOS): los placeholders de las 6 preguntas del alma,
    de los servicios y de «qué incluye». o=origen, u=lo distinto, n=lo que nunca, m=cuándo quedó bien, c=cierre,
    s=3 servicios, i=3 «qué incluye». El último es el genérico neutro de «Otro oficio». */
+/* Ejemplos del paso 1, por oficio (mismo orden que OFICIOS): a = cómo le dicen a la persona (apodo, para el trato),
+   m = el nombre de un negocio del rubro (para el campo de marca). Son dos cosas distintas. */
+const NOMBRES = [
+  { a: 'Mig', m: 'Eventos Voz y Fiesta' }, { a: 'Don Lucho', m: 'Jardines El Parrón' }, { a: 'Pancho', m: 'Muebles Roble Nuevo' },
+  { a: 'Nacho', m: 'Barbería La Navaja' }, { a: 'La Maru', m: 'Cocina de la Abuela' }, { a: 'Cote', m: 'Tinta Viva Estudio' },
+  { a: 'Vero', m: 'Costuras del Barrio' }, { a: 'La Mari', m: 'Panadería Masa Madre' }, { a: 'Nico', m: 'Foco Doce Fotografía' },
+  { a: 'Charly', m: 'Dúo Cuerdas del Sur' }, { a: 'Fran', m: 'Estudio Rubor' }, { a: 'Seba', m: 'Manos de Alivio' },
+  { a: 'Caro', m: 'Barro y Fuego' }, { a: 'Tito', m: 'Herrería Fragua Sur' }, { a: 'Choche', m: 'Taller El Pistón' },
+  { a: 'Lalo', m: 'Luz y Corriente' }, { a: 'Beto', m: 'Gasfitería Sin Goteras' }, { a: 'Chino', m: 'Arreglos Don Chino' },
+  { a: 'Pepe', m: 'Pinturas Brocha Gorda' }, { a: 'Profe Dani', m: 'Aula Abierta' }, { a: 'Javi', m: 'Patitas Paseo' },
+  { a: 'Mig', m: 'Tu Negocio Aquí' }
+];
 const EJEMPLOS = [
   { o: 'Aprendí sin escuela, con el micrófono acoplando', u: 'Escribo cada ceremonia con su historia', n: 'Leer un libreto ajeno', m: 'En el silencio justo antes del sí', c: 'Ustedes vivan. Yo conduzco.', s: ['Animación de matrimonio', 'Ceremonia simbólica', 'Canto en misa'], i: ['Dos horas de música en vivo y equipo de sonido', 'Libreto escrito con su historia y ensayo previo', 'Voz y repertorio a pedido, con pista propia'] },
   { o: 'Mi abuelo me enseñó a podar en su patio de Peñaflor', u: 'Poda pensando en cómo va a crecer en tres años', n: 'Cortar un árbol sano porque estorba', m: 'Cuando el cliente no nota que podé y solo ve el jardín lindo', c: 'Mi jardín respira.', s: ['Poda de cercos y arbustos', 'Diseño de jardín', 'Mantención mensual'], i: ['Poda, retiro de restos y limpieza del patio', 'Visita, plano a mano y lista de plantas con precios', 'Una visita al mes: riego, poda y abono'] },
@@ -125,5 +137,5 @@ const TONES = [
   { label: 'Divertido', desc: 'Con humor y buena onda, sin perder el oficio.' },
   { label: 'Sobrio', desc: 'Servicio puntual, resultado garantizado.' }
 ];
-W.SOUL_DATA = { EJEMPLOS, CIFRA_UNID, PLANS, WHERE, FIELDS, AVGS, REPLIES, BOOKS, SVC_PH, OFICIOS, MOTIFS, ENFOQUES, LIKES, PALETTES, STYLES, BGS, MOTIONS, TONES };
+W.SOUL_DATA = { NOMBRES, EJEMPLOS, CIFRA_UNID, PLANS, WHERE, FIELDS, AVGS, REPLIES, BOOKS, SVC_PH, OFICIOS, MOTIFS, ENFOQUES, LIKES, PALETTES, STYLES, BGS, MOTIONS, TONES };
 })(window);

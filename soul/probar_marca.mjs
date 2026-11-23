@@ -34,6 +34,13 @@ ok(JSON.stringify(M.tres(A)) !== JSON.stringify(M.tres(B)), 'vecino: las 3 frase
 ok(!M.tres(A).concat(M.tres(B), M.titular(A), M.titular(B)).some((t) => t.includes(fija.replace(/\.$/, ''))), `vecino: aparece la frase fija del rubro «${fija}»`);
 // el titular es de la persona: contiene sus palabras
 ok(M.titular(A).toLowerCase().includes('explico a cada cliente'), 'el titular no usa lo que escribió');
+// 2b) marca vs apodo (23-11): el apodo es el trato; la marca manda solo cuando existe
+ok(M.marcaNombre({ name: 'Miguel Mena', apodo: 'Mig' }) === 'Mig', 'a: apodo sin marca debía seguir siendo el nombre mostrado');
+ok(M.marcaNombre({ name: 'Pedro Sandoval', apodo: '', marcaNombre: 'Taller El Pistón' }) === 'Taller El Pistón', 'b: marca sin apodo');
+ok(M.marcaNombre({ name: 'Carlos Rojas', apodo: 'Charly', marcaNombre: ' Taller   El Pistón ' }) === 'Taller El Pistón', 'c: con los dos manda la marca (y se limpia)');
+ok(M.concepto({ ...A, marcaNombre: 'Taller El Pistón' }, D).startsWith('Taller El Pistón ·') && M.concepto(A, D).startsWith('Charly ·'), 'concepto: marca primero, apodo si no hay');
+ok(M.marcaNombre({ name: 'Ana', apodo: '', marcaNombre: '   ' }) === 'Ana', 'marca en blanco debía caer al nombre');
+ok(W.SOUL_DATA.NOMBRES.length === D.OFICIOS.length, 'NOMBRES (ejemplos del paso 1) no calza con OFICIOS');
 // 3) cifras
 ok(M.cifra({ cifraN: '', cifraU: 'años' }, D) === null, 'inventó una cifra con el número vacío');
 ok(M.cifra({ cifraN: 'muchos', cifraU: 'años' }, D) === null, 'aceptó una cifra que no es número');

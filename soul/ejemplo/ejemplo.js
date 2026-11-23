@@ -1,4 +1,4 @@
-/* Ejemplo SOUL · Miguel Chaurán. Solo demostrativo: NINGUN formulario envia nada.
+/* Ejemplo SOUL · Miguel. Solo demostrativo: NINGUN formulario envia nada.
    - index: carrusel de servicios (en el celular se desliza con el dedo).
    - cotizacion / agenda: validan, muestran «esto es un ejemplo» y listo. */
 (function () {

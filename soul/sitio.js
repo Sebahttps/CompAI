@@ -25,7 +25,7 @@
   function dirActual(ST, D, M) { return ST.dir != null ? ST.dir : M.elegir(ST, D); }
   function sup(ST, D, M) { return M.superficies(M.DIRS[dirActual(ST, D, M)], ST.bg === 0, pal(ST, D)[0]); }
   function svcsLlenos(ST) { return ST.svcs.filter(function (x) { return x.n.trim(); }); }
-  function slug(ST) { return (ST.name || 'tu-negocio').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'tu-negocio'; }
+  function slug(ST) { return ((ST.marcaNombre || '').trim() || ST.name || 'tu-negocio').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'tu-negocio'; }
 
   /* ───────── el codigo del enlace ───────── */
   /* El enlace publico lleva las respuestas en el # (nunca llega a un servidor). Formato: JSON -> UTF-8 -> base64url.
@@ -34,7 +34,7 @@
   var FUERA = ['correo', 'email', 'result', 'step'];
   function nuevo() {
     return {
-      step: 0, plan: 1, name: '', apodo: '', oficio: null, oficioOtro: '', likes: [], likeOtro: '',
+      step: 0, plan: 1, name: '', apodo: '', marcaNombre: '', oficio: null, oficioOtro: '', likes: [], likeOtro: '',
       palette: null, concept: 0, conceptText: '', style: 0, bg: 0, motion: 1, tone: 0, enfoque: 2,
       myColors: ['#E8789A', '#FFF1B8', '#2A1D45'], photoName: '',
       svcs: [0, 1, 2].map(function () { return { n: '', p: '', d: '', ph: 'lib', phName: '' }; }),
