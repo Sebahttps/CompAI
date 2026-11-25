@@ -1,13 +1,13 @@
 {
- "fecha": "2026-11-19",
+ "fecha": "2026-11-24",
  "fuente": "API de Mercado Público · licitaciones activas, todas las modalidades",
- "barridas": 5064,
+ "barridas": 4789,
  "filas": [
   {
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "SUSCRIPCIÓN ANUAL PERSONAL ITHENTICATE",
+   "id": "ADQUISICIÓN DE TRES EQUIPOS PARA VIDEOCONFERENCIA …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -15,7 +15,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "LICENCIA EDUCATIVA ATLAS.TI 1 PUESTO (SUSCRIPCIÓN ANUAL).",
+   "id": "SEGÚN LO QUE SE INDICA EN LAS BASES TÉCNICAS ADJUNTAS EN LA …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -23,7 +23,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "SERVICIO DE SERVIDOR VIRTUAL PRIVADO (VPS)",
+   "id": "SERVICIO DE AUDITORÍA DE PLATAFORMA DE VOTACIÓN ONLINE",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -31,7 +31,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "SERVICIO SAAS PARA LA EMISIÓN Y GESTIÓN DE LICENCIAS …",
+   "id": "SUSCRIPCIÓN DE 15 LICENCIAS ADOBE CREATIVE CLOUD FOR TEAMS …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -39,7 +39,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "PENDRIVES 8 GB METAL MADERA CON IMPRESIÓN LOGO A COLOR PARA …",
+   "id": "MANTENCIÓN DEL DATA CENTER MINISTERIAL UBICADO EN CATEDRAL …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -47,7 +47,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "LICIENCIA DE SUSCRIPCION CHATGPT PLUS PARA 12 MESES",
+   "id": "SERVIDOR DELL POWER EDGE R760XS INTEL XEON GOLD 6438Y+. DE …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -55,7 +55,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "SERVICIO DE INFORMACIÓN DE REMUNERACIONES Y PRÁCTICAS DE …",
+   "id": "CURSO DE CAPACITACIÓN GESTIÓN DE RIESGOS DE DESASTRES Y …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -63,7 +63,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "SISTEMA DE GESTIÓN INTEGRADO DE PERSONAS",
+   "id": "PLATAFORMA DE DETECCIÓN Y RESPUESTA EXTENDIDA (XDR), BAJO …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -71,7 +71,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "SERVICIO DE RENOVACIÓN DE INFRAESTRUCTURA TECNOLÓGICA …",
+   "id": "SERVICIO DE INTERNET (3 ANTENAS DE INTERNET SATELITAL X 24 …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -79,7 +79,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "QUE, EL HMS SE ENCUENTRA EN LA NECESIDAD DE CONTRATAR EL …",
+   "id": "DIAGNÓSTICO Y FORTALECIMIENTO DE LA RED DE APOYO A …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   }
