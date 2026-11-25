@@ -73,6 +73,17 @@ compai.cl es GitHub Pages: sirve archivos, no recibe datos. Por eso la nube vive
 6. En w-note (PC): pega URL y token en la barra **Nube iPhone** → **Probar**.
 7. **📱 Vincular celular** → escanea el QR con la cámara del iPhone → Safari → Compartir → **Agregar a inicio**.
 
+### Respaldo de prints y actas en Drive (desde la 1.6.0)
+
+El PC sube solo, cada 2 minutos, lo nuevo o cambiado de `Documentos\w-note\Prints`,
+`Actas_Reuniones` (las actas `.md`) y `Actas_Reuniones\Capturas_Clave` a la carpeta de Drive
+**compAI / w-notes**. El audio `.wav` no se sube: pesa demasiado. Lo ya subido queda anotado en
+`Documentos\w-note\respaldo_drive.json`; borrar ese archivo fuerza a subir todo de nuevo.
+
+Para activarlo en una nube ya instalada: pega el `nube/Codigo.gs` nuevo en el proyecto de Apps Script,
+ejecuta una vez la función **`autorizarRespaldo`** (pide el permiso de Drive) y publica una versión nueva
+en **Implementar → Administrar implementaciones → ✏ → Versión: Nueva versión**. La URL `/exec` no cambia.
+
 > La agenda sale del calendario de la cuenta con que creaste el script.
 > Para otros calendarios: en el script, Configuración → Propiedades → `CALENDAR_IDS` = `id1,id2`.
 > ¿Se filtró el token? Ejecuta `rotarToken` y vuelve a vincular.

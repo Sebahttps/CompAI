@@ -118,7 +118,7 @@ except ImportError:
     HAS_QR = False
 
 APP_NAME = "w-notes"
-APP_VERSION = "1.5.0"
+APP_VERSION = "1.7.0"
 APP_DIR = Path(__file__).resolve().parent
 WEB_DIR = APP_DIR.parent  # carpeta w-note/ con index.html (panel del celular)
 
@@ -172,6 +172,59 @@ def logo_pixmap(size: int) -> QPixmap:
     paint_wnote_logo(p, QRectF(0, 0, size, size))
     p.end()
     return pix
+
+
+# Círculo «encendido» en petróleo: marca en el borde inferior derecho de la nota que un agente
+# ya respondió con «R:». Núcleo claro + petróleo + halo, para que se distinga sobre cualquier tema.
+REPLY_BADGE_SVG = b"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+<defs>
+<radialGradient id="halo" cx="50%" cy="50%" r="50%">
+<stop offset="0.42" stop-color="#3FB6DE" stop-opacity="0.75"/><stop offset="1" stop-color="#3FB6DE" stop-opacity="0"/>
+</radialGradient>
+<radialGradient id="luz" cx="40%" cy="36%" r="68%">
+<stop offset="0" stop-color="#E4F7FD"/><stop offset="0.45" stop-color="#2E9CC4"/><stop offset="1" stop-color="#0F5C7A"/>
+</radialGradient>
+</defs>
+<circle cx="12" cy="12" r="12" fill="url(#halo)"/>
+<circle cx="12" cy="12" r="6.4" fill="url(#luz)" stroke="#FFFFFF" stroke-opacity="0.85" stroke-width="0.9"/>
+</svg>"""
+REPLY_BADGE_RATIO = 1.0
+
+
+def note_has_reply(text: str) -> bool:
+    """True si la nota trae una respuesta de agente: alguna línea que empieza con «R:»."""
+    return bool(re.search(r"(?m)^[ \t]*R:", text or ""))
+
+
+def paint_reply_badge(painter: QPainter, rect: QRectF, color: str = ""):
+    key = "badge"  # `color` se conserva por compatibilidad: el círculo es siempre petróleo
+    if key not in _renderers:
+        _renderers[key] = QSvgRenderer(QByteArray(REPLY_BADGE_SVG))
+    painter.save()
+    painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+    _renderers[key].render(painter, rect)
+    painter.restore()
+
+
+def reply_badge_pixmap(height: int = 16, color: str = "#ffffff") -> QPixmap:
+    w = round(height * REPLY_BADGE_RATIO)
+    pix = QPixmap(w * 2, height * 2)
+    pix.fill(Qt.GlobalColor.transparent)
+    p = QPainter(pix)
+    paint_reply_badge(p, QRectF(0, 0, w * 2, height * 2), color)
+    p.end()
+    pix.setDevicePixelRatio(2)
+    return pix
+
+
+def reply_badge_label(height: int = 16, parent=None, color: str = "#ffffff") -> QLabel:
+    lbl = QLabel(parent)
+    lbl.setPixmap(reply_badge_pixmap(height, color))
+    lbl.setFixedSize(round(height * REPLY_BADGE_RATIO), height)
+    lbl.setStyleSheet("background: transparent; border: none;")
+    lbl.setToolTip("Respondida por el agente a cargo (R:)")
+    lbl.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
+    return lbl
 
 
 CAMERA_SVG = b"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF"
@@ -539,6 +592,7 @@ class CloudSyncClient:
         self.bus = bus
         self.last_status = "Nube sin configurar"
         self._busy = threading.Lock()
+        self._backup_busy = threading.Lock()
 
     def configured(self) -> bool:
         cfg = self.storage.config
@@ -550,12 +604,12 @@ class CloudSyncClient:
         params["k"] = self.storage.config["cloud_api_key"].strip()
         return url + ("&" if "?" in url else "?") + urllib.parse.urlencode(params)
 
-    def _request(self, url: str, payload: dict | None = None) -> dict:
+    def _request(self, url: str, payload: dict | None = None, timeout: int = 15) -> dict:
         data = None if payload is None else json.dumps(payload, ensure_ascii=False).encode("utf-8")
         req = urllib.request.Request(url, data=data, method="POST" if data else "GET", headers={
             "Content-Type": "text/plain; charset=utf-8", "User-Agent": f"w-notes-windows/{APP_VERSION}"})
         # Apps Script responde 302 → googleusercontent; urllib lo sigue con GET (lo correcto).
-        with urllib.request.urlopen(req, timeout=15) as resp:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
             body = resp.read().decode("utf-8", "replace")
         try:
             out = json.loads(body)
@@ -586,6 +640,67 @@ class CloudSyncClient:
                 self._status(f"Nube sin conexión · {str(exc)[:60] or type(exc).__name__}")
             finally:
                 self._busy.release()
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    # ---- respaldo de prints y actas en Drive (compAI / w-notes) -----------------------------
+    BACKUP_EXT = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".json": "application/json",
+                  ".md": "text/markdown", ".txt": "text/plain"}  # sin .wav: el audio pesa demasiado
+    BACKUP_MAX_BYTES = 20 * 1024 * 1024
+
+    def _backup_candidates(self) -> list:
+        base = self.storage.base_dir
+        out = []
+        for carpeta in (base / "Prints", self.storage.actas_dir, self.storage.captures_dir):
+            if not carpeta.is_dir():
+                continue
+            for f in carpeta.iterdir():
+                if f.is_file() and f.suffix.lower() in self.BACKUP_EXT:
+                    out.append(f)
+        return out
+
+    def backup_files_async(self):
+        """Sube a Drive lo nuevo o cambiado. El registro de lo ya subido vive en respaldo_drive.json."""
+        if not self.configured() or not self.storage.config.get("cloud_backup_enabled", True):
+            return
+        if not self._backup_busy.acquire(blocking=False):
+            return
+
+        def worker():
+            import base64
+            registro_file = self.storage.base_dir / "respaldo_drive.json"
+            try:
+                try:
+                    registro = json.loads(registro_file.read_text(encoding="utf-8"))
+                except Exception:
+                    registro = {}
+                subidos = 0
+                for f in self._backup_candidates():
+                    try:
+                        st = f.stat()
+                        rel = f.relative_to(self.storage.base_dir).as_posix()
+                        firma = [st.st_size, int(st.st_mtime)]
+                        if registro.get(rel) == firma or not 0 < st.st_size <= self.BACKUP_MAX_BYTES:
+                            continue
+                        if time.time() - st.st_mtime < 5:   # todavía se está escribiendo
+                            continue
+                        out = self._request(self._url(), {
+                            "k": self.storage.config["cloud_api_key"].strip(), "action": "archivo", "ruta": rel,
+                            "mime": self.BACKUP_EXT[f.suffix.lower()],
+                            "b64": base64.b64encode(f.read_bytes()).decode("ascii")}, timeout=120)
+                        if not isinstance(out.get("archivo"), dict):
+                            # La nube respondió pero no guardó el archivo: falta pegar el Codigo.gs nuevo.
+                            raise RuntimeError("la nube aún no acepta archivos (actualiza nube/Codigo.gs)")
+                        registro[rel] = firma
+                        subidos += 1
+                        registro_file.write_text(json.dumps(registro, indent=1, ensure_ascii=False), encoding="utf-8")
+                    except Exception as exc:
+                        print(f"[w-note] Respaldo en Drive detenido en {f.name}: {exc}")
+                        break
+                if subidos:
+                    print(f"[w-note] Respaldo en Drive: {subidos} archivo(s) subido(s)")
+            finally:
+                self._backup_busy.release()
 
         threading.Thread(target=worker, daemon=True).start()
 
@@ -1516,6 +1631,10 @@ class GlassNoteCapsuleButton(QPushButton):
         painter.setBrush(Qt.BrushStyle.NoBrush)
         m = self.width() * 0.31
         painter.drawRoundedRect(QRectF(m, m, self.width() - 2 * m, self.height() - 2 * m), 2.0, 2.0)
+        if note_has_reply(self.note.get("text", "")):  # círculo encendido abajo a la derecha: ya tiene R:
+            bh = max(11.0, self.height() * 0.40)
+            bw = bh * REPLY_BADGE_RATIO
+            paint_reply_badge(painter, QRectF(self.width() - bw + 1.0, self.height() - bh + 1.0, bw, bh))
 
 
 class LogoButton(QPushButton):
@@ -1659,6 +1778,9 @@ class FloatingGlassNotePopup(QWidget):
         bottom.addWidget(btn_edit)
         bottom.addStretch()
         bottom.addWidget(btn_del)
+        if note_has_reply(note["text"]):  # círculo encendido, abajo a la derecha
+            bottom.addSpacing(6)
+            bottom.addWidget(reply_badge_label(20))
         self.root_layout.addLayout(bottom)
 
         self.mode = "ver"
@@ -1813,6 +1935,11 @@ class FloatingSideCapsuleWindow(QWidget):
                                      " QPushButton:hover { background: #9E2A1C; }")
         self.btn_close.clicked.connect(self.close_requested.emit)
         self.btn_close.hide()
+        self._expanded = False
+        self._y_collapsed = None
+        self._collapse_timer = QTimer(self)
+        self._collapse_timer.setSingleShot(True)
+        self._collapse_timer.timeout.connect(self._collapse_if_away)
         self.rebuild_capsules()
 
     def _apply_window_flags(self):
@@ -1837,6 +1964,8 @@ class FloatingSideCapsuleWindow(QWidget):
 
     # ---- ✕ al pasar el cursor -------------------------------------------------------------
     def enterEvent(self, event):
+        self._collapse_timer.stop()
+        self._set_expanded(True)
         self.btn_close.move((self.width() - self.btn_close.width()) // 2, 2)
         self.btn_close.show()
         self.btn_close.raise_()
@@ -1844,7 +1973,28 @@ class FloatingSideCapsuleWindow(QWidget):
 
     def leaveEvent(self, event):
         self.btn_close.hide()
+        self._collapse_timer.start(450)
         super().leaveEvent(event)
+
+    # ---- notas desplegables (1.7.0): la barra fija solo muestra logo, +, grabar y print -----
+    def _set_expanded(self, on: bool):
+        if on == self._expanded or self._drag is not None:
+            return
+        self._expanded = on
+        top = self.y()
+        self.notes_box.setVisible(on and self.notes_box.layout().count() > 0)
+        self.adjustSize()
+        screen = QApplication.primaryScreen().availableGeometry()
+        y = top if top + self.height() <= screen.bottom() else max(screen.top(), screen.bottom() - self.height())
+        if on:
+            self._y_collapsed = top
+        elif self._y_collapsed is not None:
+            y = self._y_collapsed
+        self.move(self.x(), y)
+
+    def _collapse_if_away(self):
+        if not self.underMouse():
+            self._set_expanded(False)
 
     # ---- mover a mano ---------------------------------------------------------------------
     def mousePressEvent(self, event):
@@ -1898,12 +2048,22 @@ class FloatingSideCapsuleWindow(QWidget):
         btn_print.clicked.connect(self.print_requested.emit)
         self.layout_box.addWidget(btn_print, 0, Qt.AlignmentFlag.AlignHCenter)
         self.set_recording(getattr(self, "_recording", False))
+        self.notes_box = QWidget()
+        self.notes_box.setStyleSheet("background: transparent;")
+        nb = QVBoxLayout(self.notes_box)
+        nb.setContentsMargins(0, 0, 0, 0)
+        nb.setSpacing(8)
         for note in self.storage.visible_notes()[:8]:
             cap = GlassNoteCapsuleButton(note, size=32)
             cap.clicked.connect(lambda _=False, n=note: self.popup.show_registered_note(n, self._popup_anchor()))
-            self.layout_box.addWidget(cap, 0, Qt.AlignmentFlag.AlignHCenter)
+            nb.addWidget(cap, 0, Qt.AlignmentFlag.AlignHCenter)
+        self.layout_box.addWidget(self.notes_box, 0, Qt.AlignmentFlag.AlignHCenter)
+        expandida = getattr(self, "_expanded", False) and self.underMouse()
+        self._expanded = expandida
+        self.notes_box.setVisible(expandida and nb.count() > 0)
         self.adjustSize()
-        self.reposition()
+        if not expandida:
+            self.reposition()
 
     def set_recording(self, on: bool):
         self._recording = on
@@ -1977,7 +2137,9 @@ class DesktopWidgetWindow(QWidget):
         self._drag_offset = None
         self._press_pos = None
         self.event_idx = 0
-        self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.Tool)
+        # Fijo en el escritorio: siempre detrás de las demás ventanas, nunca encima (1.7.0)
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.Tool
+                            | Qt.WindowType.WindowStaysOnBottomHint)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setToolTip("Clic: abrir w-notes · Arrastrar: mover")
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
@@ -2406,6 +2568,11 @@ class NoteCard(QFrame):
         txt.setStyleSheet("font-size: 12px;")
         v.addWidget(top)
         v.addWidget(txt, 1)
+        if note_has_reply(note["text"]):  # círculo encendido en el borde inferior derecho
+            badge = reply_badge_label(18, self)
+            v.setContentsMargins(12, 10, 12, 20)  # el texto no pasa por debajo del círculo
+            badge.move(self.width() - badge.width() - 6, self.height() - badge.height() - 4)
+            badge.raise_()
         self._on_open, self._note = on_open, note
 
     def mouseReleaseEvent(self, event):
@@ -3211,19 +3378,22 @@ class WNoteController(QObject):
         self.main_window.settings_updated.connect(self._apply_settings)
         self.main_window.hotkey_pressed.connect(self._on_hotkey)
 
-        # Sincronía: al cambiar algo (1,5 s después), cada 20 s, agenda cada 5 min, clima cada 15 min
+        # Sincronía: al cambiar algo (1,5 s después), cada 20 s, agenda cada 5 min, clima cada 15 min,
+        # respaldo de prints y actas en Drive cada 2 min
         self._sync_debounce = QTimer(self)
         self._sync_debounce.setSingleShot(True)
         self._sync_debounce.timeout.connect(self.cloud_sync.sync_async)
         self._timers = []
         for ms, fn in ((20_000, self.cloud_sync.sync_async), (300_000, self.cloud_sync.fetch_agenda_async),
-                       (900_000, self.weather.fetch_async), (1_800_000, self.location.refresh_async)):
+                       (900_000, self.weather.fetch_async), (1_800_000, self.location.refresh_async),
+                       (120_000, self.cloud_sync.backup_files_async)):
             t = QTimer(self)
             t.timeout.connect(fn)
             t.start(ms)
             self._timers.append(t)
         self.cloud_sync.sync_async()
         self.cloud_sync.fetch_agenda_async()
+        QTimer.singleShot(20_000, self.cloud_sync.backup_files_async)
         self.weather.fetch_async()            # clima con la última ubicación conocida…
         self.location.refresh_async()         # …y luego con la ubicación actual
         QTimer.singleShot(1500, self.main_window.set_lan_label)
@@ -3237,7 +3407,7 @@ class WNoteController(QObject):
 
         self.focus_timer = QTimer(self)
         self.focus_timer.timeout.connect(self._check_windows_foreground_app)
-        self.focus_timer.start(700)
+        self.focus_timer.start(300)
         app.aboutToQuit.connect(self._on_quit)
 
     # ---- bandeja --------------------------------------------------------------------
@@ -3342,6 +3512,9 @@ class WNoteController(QObject):
             self.desktop_widget._trigger_record()
 
     def open_main_window(self):
+        # La app y la barra no conviven: al abrir la app, la barra se oculta (vuelve al cerrarla)
+        self.capsule_closed = False
+        self.side_capsule.hide()
         w = self.main_window
         if w.isMinimized():
             w.setWindowState(w.windowState() & ~Qt.WindowState.WindowMinimized)
@@ -3358,8 +3531,7 @@ class WNoteController(QObject):
 
     def _apply_settings(self):
         self.side_capsule.refresh_settings()
-        if self.storage.config.get("capsule_always_on_top", True) and not self.capsule_closed:
-            self.side_capsule.show()
+        self._sync_windows()
 
     def _on_quit(self):
         if self.recorder.is_recording:
@@ -3379,34 +3551,25 @@ class WNoteController(QObject):
         return {int(w.winId()) for w in (self.desktop_widget, self.side_capsule, self.popup, self.main_window)}
 
     def _check_windows_foreground_app(self):
-        if sys.platform != "win32":
-            return
-        auto = self.storage.config.get("auto_dock_on_other_app", True)
-        always = self.storage.config.get("capsule_always_on_top", True)
-        if not auto:
+        self._sync_windows()
+
+    def _sync_windows(self):
+        """Reglas 1.7.0 (Sebastián, 25-11-2026):
+        · widget: siempre visible, fijo en el escritorio (detrás de todo);
+        · barra y app se reemplazan: app abierta → barra oculta; app cerrada o minimizada → barra visible;
+        · barra y widget conviven, app y widget también."""
+        try:
             if not self.desktop_widget.isVisible():
                 self.desktop_widget.show()
-            return
-        try:
-            user32 = ctypes.windll.user32
-            hwnd = user32.GetForegroundWindow()
-            if not hwnd or hwnd in self._own_handles():
-                return
-            length = user32.GetWindowTextLengthW(hwnd)
-            buf = ctypes.create_unicode_buffer(length + 1)
-            user32.GetWindowTextW(hwnd, buf, length + 1)
-            title = buf.value.strip()
-            on_desktop = not title or title in ("Program Manager", "Windows Shell Experience Host")
-            if on_desktop:
-                if not self.desktop_widget.isVisible():
-                    self.desktop_widget.show()
-                if not always and self.side_capsule.isVisible():
-                    self.side_capsule.hide()
-            else:
-                if self.desktop_widget.isVisible():
-                    self.desktop_widget.hide()
-                if not self.side_capsule.isVisible() and not self.capsule_closed:
-                    self.side_capsule.show()
+            w = self.main_window
+            app_abierta = w.isVisible() and not w.isMinimized()
+            quiere_barra = (not app_abierta and not self.capsule_closed
+                            and self.storage.config.get("capsule_always_on_top", True))
+            if quiere_barra and not self.side_capsule.isVisible():
+                self.side_capsule.reposition()
+                self.side_capsule.show()
+            elif not quiere_barra and self.side_capsule.isVisible():
+                self.side_capsule.hide()
         except Exception:
             pass
 

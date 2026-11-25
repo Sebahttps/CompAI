@@ -18,6 +18,8 @@
  *   GET  <url>?k=TOKEN                 → { ok, notes:[...], server_time }
  *   GET  <url>?k=TOKEN&action=agenda   → { ok, events:[...] }
  *   POST <url>  {k, notes:[...]}       → { ok, notes:[...] }  (fusiona, no pisa)
+ *   POST <url>  {k, action:'archivo', ruta, mime, b64} → { ok, archivo:{id,nombre,carpeta} }
+ *        Respaldo de prints y actas del PC en Drive: compAI / w-notes / <ruta>.
  * Nota: {id, theme_key, text, created_at, updated_at, deleted, source}
  * Fusión: por id; gana el updated_at mayor. Borrar = deleted:true (lápida).
  */
@@ -27,6 +29,14 @@ var COLS = ['id', 'theme_key', 'text', 'created_at', 'updated_at', 'deleted', 's
 var LAPIDA_DIAS = 30;      // las notas archivadas se purgan tras 30 días
 var MAX_NOTAS = 2000;
 var MAX_TEXTO = 5000;
+
+// Respaldo de prints y actas (22-11-2026): carpeta «compAI» del Drive de stapiamena@compai.cl.
+// Se puede cambiar sin tocar el código con la propiedad del script RESPALDO_CARPETA_ID.
+var RESPALDO_CARPETA_ID = '1PS9ZWjRAda-WnZ7EgLP4JNuoiH_c5xLT';
+var RESPALDO_SUBCARPETA = 'w-notes';
+var RESPALDO_RAICES = ['Prints', 'Actas_Reuniones'];   // lo único que se acepta
+var RESPALDO_EXT = /\.(png|jpg|jpeg|json|md|txt)$/i;    // sin audio: pesa demasiado
+var RESPALDO_MAX_BYTES = 25 * 1024 * 1024;
 
 /* ── Entrada HTTP ─────────────────────────────────────────────────────── */
 
@@ -47,6 +57,7 @@ function doPost(e) {
   }
   var k = body.k || ((e && e.parameter) || {}).k;
   if (!autorizado_(k)) return json_({ ok: false, error: 'token' });
+  if (body.action === 'archivo') return json_(guardarArchivo_(body));
 
   var lock = LockService.getScriptLock();
   lock.waitLock(20000);
@@ -180,6 +191,53 @@ function fusionar_(locales, entrantes) {
     .filter(function (x) { return !(x.deleted && x.updated_at < limite); })
     .sort(function (a, b) { return b.created_at - a.created_at; });
   return lista.slice(0, MAX_NOTAS);
+}
+
+/* ── Respaldo de prints y actas en Drive ──────────────────────────────── */
+
+/** Ejecutar a mano una vez después de pegar esta versión: pide el permiso de Drive y crea las carpetas. */
+function autorizarRespaldo() {
+  var base = carpetaRespaldo_(['Prints']);
+  carpetaRespaldo_(['Actas_Reuniones', 'Capturas_Clave']);
+  Logger.log('Respaldo listo en: ' + base.getParents().next().getUrl());
+}
+
+/** Carpeta compAI / w-notes / <partes…>; crea lo que falte. */
+function carpetaRespaldo_(partes) {
+  var id = PropertiesService.getScriptProperties().getProperty('RESPALDO_CARPETA_ID') || RESPALDO_CARPETA_ID;
+  var carpeta = DriveApp.getFolderById(id);
+  [RESPALDO_SUBCARPETA].concat(partes).forEach(function (nombre) {
+    var it = carpeta.getFoldersByName(nombre);
+    carpeta = it.hasNext() ? it.next() : carpeta.createFolder(nombre);
+  });
+  return carpeta;
+}
+
+/** Guarda (o reemplaza) un archivo del PC. ruta = «Prints/x.png», «Actas_Reuniones/Capturas_Clave/y.png»… */
+function guardarArchivo_(body) {
+  var partes = String(body.ruta || '').replace(/\\/g, '/').split('/').filter(String);
+  var nombre = partes.pop() || '';
+  var valido = /^[^\/\\:*?"<>|\u0000-\u001f]{1,180}$/;
+  if (!partes.length || RESPALDO_RAICES.indexOf(partes[0]) < 0 || partes.length > 3) return { ok: false, error: 'ruta' };
+  for (var i = 0; i < partes.length; i++) {
+    if (!valido.test(partes[i]) || partes[i] === '.' || partes[i] === '..') return { ok: false, error: 'ruta' };
+  }
+  if (!valido.test(nombre) || !RESPALDO_EXT.test(nombre)) return { ok: false, error: 'tipo' };
+  var bytes;
+  try { bytes = Utilities.base64Decode(String(body.b64 || '')); } catch (err) { return { ok: false, error: 'b64' }; }
+  if (!bytes.length || bytes.length > RESPALDO_MAX_BYTES) return { ok: false, error: 'peso' };
+
+  var lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    var carpeta = carpetaRespaldo_(partes);
+    var viejos = carpeta.getFilesByName(nombre);
+    while (viejos.hasNext()) viejos.next().setTrashed(true);   // una sola versión por nombre
+    var archivo = carpeta.createFile(Utilities.newBlob(bytes, String(body.mime || 'application/octet-stream'), nombre));
+    return { ok: true, archivo: { id: archivo.getId(), nombre: nombre, carpeta: partes.join('/') }, server_time: Date.now() };
+  } finally {
+    lock.releaseLock();
+  }
 }
 
 /* ── Agenda (Google Calendar) ─────────────────────────────────────────── */

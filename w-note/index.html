@@ -71,6 +71,9 @@ main { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; max
   box-shadow: 0 10px 24px rgba(0,20,60,.14); user-select: text; -webkit-user-select: text; }
 .card .top { display: flex; justify-content: space-between; align-items: center; gap: 8px; font: 500 10.5px/1.3 var(--mono);
   text-transform: uppercase; letter-spacing: .08em; opacity: .9; margin-bottom: 6px; }
+.card .rtick { position: absolute; bottom: 12px; right: 12px; width: 12px; height: 12px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle at 40% 36%, #E4F7FD 0, #2E9CC4 45%, #0F5C7A 100%);
+  box-shadow: 0 0 0 1px rgba(255,255,255,.85), 0 0 7px 3px rgba(63,182,222,.75); }
 .card .txt { font-size: 15px; line-height: 1.45; font-weight: 500; white-space: pre-wrap; word-break: break-word; }
 .card .actions { display: flex; gap: 8px; margin-top: 10px; }
 .card .actions button { font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 999px; background: rgba(0,0,0,.2);
@@ -326,6 +329,10 @@ function renderChips(visible) {
     .join("");
 }
 
+/* Círculo encendido en petróleo, abajo a la derecha: la nota ya tiene respuesta del agente («R:»). */
+const hasReply = text => /^[ \t]*R:/m.test(String(text || ""));
+const RTICK = `<span class="rtick" role="img" aria-label="Respondida por el agente" title="Respondida por el agente"></span>`;
+
 function render() {
   const visible = notes.filter(n => !n.deleted);
   renderChips(visible);
@@ -340,7 +347,8 @@ function render() {
   if (!list.length) { feed.innerHTML = `<div class="empty">No hay notas todavía.<br>Escribe abajo y toca <b>+</b>.</div>`; return; }
   feed.innerHTML = list.map(n => {
     const t = theme(n.theme_key);
-    return `<article class="card ${t.light ? "" : "dark-text"}" style="background:${t.hex};color:${t.light ? "#fff" : "#141414"};margin-bottom:12px">
+    const tick = hasReply(n.text) ? RTICK : "";
+    return `<article class="card ${t.light ? "" : "dark-text"}" style="background:${t.hex};color:${t.light ? "#fff" : "#141414"};margin-bottom:12px">${tick}
       <div class="top"><span>${esc(t.label)}</span><span>${esc(when(n.created_at))}${n.source ? " · " + esc(n.source) : ""}</span></div>
       <div class="txt">${esc(n.text)}</div>
       <div class="actions"><button data-copy="${esc(n.id)}">Copiar</button><button class="danger" data-del="${esc(n.id)}">Archivar</button></div>
