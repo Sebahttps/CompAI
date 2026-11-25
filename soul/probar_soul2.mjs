@@ -25,6 +25,7 @@ async function flujo(browser, plan, vw, persona, vh = vw < 700 ? 844 : 900, pagi
   await p.route('**/gc.zgo.at/**', (r) => r.fulfill({ status: 200, contentType: 'application/javascript', body: '' })); const errores = []; let envio = null;
   p.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning') errores.push(m.text()); });
   p.on('pageerror', (e) => errores.push('pageerror ' + e.message));
+  await p.route('**/accounts.google.com/gsi/client', (r) => r.fulfill({ status: 200, contentType: 'application/javascript', body: 'window.google={accounts:{id:{initialize:function(){},renderButton:function(){}}}};' }));   // la entrada con Google del enlace (24-11-2026), simulada
   await p.route('**/script.google.com/**', (r) => { envio = JSON.parse(r.request().postData()); r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: '{"ok":true}' }); });
   await p.goto(BASE + '?plan=' + plan);
   await p.evaluate(() => 0);
@@ -72,17 +73,17 @@ for (const plan of [0, 1, 2]) for (const vw of [390, 1440]) {
   ok(total === esperado[plan], `${t}: ${total} preguntas, se esperaban ${esperado[plan]}`);
   const m = await p.evaluate(async () => {
     await document.fonts.ready;
-    const vp = document.querySelector('.vp'), h = vp.querySelector('h2.tit'), cs = getComputedStyle(h), hero = vp.querySelector('.hero');
+    const vp = document.querySelector('.vp'), tt = vp.querySelector('.titular'), h = tt.querySelector('.remate'), cs = getComputedStyle(h), hero = vp.querySelector('.hero');
     const pie = vp.querySelector('footer .pie'), pc = vp.querySelector('.pie-compai'), im = pc.querySelector('img');
     const r = (e) => e.getBoundingClientRect();
     const dir = vp.dataset.dir, fam = { escenario: 'Syne', taller: 'Bricolage Grotesque', obra: 'Archivo' }[dir];
     return {
-      dir, h2: h.textContent, fs: parseFloat(cs.fontSize), ff: cs.fontFamily, heroH: r(hero).height, vh: innerHeight,
+      dir, h2: tt.textContent, fs: parseFloat(cs.fontSize), ff: cs.fontFamily, heroH: r(hero).height, vh: innerHeight,
       overflow: document.documentElement.scrollWidth - innerWidth, texto: vp.innerText,
       pcW: r(pc).width, pcH: r(pc).height, imW: r(im).width, imH: r(im).height, imTop: getComputedStyle(im).top, pieMargen: getComputedStyle(pie).marginTop,
-      pieTexto: vp.querySelector('footer').innerText.trim(), pieImg: im.getAttribute('src'), pieAlt: im.alt, fuenteOk: document.fonts.check('800 20px "' + fam + '"'),
+      pieTexto: pie.innerText.trim(), pieImg: im.getAttribute('src'), pieAlt: im.alt, fuenteOk: document.fonts.check('800 20px "' + fam + '"'),
       corp: document.querySelector('.corp') ? document.querySelector('.corp').innerText : '', secciones: [...vp.querySelectorAll('section.s')].map((s) => parseFloat(getComputedStyle(s).paddingTop)),
-      cortado: [...vp.querySelectorAll('h2.tit,.cie,.mani,h3')].filter((e) => e.scrollWidth > e.clientWidth + 1).map((e) => e.textContent.slice(0, 20)),
+      cortado: [...vp.querySelectorAll('.titular,.firma,.cita,h3')].filter((e) => e.scrollWidth > e.clientWidth + 1).map((e) => e.textContent.slice(0, 20)),
       fotoBiblioteca: /oficio-\d\d\.webp/.test(vp.innerHTML), nBtnHero: hero.querySelectorAll('.acc a').length
     };
   });
@@ -125,7 +126,7 @@ for (const plan of [0, 1, 2]) for (const vw of [390, 1440]) {
 const salida = [];
 for (const [nombre, per] of [['charly', P1], ['pedro', P2], ['miguel', PM]]) {
   const { ctx, p } = await flujo(b, 1, 390, per);
-  const r = await p.evaluate(() => ({ h2: document.querySelector('.vp h2.tit').textContent, dir: document.querySelector('.vp').dataset.dir, mani: document.querySelector('.vp .mani')?.textContent || '', cie: document.querySelector('.vp .cie')?.textContent || '', frases: [...document.querySelectorAll('.corp ol li')].map((l) => l.textContent), nav: document.querySelector('.vp .logo b').textContent }));
+  const r = await p.evaluate(() => ({ h2: document.querySelector('.vp .titular').textContent, dir: document.querySelector('.vp').dataset.dir, mani: document.querySelector('.vp .cita')?.textContent || '', cie: document.querySelector('.vp .firma')?.textContent || '', frases: [...document.querySelectorAll('.corp ol li')].map((l) => l.textContent), nav: document.querySelector('.vp .marca .nom').textContent }));
   salida.push([nombre, r]);
   if (nombre !== 'charly') await p.locator('.vp').screenshot({ path: `${SALIDA}/borrador-${nombre}-390.png` });
   await ctx.close();
@@ -169,7 +170,7 @@ console.log('vecino:', salida.map(([n, r]) => `${n} → «${r.h2}» (${r.dir}, $
 // nombre largo en móvil: se lee entero (ajusta, no corta)
 {
   const { ctx, p } = await flujo(b, 0, 390, PA);
-  const r = await p.evaluate(() => { const l = document.querySelector('.vp .logo b'), nav = document.querySelector('.vp .nav'); const a = l.getBoundingClientRect(), c = nav.getBoundingClientRect(); return { sw: l.scrollWidth, cw: l.clientWidth, dentro: a.right <= c.right + 1 && a.left >= c.left - 1, ov: getComputedStyle(l).textOverflow, t: l.textContent }; });
+  const r = await p.evaluate(() => { const l = document.querySelector('.vp .marca .nom'), nav = document.querySelector('.vp .nav'); const a = l.getBoundingClientRect(), c = nav.getBoundingClientRect(); return { sw: l.scrollWidth, cw: l.clientWidth, dentro: a.right <= c.right + 1 && a.left >= c.left - 1, ov: getComputedStyle(l).textOverflow, t: l.textContent }; });
   ok(r.sw <= r.cw + 1 && r.dentro && r.ov === 'clip', `nombre cortado en 390: ${JSON.stringify(r)}`);
   await p.locator('.vp').screenshot({ path: `${SALIDA}/borrador-mari-390.png` });
   // el enlace del correo vuelve a dibujar el borrador, sin POST ni datos de contacto
@@ -177,17 +178,17 @@ console.log('vecino:', salida.map(([n, r]) => `${n} → «${r.h2}» (${r.dir}, $
   ok(env && /^[A-Za-z0-9_-]{10,6000}$/.test(env.borrador), 'el POST no trae el borrador codificado');
   const v = await ctx.newPage(); let post = false; v.on('request', (q) => { if (q.method() === 'POST') post = true; });
   await v.goto(BASE + '#borrador=' + env.borrador); await v.waitForSelector('.vp');
-  const vt = await v.evaluate(() => ({ h2: document.querySelector('.vp h2.tit').textContent, h1: document.querySelector('h1.q').textContent, acc: document.getElementById('acciones').innerText, tel: document.body.innerText.includes('1234 5678') }));
+  const vt = await v.evaluate(() => ({ h2: document.querySelector('.vp .titular').textContent, h1: document.querySelector('h1.q').textContent, acc: document.getElementById('acciones').innerText, tel: (() => { const c = document.body.cloneNode(true); c.querySelectorAll('.vp').forEach((e) => e.remove()); return c.innerText.includes('1234 5678'); })()   /* el WhatsApp del sitio es contenido del sitio; lo que no debe aparecer es el de la ficha */ }));
   ok(vt.h2.includes('Le explico a cada cliente') && /Borrador de Carlos/.test(vt.h1) && !post && !vt.tel && vt.acc.trim() === '', `enlace del borrador: ${JSON.stringify(vt)}`);
   await ctx.close();
 }
 // cambiar de dirección cambia la tipografía
 {
   const { ctx, p } = await flujo(b, 0, 390, P1);
-  const antes = await p.evaluate(() => getComputedStyle(document.querySelector('.vp h2.tit')).fontFamily);
+  const antes = await p.evaluate(() => getComputedStyle(document.querySelector('.vp .titular .remate')).fontFamily);
   const actual = await p.evaluate(() => ['escenario', 'taller', 'obra'].indexOf(document.querySelector('.vp').dataset.dir));
   await p.click(`[data-a="dir"][data-i="${(actual + 1) % 3}"]`);
-  const despues = await p.evaluate(() => getComputedStyle(document.querySelector('.vp h2.tit')).fontFamily);
+  const despues = await p.evaluate(() => getComputedStyle(document.querySelector('.vp .titular .remate')).fontFamily);
   ok(antes !== despues, 'cambiar la dirección no cambió la tipografía');
   await ctx.close();
 }
@@ -198,13 +199,15 @@ console.log('vecino:', salida.map(([n, r]) => `${n} → «${r.h2}» (${r.dir}, $
   const { ctx, p } = await flujo(b, 1, 390, { ...P1, nunca: larga, momento: larga });
   const r = await p.evaluate(() => {
     const f = (el) => { const c = getComputedStyle(el); return c.fontSize + '|' + c.fontFamily; };
-    const nums = [...document.querySelectorAll('.vp .num')].map(f);
-    const mns = [...document.querySelectorAll('.vp .tres .mn')].map(f);
-    const tres = document.querySelector('.vp .tres');
-    return { nums, mns, ancho: document.documentElement.scrollWidth, vw: innerWidth, texto: tres ? tres.textContent : '', desbordeTres: tres ? tres.scrollWidth - tres.clientWidth : 0 };
+    const nums = [];
+    // desde el 24-11-2026 «Mi límite» encabeza el manifiesto (rótulo h2 de la frase grande) y «Mi vara» va debajo
+    const mns = [...document.querySelectorAll('.vp .manifiesto > .rotulo, .vp .tres .rotulo')].map(f);
+    const tit = [...document.querySelectorAll('.vp .manifiesto > .rotulo, .vp .tres .rotulo')].map((e) => e.textContent);
+    const tres = document.querySelector('.vp .manifiesto');
+    return { nums, mns, tit, ancho: document.documentElement.scrollWidth, vw: innerWidth, texto: tres ? tres.textContent : '', desbordeTres: tres ? tres.scrollWidth - tres.clientWidth : 0 };
   });
-  ok(r.mns.length === 2, `manifiesto: se esperaban 2 rótulos «I · / II ·» y hay ${r.mns.length}`);
-  ok(new Set(r.nums.concat(r.mns)).size === 1 && r.nums[0].startsWith('12px'), `manifiesto: rótulos con tamaños distintos → ${[...new Set(r.nums.concat(r.mns))].join(' ; ')}`);
+  ok(r.mns.length === 2 && r.tit[0] === 'Mi límite' && r.tit[1] === 'Mi vara', `manifiesto: se esperaban «Mi límite» arriba y «Mi vara» debajo y hay ${r.tit.join(' / ')}`);
+  ok(new Set(r.nums.concat(r.mns)).size === 1 && r.mns[0].startsWith('15px'), `manifiesto: rótulos con tamaños distintos → ${[...new Set(r.nums.concat(r.mns))].join(' ; ')}`);
   ok(r.texto.includes('aunque me paguen el doble') || r.texto.toLowerCase().includes('aunque me paguen el doble'), 'manifiesto: la respuesta larga llegó cortada');
   ok(r.ancho <= r.vw && r.desbordeTres <= 0, `manifiesto: desborde horizontal con texto largo (${r.ancho}/${r.vw}, tres ${r.desbordeTres})`);
   await ctx.close();
@@ -221,7 +224,7 @@ console.log('vecino:', salida.map(([n, r]) => `${n} → «${r.h2}» (${r.dir}, $
 // «Cómo te dicen» y «¿Tu negocio ya tiene nombre?» son dos preguntas (Sebastián, 23-11): el apodo es el trato, la marca es la marca
 {
   const SAL = process.env.SALIDA_MARCA || SALIDA;
-  const logo = (p) => p.evaluate(() => document.querySelector('.vp .logo b').textContent);
+  const logo = (p) => p.evaluate(() => document.querySelector('.vp .marca .nom').textContent);
   const filas = (env) => Object.fromEntries(env.resumen.map((r) => [r.k, r.v]));
   // paso 1: dos campos distintos, con su rótulo, su pista y sin decir que el apodo es la marca
   {

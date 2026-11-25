@@ -1,0 +1,124 @@
+{
+ "version": 1,
+ "nota": "Imágenes de servicio hechas con Gemini a partir de la foto de Waldo (02-11-2026); no son obra hecha. Portada: efecto «Vista aérea», ancha y vertical (24-11-2026); la medida la escribe soul/preparar_fotos.py. Textos alternativos y lema del sello: PROPUESTOS por Visu (23 y 24-11-2026), esperan el visto de Sebastián.",
+ "referencia": true,
+ "portada": {
+  "alt": "Waldo Castor visto desde arriba, tendido sobre la tierra de una obra y rodeado de sus herramientas ordenadas: martillos, huincha, nivel, serrucho y escuadra.",
+  "ancha": {
+   "src": "portada-ancha-1920.webp",
+   "w": 1920,
+   "h": 1072,
+   "srcset": [
+    [
+     "portada-ancha-1920.webp",
+     1920
+    ],
+    [
+     "portada-ancha-2560.webp",
+     2560
+    ]
+   ],
+   "medida": {
+    "zona": "izq",
+    "calma": {
+     "izq": 0.17,
+     "der": 0.37
+    },
+    "foco": "64% 55%",
+    "recorte": "64% 100%",
+    "sello": "izq",
+    "dirs": {
+     "obra": {
+      "letra": "oscura",
+      "velo": 0.3,
+      "p05": 6.12,
+      "modo": "imagen"
+     },
+     "taller": {
+      "letra": "oscura",
+      "velo": 0.34,
+      "p05": 6.04,
+      "modo": "imagen"
+     },
+     "escenario": {
+      "letra": "oscura",
+      "velo": 0.2,
+      "p05": 6.15,
+      "modo": "imagen"
+     }
+    }
+   }
+  },
+  "vertical": {
+   "src": "portada-vertical-1080.webp",
+   "w": 1080,
+   "h": 1935,
+   "srcset": [
+    [
+     "portada-vertical-1080.webp",
+     1080
+    ],
+    [
+     "portada-vertical-1536.webp",
+     1536
+    ]
+   ],
+   "medida": {
+    "zona": "arriba",
+    "calma": {
+     "arriba": 0.18
+    },
+    "foco": "48% 64%",
+    "recorte": "50% 0%",
+    "sello": "der",
+    "dirs": {
+     "obra": {
+      "letra": "oscura",
+      "velo": 0.3,
+      "p05": 6.18,
+      "modo": "imagen"
+     },
+     "taller": {
+      "letra": "oscura",
+      "velo": 0.34,
+      "p05": 6.09,
+      "modo": "imagen"
+     },
+     "escenario": {
+      "letra": "oscura",
+      "velo": 0.18,
+      "p05": 6.03,
+      "modo": "imagen"
+     }
+    }
+   }
+  }
+ },
+ "servicios": [
+  {
+   "servicio": "Arreglos y recambio de materiales",
+   "src": "enchufe.webp",
+   "w": 800,
+   "h": 1072,
+   "alt": "Waldo cambiando un enchufe, con la caja de herramientas abierta en el piso."
+  },
+  {
+   "servicio": "Rediseño y ampliaciones",
+   "src": "planos.webp",
+   "w": 800,
+   "h": 1072,
+   "alt": "Waldo revisando planos de una casa sobre una mesa de madera."
+  },
+  {
+   "servicio": "Construcciones",
+   "src": "viga.webp",
+   "w": 800,
+   "h": 1072,
+   "alt": "Waldo midiendo una viga con huincha en una obra con la estructura del techo armada."
+  }
+ ],
+ "sello": {
+  "lema": "Hecho a diente",
+  "gesto": "castor"
+ }
+}

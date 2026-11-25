@@ -14,7 +14,9 @@ body{background:#080A09}
 .vacio{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;gap:16px;padding:32px 24px;max-width:560px;margin:0 auto;color:#F5F0E4;font-family:var(--texto)}
 .vacio h1{margin:0;font:800 34px/1 var(--display);letter-spacing:-.02em}
 .vacio p{margin:0;font-size:18px;line-height:1.5;color:#B8B3A6}
+.sello-prueba{position:fixed;left:12px;bottom:12px;z-index:50;max-width:calc(100vw - 24px);padding:6px 12px;border-radius:999px;background:rgba(8,10,9,.78);color:#F5F0E4;font:600 12px/1.3 var(--texto,system-ui);letter-spacing:.02em;pointer-events:none}
 .vacio a{display:inline-flex;align-items:center;min-height:48px;padding:0 24px;border-radius:999px;background:#F4A574;color:#1F3A4D;font-weight:600;text-decoration:none;align-self:flex-start}
+.vacio a.pagar~a:not(.pagar){background:transparent;color:#F5F0E4;box-shadow:inset 0 0 0 1.5px #F5F0E4}
 </style>
 </head>
 <body>
@@ -27,6 +29,7 @@ body{background:#080A09}
 <script src="../escenas.js"></script>
 <script src="../arte.js"></script>
 <script src="../sitio.js"></script>
+<script src="../movimiento.js"></script>
 <script src="sitio-publico.js"></script>
 </body>
 </html>

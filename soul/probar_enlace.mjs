@@ -25,7 +25,10 @@ async function flujo(browser, plan, vw, persona, vh = vw < 700 ? 844 : 900, pagi
   await p.route('**/gc.zgo.at/**', (r) => r.fulfill({ status: 200, contentType: 'application/javascript', body: '' })); const errores = []; let envio = null;
   p.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning') errores.push(m.text()); });
   p.on('pageerror', (e) => errores.push('pageerror ' + e.message));
-  await p.route('**/script.google.com/**', (r) => { envio = JSON.parse(r.request().postData()); r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: '{"ok":true}' }); });
+  // pago a la semana (24-11-2026): el enlace sale tras entrar con Google y registrar el sitio; Google y el registro se simulan
+  await p.route('**/accounts.google.com/gsi/client', (r) => r.fulfill({ status: 200, contentType: 'application/javascript', body:
+    `window.google={accounts:{id:{initialize:function(o){window.__gcb=o.callback;},renderButton:function(el){el.innerHTML='<button type="button" data-prueba="google">Continuar con Google</button>';el.firstChild.onclick=function(){window.__gcb({credential:'tok-prueba'});};}}}};` }));
+  await p.route('**/script.google.com/**', (r) => { const q = JSON.parse(r.request().postData()); if (q.tipo !== 'sitio') envio = q; r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: q.tipo === 'sitio' ? '{"ok":true,"id":"sprueba00001","estado":"prueba","dias":7}' : '{"ok":true}' }); });
   await p.goto(BASE + '?plan=' + plan);
   await p.evaluate(() => 0);
   const sig = () => p.click('#btn-next');
@@ -60,6 +63,7 @@ async function flujo(browser, plan, vw, persona, vh = vw < 700 ? 844 : 900, pagi
   }
   await p.click('[data-a="modo"][data-i="0"]'); await p.fill('[data-k="tel"]', '+56 9 1234 5678');
   await sig(); await p.waitForSelector('.vp'); await p.waitForTimeout(400);
+  await p.click('#g-btn-enl [data-prueba="google"]'); await p.waitForSelector('#enl-txt');
   return { ctx, p, errores, total, envio: () => envio, gc: () => p.evaluate(() => window.__gc) };
 }
 
@@ -87,7 +91,8 @@ for (const c of casos) {
   const portapapeles = await p.evaluate(() => navigator.clipboard.readText()).catch(() => enl.txt);
   ok(portapapeles === enl.txt, `${t}: el portapapeles no tiene el enlace`);
   const e = envio(); ok(e && /^[A-Za-z0-9_-]{10,6000}$/.test(e.borrador), `${t}: el POST trae un borrador que Code.gs rechazaría (${e && e.borrador.length})`);
-  ok(e && enl.txt.endsWith('#' + e.borrador), `${t}: el enlace de la pantalla y el del correo no son el mismo código`);
+  const mismo = e && await p.evaluate(([b, u]) => { const S = SOUL_SITIO, x = S.decodificar(u.split('#')[1]); return x.sid === 'sprueba00001' && S.codificar(Object.assign(S.decodificar(b), { sid: x.sid })) === u.split('#')[1]; }, [e.borrador, enl.txt]);
+  ok(mismo, `${t}: el enlace de la pantalla no es el código del correo más el id del sitio`);
   ok(errores.length === 0, `${t}: consola con ruido en las preguntas → ${errores.join(' | ')}`);
   urls[t] = enl.txt;
   console.log(`${t}: código de ${enl.txt.split('#')[1].length} caracteres · ${enl.txt.length} la URL entera`);
@@ -119,7 +124,7 @@ for (const c of casos) for (const [vw, vh] of [[390, 844], [1440, 900]]) {
     const vp = document.querySelector('.vp'), r = (e) => e.getBoundingClientRect(), pc = vp.querySelector('.pie-compai'), im = pc.querySelector('img');
     const wa = [...vp.querySelectorAll('a[href^="https://wa.me/"]')].map((a) => a.href);
     return {
-      titulo: document.title, h2: vp.querySelector('h2.tit').textContent, texto: vp.innerText, overflow: document.documentElement.scrollWidth - innerWidth,
+      titulo: document.title, h2: vp.querySelector('.titular').textContent, texto: vp.innerText, overflow: document.documentElement.scrollWidth - innerWidth,
       form: !!vp.querySelector('form[data-cotiza]'), slug: vp.querySelector('form[data-cotiza]')?.dataset.cotiza, wa,
       cuestionario: !!document.querySelector('.app,#btn-next,.cab-app') || /Siguiente|Ver mi ficha|Empezar/.test(document.body.innerText),
       panel: !!vp.querySelector('[aria-label="Tu panel"]'), fake: !!vp.querySelector('.fake'),
@@ -183,6 +188,7 @@ for (const c of casos) for (const [vw, vh] of [[390, 844], [1440, 900]]) {
       where: ['Santiago', 'Domicilio', 'Online'], comunas: txt(200), insta: txt(40), fb: txt(40), fields: ['Fecha', 'Dirección', 'Cantidad', 'Fotos', 'Presupuesto', 'Horario'], avg: 3, reply: 3, books: 3, modalidad: 1, tel: '+56 9 1234 5678',
       origen: txt(220), unico: txt(90), nunca: txt(90), momento: txt(90), cifraN: '+1.500', cifraU: 'Otro', cifraOtro: txt(30), cierre: txt(80), dir: 1 });
     ST.svcs = [0, 1, 2, 3, 4, 5].map(() => ({ n: txt(70), p: '$150.000', d: txt(140), ph: 'lib', phName: '' }));
+    ST.sid = 'sabc123def45';   // el id del sitio (pago a la semana) también viaja en el código
     const c = S.codificar(ST), antes = btoa(unescape(encodeURIComponent(JSON.stringify(ST)))).length;
     const vuelta = S.decodificar(c);
     return { largo: c.length, sinRecortar: antes, igual: JSON.stringify(vuelta.svcs.map((v) => v.n)) === JSON.stringify(ST.svcs.map((v) => v.n)) && vuelta.cierre === ST.cierre && vuelta.tel === ST.tel };

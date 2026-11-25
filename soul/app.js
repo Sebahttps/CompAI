@@ -345,7 +345,7 @@
      Los datos técnicos (códigos, nombres de letra, contraste) van solo en el correo al estudio. */
   function corpHTML() {
     var di = dirActual(), d = M.DIRS[di], su = sup(), t3 = M.tres(ST);
-    var sw = [['Fondo', su.bg], ['Fondo suave', su.bg2], ['Letra', su.ink], ['Tu color', su.ac]];
+    var sw = [['Fondo', su.bg], ['Fondo suave', su.bg2], ['Letra', su.ink], ['Tu color', su.vivo]];
     return '<section class="corp" aria-label="Resumen corporativo"><span class="mono kick">Resumen corporativo</span><h2>' + esc(M.marcaNombre(ST)) + ': tu marca en una hoja</h2><dl>' +
       '<div><dt class="mono">Concepto</dt><dd>' + esc(M.concepto(ST, D)) + '</dd></div>' +
       '<div><dt class="mono">Estilo</dt><dd>' + esc(d.nombre + ' · ' + d.idea) + '</dd></div>' +
@@ -372,12 +372,58 @@
   function waUrl() { return 'https://wa.me/' + WSP + '?text=' + encodeURIComponent(waTexto()); }
   /* El enlace publico del sitio: las respuestas viajan en el # (sin servidor). Se muestra completo, se copia y se comparte por WhatsApp. */
   function enlaceUrl() { return new URL('s/', location.href).href.replace(/[?#].*$/, '') + '#' + codificar(); }
+  /* «Pago a la semana» (Grace y Sebastián, 24-11-2026): con el formulario conectado, el enlace se entrega solo después de
+     entrar con Google y registrar el sitio; el id que da el servidor viaja dentro del código (ST.sid). Sin endpoint ni
+     ID de Google (pruebas locales y maquetas) todo sigue como antes. TEXTOS PROPUESTOS: esperan el visto de Sebastián. */
+  var TXT_PRUEBA = {
+    entrar: 'Para recibir tu enlace, entra con tu cuenta de Google. Tu sitio queda de prueba por 7 días.',
+    sin_google: '¿No puedes entrar con Google? Escríbenos por WhatsApp',
+    preparando: 'Preparando tu enlace…',
+    prueba: 'Tu sitio queda de prueba por 7 días. Para seguir después, te escribimos por WhatsApp.',
+    apagado: 'Ya usaste tu prueba de 7 días. Para seguir con tu sitio, escríbenos por WhatsApp.',
+    espera: 'Tu sitio quedó en la fila. Te escribimos por WhatsApp para activarlo.',
+    error: 'No pudimos preparar tu enlace ahora.',
+    reintentar: 'Probar de nuevo',
+    wsp: 'Escribir por WhatsApp'
+  };
+  function conPrueba() { return !!(CFG.endpoint && CFG.googleId) && !VISTA; }
+  var registrando = false;
+  function wspCompai(txt) { return 'https://wa.me/' + WSP + '?text=' + encodeURIComponent(txt); }
   function enlaceHTML() {
+    if (conPrueba()) {
+      var R = ST.result || {}, cab = '<div class="enlace" role="group" aria-labelledby="l-enl"><h2 id="l-enl" tabindex="-1">Tu enlace</h2>';
+      var bWsp = function (t) { return '<a class="btn-s" href="' + esc(wspCompai('Hola, armé mi sitio SOUL (' + slug() + ') y ' + t)) + '" target="_blank" rel="noopener" data-a="wsp">' + esc(TXT_PRUEBA.wsp) + '</a>'; };
+      if (!R.ok) return '';   // no llegaron las respuestas: el camino es el WhatsApp de arriba; el enlace sale cuando las tengamos
+      if (!ST.sid) {
+        if (registrando) return cab + '<p class="hint" style="margin:0" role="status">' + esc(TXT_PRUEBA.preparando) + '</p></div>';
+        if (MEM.enlErr) return cab + '<p class="hint" style="margin:0" role="status">' + esc(TXT_PRUEBA.error) + '</p><div class="fila-b"><button type="button" class="btn-p" data-a="regenl">' + esc(TXT_PRUEBA.reintentar) + '</button>' + bWsp('no pude recibir mi enlace.') + '</div></div>';
+        return cab + '<p class="hint" style="margin:0">' + esc(TXT_PRUEBA.entrar) + '</p><div id="g-btn-enl" class="ret-g"></div>' +
+          '<p class="hint" style="margin:0"><a href="' + esc(wspCompai('Hola, armé mi sitio SOUL (' + slug() + ') y no puedo entrar con Google.')) + '" target="_blank" rel="noopener" data-a="wsp">' + esc(TXT_PRUEBA.sin_google) + '</a></p></div>';
+      }
+      if (MEM.sitioEstado === 'apagado') return cab + '<p class="hint" style="margin:0" role="status">' + esc(TXT_PRUEBA.apagado) + '</p><div class="fila-b">' + bWsp('quiero seguir con él.') + '</div></div>';
+      if (MEM.sitioEstado === 'espera') return cab + '<p class="hint" style="margin:0" role="status">' + esc(TXT_PRUEBA.espera) + '</p><div class="fila-b">' + bWsp('quedó en la fila.') + '</div></div>';
+    }
     var u = enlaceUrl(), wa = 'https://wa.me/?text=' + encodeURIComponent('Mira mi sitio: ' + u);
-    return '<div class="enlace" role="group" aria-labelledby="l-enl"><h2 id="l-enl">Tu enlace</h2><p class="hint" style="margin:0">Ábrelo en el celular: tu sitio se ve armado, como lo verían tus clientes. Mándalo a quien quieras.</p>' +
+    return '<div class="enlace" role="group" aria-labelledby="l-enl"><h2 id="l-enl" tabindex="-1">Tu enlace</h2><p class="hint" style="margin:0">Ábrelo en el celular: tu sitio se ve armado, como lo verían tus clientes. Mándalo a quien quieras.</p>' +
+      (conPrueba() && MEM.sitioEstado === 'prueba' ? '<p class="hint" style="margin:0">' + esc(TXT_PRUEBA.prueba) + '</p>' : '') +
       '<textarea class="resp-txt" readonly rows="3" id="enl-txt" aria-label="Tu enlace">' + esc(u) + '</textarea>' +
       '<div class="fila-b"><button type="button" class="btn-p" data-a="copiarenl">Copiar enlace</button><a class="btn-s" href="' + esc(wa) + '" target="_blank" rel="noopener" data-a="wsp">Compartir por WhatsApp</a><a class="btn-s" href="' + esc(u) + '" target="_blank" rel="noopener" data-a="wsp">Abrir mi sitio</a></div>' +
       '<span id="copiado-enl" role="status" class="hint"></span></div>';
+  }
+  /* Registra el sitio (tipo «sitio») con la cuenta de Google ya abierta. Una sola vez; el servidor devuelve el mismo id si ya existía. */
+  function pedirEnlace() {
+    if (!conPrueba() || ST.sid || registrando || MEM.enlErr || !(ST.result && ST.result.ok) || !conCuenta()) return;
+    registrando = true; render(false);
+    var ctrl = window.AbortController ? new AbortController() : null, t = setTimeout(function () { if (ctrl) ctrl.abort(); }, 30000);
+    fetch(CFG.endpoint, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, signal: ctrl ? ctrl.signal : undefined,
+      body: JSON.stringify({ tipo: 'sitio', idToken: MEM.gtoken, plan: D.PLANS[ST.plan].label, telefono: ST.tel.trim(), slug: slug(), nombre: ST.name.trim() }) })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        if (j && j.ok === true && /^[a-z0-9]{12}$/.test(String(j.id || ''))) { ST.sid = j.id; MEM.sitioEstado = String(j.estado || ''); return; }
+        if (j && j.error === 'cuenta') { MEM.gtoken = ''; return; }
+        MEM.enlErr = true;
+      }, function () { MEM.enlErr = true; })
+      .then(function () { clearTimeout(t); registrando = false; render(false, '#l-enl'); });
   }
   function copiarEnlace() {
     var ta = $('#enl-txt'), msg = $('#copiado-enl'), txt = ta ? ta.value : enlaceUrl();
@@ -401,11 +447,29 @@
   }
   /* Retrato con estilo (16-11-2026): SU foto, la misma cara, en el estilo que elija. Lo hace Gemini desde el
      Apps Script del formulario; la foto no se guarda. TEXTOS PROPUESTOS: esperan el visto de Sebastián. */
-  var ESTILOS_RET = [['fresh', 'fresh · tu oficio a la luz del día'], ['sun', 'sun · tu oficio como héroe'], ['vibe', 'vibe · escena legendaria']];
-  /* si el script en vivo todavía no conoce los estilos por plan, cae a uno de los de antes (sin gastar cupo) */
-  var RET_ANTES = { fresh: 'revista', sun: 'retro', vibe: 'facetado' };
+  /* Selector por secciones (23-11-2026), como el de efectos de Instagram. Los rótulos de sección y de efecto los autorizó
+     Sebastián («con su nombre original o acorde a soul»); no hay otros textos nuevos. Se elige UN efecto o, si está
+     activa la opción de combinar, hasta DOS de secciones distintas. Claves = las de RETRATO_ESTILOS en Code.gs. */
+  var SECC_RET = [
+    ['soul', 'soul', [['fresh', 'fresh · tu oficio a la luz del día'], ['sun', 'sun · tu oficio como héroe'], ['vibe', 'vibe · escena legendaria']]],
+    ['parati', 'Para ti', [['calida', 'Luz cálida'], ['cine', 'Cinematográfico']]],
+    ['color', 'Color y tono', [['gradacion', 'Gradación de cine'], ['estudio', 'Estudio suave']]],
+    ['nostalgia', 'Nostalgia', [['ochenta', 'Década de 1980']]],
+    ['surreal', 'Surreal', [['clones', 'Clones'], ['aerea', 'Vista aérea']]],
+    ['personajes', 'Personajes', [['arcilla', 'Arcilla'], ['anime', 'Anime']]]
+  ];
+  var ESTILOS_RET = [];   // lista plana [clave, rótulo, sección]
+  SECC_RET.forEach(function (sc) { sc[2].forEach(function (e) { ESTILOS_RET.push([e[0], e[1], sc[0]]); }); });
+  function infoEst(k) { return ESTILOS_RET.filter(function (e) { return e[0] === k; })[0] || ['', '', '']; }
+  /* El texto del botón «combinar» NO está autorizado todavía (PROPUESTO: «Combinar con otro efecto»): sin él en
+     config.js (retCombinar) no se muestra el botón y se elige un solo efecto, como siempre. */
+  var TXT_COMBINAR = String(CFG.retCombinar || '');
+  /* si el script en vivo todavía no conoce un efecto, cae a uno que sí conozca (sin gastar cupo ni mostrar error):
+     primero a los de plan (fresh/sun/vibe), y si tampoco, a los de antes */
+  var RET_ANTES = { calida: 'sun', cine: 'sun', gradacion: 'fresh', estudio: 'fresh', ochenta: 'retro', clones: 'fresh', aerea: 'fresh', arcilla: 'anime',
+    fresh: 'revista', sun: 'retro', vibe: 'facetado' };
   var ERR_RET = { tope: 'Por hoy ya se crearon todos los retratos. Vuelve mañana.', foto: 'Esa foto no sirve. Prueba con otra.',
-    'tope-persona': 'Ya creaste tus 3 retratos de hoy. Vuelve mañana.', cuenta: 'Vuelve a entrar con tu cuenta de Google.' };
+    'tope-persona': 'Ya creaste tus 4 retratos de hoy. Vuelve mañana.', cuenta: 'Vuelve a entrar con tu cuenta de Google.' };
   /* Cada persona entra con su cuenta de Google antes de crear (Sebastián, 16-11-2026): así el tope de 3 al día es
      por persona. El botón lo dibuja Google (accounts.google.com/gsi/client); el token vive solo en memoria. */
   function conCuenta() { return !!MEM.gtoken && Date.now() < (MEM.gexp || 0); }
@@ -420,15 +484,19 @@
     });
     return gsi;
   }
+  /* El botón de Google va donde haga falta: en el retrato (#g-btn) y en «Tu enlace» (#g-btn-enl). Una sola cuenta sirve para los dos. */
   function montarGoogle() {
-    var caja = $('#g-btn'); if (!caja) return;
+    var cajas = ['#g-btn', '#g-btn-enl'].map(function (s) { return $(s); }).filter(Boolean);
+    if (!cajas.length) return;
     cargarGoogle().then(function (id) {
-      if (!document.body.contains(caja)) return;
       id.initialize({ client_id: CFG.googleId, callback: function (r) {
         if (!r || !r.credential) return;
-        MEM.gtoken = r.credential; MEM.gexp = Date.now() + 50 * 60 * 1000; render(false, '[data-a="retrato"]');
+        MEM.gtoken = r.credential; MEM.gexp = Date.now() + 50 * 60 * 1000; MEM.enlErr = false;
+        render(false, ST.sid || !(ST.result && ST.result.ok) ? '[data-a="retrato"]' : '#l-enl');
       } });
-      id.renderButton(caja, { type: 'standard', theme: 'outline', size: 'large', text: 'continue_with', shape: 'pill', locale: 'es-419' });
+      cajas.forEach(function (caja) {
+        if (document.body.contains(caja)) id.renderButton(caja, { type: 'standard', theme: 'outline', size: 'large', text: 'continue_with', shape: 'pill', locale: 'es-419' });
+      });
     }).catch(function () { var m = $('#ret-msg'); if (m) m.textContent = ' No se pudo abrir la cuenta de Google ahora. Prueba en un rato.'; });
   }
   function retratoHTML() {
@@ -436,9 +504,16 @@
     var h = '<div class="ret" role="group" aria-labelledby="l-ret"><h2 id="l-ret">Tu retrato con estilo</h2>';
     if (!MEM.photo) return h + '<p class="hint" style="margin:0">Sube una foto tuya y te devolvemos la misma cara, en el estilo que elijas.</p>' +
       '<button type="button" class="btn-s" data-a="photoup">Subir mi foto</button></div>';
-    var est = MEM.retEst || 'vibe';
-    h += '<div class="ret-chips">' + ESTILOS_RET.map(function (e) { return '<button type="button" class="chip' + (e[0] === est ? ' on' : '') + '" aria-pressed="' + (e[0] === est) + '" data-a="estilo" data-i="' + e[0] + '">' + e[1] + '</button>'; }).join('') + '</div>';
-    if (MEM.retrato) h += '<div class="ret-res"><img src="' + esc(MEM.retrato) + '" alt="Tu retrato, estilo ' + esc((ESTILOS_RET.filter(function (e) { return e[0] === MEM.retHecho; })[0] || ['', ''])[1]) + '"></div>' +
+    var est = MEM.retEst || 'vibe', est2 = MEM.retEst2 || '', sec = MEM.retSec || infoEst(est)[2] || 'soul';
+    h += '<div class="ret-tabs">' + SECC_RET.map(function (sc) {
+      var tiene = sc[2].some(function (e) { return e[0] === est || e[0] === est2; });
+      return '<button type="button" class="ret-tab' + (tiene ? ' tiene' : '') + '" aria-pressed="' + (sc[0] === sec) + '" data-a="retsec" data-i="' + sc[0] + '">' + sc[1] + '</button>';
+    }).join('') + '</div>';
+    h += '<div class="ret-chips">' + ESTILOS_RET.filter(function (e) { return e[2] === sec; }).map(function (e) {
+      var on = e[0] === est || e[0] === est2;
+      return '<button type="button" class="chip' + (on ? ' on' : '') + '" aria-pressed="' + on + '" data-a="estilo" data-i="' + e[0] + '">' + e[1] + '</button>';
+    }).join('') + (TXT_COMBINAR ? '<button type="button" class="chip" aria-pressed="' + !!MEM.retComb + '" data-a="retcomb" data-i="0">' + esc(TXT_COMBINAR) + '</button>' : '') + '</div>';
+    if (MEM.retrato) h += '<div class="ret-res"><img src="' + esc(MEM.retrato) + '" alt="Tu retrato, estilo ' + esc(infoEst(MEM.retHecho)[1] + (MEM.retHecho2 ? ', ' + infoEst(MEM.retHecho2)[1] : '')) + '"></div>' +
       '<div class="kit-b"><button type="button" class="btn-s" data-a="retuse">Usar en mi portada</button><button type="button" class="btn-s" data-a="retdl">Descargar</button></div>';
     if (conCuenta()) h += '<button type="button" class="btn-s" data-a="retrato">' + (MEM.retrato ? 'Crear otro' : 'Crear mi retrato') + '</button>';
     else h += '<p class="hint" style="margin:0">Para crear tu retrato, entra con tu cuenta de Google.</p><div id="g-btn" class="ret-g"></div>';
@@ -449,20 +524,47 @@
     var E = window.SOUL_ESCENAS, i = ST.oficio == null ? D.MOTIFS.length - 1 : ST.oficio;
     try { return E ? E.elegir({ oficioN: i, version: ST.arte || 0 }).clave : ''; } catch (e) { return ''; }
   }
-  function crearRetrato(btn) {
-    var msg = $('#ret-msg'), est = MEM.retEst || 'vibe';
+  /* El pedido al script: estilo2 solo viaja si se eligió un segundo efecto (si no, es el pedido de siempre). */
+  /* Portada doble (Sebastián, 24-11-2026): «Crear mi retrato» hace la versión de CELULAR (9:16) y «Usar en mi portada» crea
+     además la de COMPUTADOR (16:9) con el mismo efecto. Son 2 de los 4 retratos diarios por persona. Siempre se parte de la foto
+     original (MEM.fotoOrig), nunca de un retrato ya hecho: si no, cada vuelta se aleja más de la cara real. */
+  function cuerpoRetrato(est, est2, formato) {
+    var c = { tipo: 'retrato', estilo: est, escena: escenaClave(), foto: MEM.fotoOrig || MEM.photo, oficio: oficioNombre(), colores: S.pal(ST, D) || [], idToken: MEM.gtoken, formato: formato || 'vertical' };
+    if (est2 && est2 !== est) c.estilo2 = est2;
+    var ent = oficioEntorno(); if (ent) c.entorno = ent;
+    return c;
+  }
+  /* Ropa, herramientas y fondo del oficio (datos.js OFICIOS_PORTADA, 24-11-2026): Gemini viste y rodea a la persona con lo de su oficio. */
+  function oficioEntorno() {
+    var P = (D.OFICIOS_PORTADA || [])[ST.oficio];
+    return P ? 'Ropa: ' + P.ropa + '. Herramientas y objetos: ' + P.elementos + '. Lugar: ' + P.fondo + '.' : '';
+  }
+  /* Elegir un efecto: solo uno; con «combinar» activo, hasta dos y de secciones distintas (el de la misma sección se reemplaza). */
+  function elegirEstilo(k) {
+    var a = MEM.retEst || 'vibe', b = MEM.retEst2 || '';
+    if (!(TXT_COMBINAR && MEM.retComb)) { MEM.retEst = k; MEM.retEst2 = ''; return; }
+    var sk = infoEst(k)[2];
+    if (k === a) { if (b) { MEM.retEst = b; MEM.retEst2 = ''; } }
+    else if (k === b) MEM.retEst2 = '';
+    else if (infoEst(a)[2] === sk) MEM.retEst = k;
+    else if (b && infoEst(b)[2] === sk) MEM.retEst2 = k;
+    else MEM.retEst2 = k;
+  }
+  function crearRetrato(btn, fz, fz2) {
+    var msg = $('#ret-msg'), est = fz || MEM.retEst || 'vibe', est2 = fz ? (fz2 || '') : (MEM.retEst2 || '');
     if (!MEM.photo || !CFG.endpoint) return;
     if (!conCuenta()) { MEM.gtoken = ''; render(false); return; }
+    MEM.retAncha = '';   // un retrato nuevo invalida la versión de computador del anterior
     btn.disabled = true; if (msg) msg.textContent = ' Creando tu retrato… tarda unos 20 segundos.';
     var ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null, reloj = ctrl ? setTimeout(function () { ctrl.abort(); }, 90000) : 0;
     fetch(CFG.endpoint, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, signal: ctrl ? ctrl.signal : undefined,
-      body: JSON.stringify({ tipo: 'retrato', estilo: est, escena: escenaClave(), foto: MEM.photo, oficio: oficioNombre(), colores: S.pal(ST, D) || [], idToken: MEM.gtoken }) })
+      body: JSON.stringify(cuerpoRetrato(est, est2)) })
       .then(function (r) { return r.json(); })
       .then(function (j) {
         clearTimeout(reloj);
-        if (j && j.ok && /^data:image\//.test(j.img || '')) { MEM.retrato = j.img; MEM.retHecho = est; render(false, '[data-a="retrato"]'); return; }
-        // el script en vivo aún no conoce fresh/sun/vibe (hasta correr DESPLEGAR-FORMULARIO-COMPAI): cae al de antes sin gastar cupo
-        if (j && j.error === 'estilo' && RET_ANTES[est]) { MEM.retEst = RET_ANTES[est]; btn.disabled = false; crearRetrato(btn); MEM.retEst = est; return; }
+        if (j && j.ok && /^data:image\//.test(j.img || '')) { MEM.retrato = j.img; MEM.retHecho = est; MEM.retHecho2 = est2; render(false, '[data-a="retrato"]'); return; }
+        // el script en vivo aún no conoce ese efecto (hasta correr DESPLEGAR-FORMULARIO-COMPAI): cae a uno conocido sin gastar cupo (sin el segundo)
+        if (j && j.error === 'estilo' && RET_ANTES[est]) { btn.disabled = false; crearRetrato(btn, RET_ANTES[est], ''); return; }
         var txt = ERR_RET[j && j.error] || 'No se pudo crear el retrato ahora. Prueba en un rato.';
         if (j && j.error === 'tope-persona' && j.tope) txt = 'Ya creaste tus ' + j.tope + ' retratos de hoy. Vuelve mañana.';
         if (j && j.error === 'cuenta') { MEM.gtoken = ''; render(false); msg = $('#ret-msg'); }
@@ -470,6 +572,31 @@
         if (msg) msg.textContent = ' ' + txt;
       })
       .catch(function () { clearTimeout(reloj); btn.disabled = false; if (msg) msg.textContent = ' No se pudo crear el retrato ahora. Prueba en un rato.'; });
+  }
+  /* «Usar en mi portada»: crea la versión de computador del mismo efecto y deja las dos en la portada. */
+  function usarRetrato(btn) {
+    var msg = $('#ret-msg');
+    var poner = function () {
+      if (!MEM.fotoOrig) MEM.fotoOrig = MEM.photo;
+      MEM.photo = MEM.retrato; MEM.photoAncha = MEM.retAncha || '';
+      ST.photoName = 'retrato-' + (MEM.retHecho || 'estilo') + '.jpg'; guardar(); render(false, '[data-a="retuse"]');
+    };
+    if (MEM.retAncha || !CFG.endpoint) { poner(); return; }
+    if (!conCuenta()) { MEM.gtoken = ''; render(false); return; }
+    btn.disabled = true; if (msg) msg.textContent = ' Creando la versión para computador… tarda unos 20 segundos.';
+    var ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null, reloj = ctrl ? setTimeout(function () { ctrl.abort(); }, 90000) : 0;
+    fetch(CFG.endpoint, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, signal: ctrl ? ctrl.signal : undefined,
+      body: JSON.stringify(cuerpoRetrato(MEM.retHecho || MEM.retEst || 'vibe', MEM.retHecho2 || '', 'ancha')) })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        clearTimeout(reloj);
+        if (j && j.ok && /^data:image\//.test(j.img || '')) { MEM.retAncha = j.img; poner(); return; }
+        // sin la versión de computador igual se usa la de celular (el sitio la muestra en panel en ambas pantallas)
+        poner();
+        var m2 = $('#ret-msg'), txt = j && j.error === 'tope-persona' ? 'Se usó tu retrato; la versión para computador queda para mañana (llegaste al tope de hoy).' : 'Se usó tu retrato; la versión para computador no se pudo crear ahora.';
+        if (m2) m2.textContent = ' ' + txt;
+      })
+      .catch(function () { clearTimeout(reloj); poner(); });
   }
   function bajarRetrato() {
     if (!MEM.retrato) return;
@@ -508,6 +635,14 @@
       .catch(function () { if (msg) msg.textContent = fmt === 'video' ? ' Este navegador no graba video. Prueba con Chrome o descarga el póster.' : ' No pude armar la imagen. Prueba otra vez.'; })
       .then(function () { if (btn) btn.disabled = false; });
   }
+  /* Plan vibe: el acceso a la maqueta del panel (soul/panel/#<código>). Antes era una sección «Cada solicitud, guardada.»
+     dentro del sitio borrador; el panel es de la persona, no de quien visita su sitio. Textos en S.TXT (PROPUESTOS). */
+  function panelHTML() {
+    if (ST.plan !== 2) return '';
+    var T = S.TXT;
+    return '<div class="kit pan" role="group" aria-labelledby="l-pan"><h2 id="l-pan">' + esc(T.panel_t) + '</h2><p class="hint" style="margin:0">' + esc(T.panel_p) + '</p>' +
+      '<a class="btn-s" href="' + esc('panel/#' + codificar()) + '" target="_blank" rel="noopener" data-a="wsp">' + esc(T.panel_b) + '</a></div>';
+  }
   function finHTML() {
     var R = ST.result || { ok: false, motivo: 'sin-envio' }, h = '';
     h += '<h1 class="q" tabindex="-1" id="foco" style="font-size:26px">' + (VISTA ? 'Borrador de ' + esc(ST.name || 'la persona') : R.ok ? 'Tu sitio, en borrador.' : 'Tu borrador está listo.') + '</h1>';
@@ -524,7 +659,7 @@
         '<button type="button" class="btn-s" data-a="copiar" style="margin-top:8px">Copiar mis respuestas</button><span id="copiado" role="status" class="hint"></span></details></div>';
     }
     if (!VISTA) h += enlaceHTML();
-    h += imagenesHTML();
+    h += imagenesHTML() + panelHTML();
     h += '<div class="borrador-t"><span class="mono">Borrador</span><span class="hint">Así se vería tu sitio. Es una vista previa: las fotos y los textos finales los afinamos contigo. ' + DOMINIO + '</span></div>' + dirsHTML() + sitioBorrador() + corpHTML();
     return h;
   }
@@ -581,7 +716,7 @@
     var fin = cur === 'fin';
     appEl.classList.toggle('ancho', fin);
     pasoEl.innerHTML = fin ? finHTML() : pasoHTML(cur);
-    if (fin) { pintarKit(); montarGoogle(); }
+    if (fin) { pintarKit(); montarGoogle(); if (window.SOUL_MOV) window.SOUL_MOV.iniciar(pasoEl.querySelector('.vp')); setTimeout(pedirEnlace, 0); }
     var etiqueta = fin ? 'Tu borrador' : ST.step === 0 ? 'Bienvenida' : ST.step === T ? 'Listo' : pad(ST.step) + ' / ' + pad(nPreg());
     $('#etiqueta').textContent = etiqueta;
     var pct = fin ? 100 : Math.round(ST.step / T * 100);
@@ -657,19 +792,22 @@
         else { pendiente = { tipo: 'svc', i: n }; $('#archivo').click(); return; }
         break;
       case 'photoup': pendiente = { tipo: 'own' }; $('#archivo').click(); return;
-      case 'photorm': MEM.photo = ''; ST.photoName = ''; break;
+      case 'photorm': MEM.photo = ''; MEM.fotoOrig = ''; MEM.photoAncha = ''; MEM.retAncha = ''; ST.photoName = ''; break;
       case 'back': ir(ST.step - 1); return;
       case 'next': siguiente(); return;
       case 'editar': ST.result = null; ir(total()); return;
       case 'reintentar': enviar(); return;
       case 'copiar': copiar(); return;
       case 'copiarenl': copiarEnlace(); return;
+      case 'regenl': MEM.enlErr = false; if (conCuenta()) pedirEnlace(); else { MEM.gtoken = ''; render(false, '#l-enl'); } return;
       case 'kit': descargarKit(el.dataset.m, el); return;
       case 'arte': ST.arte = (ST.arte || 0) + 1; break;
-      case 'estilo': MEM.retEst = el.dataset.i; break;
+      case 'estilo': elegirEstilo(el.dataset.i); break;
+      case 'retsec': MEM.retSec = el.dataset.i; break;
+      case 'retcomb': MEM.retComb = !MEM.retComb; if (!MEM.retComb) MEM.retEst2 = ''; break;
       case 'retrato': crearRetrato(el); return;
       case 'retdl': bajarRetrato(); return;
-      case 'retuse': MEM.photo = MEM.retrato; ST.photoName = 'retrato-' + (MEM.retHecho || 'estilo') + '.jpg'; break;
+      case 'retuse': usarRetrato(el); return;
       case 'wsp': return;   // enlace normal a WhatsApp
       default: return;
     }
@@ -707,7 +845,7 @@
     if (!f || !tgt) return;
     achicar(f).then(function (data) {
       var nom = f.name.replace(/\.[^.]+$/, '').replace(/[^\w\- ]+/g, '').slice(0, 40) || 'foto';
-      if (tgt.tipo === 'own') { MEM.photo = data; ST.photoName = nom + '.jpg'; }
+      if (tgt.tipo === 'own') { MEM.photo = data; MEM.fotoOrig = ''; MEM.photoAncha = ''; MEM.retAncha = ''; ST.photoName = nom + '.jpg'; }
       else { MEM.svcPh[tgt.i] = data; ST.svcs[tgt.i].ph = 'up'; ST.svcs[tgt.i].phName = nom + '.jpg'; }
       limpiarError(); guardar(); render(false);
     }, function (err) { mostrarError(err.message || 'No pude usar esa foto.'); });
@@ -787,7 +925,12 @@
   if (hm) {
     try { ST = mezclar(decodificar(hm[1])); ST.result = { ok: true }; ST.step = 9999; VISTA = true; } catch (_) { ST = nuevo(); VISTA = false; }
   } else if (hc) {
-    try { ST = mezclar(decodificar(hc[1])); ST.result = null; ST.step = total(); } catch (_) { ST = nuevo(); }
+    try {
+      ST = mezclar(decodificar(hc[1])); ST.result = null; ST.step = total();
+      // plan vibe: el correo del panel (paso 17) es también el de aviso; si el código no lo trae no se inventa nada
+      var cp = String(ST.email || '').trim();
+      if (!String(ST.correo || '').trim() && correoOk(cp)) ST.correo = cp;
+    } catch (_) { ST = nuevo(); }
     try { history.replaceState(null, '', location.pathname + location.search); } catch (_) { /* sin History API: el hash queda, no molesta */ }
     guardar();
   } else {

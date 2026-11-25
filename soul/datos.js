@@ -137,5 +137,57 @@ const TONES = [
   { label: 'Divertido', desc: 'Con humor y buena onda, sin perder el oficio.' },
   { label: 'Sobrio', desc: 'Servicio puntual, resultado garantizado.' }
 ];
-W.SOUL_DATA = { NOMBRES, EJEMPLOS, CIFRA_UNID, PLANS, WHERE, FIELDS, AVGS, REPLIES, BOOKS, SVC_PH, OFICIOS, MOTIFS, ENFOQUES, LIKES, PALETTES, STYLES, BGS, MOTIONS, TONES };
+/* Portada por oficio (Sebastián, 24-11-2026), mismo orden que OFICIOS. Lo lee:
+   - la portada que se pide a Gemini: ropa + elementos + fondo arman la escena (app.js -> Code.gs, campo «escena»);
+   - el sitio: «galeria» es el título de la galería de fotos (se usa la 1.ª salvo que la persona elija otra, ST.gal)
+     y «hoja» es el papel de «Cuéntame qué necesitas»: «plano» (oficios de obra) o «cuaderno» (el resto).
+   Las 5 frases de galería son PROPUESTAS: esperan el visto de Sebastián. Tabla legible:
+   CompAI/Dir. Arte, Comunicacion & Prod. Audiovisual/2026-11-24-soul-portada-por-oficio.md */
+const OFICIOS_PORTADA = [
+  { ropa: 'camisa oscura entallada, chaqueta corta, micrófono inalámbrico en la mano', elementos: 'micrófono, focos de escenario, confeti, parlantes, una pista de baile', fondo: 'salón de eventos de noche con luces de colores', hoja: 'cuaderno',
+    galeria: ['Así se vive la fiesta', 'Noches que se recuerdan', 'La pista llena', 'Momentos en vivo', 'Fiesta por fiesta'] },
+  { ropa: 'polera de trabajo verde, jeans, guantes de jardín, gorro de ala', elementos: 'tijera de podar, rastrillo, carretilla, manguera, sacos de tierra sin marca, plantas en macetero', fondo: 'jardín de casa con pasto recién cortado', hoja: 'plano',
+    galeria: ['Jardines que crecen', 'Antes y después del corte', 'Manos en la tierra', 'Patio por patio', 'Lo que florece'] },
+  { ropa: 'camisa de mezclilla arremangada, delantal de cuero, lápiz de carpintero en la oreja', elementos: 'cepillo de madera, serrucho, escuadra, formones, tablas, viruta en el piso', fondo: 'taller de madera con banco de trabajo', hoja: 'plano',
+    galeria: ['Del taller a tu casa', 'Hecho en madera', 'Pieza por pieza', 'Manos a la obra', 'Recién salido del banco'] },
+  { ropa: 'polera negra, delantal de barbero, peineta en el bolsillo', elementos: 'tijeras, máquina de cortar, navaja, peinetas, silla de barbero, espejo', fondo: 'barbería con luz cálida y azulejos', hoja: 'cuaderno',
+    galeria: ['Cortes que hablan', 'Silla por silla', 'Así salen', 'El detalle del degradado', 'Tu mejor versión'] },
+  { ropa: 'chaqueta de cocinero blanca, delantal, paño al hombro', elementos: 'sartén, cuchillos, tabla de picar, verduras frescas, ollas, especias en frascos sin etiqueta', fondo: 'cocina profesional con vapor y luz de ventana', hoja: 'cuaderno',
+    galeria: ['Recién servido', 'Sabores de la casa', 'De la olla a la mesa', 'Platos con memoria', 'Lo que sale de mi cocina'] },
+  { ropa: 'polera negra, delantal negro, guantes de nitrilo negros', elementos: 'máquina de tatuar, tintas en frascos sin etiqueta, bocetos en papel, camilla, lámpara', fondo: 'estudio de tatuaje con paredes oscuras y luz dirigida', hoja: 'cuaderno',
+    galeria: ['Piel con historia', 'Del boceto a la piel', 'Trabajos que se quedan', 'Línea por línea', 'Arte que se lleva'] },
+  { ropa: 'blusa o camisa sencilla, huincha de medir al cuello, alfiletero en la muñeca', elementos: 'máquina de coser, telas dobladas, tijera de sastre, hilos de colores, maniquí con alfileres', fondo: 'taller de costura luminoso con estantes de telas', hoja: 'plano',
+    galeria: ['Hecho a tu medida', 'Puntada a puntada', 'Del molde a la prenda', 'Telas que toman forma', 'Así quedan'] },
+  { ropa: 'delantal con harina, gorro de panadero, mangas arremangadas', elementos: 'masa sobre la mesa, uslero, bandejas de pan, horno, espátula, harina en el aire', fondo: 'panadería de barrio con horno encendido', hoja: 'cuaderno',
+    galeria: ['Recién horneado', 'De la masa al mostrador', 'Hecho cada mañana', 'Lo dulce de la casa', 'Pan con oficio'] },
+  { ropa: 'ropa oscura cómoda, correa de cámara cruzada', elementos: 'cámara, lentes, trípode, flash, reflector', fondo: 'estudio con fondo neutro o una calle con luz de tarde', hoja: 'cuaderno',
+    galeria: ['Lo que vi', 'Cuadro por cuadro', 'Sesiones recientes', 'Historias en foto', 'Miradas guardadas'] },
+  { ropa: 'camisa abierta sobre polera, ropa de escenario', elementos: 'instrumento principal, micrófono con atril, amplificador, cables, luces de escenario', fondo: 'escenario de bar o sala con humo y focos', hoja: 'cuaderno',
+    galeria: ['En vivo', 'Noches de escenario', 'Así suena', 'Tocatas recientes', 'Canción por canción'] },
+  { ropa: 'delantal negro de maquilladora, ropa sencilla y prolija', elementos: 'brochas, paletas de sombras sin marca, espejo con luces, esponjas, peinetas', fondo: 'tocador profesional con luz pareja', hoja: 'cuaderno',
+    galeria: ['Antes y después', 'Rostros que brillan', 'Cada detalle', 'Listas para su día', 'Así quedan'] },
+  { ropa: 'uniforme clínico blanco o gris claro', elementos: 'camilla, toallas dobladas, piedras calientes, aceites en frascos sin etiqueta, velas', fondo: 'sala de masajes en penumbra cálida', hoja: 'cuaderno',
+    galeria: ['Un espacio para soltar', 'Manos que alivian', 'Tu hora de descanso', 'El cuerpo agradece', 'Calma, sesión a sesión'] },
+  { ropa: 'delantal manchado de barro, mangas arremangadas', elementos: 'torno de alfarero, barro húmedo, tazones sin esmaltar, esponjas, herramientas de modelar', fondo: 'taller de cerámica con repisas de piezas', hoja: 'cuaderno',
+    galeria: ['Del barro a tu mesa', 'Pieza por pieza', 'Hecho en el torno', 'Recién salidas del horno', 'Formas con tiempo'] },
+  { ropa: 'overol de trabajo, guantes de cuero, máscara de soldar levantada', elementos: 'soldadora, esmeril, perfiles de fierro, martillo, yunque, chispas', fondo: 'taller de herrería con chispas y luz de tarde', hoja: 'plano',
+    galeria: ['Fierro que queda firme', 'Soldadura por soldadura', 'Del taller a tu reja', 'Manos a la obra', 'Trabajos terminados'] },
+  { ropa: 'overol azul con manchas de grasa, guantes de nitrilo', elementos: 'llaves, gata hidráulica, caja de herramientas, motor abierto, repuestos', fondo: 'taller mecánico con un auto en elevador', hoja: 'plano',
+    galeria: ['Motores que vuelven a andar', 'Del taller a la calle', 'Revisión por revisión', 'Manos con grasa', 'Trabajos entregados'] },
+  { ropa: 'camisa de trabajo, casco blanco, guantes aislantes', elementos: 'multímetro, alicates, rollos de cable, tablero eléctrico abierto, escalera, ampolletas', fondo: 'casa en obra con el tablero a la vista', hoja: 'plano',
+    galeria: ['Donde paso, se prende', 'Instalaciones al día', 'Tablero por tablero', 'Manos a la obra', 'Trabajos terminados'] },
+  { ropa: 'overol o polera de trabajo, rodilleras, guantes', elementos: 'llave stilson, cañerías de cobre, soplete, teflón, flexibles, caja de herramientas', fondo: 'baño o cocina con muebles abiertos', hoja: 'plano',
+    galeria: ['Agua donde tiene que ir', 'Arreglos que no gotean', 'Cañería por cañería', 'Manos a la obra', 'Trabajos terminados'] },
+  { ropa: 'camisa de mezclilla, polera oscura, jeans, guantes de trabajo, botas', elementos: 'martillos, huincha, nivel, serrucho, escuadra, taladro, tablas de madera, un balde', fondo: 'tierra de una obra o el patio de una casa en arreglo', hoja: 'plano',
+    galeria: ['Manos a la obra', 'Del problema al arreglo', 'Así queda', 'Obra por obra', 'Trabajos terminados'] },
+  { ropa: 'overol blanco con manchas de pintura, gorro', elementos: 'rodillo, brochas, tarros de pintura sin etiqueta, bandeja, escalera, cinta de enmascarar', fondo: 'fachada o muro a medio pintar', hoja: 'plano',
+    galeria: ['Muros con otra cara', 'Antes y después', 'Mano por mano', 'Color que se queda', 'Trabajos terminados'] },
+  { ropa: 'ropa casual ordenada, lentes opcionales', elementos: 'pizarra, cuadernos, libros, calculadora, lápices', fondo: 'sala de estudio luminosa', hoja: 'cuaderno',
+    galeria: ['Ahora sí se entiende', 'Clase por clase', 'Lo que aprendimos', 'Pruebas que se ganan', 'Avances que se notan'] },
+  { ropa: 'polera cómoda, chaqueta corta, riñonera con premios', elementos: 'correas de colores, perros contentos, plato de agua, juguetes, cepillo', fondo: 'parque con pasto y árboles', hoja: 'cuaderno',
+    galeria: ['Regalones felices', 'Paseo por paseo', 'Colas que se mueven', 'En buenas manos', 'Amigos de cuatro patas'] },
+  { ropa: 'su ropa de trabajo habitual', elementos: 'sus herramientas y materiales principales', fondo: 'el lugar donde trabaja', hoja: 'cuaderno',
+    galeria: ['Manos a la obra', 'Trabajos recientes', 'Así queda', 'Hecho por mí', 'Uno por uno'] }
+];
+W.SOUL_DATA = { NOMBRES, EJEMPLOS, CIFRA_UNID, PLANS, WHERE, FIELDS, AVGS, REPLIES, BOOKS, SVC_PH, OFICIOS, OFICIOS_PORTADA, MOTIFS, ENFOQUES, LIKES, PALETTES, STYLES, BGS, MOTIONS, TONES };
 })(window);
