@@ -1,23 +1,10 @@
 {
  "_que_es": "RADAR EN VIVO de la portada. Lo escribe traer_radar.py desde la salida de RAI-CA; no se edita a mano.",
- "generado": "2026-11-24T23:57",
- "fecha": "24-11-2026 23:57",
+ "generado": "2026-11-25T09:21",
+ "fecha": "25-11-2026 09:21",
  "fuente": "RAI-CA · API de Mercado Público, Compra Ágil",
- "candidatas": 168,
+ "candidatas": 170,
  "filas": [
-  {
-   "marca": "GO",
-   "nombre": "sc 6776 licencia",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 100,
-   "codigo": "2704-2349-COT26",
-   "monto": "$923.000",
-   "organismo": "UNIVERSIDAD DEL BIO BIO · Región del Biobío ",
-   "fecha": "25-11-2026 09:15",
-   "cierre_iso": "2026-11-25 09:15",
-   "quedan": "queda menos de 1 h"
-  },
   {
    "marca": "GO",
    "nombre": "RENOVACIÓN DE LICENCIA DE SOFTWARE CYPE - SECPLA - OS 155804 - G.A.C",
@@ -59,12 +46,12 @@
   },
   {
    "marca": "GO",
-   "nombre": "ADQUISICIÓN DE 6 LICENCIAS ANUALES DE SOFTWARE DE DISEÑO Y CÁLCULO LUMÍNICO - SECPLA - OS 155807 - G.A.C",
+   "nombre": "ADQUISICIÓN DE LICENCIA ANUAL DE SOFTWARE DE DISEÑO Y CÁLCULO LUMÍNICO - SECPLA - OS 155805 - G.A.C",
    "linea": "L4",
    "linea_nombre": "Hardware y Licenciamiento",
    "score": 100,
-   "codigo": "2380-2536-COT26",
-   "monto": "$4.000.000",
+   "codigo": "2380-2535-COT26",
+   "monto": "$350.000",
    "organismo": "I MUNICIPALIDAD DE COPIAPO · Región de Atacama ",
    "fecha": "25-11-2026 11:00",
    "cierre_iso": "2026-11-25 11:00",
@@ -72,12 +59,12 @@
   },
   {
    "marca": "GO",
-   "nombre": "ADQUISICIÓN DE LICENCIA ANUAL DE SOFTWARE DE DISEÑO Y CÁLCULO LUMÍNICO - SECPLA - OS 155805 - G.A.C",
+   "nombre": "ADQUISICIÓN DE 6 LICENCIAS ANUALES DE SOFTWARE DE DISEÑO Y CÁLCULO LUMÍNICO - SECPLA - OS 155807 - G.A.C",
    "linea": "L4",
    "linea_nombre": "Hardware y Licenciamiento",
    "score": 100,
-   "codigo": "2380-2535-COT26",
-   "monto": "$350.000",
+   "codigo": "2380-2536-COT26",
+   "monto": "$4.000.000",
    "organismo": "I MUNICIPALIDAD DE COPIAPO · Región de Atacama ",
    "fecha": "25-11-2026 11:00",
    "cierre_iso": "2026-11-25 11:00",
@@ -108,6 +95,19 @@
    "fecha": "25-11-2026 14:00",
    "cierre_iso": "2026-11-25 14:00",
    "quedan": "quedan 4 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "Contratación del Servicio de Plataforma de Reclutamiento y Selección para la CMF",
+   "linea": "L5",
+   "linea_nombre": "Soluciones Web y Desarrollo Customizado",
+   "score": 100,
+   "codigo": "1005498-97-COT26",
+   "monto": "$7.054.618",
+   "organismo": "COMISION PARA EL MERCADO FINANCIERO · Región Metropolitana de Santiago",
+   "fecha": "25-11-2026 15:00",
+   "cierre_iso": "2026-11-25 15:00",
+   "quedan": "quedan 5 h"
   }
  ]
 }
