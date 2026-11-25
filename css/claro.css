@@ -349,6 +349,9 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;paddin
  .hero-nav{padding:18px 24px;flex-wrap:wrap;gap:12px}
  .hero-nav .logo img{height:30px}
  .ibar a,.ibar .sin{width:30px;height:30px}.ibar svg{width:16px;height:16px}
+ /* 25-11-2026, Sebastián: en móvil la barra de iconos va CENTRADA (inicio y catálogo).
+    El logo sigue arriba a la izquierda; la barra baja a su propia línea y se centra. */
+ .hero-nav .ibar,.cat-head .ibar{margin-left:auto;margin-right:auto}
  .hero-grid{display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px 24px 48px}
  .hero-l,.hero-w{align-self:center;justify-self:center;max-width:100%}
  .hero-l{margin:0 0 8px;padding:0;text-align:center;font-size:10px}
