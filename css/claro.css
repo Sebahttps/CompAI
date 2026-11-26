@@ -284,6 +284,14 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;paddin
 .cat-head{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:28px 10% 28px 20%}
 .cat-head .logo{display:inline-flex}
 .cat-head .logo img{height:40px;width:auto}
+/* 25-11-2026, Sebastián: en escritorio el logo de inicio y catálogo se veía chico (40 px) y en
+   otro lugar que en el resto del sitio. Ahora usa el mismo estándar que soporte, w-note y la
+   intranet: arriba a la izquierda, alto clamp(52px,6.4vw,84px). La barra queda a la derecha. */
+@media (min-width:861px){
+ .hero-nav,.cat-head{--logo-h:clamp(52px,6.4vw,84px);--logo-x:max(calc((100vw - 1366px) / 2 + clamp(16px,3vw,40px)),clamp(16px,3vw,40px));justify-content:flex-end}
+ .hero-nav .logo,.cat-head .logo{position:absolute;top:2px;left:var(--logo-x);z-index:45;line-height:0}
+ .hero-nav .logo img,.cat-head .logo img{height:var(--logo-h);width:auto;display:block}
+}
 .cat-top{position:relative;z-index:1;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));padding:96px 0 40px;align-items:end}
 .cat-top .kick{grid-column:2/4;margin:0 0 16px;padding:0 10px}
 .cat-top h1{grid-column:2/4;margin:0;padding:0 10px;font-size:64px;line-height:.98;font-weight:700;letter-spacing:-.02em;text-transform:uppercase}
