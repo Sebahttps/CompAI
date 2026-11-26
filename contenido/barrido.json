@@ -1,7 +1,7 @@
 {
- "fecha": "2026-11-25",
+ "fecha": "2026-11-26",
  "fuente": "API de Mercado Público · licitaciones activas, todas las modalidades",
- "barridas": 4790,
+ "barridas": 4895,
  "filas": [
   {
    "marca": "GO",
@@ -24,6 +24,14 @@
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
    "id": "SUSCRIPCIÓN DE 15 LICENCIAS ADOBE CREATIVE CLOUD FOR TEAMS …",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "ADQUISICIÓN DE TRES EQUIPOS PARA VIDEOCONFERENCIA …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -63,7 +71,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "SERVICIO DE INTERNET (3 ANTENAS DE INTERNET SATELITAL X 24 …",
+   "id": "CURSO SOPORTE VITAL CARDIOVASCULAR AVANZADO DEL ADULTO",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   },
@@ -71,15 +79,7 @@
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
-   "id": "DIAGNÓSTICO Y FORTALECIMIENTO DE LA RED DE APOYO A …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
-   "id": "REQUERIMIENTO DE SERVICIOS INFORMÁTICOS",
+   "id": "CURSO SOPORTE VITAL DE TRAUMA PREHOSPITALARIO (PHTLS)",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   }
