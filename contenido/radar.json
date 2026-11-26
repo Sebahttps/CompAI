@@ -1,10 +1,23 @@
 {
  "_que_es": "RADAR EN VIVO de la portada. Lo escribe traer_radar.py desde la salida de RAI-CA; no se edita a mano.",
- "generado": "2026-11-25T09:21",
- "fecha": "25-11-2026 09:21",
+ "generado": "2026-11-26T09:22",
+ "fecha": "26-11-2026 09:22",
  "fuente": "RAI-CA · API de Mercado Público, Compra Ágil",
- "candidatas": 63,
+ "candidatas": 136,
  "filas": [
+  {
+   "marca": "GO",
+   "nombre": "“ADQUISICIÓN DE LICENCIA DE SOFTWARE, PARA LA UNIVERSIDAD DEL BIO BIO– SC 5637”",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "2705-1900-COT26",
+   "monto": "$1.082.900",
+   "organismo": "UNIVERSIDAD DEL BIO BIO · Región del Ñuble",
+   "fecha": "26-11-2026 09:46",
+   "cierre_iso": "2026-11-26 09:46",
+   "quedan": "queda menos de 1 h"
+  },
   {
    "marca": "GO",
    "nombre": "LICENCIA ENSEÑANZA BASICA ESCUELA BASICA CATALUNYA 1966-6",
@@ -33,16 +46,29 @@
   },
   {
    "marca": "NO-GO",
-   "nombre": "Adquisición de Tóner, Escuela Amanda Chavez Navarrete",
+   "nombre": "ADQUISICION DE NVR Y DISCO DURO PARA DIRECCION DE SEGURIDAD",
    "linea": "L4",
    "linea_nombre": "Hardware y Licenciamiento",
    "score": 45,
-   "codigo": "4364-602-COT26",
-   "monto": "$580.000",
-   "organismo": "Ilustre Municipalidad de Quillon - Educación · Región del Ñuble",
+   "codigo": "2675-447-COT26",
+   "monto": "$1.000.000",
+   "organismo": "I MUNICIPALIDAD DE MOSTAZAL · Región del Libertador General Bernardo O´Higgins",
    "fecha": "26-11-2026 10:00",
    "cierre_iso": "2026-11-26 10:00",
    "quedan": "queda menos de 1 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "Renovación de plataforma contra la suplantación de identidad DMARC, por 3 años",
+   "linea": "L5",
+   "linea_nombre": "Soluciones Web y Desarrollo Customizado",
+   "score": 100,
+   "codigo": "1001546-18-COT26",
+   "monto": "$1.392.276",
+   "organismo": "Primer Tribunal Ambiental con asiento en Antofagasta · Región de Antofagasta ",
+   "fecha": "26-11-2026 11:00",
+   "cierre_iso": "2026-11-26 11:00",
+   "quedan": "quedan 1 h"
   },
   {
    "marca": "GO",
@@ -55,7 +81,20 @@
    "organismo": "I.MUNICIPALIDAD DE PORVENIR · Región de Magallanes y de la Antártica",
    "fecha": "26-11-2026 11:15",
    "cierre_iso": "2026-11-26 11:15",
-   "quedan": "quedan 2 h"
+   "quedan": "quedan 1 h"
+  },
+  {
+   "marca": "GO",
+   "nombre": "Adquisición de licencia Microsoft Access",
+   "linea": "L4",
+   "linea_nombre": "Hardware y Licenciamiento",
+   "score": 100,
+   "codigo": "3682-597-COT26",
+   "monto": "$200.000",
+   "organismo": "I MUNICIPALIDAD DE SALAMANCA · Región de Coquimbo ",
+   "fecha": "26-11-2026 13:00",
+   "cierre_iso": "2026-11-26 13:00",
+   "quedan": "quedan 3 h"
   },
   {
    "marca": "GO",
@@ -69,45 +108,6 @@
    "fecha": "26-11-2026 16:00",
    "cierre_iso": "2026-11-26 16:00",
    "quedan": "quedan 6 h"
-  },
-  {
-   "marca": "GO",
-   "nombre": "PRUEBA DE CONCEPTOS PLATAFORMA SaaS",
-   "linea": "L5",
-   "linea_nombre": "Soluciones Web y Desarrollo Customizado",
-   "score": 100,
-   "codigo": "593951-47-COT26",
-   "monto": "$7.100.000",
-   "organismo": "FUNDACION EDUCACIONAL PARA EL DESAROLLO INTEGRAL DE LA NIÑEZ · Región Metropolitana de Santiago",
-   "fecha": "26-11-2026 17:30",
-   "cierre_iso": "2026-11-26 17:30",
-   "quedan": "quedan 8 h"
-  },
-  {
-   "marca": "GO",
-   "nombre": "CONTRATACIÓN LICENCIA SOFTWARE EN LINEA PARA CONTROL DE ASISTENCIA",
-   "linea": "L4",
-   "linea_nombre": "Hardware y Licenciamiento",
-   "score": 100,
-   "codigo": "3623-296-COT26",
-   "monto": "$2.500.000",
-   "organismo": "I MUNICIPALIDAD DE MAFIL · Región de Los Ríos",
-   "fecha": "27-11-2026 09:00",
-   "cierre_iso": "2026-11-27 09:00",
-   "quedan": "quedan 23 h"
-  },
-  {
-   "marca": "GO",
-   "nombre": "Servicio de Plataforma de Reclutamiento y Selección para la CMF",
-   "linea": "L5",
-   "linea_nombre": "Soluciones Web y Desarrollo Customizado",
-   "score": 100,
-   "codigo": "1005498-101-COT26",
-   "monto": "$7.054.618",
-   "organismo": "COMISION PARA EL MERCADO FINANCIERO · Región Metropolitana de Santiago",
-   "fecha": "27-11-2026 12:00",
-   "cierre_iso": "2026-11-27 12:00",
-   "quedan": "quedan 26 h"
   }
  ]
 }
