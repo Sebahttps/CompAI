@@ -1,24 +1,8 @@
 {
- "fecha": "2026-11-26",
+ "fecha": "2026-11-27",
  "fuente": "API de Mercado Público · licitaciones activas, todas las modalidades",
- "barridas": 4895,
+ "barridas": 4921,
  "filas": [
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
-   "id": "ADQUISICIÓN DE TRES EQUIPOS PARA VIDEOCONFERENCIA …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
-  {
-   "marca": "GO",
-   "rubro": "SERVICIOS INFORMÁTICOS",
-   "tipo": "servicio",
-   "id": "MANTENCIÓN DEL DATA CENTER MINISTERIAL UBICADO EN CATEDRAL …",
-   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
-   "cierre": "propuesta lista"
-  },
   {
    "marca": "GO",
    "rubro": "SERVICIOS INFORMÁTICOS",
@@ -80,6 +64,22 @@
    "rubro": "SERVICIOS INFORMÁTICOS",
    "tipo": "servicio",
    "id": "REQUERIMIENTO DE SERVICIOS INFORMÁTICOS",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "REQUERIMIENTO DE SERVICIOS INFORMÁTICOS",
+   "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
+   "cierre": "propuesta lista"
+  },
+  {
+   "marca": "GO",
+   "rubro": "SERVICIOS INFORMÁTICOS",
+   "tipo": "servicio",
+   "id": "REALIZARÁ UNA COPIA DE MANDANTE, Y REQUIERE REALIZAR UNA …",
    "titulo": "Calza con el rubro y la especificación es clara: propuesta de servicio lista para armar",
    "cierre": "propuesta lista"
   }
