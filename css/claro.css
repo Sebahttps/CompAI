@@ -102,8 +102,16 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;paddin
 #offenbar .hvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
 #offenbar .hvelo{position:absolute;inset:0;background:linear-gradient(180deg,rgba(26,29,27,.35) 0%,rgba(26,29,27,0) 40%,rgba(245,240,228,0) 75%,#F5F0E4 100%)}
 .hero-nav{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:28px 10% 28px 20%;gap:16px}
-.hero-nav .logo{display:inline-flex}
-.hero-nav .logo img{height:40px;width:auto}
+/* ── LOGO compA\: estándar único (marca/CABECERA-APPS.md, piso 1) ─────────
+   25-11-2026, Sebastián: el logo de inicio y catálogo medía 40 px (30 en
+   móvil) y en otro punto que soporte, w-note y la intranet. Ahora es la misma
+   regla en todas: arriba a la izquierda, top 2px, left --logo-x, alto
+   clamp(52px,6.4vw,84px) — 84 en escritorio, 52 en un celular de 393 px.
+   Las mismas dos variables que la norma; no se redefinen en otra hoja. */
+:root{--logo-h:clamp(52px,6.4vw,84px);--logo-x:max(calc((100vw - 1366px) / 2 + clamp(16px,3vw,40px)),clamp(16px,3vw,40px))}
+.hero-nav .logo,.cat-head .logo{position:absolute;top:2px;left:var(--logo-x);z-index:45;display:block;line-height:0}
+.hero-nav .logo img,.cat-head .logo img{height:var(--logo-h);width:auto;display:block}
+html .hero-nav,html .cat-head{justify-content:flex-end}
 .hero-grid{position:relative;z-index:2;flex:1 1 auto;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:start;grid-template-rows:auto 1fr;padding:40px 0 64px}
 .hero-l{font-family:var(--mono);grid-row:1;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85);align-self:start;line-height:1.5}
 .hero-l1{grid-column:2/3;margin:130px 0 0 -5px;padding:0 0 0 6px;text-align:left}
@@ -282,8 +290,6 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;paddin
 
 /* ── catálogo · carrusel (portafolio.html) ───────────────────────────── */
 .cat-head{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:28px 10% 28px 20%}
-.cat-head .logo{display:inline-flex}
-.cat-head .logo img{height:40px;width:auto}
 .cat-top{position:relative;z-index:1;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));padding:96px 0 40px;align-items:end}
 .cat-top .kick{grid-column:2/4;margin:0 0 16px;padding:0 10px}
 .cat-top h1{grid-column:2/4;margin:0;padding:0 10px;font-size:64px;line-height:.98;font-weight:700;letter-spacing:-.02em;text-transform:uppercase}
@@ -347,7 +353,10 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;paddin
  .ibar-dock{display:none!important}
  #offenbar{aspect-ratio:auto;height:auto;min-height:720px}
  .hero-nav{padding:18px 24px;flex-wrap:wrap;gap:12px}
- .hero-nav .logo img{height:30px}
+ /* 25-11-2026: en móvil la barra de iconos baja a su propia línea, bajo el
+    logo, y va CENTRADA (inicio y catálogo). El logo no cambia de regla. */
+ html .hero-nav,html .cat-head{padding-top:calc(var(--logo-h) + 14px);justify-content:center}
+ .hero-nav .ibar,.cat-head .ibar{margin-left:auto;margin-right:auto}
  .ibar a,.ibar .sin{width:30px;height:30px}.ibar svg{width:16px;height:16px}
  .hero-grid{display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px 24px 48px}
  .hero-l,.hero-w{align-self:center;justify-self:center;max-width:100%}
@@ -395,7 +404,6 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;paddin
  .pie-bar{flex-direction:column;align-items:flex-start;gap:12px}
  .glista li{grid-template-columns:28px minmax(0,1fr)}
  .cat-head{padding:18px 24px;flex-wrap:wrap;gap:12px}
- .cat-head .logo img{height:30px}
  .cat-top{display:block;padding:40px 24px 24px}
  .cat-top .kick,.cat-top h1{padding:0}
  .cat-top h1{font-size:40px}
