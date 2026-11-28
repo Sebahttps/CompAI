@@ -130,7 +130,7 @@ body{padding-top:calc(var(--logo-h) + 8px)}
 <body>
 <a class="compai-logo" href="https://compai.cl/" aria-label="compAI"><img src="/media/logo-compai-dia.svg" alt="compA\" width="372" height="131"></a>
 <header>
-  <h1 class="app-marca" style="--app-i:38px"><img src="marca/wnote-logo.svg" alt=""><span><b>w-notes</b><small>de compA\</small></span></h1>
+  <h1 class="app-marca" style="--app-i:38px"><img src="marca/wnote-favicon.svg" alt=""><span><b>w-notes</b><small>de compA\</small></span></h1>
   <span class="grow"></span>
   <span id="status" class="status"><i></i><span>…</span></span>
   <button class="icon-btn" id="btnSync" aria-label="Sincronizar">↻</button>
@@ -339,7 +339,7 @@ function render() {
   const list = filter === "all" ? visible : visible.filter(n => n.theme_key === filter);
   const feed = $("feed");
   if (!cfg) {
-    feed.innerHTML = `<div class="empty"><img src="marca/wnote-logo.svg" alt=""><b>Conecta w-notes con tu PC</b><br>
+    feed.innerHTML = `<div class="empty"><img src="marca/wnote-favicon.svg" alt=""><b>Conecta w-notes con tu PC</b><br>
       En el PC: w-notes → <b>📱 Vincular celular</b> → escanea el QR con la cámara.<br>
       <button class="chip on" style="margin-top:14px" data-open-settings>Conectar a mano</button></div>`;
     return;
